@@ -52,7 +52,7 @@ function upgradeOS () {
 #-----------------------------------------------------------------------------#
 function efarepo () {
    cd /etc/yum.repos.d/
-   /usr/bin/wget --no-check-certificate $mirror/rpm/EFA.repo
+   /usr/bin/wget $mirror/rpm/EFA4.repo
 }
 #-----------------------------------------------------------------------------#
 
