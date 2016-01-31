@@ -30,6 +30,36 @@ mirrorpath="/build/$version"
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
+# Main function
+#-----------------------------------------------------------------------------#
+function main() {
+ case "$action" in
+   --frontend)
+        frontend_install
+        ;;
+   --backend)
+        backend_install
+        ;;
+   --full)
+        full_install
+        ;;
+   --prepare)
+        prepare_os
+        ;;
+   *)
+        echo "Usage: $0 <option>"
+        echo "where <option> is one of:"
+        echo "  --prepare     Prepare the OS for installation"
+        echo "  --full        Install an full system"
+        echo "  --frontend    Install frontend only"
+        echo "  --backend     Install backend only"
+        exit 3
+        ;;
+ esac
+}
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
 # Pre-build
 #-----------------------------------------------------------------------------#
 function prebuild () {
@@ -58,6 +88,15 @@ function upgrade_os () {
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
+# Check Network
+#-----------------------------------------------------------------------------#
+function check_network () {
+  # TODO
+    echo "Check if network is functioning correctly before we start"
+}
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
 # Full install setup, front & backend
 #-----------------------------------------------------------------------------#
 function full_install() {
@@ -70,6 +109,8 @@ function full_install() {
 #-----------------------------------------------------------------------------#
 function frontend_install() {
     echo "frontend install"
+    # Check network connectivity
+    check_network
 }
 #-----------------------------------------------------------------------------#
 
@@ -78,6 +119,8 @@ function frontend_install() {
 #-----------------------------------------------------------------------------#
 function backend_install() {
     echo "Backend install"
+    # Check network connectivity
+    check_network
 }
 #-----------------------------------------------------------------------------#
 
@@ -93,6 +136,8 @@ function prepare_os() {
       echo "ERROR: Unsupported system, stopping now"
       exit 1
     fi
+    # Check network connectivity
+    check_network
     # Upgrade the OS before we start
     upgrade_os
     # Install base & core packages
@@ -111,36 +156,6 @@ function prepare_os() {
     echo "Prepare is finished, you can now run the script again and select"
     echo "one of the installation options to build the system."
     exit 1
-}
-#-----------------------------------------------------------------------------#
-
-#-----------------------------------------------------------------------------#
-# Main function
-#-----------------------------------------------------------------------------#
-function main() {
- case "$action" in
-   --frontend)
-        frontend_install
-        ;;
-   --backend)
-        backend_install
-        ;;
-   --full)
-        full_install
-        ;;
-   --prepare)
-        prepare_os
-        ;;
-   *)
-        echo "Usage: $0 <option>"
-        echo "where <option> is one of:"
-        echo "  --prepare     Prepare the OS for installation"
-        echo "  --full        Install an full system"
-        echo "  --frontend    Install frontend only"
-        echo "  --backend     Install backend only"
-        exit 3
-        ;;
- esac
 }
 #-----------------------------------------------------------------------------#
 
