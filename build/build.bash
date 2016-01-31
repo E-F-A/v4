@@ -66,6 +66,10 @@ function prebuild () {
     # mounting /tmp without nosuid and noexec while building
     # as it breaks building some components.
     mount -o remount rw /tmp
+
+    # Stop services
+    systemctl stop wpa_supplicant
+    systemctl disable wpa_supplicant
 }
 #-----------------------------------------------------------------------------#
 
@@ -101,6 +105,8 @@ function check_network () {
 #-----------------------------------------------------------------------------#
 function full_install() {
     echo "Full install"
+    check_network
+    prebuild
 }
 #-----------------------------------------------------------------------------#
 
@@ -109,8 +115,8 @@ function full_install() {
 #-----------------------------------------------------------------------------#
 function frontend_install() {
     echo "frontend install"
-    # Check network connectivity
     check_network
+    prebuild
 }
 #-----------------------------------------------------------------------------#
 
@@ -119,8 +125,8 @@ function frontend_install() {
 #-----------------------------------------------------------------------------#
 function backend_install() {
     echo "Backend install"
-    # Check network connectivity
     check_network
+    prebuild
 }
 #-----------------------------------------------------------------------------#
 
