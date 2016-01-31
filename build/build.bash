@@ -52,8 +52,65 @@ function efarepo () {
 #-----------------------------------------------------------------------------#
 # Update system before we start
 #-----------------------------------------------------------------------------#
-function upgradeOS () {
+function upgrade_os () {
     yum -y upgrade
+}
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Full install setup, front & backend
+#-----------------------------------------------------------------------------#
+function full_install() {
+    echo "Full install"
+}
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Frontend setup, just mail handling
+#-----------------------------------------------------------------------------#
+function frontend_install() {
+    echo "frontend install"
+}
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Backend setup, just mail handling
+#-----------------------------------------------------------------------------#
+function backend_install() {
+    echo "Backend install"
+}
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Prepare OS if the system has not been installed from kickstart
+#-----------------------------------------------------------------------------#
+function prepare_os() {
+    echo "Starting Prepare OS"
+    #-------------------------------------------------------------------------#
+    OSVERSION=`cat /etc/centos-release | sed 's/\..*//'`
+    if ! [[ "$OSVERSION" == "CentOS Linux release 7" ]]; then
+      echo "ERROR: You are not running CentOS 7.x"
+      echo "ERROR: Unsupported system, stopping now"
+      exit 1
+    fi
+    # Upgrade the OS before we start
+    upgrade_os
+    # Install base & core packages
+    yum -y install @base @core
+    # Create base dirs
+    mkdir /var/log/EFA
+    mkdir /usr/src/EFA
+    # Change the root password
+    echo "root:EfaPr0j3ct" | chpasswd --md5 root
+    # Configure firewall
+    firewall-cmd --add-service=http
+    firewall-cmd --add-service=ssh
+    firewall-cmd --add-service=smtp
+    firewall-cmd --add-port=443/tcp
+    #-------------------------------------------------------------------------#
+    echo "Prepare is finished, you can now run the script again and select"
+    echo "one of the installation options to build the system."
+    exit 1
 }
 #-----------------------------------------------------------------------------#
 
@@ -61,23 +118,40 @@ function upgradeOS () {
 # Main function
 #-----------------------------------------------------------------------------#
 function main() {
-  # If $action is empty we run the normal setup
-  if [[ -z "$action" ]]; then
-    prebuild
-    efarepo
-    upgradeOS
-      elif [[ "$action" == "--frontend" ]]; then
-    # If $action is --frontend, we do a frontend only install.
-    prebuild
-    efarepo
-    upgradeOS
-  fi
+ case "$action" in
+   --frontend)
+        frontend_install
+        ;;
+   --backend)
+        backend_install
+        ;;
+   --full)
+        full_install
+        ;;
+   --prepare)
+        prepare_os
+        ;;
+   *)
+        echo "Usage: $0 <option>"
+        echo "where <option> is one of:"
+        echo "  --prepare     Prepare the OS for installation"
+        echo "  --full        Install an full system"
+        echo "  --frontend    Install frontend only"
+        echo "  --backend     Install backend only"
+        exit 3
+        ;;
+ esac
 }
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
-# Run the main script
+# Run the main script if we are root
 #-----------------------------------------------------------------------------#
-main
+if [ `whoami` == root ]; then
+  main
+else
+  echo "Please become root first."
+  exit 1
+fi
 #-----------------------------------------------------------------------------#
 #EOF
