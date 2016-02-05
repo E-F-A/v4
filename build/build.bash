@@ -19,6 +19,11 @@ action=$1
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
+# Considerations Todo:
+# - Consider using makeself for updates (http://stephanepeter.com/makeself/)
+# - Consider using mysql for transports instead of text file
+# - 
+
 #-----------------------------------------------------------------------------#
 # Variables
 #-----------------------------------------------------------------------------#
