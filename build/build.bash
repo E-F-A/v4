@@ -1,7 +1,7 @@
 #!/bin/bash
 action=$1
 #-----------------------------------------------------------------------------#
-# EFA 4.0.0.0 build script version 20160130
+# EFA 4.0.0.0 build script version 20160410
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2016 https://efa-project.org
 #
@@ -72,10 +72,6 @@ function prebuild () {
     # mounting /tmp without nosuid and noexec while building
     # as it breaks building some components.
     mount -o remount rw /tmp
-
-    # Stop services
-    systemctl stop wpa_supplicant
-    systemctl disable wpa_supplicant
 }
 #-----------------------------------------------------------------------------#
 
@@ -83,9 +79,8 @@ function prebuild () {
 # add EFA Repo (Debian packages)
 #-----------------------------------------------------------------------------#
 function efarepo () {
-   cd /etc/yum.repos.d/
-   /usr/bin/wget $mirror/rpm/EFA4.repo
-   rpm --import http://dl.efa-project.org/rpm/RPM-GPG-KEY-E.F.A.Project
+  # TODO
+   echo "todo"
 }
 #-----------------------------------------------------------------------------#
 
@@ -93,7 +88,8 @@ function efarepo () {
 # Update system before we start
 #-----------------------------------------------------------------------------#
 function upgrade_os () {
-    yum -y upgrade
+   apt-get update
+   apt-get -y upgrade
 }
 #-----------------------------------------------------------------------------#
 
@@ -142,28 +138,23 @@ function backend_install() {
 function prepare_os() {
     echo "Starting Prepare OS"
     #-------------------------------------------------------------------------#
-    OSVERSION=`cat /etc/centos-release | sed 's/\..*//'`
-    if ! [[ "$OSVERSION" == "CentOS Linux release 7" ]]; then
-      echo "ERROR: You are not running CentOS 7.x"
+    OSVERSION=`lsb_release -c -s`
+    if ! [[ "$OSVERSION" == "xenial" ]]; then
+      echo "ERROR: You are not running Ubuntu 16.04 (Xenial)"
       echo "ERROR: Unsupported system, stopping now"
       exit 1
     fi
     # Check network connectivity
     check_network
+
     # Upgrade the OS before we start
     upgrade_os
-    # Install base & core packages
-    yum -y install @base @core
+
     # Create base dirs
     mkdir /var/log/EFA
     mkdir /usr/src/EFA
     # Change the root password
     echo "root:EfaPr0j3ct" | chpasswd --md5 root
-    # Configure firewall
-    firewall-cmd --add-service=http
-    firewall-cmd --add-service=ssh
-    firewall-cmd --add-service=smtp
-    firewall-cmd --add-port=443/tcp
     #-------------------------------------------------------------------------#
     echo "Prepare is finished, you can now run the script again and select"
     echo "one of the installation options to build the system."
