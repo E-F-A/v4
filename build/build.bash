@@ -20,7 +20,7 @@ action=$1
 #-----------------------------------------------------------------------------#
 
 # Todo:
-# - Build for Ubuntu LTS
+# - Build for CentOS 7
 # - Consider using makeself for updates (http://stephanepeter.com/makeself/)
 # - Consider using mysql for transports instead of text file
 # -
@@ -138,9 +138,9 @@ function backend_install() {
 function prepare_os() {
     echo "Starting Prepare OS"
     #-------------------------------------------------------------------------#
-    OSVERSION=`lsb_release -c -s`
-    if ! [[ "$OSVERSION" == "xenial" ]]; then
-      echo "ERROR: You are not running Ubuntu 16.04 (Xenial)"
+    OSVERSION=`cat /etc/centos-release`
+    if ! [[ "$OSVERSION" == "CentOS Linux release 7.3.1611 (Core)" ]]; then
+      echo "ERROR: You are not running CentOS 7"
       echo "ERROR: Unsupported system, stopping now"
       exit 1
     fi
