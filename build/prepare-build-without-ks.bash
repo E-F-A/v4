@@ -1,6 +1,6 @@
 #!/bin/bash
 # +--------------------------------------------------------------------+
-# EFA 4 build without ks version 20170109
+# eFa 4 build without ks version 20170109
 #
 # Purpose:
 #       This script will 'baseline' an existing CentOS installation
@@ -35,9 +35,9 @@ clear
 #----------------------------------------------------------------#
 if [ `whoami` == root ]
   then
-    echo "[EFA] Good you are root"
+    echo "[eFa] Good you are root"
 else
-  echo "[EFA] Please become root to run this."
+  echo "[eFa] Please become root to run this."
   exit 1
 fi
 #----------------------------------------------------------------#
@@ -126,10 +126,10 @@ alsa-tools-firmware
 #----------------------------------------------------------------#
 # E.F.A. items
 #----------------------------------------------------------------#
-mkdir /var/log/EFA
-mkdir /usr/src/EFA
-#/usr/bin/wget -q -O /usr/src/EFA/build.bash -o /var/log/EFA/wget.log https://raw.githubusercontent.com/E-F-A/v4/build/build.bash
-chmod 700 /usr/src/EFA/build.bash
+mkdir /var/log/eFa
+mkdir /usr/src/eFa
+#/usr/bin/wget -q -O /usr/src/eFa/build.bash -o /var/log/eFa/wget.log https://raw.githubusercontent.com/E-F-A/v4/build/build.bash
+chmod 700 /usr/src/eFa/build.bash
 #----------------------------------------------------------------#
 
 #----------------------------------------------------------------#
@@ -141,7 +141,7 @@ echo "We can now launch the build script."
 echo "If you do not want to launch the build script now then"
 echo "you will need to start this your self with the command:"
 echo ""
-echo "logsave /var/log/EFA/build.log /usr/src/EFA/build.bash"
+echo "logsave /var/log/eFa/build.log /usr/src/eFa/build.bash"
 echo ""
 echo -n "Do you want to start the build script? (y/N):"
 read YN
@@ -149,7 +149,7 @@ flag=1
 while [ $flag != "0" ]
     do
       if [[ "$YN" == "Y" || "$YN" == "y" ]]; then
-        logsave /var/log/EFA/build.log /usr/src/EFA/build.bash
+        logsave /var/log/eFa/build.log /usr/src/eFa/build.bash
         flag=0
       elif [[ "$YN" == "" || "$YN" == "N" || "$YN" == "n" ]]; then
         echo ""

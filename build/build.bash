@@ -1,7 +1,7 @@
 #!/bin/bash
 action=$1
 #-----------------------------------------------------------------------------#
-# EFA 4.0.0.0 build script version 20160410
+# eFa 4.0.0.0 build script version 20160410
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2016 https://efa-project.org
 #
@@ -29,7 +29,7 @@ action=$1
 # Variables
 #-----------------------------------------------------------------------------#
 version="4"
-logdir="/var/log/EFA"
+logdir="/var/log/eFa"
 password="EfaPr0j3ct"
 mirror="https://dl.efa-project.org"
 mirrorpath="/build/$version"
@@ -76,7 +76,7 @@ function prebuild () {
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
-# add EFA Repo (Debian packages)
+# add eFa Repo (Debian packages)
 #-----------------------------------------------------------------------------#
 function efarepo () {
   # TODO
@@ -151,8 +151,8 @@ function prepare_os() {
     upgrade_os
 
     # Create base dirs
-    mkdir /var/log/EFA
-    mkdir /usr/src/EFA
+    mkdir /var/log/eFa
+    mkdir /usr/src/eFa
     # Change the root password
     echo "root:EfaPr0j3ct" | chpasswd --md5 root
     #-------------------------------------------------------------------------#
