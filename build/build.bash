@@ -69,27 +69,26 @@ function main() {
 # Pre-build
 #-----------------------------------------------------------------------------#
 function prebuild () {
-    # mounting /tmp without nosuid and noexec while building
-    # as it breaks building some components.
-    mount -o remount rw /tmp
+  # mounting /tmp without nosuid and noexec while building
+  # as it breaks building some components.
+  mount -o remount rw /tmp
 }
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
-# add eFa Repo (Debian packages)
+# add eFa Repo (CentOS packages)
 #-----------------------------------------------------------------------------#
 function efarepo () {
   # TODO
-   echo "todo"
+  echo "todo"
 }
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
 # Update system before we start
 #-----------------------------------------------------------------------------#
-function upgrade_os () {
-   apt-get update
-   apt-get -y upgrade
+function update_os () {
+  yum -y update
 }
 #-----------------------------------------------------------------------------#
 
@@ -98,7 +97,31 @@ function upgrade_os () {
 #-----------------------------------------------------------------------------#
 function check_network () {
   # TODO
-    echo "Check if network is functioning correctly before we start"
+  echo "Check if network is functioning correctly before we start"
+}
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Configure firewall
+#-----------------------------------------------------------------------------#
+function configure_firewall () {
+  local methode="$1"
+  if [[ "$methode" == "full" ]]; then
+    firewall-cmd --permanent --add-service=smtp
+    firewall-cmd --permanent --add-service=ssh
+    firewall-cmd --permanent --add-port 80/tcp
+    firewall-cmd --permanent --add-port 443/tcp
+    firewall-cmd --reload
+  elif [[ "$methode" == "frontend" ]]; then
+    firewall-cmd --permanent --add-service=smtp
+    firewall-cmd --permanent --add-service=ssh
+    firewall-cmd --reload
+  elif [[ "$methode" == "backend" ]]; then
+    firewall-cmd --permanent --add-service=ssh
+    firewall-cmd --permanent --add-port 80/tcp
+    firewall-cmd --permanent --add-port 443/tcp
+    firewall-cmd --reload
+  fi
 }
 #-----------------------------------------------------------------------------#
 
@@ -106,29 +129,32 @@ function check_network () {
 # Full install setup, front & backend
 #-----------------------------------------------------------------------------#
 function full_install() {
-    echo "Full install"
-    check_network
-    prebuild
+  echo "Full install"
+  check_network
+  prebuild
+  configure_firewall full
 }
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
-# Frontend setup, just mail handling
+# Frontend setup, mail handling
 #-----------------------------------------------------------------------------#
 function frontend_install() {
-    echo "frontend install"
-    check_network
-    prebuild
+  echo "frontend install"
+  prebuild
+  check_network
+  configure_firewall frontend
 }
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
-# Backend setup, just mail handling
+# Backend setup, config & viewing
 #-----------------------------------------------------------------------------#
 function backend_install() {
-    echo "Backend install"
-    check_network
-    prebuild
+  echo "Backend install"
+  prebuild
+  check_network
+  configure_firewall backend
 }
 #-----------------------------------------------------------------------------#
 
@@ -136,29 +162,37 @@ function backend_install() {
 # Prepare OS if the system has not been installed from kickstart
 #-----------------------------------------------------------------------------#
 function prepare_os() {
-    echo "Starting Prepare OS"
-    #-------------------------------------------------------------------------#
-    OSVERSION=`cat /etc/centos-release`
-    if ! [[ "$OSVERSION" == "CentOS Linux release 7.3.1611 (Core)" ]]; then
-      echo "ERROR: You are not running CentOS 7"
-      echo "ERROR: Unsupported system, stopping now"
-      exit 1
-    fi
-    # Check network connectivity
-    check_network
-
-    # Upgrade the OS before we start
-    upgrade_os
-
-    # Create base dirs
-    mkdir /var/log/eFa
-    mkdir /usr/src/eFa
-    # Change the root password
-    echo "root:EfaPr0j3ct" | chpasswd --md5 root
-    #-------------------------------------------------------------------------#
-    echo "Prepare is finished, you can now run the script again and select"
-    echo "one of the installation options to build the system."
+  echo "Starting Prepare OS"
+  #---------------------------------------------------------------------------#
+  OSVERSION=`cat /etc/centos-release`
+  if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
+    echo "Good you are running CentOS 7"
+  else
+    echo "ERROR: You are not running CentOS 7"
+    echo "ERROR: Unsupported system, stopping now"
     exit 1
+  fi
+
+  # Check network connectivity
+  check_network
+
+  # Upgrade the OS before we start
+  update_os
+
+  # Create base dirs
+  mkdir /var/log/eFa
+  mkdir /usr/src/eFa
+
+  # Change the root password
+  echo "root:EfaPr0j3ct" | chpasswd --md5 root
+
+  # Add efa Repo
+  # TODO
+
+  #---------------------------------------------------------------------------#
+  echo "Prepare is finished, you can now run the script again and select"
+  echo "one of the installation options to build the system."
+  exit 1
 }
 #-----------------------------------------------------------------------------#
 
@@ -168,7 +202,7 @@ function prepare_os() {
 if [ `whoami` == root ]; then
   main
 else
-  echo "Please become root first."
+  echo "ERROR: Please become root first."
   exit 1
 fi
 #-----------------------------------------------------------------------------#
