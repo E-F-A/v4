@@ -133,8 +133,6 @@ function install_rpm_packages () {
       @core \                               # REPO: CentOS, # For: basic system tools
       screen \                              # REPO: CentOS, # For: basic system tools
       chrony \                              # REPO: CentOS, # For: Time sync
-        # Auto added dependencies for NTP from CentOS repo are:
-        # autogen-libopts
       mariadb-server                        # REPO: CentOS, # For: postfix, mailwatch
         # Auto added dependencies for mariadb-server from CentOS repo are:
         # mariadb, perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib, perl-DBD-MySQL
@@ -239,6 +237,7 @@ function install_rpm_packages () {
 ## Removed
 #mysql-server   # replaced by mariadb-server
 #mysql          # Replaced by mariadb
+#ntp            # Replaced by chrony
 
 
     echo "- Installing eFa packages"
