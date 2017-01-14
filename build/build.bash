@@ -133,7 +133,7 @@ function install_rpm_packages () {
       @base \                               # REPO: CentOS, # For: basic system tools
       @core \                               # REPO: CentOS, # For: basic system tools
       screen \                              # REPO: CentOS, # For: basic system tools
-      chrony \                              # REPO: CentOS, # For: Time sync
+      # chrony \                            # REPO: CentOS, # For: Time sync (CentOS 7 by default)
       mariadb-server                        # REPO: CentOS, # For: postfix, mailwatch
         # Auto added dependencies for mariadb-server from CentOS repo are:
         # mariadb, perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib, perl-DBD-MySQL
