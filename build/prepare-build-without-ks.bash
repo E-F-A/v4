@@ -99,6 +99,7 @@ firewall-cmd --permanent --add-service=smtp
 firewall-cmd --permanent --add-service=ssh
 firewall-cmd --permanent --add-port 80/tcp
 firewall-cmd --permanent --add-port 443/tcp
+firewall-cmd --permanent --add-port 587/tcp
 firewall-cmd --reload
 #----------------------------------------------------------------#
 
@@ -120,7 +121,30 @@ yum -y install \
 # Remove packages
 #----------------------------------------------------------------#
 yum -y remove \
-alsa-tools-firmware
+iwl100-firmware \
+iwl2030-firmware \
+iwl5000-firmware \
+iwl6000-firmware \
+iwl3160-firmware \
+iwl105-firmware \
+iwl135-firmware \
+iwl1000-firmware \
+iwl7260-firmware \
+alsa-firmware \
+iwl6000g2b-firmware \
+wl6050-firmware \
+iwl6000g2a-firmware \
+iwl5150-firmware \
+iwl7265-firmware \
+iwl3945-firmware \
+ivtv-firmware \
+iwl2000-firmware \
+iwl4965-firmware \
+alsa-tools-firmware \
+alsa-lib \
+NetworkManager-wifi \
+wpa_supplicant \
+postfix
 #----------------------------------------------------------------#
 
 #----------------------------------------------------------------#
