@@ -39,25 +39,9 @@ mirrorpath="/build/$version"
 # Main function
 #-----------------------------------------------------------------------------#
 function main() {
- case "$action" in
-   --frontend)
-        frontend_install
-        ;;
-   --backend)
-        backend_install
-        ;;
-   --full)
-        full_install
-        ;;
-   *)
-        echo "Usage: $0 <option>"
-        echo "where <option> is one of:"
-        echo "  --full        Install an full system"
-        echo "  --frontend    Install frontend only"
-        echo "  --backend     Install backend only"
-        exit 3
-        ;;
- esac
+  prepare_os
+  configure_firewall
+  install_rpm_packages
 }
 #-----------------------------------------------------------------------------#
 
@@ -112,9 +96,9 @@ function prepare_os() {
 
   # Add eFa Repo
   echo "- Adding eFa Repo"
-  rpm --import $smirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+  rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
   cd /etc/yum.repos.d/
-  /usr/bin/wget $smirror/rpm/eFa4/eFa4.repo
+  /usr/bin/wget $mirror/rpm/eFa4/eFa4.repo
 
   # Add epel Repo
   echo "- Adding epel Repo"
@@ -128,23 +112,11 @@ function prepare_os() {
 #-----------------------------------------------------------------------------#
 function configure_firewall () {
   echo "Adding Firewall rules"
-  local methode="$1"
-  if [[ "$methode" == "full" ]]; then
-    firewall-cmd --permanent --add-service=smtp
-    firewall-cmd --permanent --add-service=ssh
-    firewall-cmd --permanent --add-port 80/tcp
-    firewall-cmd --permanent --add-port 443/tcp
-    firewall-cmd --reload
-  elif [[ "$methode" == "frontend" ]]; then
-    firewall-cmd --permanent --add-service=smtp
-    firewall-cmd --permanent --add-service=ssh
-    firewall-cmd --reload
-  elif [[ "$methode" == "backend" ]]; then
-    firewall-cmd --permanent --add-service=ssh
-    firewall-cmd --permanent --add-port 80/tcp
-    firewall-cmd --permanent --add-port 443/tcp
-    firewall-cmd --reload
-  fi
+  firewall-cmd --permanent --add-service=smtp
+  firewall-cmd --permanent --add-service=ssh
+  firewall-cmd --permanent --add-port 80/tcp
+  firewall-cmd --permanent --add-port 443/tcp
+  firewall-cmd --reload
 }
 #-----------------------------------------------------------------------------#
 
@@ -153,8 +125,6 @@ function configure_firewall () {
 #-----------------------------------------------------------------------------#
 function install_rpm_packages () {
   echo "Installing RPM packages"
-  local methode="$1"
-  if [[ "$methode" == "full" ]]; then
     echo "- Installing <> packages"
     # TODO writing all out for now packages from eFa 3, defining all packages
     # needed and include for what we need them and which repo we get them from
@@ -324,46 +294,6 @@ function install_rpm_packages () {
      #perl-Net-Server \                      # REPO: <>, # For: <>
      #perl-Convert-TNEF \                    # REPO: <>, # For: <>
      #perl-IP-Country                        # REPO: <>, # For: <>
-  elif [[ "$methode" == "frontend" ]]; then
-    # TODO first create a centos 7 full working version, then start splitting
-  elif [[ "$methode" == "backend" ]]; then
-    # TODO first create a centos 7 full working version, then start splitting
-  fi
-}
-#-----------------------------------------------------------------------------#
-
-#-----------------------------------------------------------------------------#
-# Full install setup, front & backend
-#-----------------------------------------------------------------------------#
-function full_install() {
-  echo "Full install"
-  prepare_os
-  configure_firewall full
-  install_rpm_packages full
-}
-#-----------------------------------------------------------------------------#
-
-#-----------------------------------------------------------------------------#
-# Frontend setup, mail handling
-#-----------------------------------------------------------------------------#
-function frontend_install() {
-  echo "frontend install"
-  prepare_os
-  configure_firewall frontend
-  install_rpm_packages frontend
-  # TODO first create a centos 7 full working version, then start splitting
-}
-#-----------------------------------------------------------------------------#
-
-#-----------------------------------------------------------------------------#
-# Backend setup, config & viewing
-#-----------------------------------------------------------------------------#
-function backend_install() {
-  echo "Backend install"
-  prepare_os
-  configure_firewall backend
-  install_rpm_packages backend
-  # TODO first create a centos 7 full working version, then start splitting
 }
 #-----------------------------------------------------------------------------#
 
