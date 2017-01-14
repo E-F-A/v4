@@ -116,6 +116,7 @@ function configure_firewall () {
   firewall-cmd --permanent --add-service=ssh
   firewall-cmd --permanent --add-port 80/tcp
   firewall-cmd --permanent --add-port 443/tcp
+  firewall-cmd --permanent --add-port 587/tcp
   firewall-cmd --reload
 }
 #-----------------------------------------------------------------------------#
@@ -245,7 +246,10 @@ function install_rpm_packages () {
     # needed and include for what we need them and which repo we get them from
     yum -y install \
      #unrar \                                # REPO: <>, # For: <>
-     #postfix \                              # REPO: <>, # For: <>
+     postfix \                               # REPO: <eFa>, # For: <MTA>
+       # Auto added dependencies for postfix from eFa repo are:
+       
+       # Supercedes: postfix in CentOS Base
      #re2c \                                 # REPO: <>, # For: <>
      #spamassassin \                         # REPO: <>, # For: <>
      #MailScanner \                          # REPO: <>, # For: <>
