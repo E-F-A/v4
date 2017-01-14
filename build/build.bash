@@ -132,7 +132,7 @@ function install_rpm_packages () {
       @base \                               # REPO: CentOS, # For: basic system tools
       @core \                               # REPO: CentOS, # For: basic system tools
       screen \                              # REPO: CentOS, # For: basic system tools
-      ntp \                                 # REPO: CentOS, # For: Time sync
+      chrony \                              # REPO: CentOS, # For: Time sync
         # Auto added dependencies for NTP from CentOS repo are:
         # autogen-libopts
       mariadb-server                        # REPO: CentOS, # For: postfix, mailwatch
