@@ -81,6 +81,10 @@ function prepare_os() {
     mount -o remount rw /tmp
   fi
 
+  # Remove unwanted packages
+  echo "- Removing unwanted packages"
+  remove_rpm_packages
+
   # Update the OS before we start
   echo "- Updating the OS"
   yum -y update
@@ -119,6 +123,37 @@ function configure_firewall () {
   firewall-cmd --permanent --add-port 587/tcp
   firewall-cmd --reload
 }
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Remove not needed RPM packages
+#-----------------------------------------------------------------------------#
+function remove_rpm_packages () {
+  yum -y remove \
+  iwl100-firmware \
+  iwl2030-firmware \
+  iwl5000-firmware \
+  iwl6000-firmware \
+  iwl3160-firmware \
+  iwl105-firmware \
+  iwl135-firmware \
+  iwl1000-firmware \
+  iwl7260-firmware \
+  alsa-firmware \
+  iwl6000g2b-firmware \
+  wl6050-firmware \
+  iwl6000g2a-firmware \
+  iwl5150-firmware \
+  iwl7265-firmware \
+  iwl3945-firmware \
+  ivtv-firmware \
+  iwl2000-firmware \
+  iwl4965-firmware \
+  alsa-tools-firmware \
+  alsa-lib \
+  NetworkManager-wifi \
+  wpa_supplicant \
+  postfix
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
@@ -248,7 +283,7 @@ function install_rpm_packages () {
      #unrar \                                # REPO: <>, # For: <>
      postfix \                               # REPO: <eFa>, # For: <MTA>
        # Auto added dependencies for postfix from eFa repo are:
-       
+
        # Supercedes: postfix in CentOS Base
      #re2c \                                 # REPO: <>, # For: <>
      #spamassassin \                         # REPO: <>, # For: <>
