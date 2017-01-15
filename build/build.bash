@@ -164,7 +164,7 @@ function install_rpm_packages () {
   # Prevents future yum updates from breaking custom packages
   echo "Excluding custom packages from CentOS Base"
   sed -i '/^\[base\]$/ a\exclude=postfix, spamassassin' /etc/yum.repos.d/CentOS-Base.repo
- 
+
   echo "Installing RPM packages"
     echo "- Installing <> packages"
     # TODO writing all out for now packages from eFa 3, defining all packages
@@ -349,23 +349,21 @@ function install_rpm_packages () {
        #       perl-Date-Calc postgresql-libs
        # Epel: tinycdb
        # Replaces: postfix in CentOS Base
+     sqlgrey \                               # REPO: eFa, # For: Greylisting
      spamassassin \                          # REPO: eFa, # For: MailScanner
        # Auto added dependencies:
        # Base: perl-DB_File, perl-IO-Socket-INET6, perl-Socket6,
-       #                portreserve, procmail
+       #       portreserve, procmail, perl-Geo-IP, perl-Net-Patricia
        # Replaces: spamassassin in CentOS Base
      MailScanner \                           # REPO: eFa, # For: MailScanner
-     #clamav-unofficial-sigs \               # REPO: <>, # For: <>
-     perl-IP-Country \                       # REPO: eFa, # For: MailScanner
+     clamav-unofficial-sigs \                # REPO: eFa, # For: clamav
+     perl-IP-Country \                       # REPO: eFa, # For: MailScanner, Spamassassin
      perl-Mail-SPF-Query \                   # REPO: eFa, # For: MailScanner
      #perl-Net-Ident \                       # REPO: <>, # For: <>
-     #perl-Mail-ClamAV \                     # REPO: <>, # For: <>
      #perl-ExtUtils-Constant \               # REPO: <>, # For: <>
-     #perl-Geo-IP \                          # REPO: <>, # For: <>
-     #perl-libnet \                          # REPO: <>, # For: <>
+     perl-Geophgraphy-Countries \            # REPO: eFa, # For: Spamassassin
+     perl-libnet                             # REPO: eFa, # For: Spamassassin
      #perl-Net-DNS-Nameserver \              # REPO: <>, # For: <>
-     #perl-Text-Balanced \                   # REPO: <>, # For: <>
-     #perl-Net-Patricia \                    # REPO: <>, # For: <>
      #perl-IO-Multiplex \                    # REPO: <>, # For: <>
      #perl-File-Tail \                       # REPO: <>, # For: <>
      #perl-Net-Netmask \                     # REPO: <>, # For: <>
