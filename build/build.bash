@@ -160,26 +160,39 @@ function remove_rpm_packages () {
 # Install RPM packages
 #-----------------------------------------------------------------------------#
 function install_rpm_packages () {
+  # Force yum to always pull certain packages from eFa Repo instead
+  # Prevents future yum updates from breaking custom packages
+  echo "Excluding custom packages from CentOS Base"
+  sed -i '/^\[base\]$/ a\exclude=postfix, spamassassin' /etc/yum.repos.d/CentOS-Base.repo
+ 
   echo "Installing RPM packages"
     echo "- Installing <> packages"
     # TODO writing all out for now packages from eFa 3, defining all packages
     # needed and include for what we need them and which repo we get them from
     yum -y install \
-      @base \                               # REPO: CentOS, # For: basic system tools
-      @core \                               # REPO: CentOS, # For: basic system tools
-      screen \                              # REPO: CentOS, # For: basic system tools
-      # chrony \                            # REPO: CentOS, # For: Time sync (CentOS 7 by default)
-      mariadb-server                        # REPO: CentOS, # For: postfix, mailwatch
-        # Auto added dependencies for mariadb-server from CentOS repo are:
-        # mariadb, perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib, perl-DBD-MySQL
-        # perl-DBI, perl-Data-Dumper, perl-IO-Compress, perl-Net-Daemon, perl-PlRPC
-
-      #gpg \                                 # REPO: <>, # For: <>
+      @base \                                # REPO: base, # For: basic system tools
+      @core \                                # REPO: base, # For: basic system tools
+      bzip2-devel \                          # REPO: base, # For: MailScanner
+      screen \                               # REPO: base, # For: basic system tools
+      clamav \                               # REPO: epel, # For: MailScanner
+        # Auto added dependencies:
+        # Epel: clamav-data, clamav-filesystem, clamav-lib
+      clamav-update \                        # REPO: epel, # For: MailScanner
+      clamav-server \                        # REPO: epel, # For: MailScanner
+        # Auto added dependencies:
+        # Base: nmap-ncat
+      mariadb-server                         # REPO: base, # For: postfix, mailwatch
+        # Auto added dependencies:
+        # Base:  mariadb, perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib,
+        #        perl-DBD-MySQL, perl-DBI, perl-Data-Dumper, perl-IO-Compress, 
+        #        perl-Net-Daemon, perl-PlRPC
       #php \                                 # REPO: <>, # For: <>
       #php-gd \                              # REPO: <>, # For: <>
       #php-mbstring \                        # REPO: <>, # For: <>
       #php-mysql \                           # REPO: <>, # For: <>
-      #httpd \                               # REPO: <>, # For: <>
+      httpd \                                # REPO: base, # For: MailWatch
+       # Auto added dependencies:
+       # Base: apr, apr-util, httpd-tools
       #rrdtool \                             # REPO: <>, # For: <>
       #rrdtool-perl \                        # REPO: <>, # For: <>
       #cyrus-sasl-md5 \                      # REPO: <>, # For: <>
@@ -188,154 +201,176 @@ function install_rpm_packages () {
       #ImageMagick \                         # REPO: <>, # For: <>
       #python-setuptools \                   # REPO: <>, # For: <>
       #libevent \                            # REPO: <>, # For: <>
+      libtool-ltdl \                         # REPO: base, # For: MailScanner
       #mod_ssl \                             # REPO: <>, # For: <>
       #system-config-keyboard \              # REPO: <>, # For: <>
-      #openssl-devel                         # REPO: <>, # For: <>
-      #patch \                               # REPO: <>, # For: <>
+      openssl-devel \                        # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: keyutils-libs-devel, libcom_err-devel, libselinux-devel, 
+        #       libsepol-devel, libverto-devel, pcre-devel, zlib-devel
+        # Updates: krb5-devel, libkadm5
+      patch \                                # REPO: base, # For: MailScanner
+      pyzor \                                # REPO: epel, # For: MailScanner
+      re2c \                                 # REPO: epel, # For: MailScanner
+      tnef \                                 # REPO: epel, # For: MailScanner
       #tree \                                # REPO: <>, # For: <>
       #rpm-build \                           # REPO: <>, # For: <>
-      #binutils \                            # REPO: <>, # For: <>
       #glibc-devel \                         # REPO: <>, # For: <>
-      #gcc \                                 # REPO: <>, # For: <>
-      #make \                                # REPO: <>, # For: <>
+      gcc \                                  # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: cpp, libmpc, mpfr
       #opencv \                              # REPO: <>, # For: <>
 
-      perl-Archive-Tar \                    # REPO: <base>, # For: <MailScanner>
-      # Auto added dependencies:
-      # CentOS 7 Base: perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib, perl-Data-Dumper
-      #                perl-IO-Compress, perl-IO-Zlib, perl-Package-Constants
-      
-      #perl-Archive-Zip \                    # REPO: <>, # For: <>
-      #perl-Business-ISBN \                  # REPO: <>, # For: <>
-      #perl-Business-ISBN-Data \             # REPO: <>, # For: <>
+      perl-Archive-Tar \                     # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib,
+        #       perl-Data-Dumper, perl-IO-Compress 
+        #       (perl-Compress-Zlib perl-IO-Compress-Bzip2), 
+        #       perl-IO-Zlib, perl-Package-Constants
+      perl-Archive-Zip \                     # REPO: base, # For: MailScanner
       #perl-Cache-Memcached \                # REPO: <>, # For: <>
       #perl-CGI \                            # REPO: <>, # For: <>
       #perl-Class-Singleton \                # REPO: <>, # For: <>
-      #perl-Compress-Zlib \                  # REPO: <>, # For: <>
-      #perl-Convert-BinHex \                 # REPO: <>, # For: <>
-      #perl-Crypt-OpenSSL-Random \           # REPO: <>, # For: <>
-      #perl-Crypt-OpenSSL-RSA \              # REPO: <>, # For: <>
+      perl-Convert-BinHex \                  # REPO: epel, # For: MailScanner
+      perl-Convert-TNEF \                    # REPO: epel, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-IO-Socket-IP perl-IO-Socket-SSL perl-IO-stringy,
+        #       perl-MailTools, perl-Net-LibIDN, perl-Net-SMTP-SSL, 
+        #       perl-Net-SSLeay, perl-TimeDate
+        # Epel: perl-MIME-tools
+      perl-CPAN \                            # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-local-lib
+      perl-Data-Dump \                       # REPO: epel, # For: MailScanner
       #perl-Date-Manip \                     # REPO: <>, # For: <>
       #perl-DateTime \                       # REPO: <>, # For: <>
-      #perl-DBI \                            # REPO: <>, # For: <>
       #perl-DBD-MySQL \                      # REPO: <>, # For: <>
-      #perl-DBD-SQLite \                     # REPO: <>, # For: <>
+      perl-DBD-SQLite \                      # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-DBI, perl-Net-Daemon, perl-PlRPC
       #perl-DBD-Pg \                         # REPO: <>, # For: <>
-      #perl-Digest-SHA1 \                    # REPO: <>, # For: <>
-      #perl-Encode-Detect \                  # REPO: <>, # For: <>
+      perl-Digest-SHA1 \                     # REPO: base, # For: MailScanner
+      perl-Digest-HMAC \                     # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-Digest, perl-Digest-MD5, perl-Digest-SHA
+      perl-Encode-Detect \                   # REPO: base, # For: MailScanner
       #perl-Email-Date-Format \              # REPO: <>, # For: <>
-      #perl-Error \                          # REPO: <>, # For: <>
-      #perl-ExtUtils-CBuilder \              # REPO: <>, # For: <>
-      #perl-ExtUtils-MakeMaker \             # REPO: <>, # For: <>
-      #perl-ExtUtils-ParseXS \               # REPO: <>, # For: <>
+      perl-Env \                             # REPO: base, # For: MailScanner
+      perl-ExtUtils-CBuilder \               # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-IPC-Cmd, perl-Locale-Maketext, 
+        #       perl-Locale-Maketext-Simple,
+        #       perl-Module-CoreList, perl-Module-Load,
+        #       perl-Module-Load-Conditional, perl-Module-Metadata,
+        #       perl-Params-Check, perl-Perl-OSType
+      perl-ExtUtils-MakeMaker \              # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: gdbm-devel, libdb-devel, perl-ExtUtils-Install, 
+        #       perl-ExtUtils-Manifest, perl-ExtUtils-ParseXS, 
+        #       perl-Test-Harness, perl-devel, pyparsing, 
+        #       systemtap-sdt-devel
       #perl-File-Copy-Recursive \            # REPO: <>, # For: <>
-      #perl-HTML-Parser \                    # REPO: <>, # For: <>
-      #perl-HTML-Tagset \                    # REPO: <>, # For: <>
-      #perl-IO-String \                      # REPO: <>, # For: <>
-      #perl-IO-stringy \                     # REPO: <>, # For: <>
-      #perl-IO-Socket-INET6 \                # REPO: <>, # For: <>
-      #perl-IO-Socket-SSL \                  # REPO: <>, # For: <>
-      #perl-libwww-perl \                    # REPO: <>, # For: <>
+      perl-File-ShareDir-Install \           # REPO: epel, # For: MailScanner
+      perl-Filesys-Df \                      # REPO: epel, # For: MailScanner
+      perl-HTML-Parser \                     # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: mailcap, perl-Business-ISBN, perl-Business-ISBN-Data,
+        #       perl-Encode-Locale, perl-HTML-Tagset, perl-HTTP-Date,
+        #       perl-HTTP-Message, perl-IO-HTML, perl-LWP-MediaTypes,
+        #       perl-URI
+      perl-Inline \                          # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-Parse-RecDescent
+      perl-IO-String \                       # REPO: base, # For: MailScanner
       #perl-List-MoreUtils \                 # REPO: <>, # For: <>
-      #perl-Mail-DKIM \                      # REPO: <>, # For: <>
-      #perl-MailTools \                      # REPO: <>, # For: <>
-      #perl-MIME-tools \                     # REPO: <>, # For: <>
+      perl-LDAP \                            # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-Authen-SASL, perl-Convert-ASN1, perl-File-Listing 
+        #       perl-GSSAPI, perl-HTTP-Cookies, perl-HTTP-Daemon,
+        #       perl-HTTP-Negotiate, perl-JSON, perl-Net-HTTP,
+        #       perl-Text-Soundex, perl-Text-Unidecode,
+        #       perl-WWW-RobotRules perl-XML-Filter-BufferText,
+        #       perl-XML-NamespaceSupport, perl-XML-SAX-Base,
+        #       perl-XML-SAX-Writer, perl-libwww-perl
+      perl-Mail-DKIM \                       # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-Crypt-OpenSSL-Bignum, perl-Crypt-OpenSSL-RSA, 
+        #       perl-Crypt-OpenSSL-Random, perl-Net-DNS
+      perl-Mail-IMAPClient \                 # REPO: epel, # For: MailScanner
+      perl-Mail-SPF \                        # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-Error, perl-NetAddr-IP, perl-version
       #perl-MIME-Lite \                      # REPO: <>, # For: <>
       #perl-MIME-Types \                     # REPO: <>, # For: <>
-      #perl-Module-Build \                   # REPO: <>, # For: <>
-      #perl-Net-DNS \                        # REPO: <>, # For: <>
-      #perl-Net-IP \                         # REPO: <>, # For: <>
-      #perl-Net-SSLeay \                     # REPO: <>, # For: <>
-      #perl-Module-Build \                   # REPO: <>, # For: <>
+      perl-Module-Build \                    # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-CPAN-Meta, perl-CPAN-Meta-Requirements, 
+        #       perl-CPAN-Meta-YAML
+        #       perl-JSON-PP, perl-Parse-CPAN-Meta
+      perl-Net-CIDR \                        # REPO: epel, # For: MailScanner
+      perl-Net-CIDR-Lite \                   # REPO: epel, # For: MailScanner
+      perl-Net-DNS-Resolver-Programmable \   # REPO: base, # For: MailScanner
+      perl-Net-IP \                          # REPO: epel, # For: MailScanner
+      perl-OLE-Storage_Lite \                # REPO: epel, # For: MailScanner
       #perl-Params-Validate \                # REPO: <>, # For: <>
-      #perl-Pod-Escapes \                    # REPO: <>, # For: <>
-      #perl-Pod-Simple \                     # REPO: <>, # For: <>
-      #perl-Parse-RecDescent \               # REPO: <>, # For: <>
+      perl-Razor-Agent \                     # REPO: epel, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-Sys-Syslog
       #perl-String-CRC32 \                   # REPO: <>, # For: <>
+      perl-Sys-Hostname-Long \               # REPO: epel, # For: MailScanner
+      perl-Sys-SigAction \                   # REPO: epel, # For: MailScanner
       #perl-Taint-Runtime \                  # REPO: <>, # For: <>
-      #perl-Test-Harness \                   # REPO: <>, # For: <>
-      #perl-Test-Manifest \                  # REPO: <>, # For: <>
-      #perl-Test-Pod \                       # REPO: <>, # For: <>
-      #perl-Test-Simple \                    # REPO: <>, # For: <>
-      #perl-TimeDate \                       # REPO: <>, # For: <>
-      #perl-Time-HiRes \                     # REPO: <>, # For: <>
-      #perl-URI \                            # REPO: <>, # For: <>
-      #perl-version \                        # REPO: <>, # For: <>
+      perl-Test-Manifest \                   # REPO: base, # For: MailScanner
+      perl-Test-Pod \                        # REPO: base, # For: MailScanner
+        # Auto added dependencies:
+        # Base: perl-Test-Simple
       #perl-XML-DOM \                        # REPO: <>, # For: <>
       #perl-XML-LibXML \                     # REPO: <>, # For: <>
       #perl-XML-NamespaceSupport \           # REPO: <>, # For: <>
       #perl-XML-Parser \                     # REPO: <>, # For: <>
       #perl-XML-RegExp \                     # REPO: <>, # For: <>
       #perl-XML-SAX \                        # REPO: <>, # For: <>
-      #perl-YAML \                           # REPO: <>, # For: <>
+      perl-YAML                              # REPO: base, # For: MailScanner
       #perl-YAML-Syck \                      # REPO: <>, # For: <>
-
-
 
 ## Removed
 #mysql-server   # replaced by mariadb-server
 #mysql          # Replaced by mariadb
 #ntp            # Replaced by chrony
 
-
     echo "- Installing eFa packages"
     # TODO writing all out for now packages from eFa 3, defining all packages
     # needed and include for what we need them and which repo we get them from
     yum -y install \
-     #unrar \                                # REPO: <>, # For: <>
-     postfix \                               # REPO: <eFa>, # For: <MTA>
-       # Auto added dependencies for postfix from eFa repo are:
-       # CentOS 7 Base: libicu, mariadb-libs, perl-Bit-Vector, perl-Carp-Clan
-       #                perl-Date-Calc postgresql-libs
+     unrar \                                 # REPO: eFa, # For: MailScanner
+     postfix \                               # REPO: eFa, # For: MTA
+       # Auto added dependencies:
+       # Base: libicu, mariadb-libs, perl-Bit-Vector, perl-Carp-Clan
+       #       perl-Date-Calc postgresql-libs
        # Epel: tinycdb
-       # Supercedes: postfix in CentOS Base
-     #re2c \                                 # REPO: <>, # For: <>
-     #spamassassin \                         # REPO: <>, # For: <>
-     #MailScanner \                          # REPO: <>, # For: <>
+       # Replaces: postfix in CentOS Base
+     spamassassin \                          # REPO: eFa, # For: MailScanner
+       # Auto added dependencies:
+       # Base: perl-DB_File, perl-IO-Socket-INET6, perl-Socket6,
+       #                portreserve, procmail
+       # Replaces: spamassassin in CentOS Base
+     MailScanner \                           # REPO: eFa, # For: MailScanner
      #clamav-unofficial-sigs \               # REPO: <>, # For: <>
-     #tnef \                                 # REPO: <>, # For: <>
-     #bzip2-devel \                          # REPO: <>, # For: <>
-     #perl-IP-Country \                      # REPO: <>, # For: <>
-     #perl-Mail-SPF-Query \                  # REPO: <>, # For: <>
+     perl-IP-Country \                       # REPO: eFa, # For: MailScanner
+     perl-Mail-SPF-Query \                   # REPO: eFa, # For: MailScanner
      #perl-Net-Ident \                       # REPO: <>, # For: <>
      #perl-Mail-ClamAV \                     # REPO: <>, # For: <>
-     #perl-NetAddr-IP \                      # REPO: <>, # For: <>
-     #perl-Digest-SHA \                      # REPO: <>, # For: <>
-     #perl-Mail-SPF \                        # REPO: <>, # For: <>
-     #perl-Digest-HMAC \                     # REPO: <>, # For: <>
-     #perl-Net-DNS \                         # REPO: <>, # For: <>
-     #perl-Net-DNS-Resolver-Programmable \   # REPO: <>, # For: <>
-     #perl-Digest \                          # REPO: <>, # For: <>
-     #perl-Digest-MD5 \                      # REPO: <>, # For: <>
-     #perl-DB_File \                         # REPO: <>, # For: <>
      #perl-ExtUtils-Constant \               # REPO: <>, # For: <>
      #perl-Geo-IP \                          # REPO: <>, # For: <>
-     #perl-IO-Socket-INET6 \                 # REPO: <>, # For: <>
-     #perl-Socket \                          # REPO: <>, # For: <>
-     #perl-IO-Socket-IP \                    # REPO: <>, # For: <>
      #perl-libnet \                          # REPO: <>, # For: <>
-     #perl-File-ShareDir-Install \           # REPO: <>, # For: <>
-     #perl-LDAP \                            # REPO: <>, # For: <>
-     #perl-IO-Compress-Bzip2 \               # REPO: <>, # For: <>
      #perl-Net-DNS-Nameserver \              # REPO: <>, # For: <>
-     #perl-Mail-IMAPClient \                 # REPO: <>, # For: <>
-     #perl-OLE-Storage_Lite \                # REPO: <>, # For: <>
-     #perl-Inline \                          # REPO: <>, # For: <>
      #perl-Text-Balanced \                   # REPO: <>, # For: <>
-     #perl-Net-CIDR-Lite \                   # REPO: <>, # For: <>
-     #perl-Sys-Hostname-Long \               # REPO: <>, # For: <>
      #perl-Net-Patricia \                    # REPO: <>, # For: <>
      #perl-IO-Multiplex \                    # REPO: <>, # For: <>
      #perl-File-Tail \                       # REPO: <>, # For: <>
-     #perl-Data-Dump \                       # REPO: <>, # For: <>
-     #perl-Sys-SigAction \                   # REPO: <>, # For: <>
      #perl-Net-Netmask \                     # REPO: <>, # For: <>
-     #perl-Filesys-Df \                      # REPO: <>, # For: <>
-     #perl-Net-CIDR \                        # REPO: <>, # For: <>
      #perl-BerkeleyDB \                      # REPO: <>, # For: <>
      #perl-Net-Server \                      # REPO: <>, # For: <>
-     #perl-Convert-TNEF \                    # REPO: <>, # For: <>
-     #perl-IP-Country                        # REPO: <>, # For: <>
 }
 #-----------------------------------------------------------------------------#
 
