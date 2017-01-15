@@ -200,7 +200,11 @@ function install_rpm_packages () {
       #make \                                # REPO: <>, # For: <>
       #opencv \                              # REPO: <>, # For: <>
 
-      #perl-Archive-Tar \                    # REPO: <>, # For: <>
+      perl-Archive-Tar \                    # REPO: <base>, # For: <MailScanner>
+      # Auto added dependencies:
+      # CentOS 7 Base: perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib, perl-Data-Dumper
+      #                perl-IO-Compress, perl-IO-Zlib, perl-Package-Constants
+      
       #perl-Archive-Zip \                    # REPO: <>, # For: <>
       #perl-Business-ISBN \                  # REPO: <>, # For: <>
       #perl-Business-ISBN-Data \             # REPO: <>, # For: <>
@@ -208,7 +212,6 @@ function install_rpm_packages () {
       #perl-CGI \                            # REPO: <>, # For: <>
       #perl-Class-Singleton \                # REPO: <>, # For: <>
       #perl-Compress-Zlib \                  # REPO: <>, # For: <>
-      #perl-Compress-Raw-Zlib  \             # REPO: <>, # For: <>
       #perl-Convert-BinHex \                 # REPO: <>, # For: <>
       #perl-Crypt-OpenSSL-Random \           # REPO: <>, # For: <>
       #perl-Crypt-OpenSSL-RSA \              # REPO: <>, # For: <>
@@ -232,7 +235,6 @@ function install_rpm_packages () {
       #perl-IO-stringy \                     # REPO: <>, # For: <>
       #perl-IO-Socket-INET6 \                # REPO: <>, # For: <>
       #perl-IO-Socket-SSL \                  # REPO: <>, # For: <>
-      #perl-IO-Zlib \                        # REPO: <>, # For: <>
       #perl-libwww-perl \                    # REPO: <>, # For: <>
       #perl-List-MoreUtils \                 # REPO: <>, # For: <>
       #perl-Mail-DKIM \                      # REPO: <>, # For: <>
