@@ -154,6 +154,7 @@ function remove_rpm_packages () {
   NetworkManager-wifi \
   wpa_supplicant \
   postfix
+}
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
@@ -184,7 +185,7 @@ function install_rpm_packages () {
       mariadb-server                         # REPO: base, # For: postfix, mailwatch
         # Auto added dependencies:
         # Base:  mariadb, perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib,
-        #        perl-DBD-MySQL, perl-DBI, perl-Data-Dumper, perl-IO-Compress, 
+        #        perl-DBD-MySQL, perl-DBI, perl-Data-Dumper, perl-IO-Compress,
         #        perl-Net-Daemon, perl-PlRPC
       #php \                                 # REPO: <>, # For: <>
       #php-gd \                              # REPO: <>, # For: <>
@@ -206,7 +207,7 @@ function install_rpm_packages () {
       #system-config-keyboard \              # REPO: <>, # For: <>
       openssl-devel \                        # REPO: base, # For: MailScanner
         # Auto added dependencies:
-        # Base: keyutils-libs-devel, libcom_err-devel, libselinux-devel, 
+        # Base: keyutils-libs-devel, libcom_err-devel, libselinux-devel,
         #       libsepol-devel, libverto-devel, pcre-devel, zlib-devel
         # Updates: krb5-devel, libkadm5
       patch \                                # REPO: base, # For: MailScanner
@@ -224,8 +225,8 @@ function install_rpm_packages () {
       perl-Archive-Tar \                     # REPO: base, # For: MailScanner
         # Auto added dependencies:
         # Base: perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib,
-        #       perl-Data-Dumper, perl-IO-Compress 
-        #       (perl-Compress-Zlib perl-IO-Compress-Bzip2), 
+        #       perl-Data-Dumper, perl-IO-Compress
+        #       (perl-Compress-Zlib perl-IO-Compress-Bzip2),
         #       perl-IO-Zlib, perl-Package-Constants
       perl-Archive-Zip \                     # REPO: base, # For: MailScanner
       #perl-Cache-Memcached \                # REPO: <>, # For: <>
@@ -235,7 +236,7 @@ function install_rpm_packages () {
       perl-Convert-TNEF \                    # REPO: epel, # For: MailScanner
         # Auto added dependencies:
         # Base: perl-IO-Socket-IP perl-IO-Socket-SSL perl-IO-stringy,
-        #       perl-MailTools, perl-Net-LibIDN, perl-Net-SMTP-SSL, 
+        #       perl-MailTools, perl-Net-LibIDN, perl-Net-SMTP-SSL,
         #       perl-Net-SSLeay, perl-TimeDate
         # Epel: perl-MIME-tools
       perl-CPAN \                            # REPO: base, # For: MailScanner
@@ -258,16 +259,16 @@ function install_rpm_packages () {
       perl-Env \                             # REPO: base, # For: MailScanner
       perl-ExtUtils-CBuilder \               # REPO: base, # For: MailScanner
         # Auto added dependencies:
-        # Base: perl-IPC-Cmd, perl-Locale-Maketext, 
+        # Base: perl-IPC-Cmd, perl-Locale-Maketext,
         #       perl-Locale-Maketext-Simple,
         #       perl-Module-CoreList, perl-Module-Load,
         #       perl-Module-Load-Conditional, perl-Module-Metadata,
         #       perl-Params-Check, perl-Perl-OSType
       perl-ExtUtils-MakeMaker \              # REPO: base, # For: MailScanner
         # Auto added dependencies:
-        # Base: gdbm-devel, libdb-devel, perl-ExtUtils-Install, 
-        #       perl-ExtUtils-Manifest, perl-ExtUtils-ParseXS, 
-        #       perl-Test-Harness, perl-devel, pyparsing, 
+        # Base: gdbm-devel, libdb-devel, perl-ExtUtils-Install,
+        #       perl-ExtUtils-Manifest, perl-ExtUtils-ParseXS,
+        #       perl-Test-Harness, perl-devel, pyparsing,
         #       systemtap-sdt-devel
       #perl-File-Copy-Recursive \            # REPO: <>, # For: <>
       perl-File-ShareDir-Install \           # REPO: epel, # For: MailScanner
@@ -285,7 +286,7 @@ function install_rpm_packages () {
       #perl-List-MoreUtils \                 # REPO: <>, # For: <>
       perl-LDAP \                            # REPO: base, # For: MailScanner
         # Auto added dependencies:
-        # Base: perl-Authen-SASL, perl-Convert-ASN1, perl-File-Listing 
+        # Base: perl-Authen-SASL, perl-Convert-ASN1, perl-File-Listing
         #       perl-GSSAPI, perl-HTTP-Cookies, perl-HTTP-Daemon,
         #       perl-HTTP-Negotiate, perl-JSON, perl-Net-HTTP,
         #       perl-Text-Soundex, perl-Text-Unidecode,
@@ -294,7 +295,7 @@ function install_rpm_packages () {
         #       perl-XML-SAX-Writer, perl-libwww-perl
       perl-Mail-DKIM \                       # REPO: base, # For: MailScanner
         # Auto added dependencies:
-        # Base: perl-Crypt-OpenSSL-Bignum, perl-Crypt-OpenSSL-RSA, 
+        # Base: perl-Crypt-OpenSSL-Bignum, perl-Crypt-OpenSSL-RSA,
         #       perl-Crypt-OpenSSL-Random, perl-Net-DNS
       perl-Mail-IMAPClient \                 # REPO: epel, # For: MailScanner
       perl-Mail-SPF \                        # REPO: base, # For: MailScanner
@@ -304,7 +305,7 @@ function install_rpm_packages () {
       #perl-MIME-Types \                     # REPO: <>, # For: <>
       perl-Module-Build \                    # REPO: base, # For: MailScanner
         # Auto added dependencies:
-        # Base: perl-CPAN-Meta, perl-CPAN-Meta-Requirements, 
+        # Base: perl-CPAN-Meta, perl-CPAN-Meta-Requirements,
         #       perl-CPAN-Meta-YAML
         #       perl-JSON-PP, perl-Parse-CPAN-Meta
       perl-Net-CIDR \                        # REPO: epel, # For: MailScanner
