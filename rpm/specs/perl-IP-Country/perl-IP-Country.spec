@@ -11,6 +11,10 @@ URL:            https://metacpan.org/pod/IP::Country
 Source0:        https://cpan.metacpan.org/authors/id/N/NW/NWETTERS/IP-Country-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires:       perl(Geography::Countries)
+Requires:       perl(Socket)
+Requires:       perl(Exporter)
+Requires:       perl(Carp)
 
 %description
 Finding the home country of a client using only the IP address can be difficult. 
