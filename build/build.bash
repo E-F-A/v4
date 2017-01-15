@@ -283,7 +283,9 @@ function install_rpm_packages () {
      #unrar \                                # REPO: <>, # For: <>
      postfix \                               # REPO: <eFa>, # For: <MTA>
        # Auto added dependencies for postfix from eFa repo are:
-
+       # CentOS 7 Base: libicu, mariadb-libs, perl-Bit-Vector, perl-Carp-Clan
+       #                perl-Date-Calc postgresql-libs
+       # Epel: tinycdb
        # Supercedes: postfix in CentOS Base
      #re2c \                                 # REPO: <>, # For: <>
      #spamassassin \                         # REPO: <>, # For: <>
