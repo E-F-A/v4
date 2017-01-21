@@ -430,6 +430,8 @@ function install_rpm_packages () {
     # perl-Net-Netmask                   #         #
     # perl-BerkeleyDB                    # TODO    #
     # perl-Net-Server                    # TODO    #
+    # perl-Encoding-FixLatin             # TODO    # MailWatch
+    PKG+=' mailwatch'                    # eFa     # MailWatch Frontend
 
     yum -y install $PKG
 }
