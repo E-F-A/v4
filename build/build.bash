@@ -163,176 +163,220 @@ function remove_rpm_packages () {
 function install_rpm_packages () {
   # Force yum to always pull certain packages from eFa Repo instead
   # Prevents future yum updates from breaking custom packages
+  # postfix and spamassassin are customized builds in eFa
   echo "Excluding custom packages from CentOS Base"
   sed -i '/^\[base\]$/ a\exclude=postfix, spamassassin' /etc/yum.repos.d/CentOS-Base.repo
 
   echo "Installing RPM packages"
     echo "- Installing <> packages"
+    PKG=''
     # TODO writing all out for now packages from eFa 3, defining all packages
     # needed and include for what we need them and which repo we get them from
-    yum -y install \
-      @base \                                # REPO: base, # For: basic system tools
-      @core \                                # REPO: base, # For: basic system tools
-      bzip2-devel \                          # REPO: base, # For: MailScanner
-      screen \                               # REPO: base, # For: basic system tools
-      clamav \                               # REPO: epel, # For: MailScanner
-        # Auto added dependencies:
-        # Epel: clamav-data, clamav-filesystem, clamav-lib
-      clamav-update \                        # REPO: epel, # For: MailScanner
-      clamav-server \                        # REPO: epel, # For: MailScanner
-        # Auto added dependencies:
-        # Base: nmap-ncat
-      mariadb-server                         # REPO: base, # For: postfix, mailwatch
-        # Auto added dependencies:
-        # Base:  mariadb, perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib,
-        #        perl-DBD-MySQL, perl-DBI, perl-Data-Dumper, perl-IO-Compress,
-        #        perl-Net-Daemon, perl-PlRPC
-      #php \                                 # REPO: <>, # For: <>
-      #php-gd \                              # REPO: <>, # For: <>
-      #php-mbstring \                        # REPO: <>, # For: <>
-      #php-mysql \                           # REPO: <>, # For: <>
-      httpd \                                # REPO: base, # For: MailWatch
-       # Auto added dependencies:
-       # Base: apr, apr-util, httpd-tools
-      #rrdtool \                             # REPO: <>, # For: <>
-      #rrdtool-perl \                        # REPO: <>, # For: <>
-      #cyrus-sasl-md5 \                      # REPO: <>, # For: <>
-      ##cyrus-sasl-sql \                     # REPO: <>, # For: <>
-      ##cyrus-sasl-ldap \                    # REPO: <>, # For: <>
-      #ImageMagick \                         # REPO: <>, # For: <>
-      #python-setuptools \                   # REPO: <>, # For: <>
-      #libevent \                            # REPO: <>, # For: <>
-      libtool-ltdl \                         # REPO: base, # For: MailScanner
-      #mod_ssl \                             # REPO: <>, # For: <>
-      #system-config-keyboard \              # REPO: <>, # For: <>
-      openssl-devel \                        # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: keyutils-libs-devel, libcom_err-devel, libselinux-devel,
-        #       libsepol-devel, libverto-devel, pcre-devel, zlib-devel
-        # Updates: krb5-devel, libkadm5
-      patch \                                # REPO: base, # For: MailScanner
-      pyzor \                                # REPO: epel, # For: MailScanner
-      re2c \                                 # REPO: epel, # For: MailScanner
-      tnef \                                 # REPO: epel, # For: MailScanner
-      #tree \                                # REPO: <>, # For: <>
-      #rpm-build \                           # REPO: <>, # For: <>
-      #glibc-devel \                         # REPO: <>, # For: <>
-      gcc \                                  # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: cpp, libmpc, mpfr
-      #opencv \                              # REPO: <>, # For: <>
+    #-------------------------------------------------------------------------#
+    # PACKAGES WITH DEPENDENCIES               # REPO    # PURPOSE                  #
+    #-------------------------------------------------------------------------#
+    PKG='  @base'                              # base    # basic system tools
+    PKG+=' @core'                              # base    # basic system tools
+    PKG+=' bzip2-devel'                        # base    # MailScanner
+    PKG+=' screen'                             # base    # basic system tools
+    PKG+=' clamav'                             # epel    # MailScanner
+    #    clamav-data                           #         #
+    #    clamav-filesystem                     #         #
+    #    clamav-lib                            #         #
+    PKG+=' clamav-update'                      # epel    # MailScanner
+    PKG+=' clamav-server'                      # epel    # MailScanner
+    #    nmap-ncat                             # base    #
+    PKG+=' mariadb-server'                     # base    # postfix, mailwatch
+    #     mariadb                              #         #
+    #     perl-Compress-Raw-Bzip2              #         #
+    #     perl-Compress-Raw-Zlib               #         #
+    #     perl-DBD-MySQL                       #         #
+    #     perl-DBI                             #         #
+    #     perl-Data-Dumper                     #         #
+    #     perl-IO-Compress                     #         #
+    #     perl-Net-Daemon                      #         #
+    #     perl-PlRPC                           #         #
+    # php                                      # TODO    #
+    # php-gd                                   # TODO    #
+    # php-mbstring                             # TODO    #
+    # php-mysql                                # TODO    #
+    PKG+=' httpd'                              # base    # MailWatch
+    #     apr                                  #         #
+    #     apr-util                             #         #
+    #     httpd-tools                          #         #
+    # rrdtool                                  # TODO    #
+    # rrdtool-perl                             # TODO    #
+    # cyrus-sasl-md5                           # TODO    #
+    # cyrus-sasl-sql                           # TODO    #
+    # cyrus-sasl-ldap                          # TODO    #
+    # ImageMagick                              # TODO    #
+    # python-setuptools                        # TODO    #
+    # libevent                                 # TODO    #
+    # libtool-ltdl                             # TODO    #
+    # mod_ssl                                  # TODO    #
+    # system-config-keyboard                   # TODO    #
+    PKG+=' openssl-devel'                      # base    # MailScanner
+    #     keyutils-libs-devel                  #         #
+    #     libcom_err-devel                     #         #
+    #     libselinux-devel                     #         #
+    #     libsepol-devel                       #         #
+    #     libverto-devel                       #         #
+    #     pcre-devel                           #         #
+    #     zlib-devel                           #         #
+    #     krb5-devel                           # updates #
+    #     libkadm5                             #         #
+    PKG+='patch'                               # base    # MailScanner
+    PKG+='pyzor'                               # epel    # MailScanner
+    PKG+='re2c'                                # epel    # MailScanner
+    PKG+='tnef'                                # epel    # MailScanner
+    # tree                                     # TODO    #
+    # rpm-build                                # TODO    #
+    # glibc-devel                              # TODO    #
+    PKG+=' gcc'                                # base    # MailScanner
+    #     cpp                                  #         #
+    #     libmpc                               #         #
+    #     mpfr                                 #         #
+    # opencv                                   # TODO    #
+    PKG+=' perl-Archive-Tar'                   # base    # MailScanner
+    #     perl-Compress-Raw-Bzip2              #         #
+    #     perl-Compress-Raw-Zlib               #         #
+    #     perl-Data-Dumper                     #         #
+    #     perl-IO-Compress                     #         #
+    #     perl-IO-Zlib                         #         #
+    #     perl-Package-Constants               #         #
+    PKG+=' perl-Archive-Zip'                   # base    # MailScanner
+    # perl-Cache-Memcached                     # TODO    #
+    # perl-CGI                                 # TODO    #
+    # perl-Class-Singleton                     # TODO    #
+    PKG+=' perl-Convert-BinHex'                # epel    # MailScanner
+    PKG+=' perl-Convert-TNEF'                  # epel    # MailScanner
+    #     perl-IO-Socket-IP                    # base    #
+    #     perl-IO-Socket-SSL                   #         #
+    #     perl-IO-stringy                      #         #
+    #     perl-MailTools                       #         #
+    #     perl-Net-LibIDN                      #         #
+    #     perl-Net-SMTP-SSL                    #         #
+    #     perl-Net-SSLeay                      #         #
+    #     perl-TimeDate                        #         #
+    #     perl-MIME-tools                      # epel    #
+    PKG+=' perl-CPAN'                          # base    # MailScanner
+    #     perl-local-lib                       #         #
+    PKG+=' perl-Data-Dump'                     # epel    # MailScanner
+    # perl-Date-Manip                          # TODO    #
+    # perl-DateTime                            # TODO    #
+    # perl-DBD-MySQL                           # TODO    #
+    PKG+=' perl-DBD-SQLite'                    # base    # MailScanner
+    #     perl-DBI                             #         #
+    #     perl-Net-Daemon                      #         #
+    #     perl-PlRPC                           #         #
+    # perl-DBD-Pg                              # TODO    #
+    PKG+=' perl-Digest-SHA1'                   # base    # MailScanner
+    PKG+=' perl-Digest-HMAC'                   # base    # MailScanner
+    #     perl-Digest                          #         #
+    #     perl-Digest-MD5                      #         #
+    #     perl-Digest-SHA                      #         #
+    PKG+=' perl-Encode-Detect'                 # base    # MailScanner
+    # perl-Email-Date-Format                   # TODO    #
+    PKG+=' perl-Env'                           # base    # MailScanner
+    PKG+=' perl-ExtUtils-CBuilder'             # base    # MailScanner
+    #     perl-IPC-Cmd                         #         #
+    #     perl-Locale-Maketext                 #         #
+    #     perl-Locale-Maketext-Simple          #         #
+    #     perl-Module-CoreList                 #         #
+    #     perl-Module-Load                     #         #
+    #     perl-Module-Load-Conditional         #         #
+    #     perl-Module-Metadata                 #         #
+    #     perl-Params-Check                    #         #
+    #     perl-Perl-OSType                     #         #
+    PKG+=' perl-ExtUtils-MakeMaker'            # base    # MailScanner
+    #     gdbm-devel                           #         #
+    #     libdb-devel                          #         #
+    #     perl-ExtUtils-Install                #         #
+    #     perl-ExtUtils-Manifest               #         #
+    #     perl-ExtUtils-ParseXS                #         #
+    #     perl-Test-Harness                    #         #
+    #     perl-devel                           #         #
+    #     pyparsing                            #         #
+    #     systemtap-sdt-devel                  #         #
+    # perl-File-Copy-Recursive                 # TODO    #
+    PKG+=' perl-File-ShareDir-Install'         # epel    # MailScanner
+    PKG+=' perl-Filesys-Df'                    # epel    # MailScanner
+    PKG+=' perl-HTML-Parser'                   # base    # MailScanner
+    #     mailcap                              #         #
+    #     perl-Business-ISBN                   #         #
+    #     perl-Business-ISBN-Data              #         #
+    #     perl-Encode-Locale                   #         #
+    #     perl-HTML-Tagset                     #         #
+    #     perl-HTTP-Date                       #         #
+    #     perl-HTTP-Message                    #         #
+    #     perl-IO-HTML                         #         #
+    #     perl-LWP-MediaTypes                  #         #
+    #     perl-URI                             #         #
+    PKG+=' perl-Inline'                        # base    # MailScanner
+    #     perl-Parse-RecDescent                #         #
+    PKG+=' perl-IO-String'                     # base    # MailScanner
+    # perl-List-MoreUtils                      # TODO    #
+    PKG+=' perl-LDAP'                          # base    # MailScanner
+    #     perl-Authen-SASL                     #         #
+    #     perl-Convert-ASN1                    #         #
+    #     perl-File-Listing                    #         #
+    #     perl-GSSAPI                          #         #
+    #     perl-HTTP-Cookies                    #         #
+    #     perl-HTTP-Daemon                     #         #
+    #     perl-HTTP-Negotiate                  #         #
+    #     perl-JSON                            #         #
+    #     perl-Net-HTTP                        #         #
+    #     perl-Text-Soundex                    #         #
+    #     perl-Text-Unidecode                  #         #
+    #     perl-WWW-RobotRules                  #         #
+    #     perl-XML-Filter-BufferText           #         #
+    #     perl-XML-NamespaceSupport            #         #
+    #     perl-XML-SAX-Base                    #         #
+    #     perl-XML-SAX-Writer                  #         #
+    #     perl-libwww-perl                     #         #
+    PKG+=' perl-Mail-DKIM'                     # base    # MailScanner
+    #     perl-Crypt-OpenSSL-Bignum            #         #
+    #     perl-Crypt-OpenSSL-RSA               #         #
+    #     perl-Crypt-OpenSSL-Random            #         #
+    #     perl-Net-DNS                         #         #
+    PKG+=' perl-Mail-IMAPClient'               # epel    # MailScanner
+    PKG+=' perl-Mail-SPF'                      # base    # MailScanner
+    #     perl-Error                           #         #
+    #     perl-NetAddr-IP                      #         #
+    #     perl-version                         #         #
+    # perl-MIME-Lite                           # TODO    #
+    # perl-MIME-Types                          # TODO    #
+    PKG+=' perl-Module-Build'                  # base    # MailScanner
+    #     perl-CPAN-Meta                       #         #
+    #     perl-CPAN-Meta-Requirements          #         #
+    #     perl-CPAN-Meta-YAML                  #         #
+    #     perl-JSON-PP                         #         #
+    #     perl-Parse-CPAN-Meta                 #         #
+    PKG+=' perl-Net-CIDR'                      # epel    # MailScanner
+    PKG+=' perl-Net-CIDR-Lite'                 # epel    # MailScanner
+    PKG+=' perl-Net-DNS-Resolver-Programmable' # base    # MailScanner
+    PKG+=' perl-Net-IP'                        # epel    # MailScanner
+    PKG+=' perl-OLE-Storage_Lite'              # epel    # MailScanner
+    # perl-Params-Validate                     # TODO    #
+    PKG+=' perl-Razor-Agent'                   # epel    # MailScanner
+    #     perl-Sys-Syslog                      # base    #
+    # perl-String-CRC32                        # TODO    #
+    PKG+=' perl-Sys-Hostname-Long'             # epel    # MailScanner
+    PKG+=' perl-Sys-SigAction'                 # epel    # MailScanner
+    # perl-Taint-Runtime                       # TODO    #
+    PKG+=' perl-Test-Manifest'                 # base    # MailScanner
+    PKG+=' perl-Test-Pod'                      # base    # MailScanner
+    #     perl-Test-Simple                     #         #
+    # perl-XML-DOM                             # TODO    #
+    # perl-XML-LibXML                          # TODO    #
+    # perl-XML-NamespaceSupport                # TODO    #
+    # perl-XML-Parser                          # TODO    #
+    # perl-XML-RegExp                          # TODO    #
+    # perl-XML-SAX                             # TODO    #
+    PKG+=' perl-YAML'                          # base    # MailScanner
+    # perl-YAML-Syck                           # TODO    #
 
-      perl-Archive-Tar \                     # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-Compress-Raw-Bzip2, perl-Compress-Raw-Zlib,
-        #       perl-Data-Dumper, perl-IO-Compress
-        #       (perl-Compress-Zlib perl-IO-Compress-Bzip2),
-        #       perl-IO-Zlib, perl-Package-Constants
-      perl-Archive-Zip \                     # REPO: base, # For: MailScanner
-      #perl-Cache-Memcached \                # REPO: <>, # For: <>
-      #perl-CGI \                            # REPO: <>, # For: <>
-      #perl-Class-Singleton \                # REPO: <>, # For: <>
-      perl-Convert-BinHex \                  # REPO: epel, # For: MailScanner
-      perl-Convert-TNEF \                    # REPO: epel, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-IO-Socket-IP perl-IO-Socket-SSL perl-IO-stringy,
-        #       perl-MailTools, perl-Net-LibIDN, perl-Net-SMTP-SSL,
-        #       perl-Net-SSLeay, perl-TimeDate
-        # Epel: perl-MIME-tools
-      perl-CPAN \                            # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-local-lib
-      perl-Data-Dump \                       # REPO: epel, # For: MailScanner
-      #perl-Date-Manip \                     # REPO: <>, # For: <>
-      #perl-DateTime \                       # REPO: <>, # For: <>
-      #perl-DBD-MySQL \                      # REPO: <>, # For: <>
-      perl-DBD-SQLite \                      # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-DBI, perl-Net-Daemon, perl-PlRPC
-      #perl-DBD-Pg \                         # REPO: <>, # For: <>
-      perl-Digest-SHA1 \                     # REPO: base, # For: MailScanner
-      perl-Digest-HMAC \                     # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-Digest, perl-Digest-MD5, perl-Digest-SHA
-      perl-Encode-Detect \                   # REPO: base, # For: MailScanner
-      #perl-Email-Date-Format \              # REPO: <>, # For: <>
-      perl-Env \                             # REPO: base, # For: MailScanner
-      perl-ExtUtils-CBuilder \               # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-IPC-Cmd, perl-Locale-Maketext,
-        #       perl-Locale-Maketext-Simple,
-        #       perl-Module-CoreList, perl-Module-Load,
-        #       perl-Module-Load-Conditional, perl-Module-Metadata,
-        #       perl-Params-Check, perl-Perl-OSType
-      perl-ExtUtils-MakeMaker \              # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: gdbm-devel, libdb-devel, perl-ExtUtils-Install,
-        #       perl-ExtUtils-Manifest, perl-ExtUtils-ParseXS,
-        #       perl-Test-Harness, perl-devel, pyparsing,
-        #       systemtap-sdt-devel
-      #perl-File-Copy-Recursive \            # REPO: <>, # For: <>
-      perl-File-ShareDir-Install \           # REPO: epel, # For: MailScanner
-      perl-Filesys-Df \                      # REPO: epel, # For: MailScanner
-      perl-HTML-Parser \                     # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: mailcap, perl-Business-ISBN, perl-Business-ISBN-Data,
-        #       perl-Encode-Locale, perl-HTML-Tagset, perl-HTTP-Date,
-        #       perl-HTTP-Message, perl-IO-HTML, perl-LWP-MediaTypes,
-        #       perl-URI
-      perl-Inline \                          # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-Parse-RecDescent
-      perl-IO-String \                       # REPO: base, # For: MailScanner
-      #perl-List-MoreUtils \                 # REPO: <>, # For: <>
-      perl-LDAP \                            # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-Authen-SASL, perl-Convert-ASN1, perl-File-Listing
-        #       perl-GSSAPI, perl-HTTP-Cookies, perl-HTTP-Daemon,
-        #       perl-HTTP-Negotiate, perl-JSON, perl-Net-HTTP,
-        #       perl-Text-Soundex, perl-Text-Unidecode,
-        #       perl-WWW-RobotRules perl-XML-Filter-BufferText,
-        #       perl-XML-NamespaceSupport, perl-XML-SAX-Base,
-        #       perl-XML-SAX-Writer, perl-libwww-perl
-      perl-Mail-DKIM \                       # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-Crypt-OpenSSL-Bignum, perl-Crypt-OpenSSL-RSA,
-        #       perl-Crypt-OpenSSL-Random, perl-Net-DNS
-      perl-Mail-IMAPClient \                 # REPO: epel, # For: MailScanner
-      perl-Mail-SPF \                        # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-Error, perl-NetAddr-IP, perl-version
-      #perl-MIME-Lite \                      # REPO: <>, # For: <>
-      #perl-MIME-Types \                     # REPO: <>, # For: <>
-      perl-Module-Build \                    # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-CPAN-Meta, perl-CPAN-Meta-Requirements,
-        #       perl-CPAN-Meta-YAML
-        #       perl-JSON-PP, perl-Parse-CPAN-Meta
-      perl-Net-CIDR \                        # REPO: epel, # For: MailScanner
-      perl-Net-CIDR-Lite \                   # REPO: epel, # For: MailScanner
-      perl-Net-DNS-Resolver-Programmable \   # REPO: base, # For: MailScanner
-      perl-Net-IP \                          # REPO: epel, # For: MailScanner
-      perl-OLE-Storage_Lite \                # REPO: epel, # For: MailScanner
-      #perl-Params-Validate \                # REPO: <>, # For: <>
-      perl-Razor-Agent \                     # REPO: epel, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-Sys-Syslog
-      #perl-String-CRC32 \                   # REPO: <>, # For: <>
-      perl-Sys-Hostname-Long \               # REPO: epel, # For: MailScanner
-      perl-Sys-SigAction \                   # REPO: epel, # For: MailScanner
-      #perl-Taint-Runtime \                  # REPO: <>, # For: <>
-      perl-Test-Manifest \                   # REPO: base, # For: MailScanner
-      perl-Test-Pod \                        # REPO: base, # For: MailScanner
-        # Auto added dependencies:
-        # Base: perl-Test-Simple
-      #perl-XML-DOM \                        # REPO: <>, # For: <>
-      #perl-XML-LibXML \                     # REPO: <>, # For: <>
-      #perl-XML-NamespaceSupport \           # REPO: <>, # For: <>
-      #perl-XML-Parser \                     # REPO: <>, # For: <>
-      #perl-XML-RegExp \                     # REPO: <>, # For: <>
-      #perl-XML-SAX \                        # REPO: <>, # For: <>
-      perl-YAML                              # REPO: base, # For: MailScanner
-      #perl-YAML-Syck \                      # REPO: <>, # For: <>
+    yum -y install $PKG
 
 ## Removed
 #mysql-server   # replaced by mariadb-server
@@ -340,36 +384,45 @@ function install_rpm_packages () {
 #ntp            # Replaced by chrony
 
     echo "- Installing eFa packages"
+    PKG=''
     # TODO writing all out for now packages from eFa 3, defining all packages
     # needed and include for what we need them and which repo we get them from
-    yum -y install \
-     unrar \                                 # REPO: eFa, # For: MailScanner
-     postfix \                               # REPO: eFa, # For: MTA
-       # Auto added dependencies:
-       # Base: libicu, mariadb-libs, perl-Bit-Vector, perl-Carp-Clan
-       #       perl-Date-Calc postgresql-libs
-       # Epel: tinycdb
-       # Replaces: postfix in CentOS Base
-     sqlgrey \                               # REPO: eFa, # For: Greylisting
-     spamassassin \                          # REPO: eFa, # For: MailScanner
-       # Auto added dependencies:
-       # Base: perl-DB_File, perl-IO-Socket-INET6, perl-Socket6,
-       #       portreserve, procmail, perl-Geo-IP, perl-Net-Patricia
-       # Replaces: spamassassin in CentOS Base
-     MailScanner \                           # REPO: eFa, # For: MailScanner
-     clamav-unofficial-sigs \                # REPO: eFa, # For: clamav
-     perl-IP-Country \                       # REPO: eFa, # For: MailScanner, Spamassassin
-     perl-Mail-SPF-Query \                   # REPO: eFa, # For: MailScanner
-     #perl-Net-Ident \                       # REPO: <>, # For: <>
-     #perl-ExtUtils-Constant \               # REPO: <>, # For: <>
-     perl-Geophgraphy-Countries \            # REPO: eFa, # For: Spamassassin
-     perl-libnet                             # REPO: eFa, # For: Spamassassin
-     #perl-Net-DNS-Nameserver \              # REPO: <>, # For: <>
-     #perl-IO-Multiplex \                    # REPO: <>, # For: <>
-     #perl-File-Tail \                       # REPO: <>, # For: <>
-     #perl-Net-Netmask \                     # REPO: <>, # For: <>
-     #perl-BerkeleyDB \                      # REPO: <>, # For: <>
-     #perl-Net-Server \                      # REPO: <>, # For: <>
+    #-------------------------------------------------------------------------#
+    # PACKAGES WITH DEPENDENCIES         # REPO    # PURPOSE                  #
+    #-------------------------------------------------------------------------#
+    PKG='  unrar'                        # eFa     # MailScanner
+    PKG+=' postfix'                      # eFa     # MTA
+    #    libicu                          # base    #
+    #    mariadb-libs                    #         #
+    #    perl-Bit-Vector                 #         #
+    #    perl-Carp-Clan                  #         #
+    #    perl-Date-Calc postgresql-libs  #         #
+    #    tinycdb                         # epel    #
+    PKG+=' sqlgrey'                      # eFa     # Greylisting
+    PKG+=' spamassassin'                 # eFa     # MailScanner
+    #    perl-DB_File                    # base    #
+    #    perl-IO-Socket-INET6            #         #
+    #    perl-Socket6                    #         #
+    #    portreserve                     #         #
+    #    procmail                        #         #
+    #    perl-Geo-IP                     #         #
+    #    perl-Net-Patricia               #         #
+    PKG+=' MailScanner'                  # eFa     # MailScanner
+    PKG+=' clamav-unofficial-sigs'       # eFa     # clamav
+    PKG+=' perl-IP-Country'              # eFa     # MailScanner, Spamassassin
+    PKG+=' perl-Mail-SPF-Query'          # eFa     # MailScanner
+    # perl-Net-Ident                     # TODO    #
+    # perl-ExtUtils-Constant             # TODO    #
+    PKG+=' perl-Geophgraphy-Countries'   # eFa     # Spamassassin
+    PKG+=' perl-libnet'                  # eFa     # Spamassassin
+    # perl-Net-DNS-Nameserver            # TODO    #
+    # perl-IO-Multiplex                  # TODO    #
+    # perl-File-Tail                     # TODO    #
+    # perl-Net-Netmask                   #         #
+    # perl-BerkeleyDB                    # TODO    #
+    # perl-Net-Server                    # TODO    #
+    
+    yum -y install $PKG
 }
 #-----------------------------------------------------------------------------#
 
