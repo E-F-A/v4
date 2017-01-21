@@ -180,12 +180,12 @@ function install_rpm_packages () {
     PKG='  bzip2-devel'                        # base    # MailScanner
     PKG+=' screen'                             # base    # basic system tools
     PKG+=' clamav'                             # epel    # MailScanner
-    #    clamav-data                           #         #
-    #    clamav-filesystem                     #         #
-    #    clamav-lib                            #         #
+    #     clamav-data                          #         #
+    #     clamav-filesystem                    #         #
+    #     clamav-lib                           #         #
     PKG+=' clamav-update'                      # epel    # MailScanner
     PKG+=' clamav-server'                      # epel    # MailScanner
-    #    nmap-ncat                             # base    #
+    #     nmap-ncat                            # base    #
     PKG+=' mariadb-server'                     # base    # postfix, mailwatch
     #     mariadb                              #         #
     #     perl-Compress-Raw-Bzip2              #         #
