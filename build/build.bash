@@ -413,7 +413,7 @@ function install_rpm_packages () {
     PKG+=' perl-Mail-SPF-Query'          # eFa     # MailScanner
     # perl-Net-Ident                     # TODO    #
     # perl-ExtUtils-Constant             # TODO    #
-    PKG+=' perl-Geophgraphy-Countries'   # eFa     # Spamassassin
+    PKG+=' perl-Geography-Countries'     # eFa     # Spamassassin
     PKG+=' perl-libnet'                  # eFa     # Spamassassin
     # perl-Net-DNS-Nameserver            # TODO    #
     # perl-IO-Multiplex                  # TODO    #
