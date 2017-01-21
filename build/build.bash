@@ -234,10 +234,10 @@ function install_rpm_packages () {
     #     zlib-devel                           #         #
     #     krb5-devel                           # updates #
     #     libkadm5                             #         #
-    PKG+='patch'                               # base    # MailScanner
-    PKG+='pyzor'                               # epel    # MailScanner
-    PKG+='re2c'                                # epel    # MailScanner
-    PKG+='tnef'                                # epel    # MailScanner
+    PKG+=' patch'                              # base    # MailScanner
+    PKG+=' pyzor'                              # epel    # MailScanner
+    PKG+=' re2c'                               # epel    # MailScanner
+    PKG+=' tnef'                               # epel    # MailScanner
     # tree                                     # TODO    #
     # rpm-build                                # TODO    #
     # glibc-devel                              # TODO    #
@@ -430,7 +430,7 @@ function install_rpm_packages () {
     # perl-Net-Netmask                   #         #
     # perl-BerkeleyDB                    # TODO    #
     # perl-Net-Server                    # TODO    #
-    
+
     yum -y install $PKG
 }
 #-----------------------------------------------------------------------------#
