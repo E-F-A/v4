@@ -173,7 +173,7 @@ function install_rpm_packages () {
     # TODO writing all out for now packages from eFa 3, defining all packages
     # needed and include for what we need them and which repo we get them from
     #-------------------------------------------------------------------------#
-    # PACKAGES WITH DEPENDENCIES               # REPO    # PURPOSE                  #
+    # PACKAGES WITH DEPENDENCIES               # REPO    # PURPOSE            #
     #-------------------------------------------------------------------------#
     PKG='  @base'                              # base    # basic system tools
     PKG+=' @core'                              # base    # basic system tools
