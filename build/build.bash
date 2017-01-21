@@ -196,24 +196,33 @@ function install_rpm_packages () {
     #     perl-IO-Compress                     #         #
     #     perl-Net-Daemon                      #         #
     #     perl-PlRPC                           #         #
-    # php                                      # TODO    #
-    # php-gd                                   # TODO    #
-    # php-mbstring                             # TODO    #
-    # php-mysql                                # TODO    #
-    PKG+=' httpd'                              # base    # MailWatch
+    PKG+=' php'                                # base    # mailwatch
+    #     libzip                               #         #
+    #     php-cli                              #         #
+    #     php-common                           #         #
+    PKG+=' php-gd'                             # base    # mailwatch
+    #     libXpm                               #         #
+    #     t11ib                                #         #
+    PKG+=' php-mbstring'                       # base    # mailwatch
+    PKG+=' php-mysql'                          # base    # mailwatch
+    #     php-pdo                              #         #
+    PKG+=' php-ldap'                           # base    # mailwatch
+    PKG+=' httpd'                              # base    # mailwatch
     #     apr                                  #         #
     #     apr-util                             #         #
     #     httpd-tools                          #         #
+    #     mailcap                              #         #
     # rrdtool                                  # TODO    #
     # rrdtool-perl                             # TODO    #
-    # cyrus-sasl-md5                           # TODO    #
-    # cyrus-sasl-sql                           # TODO    #
-    # cyrus-sasl-ldap                          # TODO    #
+    PKG+=' cyrus-sasl-md5'                     # base    # postfix
+    PKG+=' cyrus-sasl-sql'                     # base    # postfix
+    #     postgresql-libs                      #         #
+    PKG+=' cyrus-sasl-ldap'                    # base    # postfix
     # ImageMagick                              # TODO    #
     # python-setuptools                        # TODO    #
     # libevent                                 # TODO    #
     # libtool-ltdl                             # TODO    #
-    # mod_ssl                                  # TODO    #
+    PKG+=' mod_ssl'                            # base    # httpd
     # system-config-keyboard                   # TODO    #
     PKG+=' openssl-devel'                      # base    # MailScanner
     #     keyutils-libs-devel                  #         #
