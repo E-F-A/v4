@@ -175,9 +175,9 @@ function install_rpm_packages () {
     #-------------------------------------------------------------------------#
     # PACKAGES WITH DEPENDENCIES               # REPO    # PURPOSE            #
     #-------------------------------------------------------------------------#
-    PKG='  @base'                              # base    # basic system tools
-    PKG+=' @core'                              # base    # basic system tools
-    PKG+=' bzip2-devel'                        # base    # MailScanner
+    # @base                                    # base    # basic system tools
+    # @core                                    # base    # basic system tools
+    PKG='  bzip2-devel'                        # base    # MailScanner
     PKG+=' screen'                             # base    # basic system tools
     PKG+=' clamav'                             # epel    # MailScanner
     #    clamav-data                           #         #
