@@ -432,6 +432,7 @@ function install_rpm_packages () {
     # perl-Net-Server                    # TODO    #
     PKG+=' perl-Encoding-FixLatin'       # eFa     # MailWatch
     PKG+=' mailwatch'                    # eFa     # MailWatch Frontend
+    PKG+=' dcc'                          # eFa     # Spamassassin, MailScanner
 
     yum -y install $PKG
 }
