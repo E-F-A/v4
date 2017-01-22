@@ -306,6 +306,11 @@ Requires:  mailwatch >= 1.2.0-1
     # mailwatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 1.3.158-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
+Requires:  unbound >= 1.4.20-28                  # base    # DNS
+    # unbound                                    #         #
+    #     ldns                                   #         #
+    #     libevent                               #         #
+    #     unbound-libs                           #         #
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -340,19 +345,23 @@ mv * $RPM_BUILD_ROOT%{_usrsrc}/eFa
 %postun
 
 %post
+logdir="/var/log/eFa"
+logfile="$logdir/install.log"
+
 if [ "$1" = "1" ]; then
     # Perform Installation tasks
-    /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/postfix-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/mailscanner-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/spamassassin-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/mailwatch-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/postfix-config-4.0.0.sh  | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/mailscanner-config-4.0.0.sh  | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh  | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/spamassassin-config-4.0.0.sh  | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh  | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh  | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/mailwatch-config-4.0.0.sh | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh | tee -a $logfile
     
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
     echo "Build completed!"
