@@ -13,7 +13,12 @@ Requires: spamassassin >= 3.4.1
 Requires: MailScanner >= 5.0.4-3
 
 %description
-The DCC or Distributed Checksum Clearinghouse is an anti-spam content filter that runs on a variety of operating systems. The idea of the DCC is that if mail recipients could compare the mail they receive, they could recognize unsolicited bulk mail. A DCC server totals reports of "fuzzy" checksums of messages from clients and answers queries about the total counts for checksums of mail messages.
+The DCC or Distributed Checksum Clearinghouse is an anti-spam content filter
+that runs on a variety of operating systems. The idea of the DCC is that if
+mail recipients could compare the mail they receive, they could recognize
+unsolicited bulk mail. A DCC server totals reports of "fuzzy" checksums of
+messages from clients and answers queries about the total counts for checksums
+of mail messages.
 
 %prep
 %setup -q
