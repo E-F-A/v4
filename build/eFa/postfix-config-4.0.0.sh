@@ -107,6 +107,5 @@ postconf -e "smtpd_tls_ciphers = low"
 echo "pwcheck_method: auxprop">/usr/lib64/sasl2/smtpd.conf
 echo "auxprop_plugin: sasldb">>/usr/lib64/sasl2/smtpd.conf
 echo "mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5">>/usr/lib64/sasl2/smtpd.conf
-}
 
 echo "Configuring postfix...done"

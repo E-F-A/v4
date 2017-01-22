@@ -51,7 +51,7 @@ cat > /etc/issue << 'EOF'
 First time login: root/EfaPr0j3ct
 EOF
 
-cp $srcdir/eFa/EFA-SA-Update /usr/sbin/eFa-SA-Update
+cp $srcdir/eFa/eFa-SA-Update /usr/sbin/eFa-SA-Update
 chmod 700 /usr/local/sbin/eFa-SA-Update
 cp $srcdir/eFa/eFa-MS-Update /usr/sbin/eFa-MS-Update
 chmod 700 /usr/local/sbin/eFa-MS-Update

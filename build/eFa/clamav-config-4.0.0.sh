@@ -32,7 +32,7 @@ clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server})
 setsebool -P antivirus_can_scan_system 1
 useradd -d /etc/clamd.d -M -s /sbin/nologin clamav
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
-cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/clamd.conf
+cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/
 sed -i '/^Example/ c\#Example' /etc/clamd.d/clamd.conf
 sed -i '/^User <USER>/ c\User clamav' /etc/clamd.d/clamd.conf
 sed -i '/#LocalSocket /var/run/clamd<SERVICE>/clamd.sock/ c\LocalSocket /var/run/clamd<SERVICE>/clamd.sock' /etc/clamd.d/clamd.conf
@@ -67,7 +67,7 @@ PrivateTmp = true
 WantedBy=multi-user.target
 EOF
 
-cp /usr/share/doc/clamav-server-$clamav_version/clamd.logrotate /etc/logrotate.d/clamd
+cp /usr/share/doc/clamav-server-$clamav_version/clamd.logrotate /etc/logrotate.d/
 cat > /etc/sysconfig/clamd << 'EOF'
 CLAMD_CONFIGFILE=/etc/clamd.d/<SERVICE>.conf
 CLAMD_SOCKET=/var/run/clamd.<SERVICE>/clamd.sock
