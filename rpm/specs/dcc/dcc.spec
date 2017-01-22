@@ -37,11 +37,17 @@ make install
 ln -s /var/dcc/libexec/cron-dccd /usr/bin/cron-dccd
 ln -s /var/dcc/libexec/cron-dccd /etc/cron.monthly/cron-dccd
 cp /var/dcc/libexec/rcDCC /etc/init.d/adcc
-DCC_HOME=$(grep dcc_home /etc/MailScanner/spamassassin.conf)
-if [[ -z $DCC_HOME ]]; then
-  echo "dcc_home /var/dcc" >> /etc/MailScanner/spamassassin.conf
+
+DCC_CONF=$(grep "^ifplugin Mail::SpamAssassin::Plugin::DCC" /etc/MailScanner/spamassassin.conf)
+if [[ -z $DCC_CONF ]]; then
+  cat >> /etc/MailScanner/spamassassin.conf < 'EOF'
+ifplugin Mail::SpamAssassin::Plugin::DCC
+    dcc_home /var/dcc
+    dcc_path /usr/bin/dccproc
+endif
+EOF
 fi
-sed -i '/^dcc_path / c\dcc_path /usr/local/bin/dccproc' /etc/MailScanner/spamassassin.conf
+
 sed -i '/^DCCIFD_ENABLE=/ c\DCCIFD_ENABLE=on' /var/dcc/dcc_conf
 sed -i '/^DBCLEAN_LOGDAYS=/ c\DBCLEAN_LOGDAYS=1' /var/dcc/dcc_conf
 sed -i '/^DCCIFD_LOGDIR=/ c\DCCIFD_LOGDIR="/var/dcc/log"' /var/dcc/dcc_conf
