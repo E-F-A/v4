@@ -23,42 +23,6 @@
 #-----------------------------------------------------------------------------#
 source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
-
-local tmppar="`mount | grep -i /tmp`"
-if [[ -n "$tmppar" ]]
-then
-  echo "- Mounting /tmp RW" >> $logfile
-  mount -o remount rw /tmp
-fi
-
-
-# Remove unwanted packages
-echo "- Removing unwanted packages" >> $logfile
-# TODO We  can't do this as we are in yum.. :)
-yum -y remove \
-iwl100-firmware \
-iwl2030-firmware \
-iwl5000-firmware \
-iwl6000-firmware \
-iwl3160-firmware \
-iwl105-firmware \
-iwl135-firmware \
-iwl1000-firmware \
-iwl7260-firmware \
-alsa-firmware \
-iwl6000g2b-firmware \
-wl6050-firmware \
-iwl6000g2a-firmware \
-iwl5150-firmware \
-iwl7265-firmware \
-iwl3945-firmware \
-ivtv-firmware \
-iwl2000-firmware \
-iwl4965-firmware \
-alsa-tools-firmware \
-alsa-lib \
-postfix
-
 # Change the root password
 echo "- Changing the root password" >> $logfile
 echo "root:EfaPr0j3ct" | chpasswd --md5 root
