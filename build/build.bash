@@ -151,7 +151,6 @@ function remove_rpm_packages () {
   iwl4965-firmware \
   alsa-tools-firmware \
   alsa-lib \
-  wpa_supplicant \
   postfix
 }
 #-----------------------------------------------------------------------------#
