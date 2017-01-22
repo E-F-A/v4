@@ -221,7 +221,6 @@ function install_rpm_packages () {
     # ImageMagick                              # TODO    #
     # python-setuptools                        # TODO    #
     # libevent                                 # TODO    #
-    # libtool-ltdl                             # TODO    #
     PKG+=' mod_ssl'                            # base    # httpd
     # system-config-keyboard                   # TODO    #
     PKG+=' openssl-devel'                      # base    # MailScanner
