@@ -350,7 +350,7 @@ logfile="$logdir/install.log"
 
 if [ "$1" = "1" ]; then
     # Perform Installation tasks
-    mkdir -p /var/log/eFa%{
+    mkdir -p /var/log/eFa%
     touch $logfile
     /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh | tee -a $logfile
     /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh | tee -a $logfile
