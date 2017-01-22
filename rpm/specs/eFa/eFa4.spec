@@ -306,8 +306,8 @@ Requires:  mailwatch >= 1.2.0-1
     # mailwatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 1.3.158-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
-Requires:  unbound >= 1.4.20-28                  # base    # DNS
-    # unbound                                    #         #
+Requires:  unbound >= 1.4.20-28
+    # unbound                                    # base    # DNS
     #     ldns                                   #         #
     #     libevent                               #         #
     #     unbound-libs                           #         #
