@@ -34,24 +34,6 @@ make install
 %postun
 
 %post
-ln -s /var/dcc/libexec/cron-dccd /usr/bin/cron-dccd
-ln -s /var/dcc/libexec/cron-dccd /etc/cron.monthly/cron-dccd
-cp /var/dcc/libexec/rcDCC /etc/init.d/adcc
-
-DCC_CONF=$(grep "^ifplugin Mail::SpamAssassin::Plugin::DCC" /etc/MailScanner/spamassassin.conf)
-if [[ -z $DCC_CONF ]]; then
-  cat >> /etc/MailScanner/spamassassin.conf < 'EOF'
-ifplugin Mail::SpamAssassin::Plugin::DCC
-    dcc_home /var/dcc
-    dcc_path /usr/bin/dccproc
-endif
-EOF
-fi
-
-sed -i '/^DCCIFD_ENABLE=/ c\DCCIFD_ENABLE=on' /var/dcc/dcc_conf
-sed -i '/^DBCLEAN_LOGDAYS=/ c\DBCLEAN_LOGDAYS=1' /var/dcc/dcc_conf
-sed -i '/^DCCIFD_LOGDIR=/ c\DCCIFD_LOGDIR="/var/dcc/log"' /var/dcc/dcc_conf
-sed -i "s/#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/g" /etc/mail/spamassassin/v310.pre
 
 %clean
 rm -rf $RPM_BUILD_ROOT
