@@ -1,3 +1,27 @@
+#-----------------------------------------------------------------------------#
+# eFa SPEC file definition
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2017 https://efa-project.org
+#
+# This SPEC is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This SPEC is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Required packages for building this RPM
+#-----------------------------------------------------------------------------#
+# yum -y install
+#-----------------------------------------------------------------------------#
 %define MYSQL 1
 %define PGSQL 1
 %define SQLITE 1
@@ -207,7 +231,7 @@ make -f Makefile.init makefiles shared=yes dynamicmaps=yes \
   OPT="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-comment" \
   POSTFIX_INSTALL_OPTS=-keep-new-mtime
 
-make %{?_smp_mflags} 
+make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -1134,7 +1158,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Fri Mar 11 2005 Thomas Woerner <twoerner@redhat.com> 2:2.2.0-1
 - new version 2.2.0
-- cleanup of spec file: removed external TLS and IPV6 patches, removed 
+- cleanup of spec file: removed external TLS and IPV6 patches, removed
   smtp_sasl_proto patch
 - dropped samples directory till there are good examples again (was TLS and
   IPV6)
@@ -1227,10 +1251,10 @@ rm -rf $RPM_BUILD_ROOT
   for RHEL3, we'll branch and set set sasl to v1 and turn off ipv6
 
 * Tue Feb 17 2004 John Dennis <jdennis@porkchop.devel.redhat.com>
-- revert back to v1 of sasl because LDAP still links against v1 and we can't 
+- revert back to v1 of sasl because LDAP still links against v1 and we can't
 - bump revision for build
   have two different versions of the sasl library loaded in one load image at
-  the same time. How is that possible? Because the sasl libraries have different 
+  the same time. How is that possible? Because the sasl libraries have different
   names (libsasl.so & libsasl2.so) but export the same symbols :-(
   Fixes bugs 115249 and 111767
 
@@ -1259,7 +1283,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Sat Dec 13 2003 Jeff Johnson <jbj@jbj.org> 2:2.0.16-2
 - rebuild against db-4.2.52.
- 
+
 * Mon Nov 17 2003 John Dennis <jdennis@finch.boston.redhat.com> 2:2.0.16-1
 - sync up with current upstream release, 2.0.16, fixes bug #108960
 
@@ -1424,4 +1448,3 @@ rm -rf $RPM_BUILD_ROOT
   - Remove some hacks to support building on all sorts of distributions at
     the cost of specfile readability
   - Remove postdrop group on deletion
-

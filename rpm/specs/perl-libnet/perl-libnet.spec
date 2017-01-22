@@ -1,3 +1,27 @@
+#-----------------------------------------------------------------------------#
+# eFa SPEC file definition
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2017 https://efa-project.org
+#
+# This SPEC is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This SPEC is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Required packages for building this RPM
+#-----------------------------------------------------------------------------#
+# yum -y install
+#-----------------------------------------------------------------------------#
 %define real_name libnet
 
 Summary:       Collection of Perl modules which provide Internet protocols
@@ -44,7 +68,7 @@ find %{buildroot} -name .packlist -exec %{__rm} {} \;
 
 %files
 %defattr(-, root, root, 0755)
-%doc Artistic Changes Configure LICENCE README 
+%doc Artistic Changes Configure LICENCE README
 %{perl_vendorlib}/Net/
 
 %changelog

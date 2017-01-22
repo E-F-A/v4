@@ -1,3 +1,27 @@
+#-----------------------------------------------------------------------------#
+# eFa SPEC file definition
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2017 https://efa-project.org
+#
+# This SPEC is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This SPEC is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Required packages for building this RPM
+#-----------------------------------------------------------------------------#
+# yum -y install
+#-----------------------------------------------------------------------------#
 %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
 
@@ -17,13 +41,13 @@ Requires:       perl(Exporter)
 Requires:       perl(Carp)
 
 %description
-Finding the home country of a client using only the IP address can be difficult. 
-Looking up the domain name associated with that address can provide some help, 
-but many IP address are not reverse mapped to any useful domain, 
+Finding the home country of a client using only the IP address can be difficult.
+Looking up the domain name associated with that address can provide some help,
+but many IP address are not reverse mapped to any useful domain,
 and the most common domain (.com) offers no help when looking for country.
 
-This module comes bundled with a database of countries where various IP addresses have been assigned. 
-Although the country of assignment will probably be the country associated with a large ISP rather than the client herself, 
+This module comes bundled with a database of countries where various IP addresses have been assigned.
+Although the country of assignment will probably be the country associated with a large ISP rather than the client herself,
 this is probably good enough for most log analysis applications,
 and under test has proved to be as accurate as reverse-DNS and WHOIS lookup.
 

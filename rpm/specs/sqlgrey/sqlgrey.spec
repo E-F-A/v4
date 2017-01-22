@@ -1,3 +1,27 @@
+#-----------------------------------------------------------------------------#
+# eFa SPEC file definition
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2017 https://efa-project.org
+#
+# This SPEC is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This SPEC is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Required packages for building this RPM
+#-----------------------------------------------------------------------------#
+# yum -y install
+#-----------------------------------------------------------------------------#
 Summary:       SQLgrey is a postfix grey-listing policy service.
 Name:          sqlgrey
 Version:       1.8.0
@@ -10,7 +34,7 @@ Group:         System Utils
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:      postfix >= 3.1.3
-Requires:      mariadb-server >= 5.5.52 
+Requires:      mariadb-server >= 5.5.52
 
 %description
 SQLgrey is a Postfix grey-listing policy service with auto-white-listing
@@ -30,7 +54,7 @@ make rh-install ROOTDIR=$RPM_BUILD_ROOT
 %pre
 getent group sqlgrey > /dev/null || /usr/sbin/groupadd sqlgrey
 getent passwd sqlgrey > /dev/null || /usr/sbin/useradd -g sqlgrey \
-     -d /var/sqlgrey -s /bin/true sqlgrey 
+     -d /var/sqlgrey -s /bin/true sqlgrey
 
 %postun
 if [ $1 = 0 ]; then
@@ -139,7 +163,7 @@ fi
 * Tue Mar 15 2005 Lionel Bouton <lionel-dev@bouton.name>
  - 1.5.4 release
  - fix for regexp compilation (regexp in fqdn_whitelists didn't work)
-  
+
 * Sat Mar 05 2005 Lionel Bouton <lionel-dev@bouton.name>
  - 1.5.3 release
  - the cleanup is now done in a separate process to avoid stalling the service
@@ -164,11 +188,11 @@ fi
  - 1.4.8 release
  - AWL performance bugfix
  - bad handling of database init errors fixed
-   
+
 * Fri Feb 18 2005 Lionel Bouton <lionel-dev@bouton.name>
  - 1.4.7 release
  - MAIL FROM: <> bugfix
-  
+
 * Fri Feb 18 2005 Lionel Bouton <lionel-dev@bouton.name>
  - 1.4.6 release
  - update_sqlgrey_whitelists fix
@@ -193,7 +217,7 @@ fi
  - log to stdout when not in daemon mode
  - added update_sqlgrey_whitelists script
    whitelists can now be fetched from repositories
-      
+
 * Thu Jan 13 2005 Lionel Bouton <lionel-dev@bouton.name>
  - 1.4.2 release
  - Better cleanup logging from Rene Joergensen
@@ -297,4 +321,3 @@ fi
 
 * Sun Jun 27 2004 Lionel Bouton <lionel-dev@bouton.name>
  - Initial Version, replaced BDB by mysql in postgrey
-

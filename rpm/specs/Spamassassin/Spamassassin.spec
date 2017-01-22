@@ -1,3 +1,27 @@
+#-----------------------------------------------------------------------------#
+# eFa SPEC file definition
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2017 https://efa-project.org
+#
+# This SPEC is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This SPEC is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Required packages for building this RPM
+#-----------------------------------------------------------------------------#
+# yum -y install
+#-----------------------------------------------------------------------------#
 # Define variables to use in conditionals
 %define real_name Mail-SpamAssassin
 %{!?perl_vendorlib: %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)}
@@ -26,7 +50,7 @@ BuildRequires: perl(Archive::Tar) >= 1.58
 BuildRequires: perl-devel >= 4:5.10.1
 BuildRequires: perl-libwww-perl >= 5.833
 BuildRequires: perl(DB_File) >= 1.830
-BuildRequires: perl(Mail::SPF) 
+BuildRequires: perl(Mail::SPF)
 BuildRequires: perl(Encode::Detect) >= 1.01
 BuildRequires: gnupg >= 2.0.14
 BuildRequires: perl(IO::Socket::SSL) >= 1.31
@@ -52,7 +76,7 @@ BuildRequires: perl(Test::Simple) >= 0.92
 #BuildRequires: perl-Mail-ClamAV >= 0.29-2
 BuildRequires: perl(Net::CIDR::Lite) >= 0.21
 BuildRequires: perl(Test::Manifest) >= 1.22
-BuildRequires: perl(Business::ISBN::Data) 
+BuildRequires: perl(Business::ISBN::Data)
 BuildRequires: perl(Business::ISBN) >= 2.05
 BuildRequires: perl(Sys::Hostname::Long) >= 1.4
 BuildRequires: perl(Net::IP) >= 1.25
@@ -76,7 +100,7 @@ BuildRequires: perl(Crypt::OpenSSL::RSA) >= 0.25
 Requires: perl(Net::DNS) >= 0.65
 Requires: perl(Time::HiRes) >= 1.9721
 Requires: perl(DB_File) >= 1.830
-Requires: perl(Mail::SPF) 
+Requires: perl(Mail::SPF)
 Requires: perl(Encode::Detect) >= 1.01
 Requires: gnupg >= 2.0.14
 Requires: perl-HTML-Parser >= 3.64
@@ -102,7 +126,7 @@ Requires: perl(Test::Simple) >= 0.92
 #Requires: perl-Mail-ClamAV >= 0.29-2
 Requires: perl(Net::CIDR::Lite) >= 0.21
 Requires: perl(Test::Manifest) >= 1.22
-Requires: perl(Business::ISBN::Data) 
+Requires: perl(Business::ISBN::Data)
 Requires: perl(Business::ISBN) >= 2.05
 Requires: perl(Sys::Hostname::Long) >= 1.4
 Requires: perl(Net::IP) >= 1.25
@@ -177,7 +201,7 @@ mkdir   -m 0700             $RPM_BUILD_ROOT%{_sysconfdir}/mail/spamassassin/sa-u
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
 %doc LICENSE NOTICE CREDITS Changes README TRADEMARK UPGRADE
-%doc USAGE sample-nonspam.txt sample-spam.txt 
+%doc USAGE sample-nonspam.txt sample-spam.txt
 %{_initrddir}/spamassassin
 %dir %{_sysconfdir}/mail/spamassassin
 %{_sysconfdir}/mail/spamassassin/*
@@ -220,11 +244,11 @@ exit 0
 /sbin/chkconfig --add spamassassin
 # Preserve critical cf and pre configs
 if [ -f %{_sysconfdir}/mail/spamassassin/init.pre.tmp ]; then
-  rm -f %{_sysconfdir}/mail/spamassassin/init.pre 
+  rm -f %{_sysconfdir}/mail/spamassassin/init.pre
   mv %{_sysconfdir}/mail/spamassassin/init.pre.tmp %{_sysconfdir}/mail/spamassassin/init.pre
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/local.cf.tmp ]; then
-  rm -f %{_sysconfdir}/mail/spamassassin/local.cf 
+  rm -f %{_sysconfdir}/mail/spamassassin/local.cf
   mv %{_sysconfdir}/mail/spamassassin/local.cf.tmp %{_sysconfdir}/mail/spamassassin/local.cf
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v310.pre.tmp ]; then
@@ -458,13 +482,13 @@ exit 0
 - requires gnupg (#227738)
 
 * Sun Jan 28 2007 Warren Togami <wtogami@redhat.com> 3.1.7-6
-- explicit requires on perl(HTTP::Date) and perl(LWP::UserAgent) 
+- explicit requires on perl(HTTP::Date) and perl(LWP::UserAgent)
   (Bug #193100)
 
 * Mon Jan 22 2007 Warren Togami <wtogami@redhat.com> 3.1.7-5
 - fix typo in logrotate.d (#223817)
 
-* Thu Jan 18 2007 Warren Togami <wtogami@redhat.com> 
+* Thu Jan 18 2007 Warren Togami <wtogami@redhat.com>
 - Options for RHEL4
     * spamc/spamd cannot connect over IPv6 or SSL
     * sa-update is disabled
@@ -599,7 +623,7 @@ exit 0
 - match upstream version
 - #133422 Future proof krb5 back compat (Milan Kerslager)
 
-* Wed Sep 22 2004 Warren Togami <wtogami@redhat.com> - 3.0-10 
+* Wed Sep 22 2004 Warren Togami <wtogami@redhat.com> - 3.0-10
 - 3.0.0 final
 
 * Sun Sep 12 2004 Warren Togami <wtogami@redhat.com> - 3.0-9.rc4
@@ -669,7 +693,7 @@ exit 0
 - Fix buildroot traces
 - enable openssl
 - Trailing slash to DESTDIR (bug 90202 comment 14).
-- export optflags so they're honored, affects spamc only. 
+- export optflags so they're honored, affects spamc only.
 
 * Mon Jan  19 2004 Warren Togami <wtogami@redhat.com> 2.62-2
 - upgrade to 2.62
@@ -806,4 +830,3 @@ exit 0
 
 * Sun Nov 18 2001 Craig Hughes <craig@hughes-family.org>
 - first version of rpm.
-
