@@ -331,7 +331,7 @@ mkdir -p $RPM_BUILD_ROOT
 
 # move contents of source straight into rpm
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
-mv * $RPM_BUILD_ROOT%{_usrsrc}eFa
+mv * $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
 %pre
 
