@@ -349,6 +349,7 @@ if [ "$1" = "1" ]; then
     /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/spamassassin-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh
     
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
     echo "Build completed!"
