@@ -384,6 +384,7 @@ function install_rpm_packages () {
     # perl-XML-SAX                             # TODO    #
     PKG+=' perl-YAML'                          # base    # MailScanner
     # perl-YAML-Syck                           # TODO    #
+    PKG+=' libtool-ltdl'                       # base    # MailScanner
 
     yum -y install $PKG
 
@@ -427,10 +428,10 @@ function install_rpm_packages () {
     # perl-Net-DNS-Nameserver            # TODO    #
     # perl-IO-Multiplex                  # TODO    #
     # perl-File-Tail                     # TODO    #
-    # perl-Net-Netmask                   #         #
+    # perl-Net-Netmask                   # TODO    #
     # perl-BerkeleyDB                    # TODO    #
     # perl-Net-Server                    # TODO    #
-    # perl-Encoding-FixLatin             # TODO    # MailWatch
+    PKG+=' perl-Encoding-FixLatin'       # eFa     # MailWatch
     PKG+=' mailwatch'                    # eFa     # MailWatch Frontend
 
     yum -y install $PKG
