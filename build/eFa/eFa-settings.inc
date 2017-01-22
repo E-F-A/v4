@@ -21,6 +21,7 @@
 #-----------------------------------------------------------------------------#
 # Variables which are used by all other scripts
 #-----------------------------------------------------------------------------#
+version="4.0.0"
 srcdir="/usr/src/eFa"
 logdir="/var/log/eFa"
 logfile="$logdir/install.log"

@@ -1,0 +1,194 @@
+#!/bin/bash
+# +--------------------------------------------------------------------+
+# eFa Project SpamAssassin update script
+# Version 20160814
+# +--------------------------------------------------------------------+
+# Copyright (C) 2012~2017 http://www.efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# +--------------------------------------------------------------------+
+action="$1"
+################################################################
+
+#----------------------------------------------------------------#
+# Variables
+#----------------------------------------------------------------#
+# MAX update delay in seconds
+UPDATEMAXDELAY=1800
+# Source files:
+KAMSRC="https://www.pccc.com/downloads/SpamAssassin/contrib/KAM.cf"
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# delay so we won't hammer the servers
+#----------------------------------------------------------------#
+function delay()
+{
+  sleeptime=$RANDOM
+  let "sleeptime %= $UPDATEMAXDELAY"
+  sleep $sleeptime
+  run_updates
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Main function to Run updates
+#----------------------------------------------------------------#
+function run_updates()
+{
+  update_kam
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Update KAM file
+#----------------------------------------------------------------#
+function update_kam()
+{
+  reload=1
+  cd /etc/mail/spamassassin
+  wget -N $KAMSRC
+  if [ "$?" = "0" ]; then
+        echo It completed okay.
+        if [ -r /var/EFA/backup/KAM/KAM.cf.backup ]; then
+                if [ KAM.cf -nt /var/EFA/backup/KAM/KAM.cf.backup ]; then
+                        if ( tail -10 KAM.cf | grep -q '^#.*EOF' ); then
+                                # echo It succeeded, so make a backup
+                                cp -f KAM.cf /var/EFA/backup/KAM/KAM.cf.backup
+                         else
+                                echo ERROR: Could not find EOF marker in KAM.cf
+                                cp -f /var/EFA/backup/KAM/KAM.cf.backup KAM.cf
+                        fi
+                else
+                # Remote file not newer than local copy
+                reload=0
+                fi
+        else
+                # No backup file present, so delete file if it is bad
+                if ( tail -10 KAM.cf | grep -q '^#.*EOF' ); then
+                        #      echo Success, make a backup
+                        cp -f KAM.cf /var/EFA/backup/KAM/KAM.cf.backup
+                 else
+                        echo ERROR: Could not find EOF marker in KAM.cf and no backup
+                        rm -f KAM.cf
+                        reload=0
+                fi
+        fi
+  else
+        echo It failed to complete properly
+        if [ -r /var/EFA/backup/KAM/KAM.cf.backup ]; then
+                echo Restored backup of KAM.cf
+                cp -f /var/EFA/backup/KAM/KAM.cf.backup KAM.cf
+         else
+                # No backup copy present, so delete bad KAM.cf
+                echo ERROR: wget of KAM.cf failed and no backup
+                rm -f KAM.cf
+                reload=0
+        fi
+  fi
+
+  # Reload MailScanner only if we need to.
+  if [ "$reload" = "1" ]; then
+        /etc/init.d/MailScanner reload #> /dev/null 2>&1
+        if [ $? != 0 ] ; then
+                echo "MailScanner reload failed - Retrying..."
+            /etc/init.d/MailScanner reload
+                if [ $? = 0 ] ; then
+                        echo "MailScanner reload succeeded."
+         else
+                        echo "Stopping MailScanner..."
+            /etc/init.d/MailScanner stop
+            echo "Waiting for a minute..."
+            sleep 60
+            echo "Attemping to start MailScanner..."
+            /etc/init.d/MailScanner start
+        fi
+        fi
+  fi
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Check if we are root
+#----------------------------------------------------------------#
+function user_check()
+{
+  if [ `whoami` != root ]
+    then
+                echo "[EFA] Please become root to run this update"
+                exit 0
+  fi
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# show the usage
+#----------------------------------------------------------------#
+function show_usage()
+{
+  echo "Usage: $0 [option]"
+  echo "Where [option] is:"
+  echo ""
+  echo "-update"
+  echo "   Update to the latest version"
+  echo ""
+  echo "-cron"
+  echo "   run from cron"
+  echo ""
+
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Parse action
+#----------------------------------------------------------------#
+function parse_action()
+{
+  case $action in
+      -update)
+        user_check
+                run_updates
+        ;;
+          -cron)
+        user_check
+                delay
+        ;;
+      *)
+        show_usage
+        ;;
+  esac
+  exit 0
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Main function
+#----------------------------------------------------------------#
+function main()
+{
+  if [ "X${action}" == "X" ]
+    then
+      show_usage
+      exit 0
+    else
+      parse_action
+  fi
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Run main
+#----------------------------------------------------------------#
+main
+#----------------------------------------------------------------#

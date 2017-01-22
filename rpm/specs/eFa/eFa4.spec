@@ -363,6 +363,7 @@ if [ "$1" = "1" ]; then
     /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh | tee -a $logfile
     /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh | tee -a $logfile
     /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh | tee -a $logfile
+    /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh | tee -a $logfile
     
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
     echo "Build completed!"
