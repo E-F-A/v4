@@ -330,8 +330,8 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 
 # move contents of source straight into rpm
-mkdir -p $RPM_BUILD_ROOT/usr/src/eFa
-mv * $RPM_BUILD_ROOT/usr/src/eFa
+mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
+mv * $RPM_BUILD_ROOT%{_usrsrc}eFa
 
 %pre
 
@@ -342,10 +342,10 @@ mv * $RPM_BUILD_ROOT/usr/src/eFa
 %post
 if [ "$1" = "1" ]; then
     # Perform Installation tasks
-    /bin/sh /usr/src/eFa/prepare-os-4.0.0.sh
-    /bin/sh /usr/src/eFa/mariadb-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh
 
-    echo %{version} > /etc/eFa-Version
+    echo %{version} > %{_sysconfdir}/eFa-Version
     echo "Build completed!"
 elif [ "$1" = "2" ]; then
     # Perform Update tasks
