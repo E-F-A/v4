@@ -1,6 +1,6 @@
 #!/bin/sh
 #-----------------------------------------------------------------------------#
-# eFa 4.0.0 initial mariadb-configuration script
+# eFa 4.0.0 initial prepare script
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2017 https://efa-project.org
 #
@@ -25,7 +25,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Change the root password
 echo "- Changing the root password" >> $logfile
-echo "root:EfaPr0j3ct" | chpasswd --md5 root
+echo "root:$password" | chpasswd --md5 root
 
 echo "Adding Firewall rules" >> $logfile
 firewall-cmd --permanent --add-service=smtp
