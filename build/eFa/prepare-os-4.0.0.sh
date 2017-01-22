@@ -24,10 +24,10 @@
 source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Change the root password
-echo "- Changing the root password" >> $logfile
+echo "- Changing the root password"
 echo "root:$password" | chpasswd --md5 root
 
-echo "Adding Firewall rules" >> $logfile
+echo "Adding Firewall rules"
 firewall-cmd --permanent --add-service=smtp
 firewall-cmd --permanent --add-service=ssh
 firewall-cmd --permanent --add-port 80/tcp

@@ -27,6 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of razor
 #-----------------------------------------------------------------------------#
+echo "Configuring razor..."
 mkdir /var/spool/postfix/.razor
 ln -s /var/spool/postfix/.razor /var/www/.razor
 chown postfix:mtagroup /var/spool/postfix/.razor
@@ -34,3 +35,5 @@ chmod -R ug+rwx /var/spool/postfix/.razor
 
 # Use setgid bit
 chmod ug+s /var/spool/postfix/.razor
+
+echo "Configuring razor...done"

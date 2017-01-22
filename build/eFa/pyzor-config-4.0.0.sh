@@ -27,6 +27,8 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of pyzor
 #-----------------------------------------------------------------------------#
+echo "Configuring pyzor..."
+
 # Fix deprecation warning message
 sed -i '/^#!\/usr\/bin\/python/ c\#!\/usr\/bin\/python -Wignore::DeprecationWarning' /usr/bin/pyzor
 
@@ -37,3 +39,5 @@ chmod -R ug+rwx /var/spool/postfix/.pyzor
 
 # and finally initialize the servers file with an discover.
 su postfix -s /bin/bash -c 'pyzor discover'
+
+echo "Configuring pyzor...done"

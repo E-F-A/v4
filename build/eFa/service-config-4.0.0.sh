@@ -27,6 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of services
 #-----------------------------------------------------------------------------#
+echo "Configuring services..."
 
 # These services we really don't need.
 systemctl disable lvm2-monitor
@@ -51,3 +52,5 @@ chkconfig adcc off
 systemctl disable unbound
 #chkconfig munin-node off
 systemctl disable chronyd
+
+echo "Configuring services...done"

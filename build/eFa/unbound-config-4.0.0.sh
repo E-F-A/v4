@@ -27,6 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of unbound
 #-----------------------------------------------------------------------------#
+echo "Configuring unbound..."
 
 # disable validator
 sed -i "/^\t# module-config:/ c\\\tmodule-config: \"iterator\"" /etc/unbound/unbound.conf
@@ -35,3 +36,5 @@ echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
 echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
 echo "  forward-addr: 8.8.8.8" >> /etc/unbound/conf.d/forwarders.conf
 echo "  forward-addr: 8.8.4.4" >> /etc/unbound/conf.d/forwarders.conf
+
+echo "Configuring unbound...done"

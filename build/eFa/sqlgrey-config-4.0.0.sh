@@ -27,6 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of sqlgrey
 #-----------------------------------------------------------------------------#
+echo "Configuring sqlgrey..."
 
 # pre-create the local files so users won't be confused if the file is not there.
 touch /etc/sqlgrey/clients_ip_whitelist.local
@@ -64,3 +65,5 @@ sed -i '/optmethod =/ c\optmethod = optout' /etc/sqlgrey/sqlgrey.conf
 service sqlgrey start
 sleep 15
 service sqlgrey stop
+
+echo "Configuring sqlgrey...done"

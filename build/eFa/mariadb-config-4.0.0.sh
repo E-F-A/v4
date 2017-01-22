@@ -27,7 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of MariaDB
 #-----------------------------------------------------------------------------#
-echo "Mariadb configuration"
+echo "Configuring mariadb..."
 systemctl start mariadb
 
 # remove default security flaws from MySQL.
@@ -68,3 +68,4 @@ echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
 
 # add the AWL table to sa_bayes
 /usr/bin/mysql -u root -p"$password" sa_bayes < $srcdir/mariadb/awl_mysql.sql
+echo "Configuring mariadb...done"

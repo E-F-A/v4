@@ -27,6 +27,8 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of spamassassin
 #-----------------------------------------------------------------------------#
+echo "Configuring spamassassin..."
+
 # Symlink spamassassin.conf (previously handled by tarball)
 ln -s -f /etc/MailScanner/spamassassin.conf /etc/mail/spamassassin/mailscanner.cf
 
@@ -115,3 +117,4 @@ chown postfix:mtagroup /var/spool/postfix/.spamassassin
 /usr/bin/sa-update --channel updates.spamassassin.org
 /usr/bin/sa-compile
 
+echo "Configuring spamassassin...done"

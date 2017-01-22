@@ -27,6 +27,8 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of Postfix
 #-----------------------------------------------------------------------------#
+echo "Configuring postfix..."
+
 mkdir /etc/postfix/ssl
 echo /^Received:/ HOLD>>/etc/postfix/header_checks
 postconf -e "inet_protocols = ipv4"
@@ -106,3 +108,5 @@ echo "pwcheck_method: auxprop">/usr/lib64/sasl2/smtpd.conf
 echo "auxprop_plugin: sasldb">>/usr/lib64/sasl2/smtpd.conf
 echo "mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5">>/usr/lib64/sasl2/smtpd.conf
 }
+
+echo "Configuring postfix...done"
