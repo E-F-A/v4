@@ -78,4 +78,5 @@ mkdir -p /var/log/clamd
 chown -R clamav:clamav /var/log/clamd
 mkdir -p /var/run/clamd
 chown -R clamav:clamav /var/run/clamd
+usermod clamav -G mtagroup
 
