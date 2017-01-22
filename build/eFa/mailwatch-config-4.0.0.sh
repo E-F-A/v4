@@ -30,7 +30,7 @@ source /usr/src/eFa/eFa-settings.inc
 
 # Set php parameters needed
 sed -i '/^short_open_tag =/ c\short_open_tag = On' /etc/php.ini
-/usr/share/MailScanner/perl/custom/
+
 # Set up connection for MailWatch
 sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/MailWatch.pm
 sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/EFA-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatch.pm
@@ -74,14 +74,14 @@ cat > /var/www/html/index.html << 'EOF'
 EOF
 
 # Grabbing an favicon to complete the look
-cp /usr/src/eFa/mailwatch/favicon.ico /var/www/html/favicon.ico
+cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
 /bin/cp -f favicon.ico /var/www/html/mailscanner/
 /bin/cp -f favicon.ico /var/www/html/mailscanner/images
 /bin/cp -f favicon.ico /var/www/html/mailscanner/images/favicon.png
 
 # EFA Branding
-cp /usr/src/eFa/mailwatch/EFAlogo-47px.gif /var/www/html/mailscanner/images/EFAlogo-47px.gif
-cp /usr/src/eFa/mailwatch/EFAlogo-79px.png /var/www/html/mailscanner/images/EFAlogo-79px.png
+cp $srcdir/mailwatch/EFAlogo-47px.gif /var/www/html/mailscanner/images/EFAlogo-47px.gif
+cp $srcdir/mailwatch/EFAlogo-79px.png /var/www/html/mailscanner/images/EFAlogo-79px.png
 mv mailwatch-logo.png mailwatch-logo.png.orig
 mv mailscannerlogo.gif mailscannerlogo.gif.orig
 ln -s EFAlogo-79px.png mailwatch-logo.png
@@ -118,11 +118,11 @@ usermod apache -G mtagroup
 # Contains no logic to limit recipient(s) to internal recipients only
 # Superceded for now with autorelease code in MailWatch
 
-cp /usr/src/eFa/mailwatch/learn-msg.cgi /var/www/cgi-bin/learn-msg.cgi
+cp $srcdir/mailwatch/learn-msg.cgi /var/www/cgi-bin/learn-msg.cgi
 chmod 755 /var/www/cgi-bin/learn-msg.cgi
-cp /usr/src/eFa/mailwatch/learned.html /var/www/html/learned.html
-cp /usr/src/eFa/mailwatch/notlearned.html /var/www/html/notlearned.html
-cp /usr/src/eFa/mailwatch/denylearned.html /var/www/html/denylearned.html
+cp $srcdir/mailwatch/learned.html /var/www/html/learned.html
+cp $srcdir/mailwatch/notlearned.html /var/www/html/notlearned.html
+cp $srcdir/mailwatch/denylearned.html /var/www/html/denylearned.html
 
 # MailWatch requires access to /var/spool/postfix/hold & incoming dir's
 chown -R postfix:mtagroup /var/spool/postfix/hold
@@ -143,5 +143,5 @@ ln -s /usr/bin/mailwatch/tools/Cron_jobs/msre_reload.crond /etc/cron.d/msre_relo
 ln -s /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh /usr/local/bin/msre_reload.sh
 chmod ugo+x /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh
 
-cp /usr/src/eFa/mailwatch/geoip_update_cmd.php /usr/sbin/geoip_update_cmd.php
+cp $srcdir/mailwatch/geoip_update_cmd.php /usr/sbin/geoip_update_cmd.php
 

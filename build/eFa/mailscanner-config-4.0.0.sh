@@ -28,11 +28,11 @@ source /usr/src/eFa/eFa-settings.inc
 # Start configuration of MailScanner
 #-----------------------------------------------------------------------------#
 
-chown postfix:postfix /var/spool/MailScanner/quarantine
+chown postfix:mtagroup /var/spool/MailScanner/quarantine
 mkdir /var/spool/MailScanner/spamassassin
-chown postfix:postfix /var/spool/MailScanner/spamassassin
+chown postfix:mtagroup /var/spool/MailScanner/spamassassin
 mkdir /var/spool/mqueue
-chown postfix:postfix /var/spool/mqueue
+chown postfix:mtagroup /var/spool/mqueue
 touch /var/lock/subsys/MailScanner.off
 touch /etc/MailScanner/rules/spam.blacklist.rules
 
@@ -108,10 +108,10 @@ mount -a
 # Add CustomAction.pm for token handling
 # Remove as a copy will throw a mailscanner --lint error
 rm -f /usr/share/MailScanner/perl/custom/CustomAction.pm
-cp /usr/src/eFa/mailscanner/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
+cp $srcdir/mailscanner/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
 
 # Add EFA-Tokens-Cron
-cp /usr/src/eFa/mailscanner/EFA-Tokens-Cron /etc/cron.daily/EFA-Tokens-Cron
+cp $srcdir/mailscanner/EFA-Tokens-Cron /etc/cron.daily/EFA-Tokens-Cron
 chmod 700 /etc/cron.daily/EFA-Tokens-Cron
 
 # Force mailscanner init to return a code on all failures

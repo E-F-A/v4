@@ -69,7 +69,6 @@ postconf -e "smtpd_tls_session_cache_timeout = 3600s"
 postconf -e "tls_random_source = dev:/dev/urandom"
 postconf -e "smtpd_tls_session_cache_database = btree:/var/lib/postfix/smtpd_tls_session_cache"
 postconf -e "smtpd_tls_security_level = may"
-# Issue #149 Disable SSL in Postfix
 postconf -e "smtpd_tls_mandatory_protocols = !SSLv2,!SSLv3"
 postconf -e "smtp_tls_mandatory_protocols = !SSLv2,!SSLv3"
 postconf -e "smtpd_tls_protocols = !SSLv2,!SSLv3"
@@ -96,10 +95,9 @@ postmap /etc/postfix/sender_access
 postmap /etc/postfix/recipient_access
 postmap /etc/postfix/sasl_passwd
 
-# Issue #167 Change perms on /etc/postfix/sasl_passwd to 600
 chmod 0600 /etc/postfix/sasl_passwd
 
-# Logjam Vulnerability #188
+# Logjam Vulnerability Protection
 openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
 postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
 postconf -e "smtpd_tls_ciphers = low"

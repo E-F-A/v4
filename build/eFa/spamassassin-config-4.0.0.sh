@@ -38,11 +38,11 @@ rm -f /usr/share/GeoIP/GeoLiteCountry.dat
 ln -s /var/www/html/mailscanner/temp/GeoIP.dat /usr/share/GeoIP/GeoLiteCountry.dat
 
 # PDFInfo (now included in SA 3.4.1)
-cp /usr/src/eFa/spamassassin/pdfinfo.cf
+cp $srcdir/spamassassin/pdfinfo.cf
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::PDFInfo$/ c\loadplugin Mail::SpamAssassin::Plugin::PDFInfo" /etc/mail/spamassassin/v341.pre
 
 # Download an initial KAM.cf file updates are handled by EFA-SA-Update.
-cp /usr/src/eFa/spamassassin/KAM.cf /etc/mail/spamassassin/KAM.cf
+cp $srcdir/spamassassin/KAM.cf /etc/mail/spamassassin/KAM.cf
 
 # Configure spamassassin bayes and awl DB settings
 cat >> /etc/MailScanner/spamassassin.conf << 'EOF'
@@ -95,7 +95,7 @@ chmod +x trim-sql-awl-weekly
 
 # Create .spamassassin directory (error reported in lint test)
 mkdir /var/www/.spamassassin
-chown postfix:postfix /var/www/.spamassassin
+chown postfix:mtagroup /var/www/.spamassassin
 
 # Issue #82 re2c spamassassin rule complilation
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/ c\loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody" /etc/mail/spamassassin/v320.pre
@@ -109,7 +109,7 @@ ln -s /etc/mail/spamassassin/v330.pre /etc/MailScanner/mcp/v330.pre
 ln -s /etc/mail/spamassassin/v340.pre /etc/MailScanner/mcp/v340.pre
 ln -s /etc/mail/spamassassin/v341.pre /etc/MailScanner/mcp/v341.pre
 mkdir -p /var/spool/postfix/.spamassassin
-chown postfix:postfix /var/spool/postfix/.spamassassin
+chown postfix:mtagroup /var/spool/postfix/.spamassassin
 
 # and in the end we run sa-update just for the fun of it..
 /usr/bin/sa-update --channel updates.spamassassin.org
