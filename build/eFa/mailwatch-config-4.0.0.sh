@@ -75,18 +75,18 @@ EOF
 
 # Grabbing an favicon to complete the look
 cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
-/bin/cp -f favicon.ico /var/www/html/mailscanner/
-/bin/cp -f favicon.ico /var/www/html/mailscanner/images
-/bin/cp -f favicon.ico /var/www/html/mailscanner/images/favicon.png
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images/favicon.png
 
 # EFA Branding
 cp $srcdir/mailwatch/EFAlogo-47px.gif /var/www/html/mailscanner/images/EFAlogo-47px.gif
 cp $srcdir/mailwatch/EFAlogo-79px.png /var/www/html/mailscanner/images/EFAlogo-79px.png
-mv mailwatch-logo.png mailwatch-logo.png.orig
-mv mailscannerlogo.gif mailscannerlogo.gif.orig
-ln -s EFAlogo-79px.png mailwatch-logo.png
-ln -s EFAlogo-47px.gif mailscannerlogo.gif
-ln -s EFAlogo-79px.png mailwatch-logo.gif
+mv /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.png.orig
+mv /var/www/html/mailscanner/images/mailscannerlogo.gif /var/www/html/mailscanner/images/mailscannerlogo.gif.orig
+ln -s /var/www/html/mailscanner/images/EFAlogo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.png
+ln -s /var/www/html/mailscanner/images/EFAlogo-47px.gif /var/www/html/mailscanner/images/mailscannerlogo.gif
+ln -s /var/www/html/mailscanner/images/EFAlogo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.gif
 
 sed -i 's/#f7ce4a/#999999/g' /var/www/html/mailscanner/login.php
 
