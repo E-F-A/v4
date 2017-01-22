@@ -1,7 +1,6 @@
-#!/bin/bash
-action=$1
+#!/bin/sh
 #-----------------------------------------------------------------------------#
-# eFa 4.0.0 build script version 20170122
+# eFa 4.0.0 initial mariadb-configuration script
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2017 https://efa-project.org
 #
@@ -20,50 +19,22 @@ action=$1
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
-# Install eFa
+# Source the settings file
 #-----------------------------------------------------------------------------#
-mirror="https://mirrors.efa-project.org"
+source /usr/src/eFa/eFa-settings.inc
+#-----------------------------------------------------------------------------#
 
-# check if user is root
-if [ `whoami` == root ]; then
-  echo "Good you are root."
-else
-  echo "ERROR: Please become root first."
-  exit 1
+local tmppar="`mount | grep -i /tmp`"
+if [[ -n "$tmppar" ]]
+then
+  echo "- Mounting /tmp RW" >> $logfile
+  mount -o remount rw /tmp
 fi
 
-# check if we run CentOS 7
-local OSVERSION=`cat /etc/centos-release`
-if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
-  echo "- Good you are running CentOS 7"
-else
-  echo "- ERROR: You are not running CentOS 7"
-  echo "- ERROR: Unsupported system, stopping now"
-  exit 1
-fi
 
-# Check network connectivity
-echo "- Checking network connectivity"
-wget -q --tries=3 --timeout=20 --spider $mirror
-if [[ $? -eq 0 ]]; then
-  echo "-- OK $mirror is reachable"
-else
-  echo "ERROR: No network connectivity"
-  echo "ERROR: unable to reach $mirror"
-  echo "ERROR: Aborting script"
-  exit 1
-fi
-
-# Add eFa Repo
-echo "- Adding eFa Repo"
-rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
-cd /etc/yum.repos.d/
-/usr/bin/wget $mirror/rpm/eFa4/eFa4.repo
-
-echo "- Adding epel Repo"
-yum -y install epel-release
-yum -y update
-
+# Remove unwanted packages
+echo "- Removing unwanted packages" >> $logfile
+# TODO We  can't do this as we are in yum.. :)
 yum -y remove \
 iwl100-firmware \
 iwl2030-firmware \
@@ -88,8 +59,14 @@ alsa-tools-firmware \
 alsa-lib \
 postfix
 
-echo "- Updating the OS"
-yum -y update
+# Change the root password
+echo "- Changing the root password" >> $logfile
+echo "root:EfaPr0j3ct" | chpasswd --md5 root
 
-# install eFa
-yum -y install eFa
+echo "Adding Firewall rules" >> $logfile
+firewall-cmd --permanent --add-service=smtp
+firewall-cmd --permanent --add-service=ssh
+firewall-cmd --permanent --add-port 80/tcp
+firewall-cmd --permanent --add-port 443/tcp
+firewall-cmd --permanent --add-port 587/tcp
+firewall-cmd --reload

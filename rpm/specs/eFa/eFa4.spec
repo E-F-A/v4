@@ -20,7 +20,7 @@
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
-# yum -y install 
+# yum -y install
 #-----------------------------------------------------------------------------#
 
 Name:      eFa
@@ -340,77 +340,16 @@ mv * $RPM_BUILD_ROOT/usr/src/eFa
 %postun
 
 %post
-#-----------------------------------------------------------------------------#
-# Variables
-#-----------------------------------------------------------------------------#
-logdir="/var/log/eFa"
-password="EfaPr0j3ct"
-#-----------------------------------------------------------------------------#
+if [ "$1" = "1" ]; then
+    # Perform Installation tasks
+    /bin/sh /usr/src/eFa/prepare-os-4.0.0.sh
+    /bin/sh /usr/src/eFa/mariadb-config-4.0.0.sh
 
-#-----------------------------------------------------------------------------#
-# Build function
-#-----------------------------------------------------------------------------#
-function build() {
-  func_mariadb
-}
-#-----------------------------------------------------------------------------#
-
-# +---------------------------------------------------+
-# configure Mariadb
-# +---------------------------------------------------+
-func_mariadb () {
-    echo "Mariadb configuration"
-    systemctl start mariadb
-
-    # remove default security flaws from MySQL.
-    /usr/bin/mysqladmin -u root password "$password"
-    /usr/bin/mysqladmin -u root -p"$password" -h localhost.localdomain password "$password"
-    echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
-    /usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='';"
-    /usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-
-    # Create the databases
-    /usr/bin/mysql -u root -p"$password" -e "CREATE DATABASE sa_bayes"
-    /usr/bin/mysql -u root -p"$password" -e "CREATE DATABASE sqlgrey"
-
-    # Create and populate the mailscanner db
-    /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/create.sql
-
-    # Create and populate efa db
-    /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/efatokens.sql
-
-    # Create the users
-    /usr/bin/mysql -u root -p"$password" -e "GRANT SELECT,INSERT,UPDATE,DELETE on sa_bayes.* to 'sa_user'@'localhost' identified by '$password'"
-
-    # mailwatch mysql user and login user
-    /usr/bin/mysql -u root -p"$password" -e "GRANT ALL ON mailscanner.* TO mailwatch@localhost IDENTIFIED BY '$password';"
-    /usr/bin/mysql -u root -p"$password" -e "GRANT FILE ON *.* to mailwatch@localhost IDENTIFIED BY '$password';"
-
-    # sqlgrey user
-    /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on sqlgrey.* to 'sqlgrey'@'localhost' identified by '$password'"
-
-    # efa user for token handling
-    /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$password'"
-
-    # flush
-    /usr/bin/mysql -u root -p"$password" -e "FLUSH PRIVILEGES;"
-
-    # populate the sa_bayes DB
-    /usr/bin/mysql -u root -p"$password" sa_bayes < /usr/src/eFa/mariadb/bayes_mysql.sql
-
-    # add the AWL table to sa_bayes
-
-    /usr/bin/mysql -u root -p"$password" sa_bayes < /usr/src/eFa/mariadb/awl_mysql.sql
-}
-# +---------------------------------------------------+
-
-# Check to see if this is an initial installation of eFa
-if [[ -n /etc/eFa-Version ]]; then
-  echo "/etc/eFa-Version is missing, entering build mode."
-  build
-  
-  echo %{version} > /etc/eFa-Version
-  echo "Build completed!"
+    echo %{version} > /etc/eFa-Version
+    echo "Build completed!"
+elif [ "$1" = "2" ]; then
+    # Perform Update tasks
+    echo "no update available yet"
 fi
 
 %clean
