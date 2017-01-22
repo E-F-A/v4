@@ -33,7 +33,7 @@ else
 fi
 
 # check if we run CentOS 7
-local OSVERSION=`cat /etc/centos-release`
+OSVERSION=`cat /etc/centos-release`
 if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
   echo "- Good you are running CentOS 7"
 else
