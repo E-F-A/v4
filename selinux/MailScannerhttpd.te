@@ -4,8 +4,10 @@ module MailScannerhttpd 1.0;
 require {
 	type httpd_t;
 	type mscan_etc_t;
+	class file { getattr open };
 	class file { getattr read };
 }
 
 #============= httpd_t ==============
+allow httpd_t mscan_etc_t:file { getattr open };
 allow httpd_t mscan_etc_t:file { getattr read };
