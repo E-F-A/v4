@@ -1,0 +1,152 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# eFa 4.0.0 initial configuration script
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2017 https://efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+# Just adding some todo's here so we don't forget them later on:
+#
+# - Configure email for yum-cron
+# - Add all eFa-Init functions, tests and questions..
+
+
+# +---------------------------------------------------+
+# Function to test IP addresses
+# +---------------------------------------------------+
+function checkip()
+{
+  local  ip=$1
+  local  stat=1
+
+  if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+    OIFS=$IFS
+    IFS='.'
+    ip=($ip)
+    IFS=$OIFS
+    [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
+    stat=$?
+  fi
+  return $stat
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Function to create a random password
+# +---------------------------------------------------+
+function randompw()
+{
+  PASSWD=""
+  PASSWD=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Trap CTRL+C, CTRL+Z and quit singles
+# +---------------------------------------------------+
+if [ $debug == "0" ]; then
+    trap '' SIGINT SIGQUIT SIGTSTP
+fi
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Pause
+# +---------------------------------------------------+
+pause(){
+    echo -e "$green[EFA]$clean Press [Enter] key to continue..."
+    read fackEnterKey
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# The header above all menu's
+# +---------------------------------------------------+
+func_echo-header(){
+    clear
+    echo -e "--------------------------------------------------------------"
+    echo -e "---        Welcome to the eFa Initial Configuration        ---"
+    echo -e "---               http://www.efa-project.org               ---"
+    echo -e "--------------------------------------------------------------"
+    echo ""
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Where to start
+# +---------------------------------------------------+
+clear
+red='\E[00;31m'
+green='\E[00;32m'
+yellow='\E[00;33m'
+blue='\E[00;34m'
+magenta='\E[00;35'
+cyan='\E[00;36m'
+clean='\e[00m'
+
+func_echo-header
+CONFIGURED="`grep CONFIGURED /etc/EFA-Config | sed 's/^.*://'`"
+if [ $CONFIGURED == "NO" ]
+ then
+    echo -e "--------------------------------------------------------------"
+    echo -e "$green[EFA]$clean We will ask you a few questions to setup this system."
+    echo -e "$green[EFA]$clean Please make sure the system is connected to the internet."
+    echo -e "--------------------------------------------------------------"
+  echo -e -n "$green[EFA]$clean Start EFA first-time configure (Y/n) -> "
+  read StartConf
+
+  if [[ "$StartConf" == "Y" || "$StartConf" == "y" || "$StartConf" == "" ]]; then
+      pause
+      func_ask-keyboard
+      func_ask-hostname
+      func_ask-domainname
+      func_ask-adminemail
+      func_ask-postmasteremail
+      func_ask-ipaddress
+      func_ask-netmask
+      func_ask-gateway
+      func_ask-recursion
+      func_ask-username
+      func_ask-userpassword
+      func_ask-rootpassword
+      func_detect-virtual
+      func_ask-timezone
+      func_ask-ianacode
+      func_ask-mailserver
+      func_ask-orgname
+      func_ask-updates
+      func_verify-settings
+      func_configure-system
+      if [[ "$InstallVmwareTools" -eq 1 ]]; then func_Install-VmwareTools; fi
+      func_end
+    elif [[ "$StartConf" == "N" || "$StartConf" == "n" ]]; then
+    echo -e "$red"
+    echo -e "You are now aborting EFA-Init, your system will not function properly."
+    echo -e "Please run /usr/local/sbin/EFA-Init to start the first-time configuration again."
+    echo -e ""
+    echo -e "Aborting EFA-Init now. $clean"
+    exit 0
+  else
+    echo -e "       $red ERROR: please make an selection.$clean"
+    echo -e -n "$green[EFA]$clean Start EFA first-time configure (Y/n) -> "
+    read StartConf
+    fi
+ else
+    echo -e "$red         ERROR: EFA is already configured $clean"
+    echo -e "$red         Please use EFA-Configure $clean"
+    echo -e ""
+    exit 0
+fi
+# EOF

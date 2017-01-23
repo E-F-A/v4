@@ -311,6 +311,8 @@ Requires:  unbound >= 1.4.20-28
     #     ldns                                   #         #
     #     libevent                               #         #
     #     unbound-libs                           #         #
+Requires:  yum-cron >=3.4.3-150
+    # Yum auto updates                           # base    # yum-cron
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -360,9 +362,10 @@ if [ "$1" = "1" ]; then
     /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
-    
+
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
     echo "Build completed!"
 elif [ "$1" = "2" ]; then
