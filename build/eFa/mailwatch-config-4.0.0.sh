@@ -64,11 +64,11 @@ cat > /var/www/html/index.html << 'EOF'
 <!DOCTYPE html>
 <html>
     <head>
-    <title>MailWatch</title>"
-    <meta http-equiv=\"refresh\" content=\"0; url=/mailscanner/\" />
+    <title>MailWatch</title>
+    <meta http-equiv="refresh" content="0; url=/mailscanner/" />
     </head>"
     <body>
-         <a href=\"/mailscanner/\">Click Here for MailWatch</a>
+         <a href="/mailscanner/">Click Here for MailWatch</a>
     </body>
 </html>
 EOF
