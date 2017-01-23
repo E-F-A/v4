@@ -27,7 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of clamav
 #-----------------------------------------------------------------------------#
-clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server})
+clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server)
 
 setsebool -P antivirus_can_scan_system 1
 useradd -d /etc/clamd.d -M -s /sbin/nologin clamav

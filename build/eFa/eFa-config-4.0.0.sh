@@ -52,9 +52,9 @@ First time login: root/EfaPr0j3ct
 EOF
 
 cp $srcdir/eFa/eFa-SA-Update /usr/sbin/eFa-SA-Update
-chmod 700 /usr/local/sbin/eFa-SA-Update
+chmod 700 /usr/sbin/eFa-SA-Update
 cp $srcdir/eFa/eFa-MS-Update /usr/sbin/eFa-MS-Update
-chmod 700 /usr/local/sbin/eFa-MS-Update
+chmod 700 /usr/sbin/eFa-MS-Update
 
 # Write SSH banner
 sed -i "/^#Banner / c\Banner /etc/banner"  /etc/ssh/sshd_config
