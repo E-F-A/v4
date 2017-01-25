@@ -27,6 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of MailScanner
 #-----------------------------------------------------------------------------#
+echo "Configuring MailScanner..."
 
 chown postfix:mtagroup /var/spool/MailScanner/quarantine
 mkdir /var/spool/MailScanner/spamassassin
@@ -142,3 +143,5 @@ sed -i '/^\/usr\/sbin\/ms-cron MAINT/ c\/usr/sbin/ms-cron MAINT >/dev/null 2>&1'
 # selinux configuration
 # Allow apache to access MailScanner configuration
 semodule -i $srcdir/mailscanner/MailScannerhttpd.pp
+
+echo "Configuring MailScanner...done"

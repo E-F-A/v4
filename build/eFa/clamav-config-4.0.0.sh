@@ -27,6 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of clamav
 #-----------------------------------------------------------------------------#
+echo "Configuring clamav..."
 clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server)
 
 setsebool -P antivirus_can_scan_system 1
@@ -79,4 +80,6 @@ chown -R clamav:clamav /var/log/clamd
 mkdir -p /var/run/clamd
 chown -R clamav:clamav /var/run/clamd
 usermod clamav -G mtagroup
+
+echo "Configuring clamav...done"
 
