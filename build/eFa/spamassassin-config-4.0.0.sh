@@ -40,7 +40,7 @@ rm -f /usr/share/GeoIP/GeoLiteCountry.dat
 ln -s /var/www/html/mailscanner/temp/GeoIP.dat /usr/share/GeoIP/GeoLiteCountry.dat
 
 # PDFInfo (now included in SA 3.4.1)
-cp $srcdir/spamassassin/pdfinfo.cf
+cp $srcdir/spamassassin/pdfinfo.cf /etc/mail/spamassassin/pdfinfo.cf
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::PDFInfo$/ c\loadplugin Mail::SpamAssassin::Plugin::PDFInfo" /etc/mail/spamassassin/v341.pre
 
 # Download an initial KAM.cf file updates are handled by EFA-SA-Update.
