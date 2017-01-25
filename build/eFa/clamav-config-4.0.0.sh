@@ -36,7 +36,7 @@ sed -i '/^Example/ c\#Example' /etc/freshclam.conf
 cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/
 sed -i '/^Example/ c\#Example' /etc/clamd.d/clamd.conf
 sed -i '/^User <USER>/ c\User clamav' /etc/clamd.d/clamd.conf
-sed -i '/#LocalSocket /var/run/clamd<SERVICE>/clamd.sock/ c\LocalSocket /var/run/clamd<SERVICE>/clamd.sock' /etc/clamd.d/clamd.conf
+sed -i '/#LocalSocket \/var\/run\/clamd.<SERVICE>\/clamd.sock/ c\LocalSocket /var/run/clamd.<SERVICE>/clamd.sock' /etc/clamd.d/clamd.conf
 cat > /usr/lib/systemd/system/clam-freshclam.service << 'EOF'
 # Run the freshclam as daemon
 [Unit]
