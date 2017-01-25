@@ -56,7 +56,7 @@ bayes_sql_dsn                   DBI:mysql:sa_bayes:localhost
 bayes_sql_username              sa_user"
 bayes_sql_password              $password
 
-ifplugin loadplugin Mail::SpamAssassin::Plugin::AWL
+ifplugin Mail::SpamAssassin::Plugin::AWL
     auto_whitelist_factory          Mail::SpamAssassin::SQLBasedAddrList
     user_awl_dsn                    DBI:mysql:sa_bayes:localhost
     user_awl_sql_username           sa_user
