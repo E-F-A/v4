@@ -361,6 +361,7 @@ if [ "$1" = "1" ]; then
     /bin/sh %{_usrsrc}/eFa/mailwatch-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/dcc-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
