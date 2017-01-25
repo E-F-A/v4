@@ -48,22 +48,31 @@ cp $srcdir/spamassassin/KAM.cf /etc/mail/spamassassin/KAM.cf
 
 # Configure spamassassin bayes and awl DB settings
 cat >> /etc/MailScanner/spamassassin.conf << 'EOF'
-#Begin E.F.A. mods for MySQL
+
+#Begin eFa mods for MySQL
+
 bayes_store_module              Mail::SpamAssassin::BayesStore::SQL
 bayes_sql_dsn                   DBI:mysql:sa_bayes:localhost
 bayes_sql_username              sa_user"
 bayes_sql_password              $password
-auto_whitelist_factory          Mail::SpamAssassin::SQLBasedAddrList
-user_awl_dsn                    DBI:mysql:sa_bayes:localhost
-user_awl_sql_username           sa_user
-user_awl_sql_password           $password
-bayes_sql_override_username     mailwatch
-txrep_factory                   Mail::SpamAssassin::SQLBasedAddrList
-txrep_track_messages            0
-user_awl_sql_override_username  TxRep
-user_awl_sql_table              txrep
-use_txrep                       0
-#End E.F.A. mods for MySQL
+
+ifplugin loadplugin Mail::SpamAssassin::Plugin::AWL
+    auto_whitelist_factory          Mail::SpamAssassin::SQLBasedAddrList
+    user_awl_dsn                    DBI:mysql:sa_bayes:localhost
+    user_awl_sql_username           sa_user
+    user_awl_sql_password           $password
+    bayes_sql_override_username     mailwatch
+endif
+
+ifplugin Mail::SpamAssassin::Plugin::TxRep
+    txrep_factory                   Mail::SpamAssassin::SQLBasedAddrList
+    txrep_track_messages            0
+    user_awl_sql_override_username  TxRep
+    user_awl_sql_table              txrep
+    use_txrep                       0
+endif
+
+#End eFa mods for MySQL
 EOF
 
 # Enable Auto White Listing
