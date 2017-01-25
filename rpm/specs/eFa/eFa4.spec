@@ -311,7 +311,7 @@ Requires:  unbound >= 1.4.20-28
     #     ldns                                   #         #
     #     libevent                               #         #
     #     unbound-libs                           #         #
-Requires:  yum-cron >=3.4.3-150
+Requires:  yum-cron >= 3.4.3-150
     # Yum auto updates                           # base    # yum-cron
 
 %description
