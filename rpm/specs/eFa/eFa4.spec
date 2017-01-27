@@ -313,6 +313,10 @@ Requires:  unbound >= 1.4.20-28
     #     unbound-libs                           #         #
 Requires:  yum-cron >= 3.4.3-150
     # Yum auto updates                           # base    # yum-cron
+Requires:  checkpolicy >= 2.5-4
+    # checkpolicy                                # base    # selinux
+Requires:  policycoreutils-python >= 2.5-11
+    # policycoreutils-python                     # base    # selinux
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
