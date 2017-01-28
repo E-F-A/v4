@@ -86,4 +86,4 @@ EOF
 sed -i "s/#compress/compress/g" /etc/logrotate.conf
 
   # Set the system as unconfigured
-sed -i '1i\CONFIGURED:NO' /etc/eFa-Config
+echo 'CONFIGURED:NO' > /etc/eFa-Config
