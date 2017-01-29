@@ -30,7 +30,7 @@
 # Variables (Populate for testing)
 # +---------------------------------------------------+
 debug="0"
-PASSWORD="EfaPr0j3ct"
+PASSWORD="eFaPr0j3ct"
 HOSTNAME=''
 DOMAINNAME=''
 ADMINEMAIL=''
