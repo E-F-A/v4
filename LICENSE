@@ -1,4 +1,4 @@
-------------------------E.F.A. Email Filter Appliance---------------------------
+------------------------eFa Email Filter Appliance---------------------------
 
 https://efa-project.org/
 
@@ -683,12 +683,12 @@ Public License instead of this License.  But first, please read
 
 --------------------------------------------------------------------------------
 
-CentOS-6 EULA
+CentOS-7 EULA
 
-CentOS-6 comes with no guarantees or warranties of any sorts,
+CentOS-7 comes with no guarantees or warranties of any sorts,
 either written or implied.
 
-The Distribution is released as GPL. Individual packages in the
+The Distribution is released as GPLv2. Individual packages in the
 distribution come with their own licences.
 
   GNU GENERAL PUBLIC LICENSE
