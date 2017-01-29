@@ -81,8 +81,10 @@ function func_configure-system() {
   if [[ "$RECURSE" -eq "1" ]]; then
     echo "  forward-first: yes" >> /etc/unbound/conf.d/forwarders.conf
 } else
-    echo "  forward-addr: $DNS1" >> /etc/unbound/conf.d/forwarders.conf
-    echo "  forward-addr: $DNS2" >> /etc/unbound/conf.d/forwarders.conf
+    echo "  forward-addr: $DNSIP41" >> /etc/unbound/conf.d/forwarders.conf
+    echo "  forward-addr: $DNSIP42" >> /etc/unbound/conf.d/forwarders.conf
+    echo "  forward-addr: $DNSIP61" >> /etc/unbound/conf.d/forwarders.conf
+    echo "  forward-addr: $DNSIP62" >> /etc/unbound/conf.d/forwarders.conf
   fi
   
   echo -e "$green[eFa]$clean - Setting IP settings"
