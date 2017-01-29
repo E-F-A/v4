@@ -55,7 +55,7 @@ else
 fi
 
 # Add eFa Repo
-if [[ "x$action" -eq "xtesting" ]]; then
+if [[ "$action" == "testing" ]]; then
   echo "- Adding eFa Testing Repo"
   rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
   cd /etc/yum.repos.d/
