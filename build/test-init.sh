@@ -67,7 +67,7 @@ function func_configure-system() {
 
  # Start mariadb Daemon
   systemctl start mariadb 
-  
+
   # Network settings
   echo -e "$green[eFa]$clean - Setting new hostname"
   echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
@@ -86,7 +86,7 @@ function func_configure-system() {
     echo "  forward-addr: $DNSIP61" >> /etc/unbound/conf.d/forwarders.conf
     echo "  forward-addr: $DNSIP62" >> /etc/unbound/conf.d/forwarders.conf
   fi
-  
+
   echo -e "$green[eFa]$clean - Setting IP settings"
   sed -i '/^BOOTPROTO=/ c\BOOTPROTO="none"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
   sed -i '/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF="no"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
@@ -98,8 +98,9 @@ function func_configure-system() {
   echo "GATEWAY=\"$IP4GATEWAY\"" >> /etc/sysconfig/network
   echo "IPV6_DEFAULTGW=\"$IP6GATEWAY\"" >> /etc/sysconfig/network
   systemctl restart network
+  systemctl start unbound
   
-   echo -e "$green[eFa]$clean - Creating user"
+  echo -e "$green[eFa]$clean - Creating user"
   useradd -m -d /home/$USERNAME -s /bin/bash $USERNAME
   echo "$USERNAME:$PASSWORD" | chpasswd --md5 $USERNAME
 
@@ -128,8 +129,6 @@ function func_configure-system() {
   chmod ug+rw /var/spool/postfix/.razor/*
   
   echo -e "$green[eFa]$clean - Updating AV and SA rules"
-  systemctl start unbound
-  sleep 5
 
   systemctl start clamd
   freshclam
