@@ -80,7 +80,7 @@ function func_configure-system() {
   echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
   if [[ "$RECURSE" -eq "1" ]]; then
     echo "  forward-first: yes" >> /etc/unbound/conf.d/forwarders.conf
-} else
+  else
     echo "  forward-addr: $DNSIP41" >> /etc/unbound/conf.d/forwarders.conf
     echo "  forward-addr: $DNSIP42" >> /etc/unbound/conf.d/forwarders.conf
     echo "  forward-addr: $DNSIP61" >> /etc/unbound/conf.d/forwarders.conf
@@ -257,6 +257,7 @@ function func_configure-system() {
   systemctl enable yum-cron
   
   echo -e "$green[eFa]$clean - Done"
+}
 # +---------------------------------------------------+
 
 # +---------------------------------------------------+
