@@ -35,9 +35,9 @@ systemctl disable mdmonitor
 systemctl disable smartd
 systemctl disable abrtd
 
-# These services we disable for now and enable them after EFA-Init.
+# These services we disable for now and enable them after eFa-Init.
 # Most of these are not enabled by default but add them here just to
-# make sure we don't forget them at EFA-Init.
+# make sure we don't forget them at eFa-Init.
 chkconfig mailscanner off
 systemctl disable postfix
 systemctl disable httpd
@@ -53,5 +53,6 @@ systemctl disable unbound
 #chkconfig munin-node off
 systemctl disable chronyd
 systemctl disable yum-cron
+systemctl disable sshd
 
 echo "Configuring services...done"
