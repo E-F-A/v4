@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 # +--------------------------------------------------------------------+
-# EFA-Tokens-Cron
+# eFa-Tokens-Cron
 # Expires old tokens from efa database
-# Version 20140119
+# Version 20170204
 # +--------------------------------------------------------------------+
 # Copyright (C) 2012~2017 http://www.efa-project.org
 #
@@ -34,11 +34,11 @@ my($db_host) = 'localhost';
 my($db_user) = 'efa';
 # Issue #66 Grab Passwords from EFA-Config
 my($fh);
-my($pw_config) = '/etc/EFA-Config';
+my($pw_config) = '/etc/eFa-Config';
 open($fh, "<", $pw_config);
 if (!$fh) {
   openlog($0,'','user');
-  syslog('error', "Unable to retrieve password from /etc/EFA-Config, aborting!");
+  syslog('error', "Unable to retrieve password from /etc/eFa-Config, aborting!");
   closelog;
   exit 1;
 }

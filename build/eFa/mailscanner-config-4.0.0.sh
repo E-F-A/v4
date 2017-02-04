@@ -112,8 +112,8 @@ rm -f /usr/share/MailScanner/perl/custom/CustomAction.pm
 cp $srcdir/mailscanner/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
 
 # Add EFA-Tokens-Cron
-cp $srcdir/mailscanner/EFA-Tokens-Cron /etc/cron.daily/EFA-Tokens-Cron
-chmod 700 /etc/cron.daily/EFA-Tokens-Cron
+cp $srcdir/mailscanner/EFA-Tokens-Cron /etc/cron.daily/eFa-Tokens-Cron
+chmod 700 /etc/cron.daily/eFa-Tokens-Cron
 
 # Force mailscanner init to return a code on all failures
 sed -i 's/failure/failure \&\& RETVAL=1/g' /etc/init.d/mailscanner
