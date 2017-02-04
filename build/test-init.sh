@@ -130,7 +130,7 @@ function func_configure-system() {
   
   echo -e "$green[eFa]$clean - Updating AV and SA rules"
 
-  systemctl start clamd
+  systemctl start clamd@scan
   freshclam
 
   /usr/bin/clamav-unofficial-sigs.sh
