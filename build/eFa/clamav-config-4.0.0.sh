@@ -31,11 +31,13 @@ echo "Configuring clamav..."
 clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server)
 
 setsebool -P antivirus_can_scan_system 1
+setsebool -P clamd_use_jit on
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
 cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/scan.conf
 sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf
 sed -i '/^User <USER>/ c\User clamupdate' /etc/clamd.d/scan.conf
 sed -i '/#LocalSocket \/var\/run\/clamd.<SERVICE>\/clamd.sock/ c\LocalSocket /var/run/clamd.scan/clamd.sock' /etc/clamd.d/scan.conf
+sed -i '/#LogFile \/var\/log\/clamd.<SERVICE>/ c\LogFile /var/log/clamd.scan/scan.log' /etc/clamd.d/scan.conf
 cat > /usr/lib/systemd/system/clam-freshclam.service << 'EOF'
 # Run the freshclam as daemon
 [Unit]
@@ -58,8 +60,8 @@ Description = clamd scanner daemon
 After = syslog.target nss-lookup.target network.target
 
 [Service]
-Type = simple
-ExecStart = /usr/sbin/clamd -c /etc/clamd.d/scan.conf --nofork=yes
+Type = forking
+ExecStart = /usr/sbin/clamd -c /etc/clamd.d/scan.conf
 Restart = on-failure
 PrivateTmp = true
 
@@ -74,10 +76,12 @@ CLAMD_SOCKET=/var/run/clamd.scan/clamd.sock
 #CLAMD_OPTIONS=
 EOF
 chown -R clamupdate:clamupdate /etc/clamd.d
-mkdir -p /var/log/clamd
-chown -R clamupdate:clamupdate /var/log/clamd
-mkdir -p /var/run/clamd
-chown -R clamupdate:clamupdate /var/run/clamd
+mkdir -p /var/log/clamd.scan
+chown -R clamupdate:clamupdate /var/log/clamd.scan
+chcon -u system_u -r object_r -t antivirus_log_t /var/log/clamd.scan
+mkdir -p /var/run/clamd.scan
+chown -R clamupdate:clamupdate /var/run/clamd.scan
+chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.scan
 usermod clamupdate -G mtagroup
 
 echo "Configuring clamav...done"
