@@ -31,7 +31,6 @@ echo "Configuring clamav..."
 clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server)
 
 setsebool -P antivirus_can_scan_system 1
-useradd -d /etc/clamd.d -M -s /sbin/nologin clamupdate
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
 cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/scan.conf
 sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf
