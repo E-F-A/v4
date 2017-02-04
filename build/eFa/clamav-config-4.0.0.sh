@@ -31,12 +31,12 @@ echo "Configuring clamav..."
 clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server)
 
 setsebool -P antivirus_can_scan_system 1
-useradd -d /etc/clamd.d -M -s /sbin/nologin clamav
+useradd -d /etc/clamd.d -M -s /sbin/nologin clamupdate
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
-cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/
-sed -i '/^Example/ c\#Example' /etc/clamd.d/clamd.conf
-sed -i '/^User <USER>/ c\User clamav' /etc/clamd.d/clamd.conf
-sed -i '/#LocalSocket \/var\/run\/clamd.<SERVICE>\/clamd.sock/ c\LocalSocket /var/run/clamd.<SERVICE>/clamd.sock' /etc/clamd.d/clamd.conf
+cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/scan.conf
+sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf
+sed -i '/^User <USER>/ c\User clamupdate' /etc/clamd.d/scan.conf
+sed -i '/#LocalSocket \/var\/run\/clamd.<SERVICE>\/clamd.sock/ c\LocalSocket /var/run/clamd.scan/clamd.sock' /etc/clamd.d/scan.conf
 cat > /usr/lib/systemd/system/clam-freshclam.service << 'EOF'
 # Run the freshclam as daemon
 [Unit]
@@ -53,14 +53,14 @@ PrivateTmp = true
 WantedBy=multi-user.target
 
 EOF
-cat > /usr/lib/systemd/system/clamd.service << 'EOF'
+cat > /usr/lib/systemd/system/clamd@scan.service << 'EOF'
 [Unit]
 Description = clamd scanner daemon
 After = syslog.target nss-lookup.target network.target
 
 [Service]
 Type = simple
-ExecStart = /usr/sbin/clamd -c /etc/clamd.d/clamd.conf --nofork=yes
+ExecStart = /usr/sbin/clamd -c /etc/clamd.d/scan.conf --nofork=yes
 Restart = on-failure
 PrivateTmp = true
 
@@ -70,16 +70,16 @@ EOF
 
 cp /usr/share/doc/clamav-server-$clamav_version/clamd.logrotate /etc/logrotate.d/
 cat > /etc/sysconfig/clamd << 'EOF'
-CLAMD_CONFIGFILE=/etc/clamd.d/<SERVICE>.conf
-CLAMD_SOCKET=/var/run/clamd.<SERVICE>/clamd.sock
+CLAMD_CONFIGFILE=/etc/clamd.d/scan.conf
+CLAMD_SOCKET=/var/run/clamd.scan/clamd.sock
 #CLAMD_OPTIONS=
 EOF
-chown -R clamav:clamav /etc/clamd.d
+chown -R clamupdate:clamupdate /etc/clamd.d
 mkdir -p /var/log/clamd
-chown -R clamav:clamav /var/log/clamd
+chown -R clamupdate:clamupdate /var/log/clamd
 mkdir -p /var/run/clamd
-chown -R clamav:clamav /var/run/clamd
-usermod clamav -G mtagroup
+chown -R clamupdate:clamupdate /var/run/clamd
+usermod clamupdate -G mtagroup
 
 echo "Configuring clamav...done"
 
