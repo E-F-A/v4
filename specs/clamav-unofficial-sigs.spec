@@ -54,7 +54,7 @@ mkdir %{buildroot}/etc
 cp clamav-unofficial-sigs.sh %{buildroot}/usr/bin
 mkdir %{buildroot}/etc/clamav-unofficial-sigs
 cp config/master.conf %{buildroot}/etc/clamav-unofficial-sigs
-cp config/os.centos6.conf %{buildroot}/etc/clamav-unofficial-sigs/os.conf
+cp config/os.centos7.conf %{buildroot}/etc/clamav-unofficial-sigs/os.conf
 cp config/user.conf %{buildroot}/etc/clamav-unofficial-sigs
 mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 
