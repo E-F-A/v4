@@ -245,7 +245,7 @@ function func_configure-system() {
   systemctl enable mariadb
   #chkconfig saslauthd off
   systemctl enable crond
-  systemctl enable clamd
+  systemctl enable clamd@scan
   chkconfig sqlgrey on
   #chkconfig mailgraph-init off
   chkconfig adcc on
