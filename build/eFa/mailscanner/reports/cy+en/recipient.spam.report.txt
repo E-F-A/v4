@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Ni ddosbarthwyd e-bost masnachol na ofynnwyd amdano / Unsolicited commercial email not delivered
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Mae neges yr ydych wedií dderbyn wedi | Our UCE (spam) detectors have been
 rhoi ein canfyddwyr UCE (sbam) ar     | triggered by a message you received:-
@@ -39,7 +39,7 @@ gweld y wybodaeth ganlynol:           | the following information:
    Date code: $datenumber
 
 --
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

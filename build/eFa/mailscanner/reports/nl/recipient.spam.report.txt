@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Ongewenste (commerciele) e-mail geweigerd
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Onze spamdetector reageerde op een bericht dat aan u is verzonden:
   From: $from
@@ -25,7 +25,7 @@ Uw beheerder heeft de volgende informatie nodig:
   Datum code: $datenumber
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

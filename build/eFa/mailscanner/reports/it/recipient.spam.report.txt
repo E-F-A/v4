@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Unsolicited commercial email not delivered
-X-%org-name%-MailScanner: generato
+X-%org-name%-MailScanner-eFa: generato
 
 I nostri sistemi di rilevazione di UCE (spam) sono stati attivati da un 
 tuo messaggio:-
@@ -27,7 +27,7 @@ comunicate agli amministratori di sistema:
    Codice data: $datenumber
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

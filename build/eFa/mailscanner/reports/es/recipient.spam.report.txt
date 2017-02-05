@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: {Spam no entregado} $subject
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Nuestros detectores de correo electrónico no solicitado (UCE/spam)
 fueron activados debido a un mensaje que Usted recibió:
@@ -28,7 +28,7 @@ Los administradores del sitio necesitarán la siguiente información:
    Código de fecha: $datenumber
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

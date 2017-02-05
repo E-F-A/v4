@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: O email comercial não solicitado não foi entregue
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Nossos detetores de emails comerciais não solicitados(spam) foram
 ativados por uma mensagem que voce recebeu:-
@@ -26,7 +26,7 @@ O seu administrador de sistema necessitará das seguintes informações:
   Date code: $datenumber
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

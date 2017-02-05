@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Spam-Mail nicht ausgeliefert
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Unsere Spam-Detektoren wurden durch eine an Sie gesandte Nachricht ausgelöst:
   Absender: $from
@@ -25,7 +25,7 @@ Ihre Administratoren werden die folgenden Informationen benötigen:
   Datum: $datenumber
 
 --
-MailScanner
+eFa
 E-Mail-Virus-Scanner
 %org-long-name%
 %web-site%

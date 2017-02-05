@@ -1,7 +1,7 @@
 De: "$postmastername" <$localpostmaster>
 A: $to
 Assumpte: {Spam no lliurat} $subject
-X-%org-name%-MailScanner: generat
+X-%org-name%-MailScanner-eFa: generat
 
 Els nostres detectors d'UCE (spam) han estat activats per un missatge que heu rebut:-
   De: $from
@@ -25,7 +25,7 @@ Els vostres administradors del sistema necessitaran la informació següent:
   Data codi: $datenumber
 
 -- 
-MailScanner
+eFa
 L'Escànner de Virus de Correu Electrònic
 %org-long-name%
 %web-site%
