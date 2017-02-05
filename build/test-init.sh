@@ -176,7 +176,7 @@ function func_configure-system() {
   echo "$USERNAME ALL=(ALL) ALL" >> /etc/sudoers.d/eFa-users
   echo "$USERNAME ALL=(ALL) NOPASSWD: /usr/sbin/eFa-Configure" >> /etc/sudoers.d/eFa-users
 
-  /usr/bin/mysql -u root -p"$PASSWORD" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$efauserpwd'), fullname = 'Administrator', type ='A'"
+  /usr/bin/mysql -u root -p"$PASSWORD" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$PASSWORD'), fullname = 'Administrator', type ='A'"
   /usr/bin/mysql -u root -p"$PASSWORD" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '127.0.0.1'"
   /usr/bin/mysql -u root -p"$PASSWORD" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '::1'"
 
