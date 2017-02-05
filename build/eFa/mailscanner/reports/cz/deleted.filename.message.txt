@@ -1,4 +1,4 @@
-Toto je zprava od systemu antivirive ochrany elektronicke posty 'MailScanner'
+Toto je zprava od systemu antivirive ochrany elektronicke posty 'eFa'
 -----------------------------------------------------------------------------
 Originalni priloha "$filename" je na seznamu priloh, ktere nejsou 
 akceptovanelne pro tuto stranu a byla nahrazena touto vystraznou zpravou.

@@ -1,4 +1,4 @@
-Avertissement de la passerelle antivirus MailScanner
+Avertissement de la passerelle antivirus eFa
 ----------------------------------------------------
 
 Les règles de sécurité de notre entreprise interdisent la
@@ -14,7 +14,7 @@ $report
 Contactez $localpostmaster pour plus d'informations.
 
 -- 
-MailScanner
+eFa
 %org-long-name%
 %web-site%
 

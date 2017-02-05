@@ -1,4 +1,4 @@
-Toto je sprava od "MailScanner E-Mail Virus Protection Service"
+Toto je sprava od "eFa E-Mail Virus Protection Service"
 ----------------------------------------------------------------------
 Originalna e-mail priloha "$filename"
 je na liste priloh, ktore nie su akceptovane pre tuto stranu a bola vymenena touto

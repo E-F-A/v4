@@ -1,4 +1,4 @@
-Missatge del Servei de Protecció de Virus de Correu Electrònic de MailScanner
+Missatge del Servei de Protecció de Virus de Correu Electrònic de eFa
 -----------------------------------------------------------------------------
 El fitxer adjunt original "$filename"
 és a la llista de fitxers adjunts inacceptables per a aquest lloc i ha estat

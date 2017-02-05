@@ -1,4 +1,4 @@
-Dies ist eine MailScanner E-Mail Virus Protection Service Nachricht
+Dies ist eine eFa E-Mail Virus Protection Service Nachricht
 -------------------------------------------------------------------
 Der ursprüngliche E-Mail-Anhang "$filename"
 ist auf der Liste der unerwünschten Dateianhänge für diese Domain und wurde

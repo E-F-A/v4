@@ -1,4 +1,4 @@
-Meddelande från MailScanner E-Mail Virus Protection Service
+Meddelande från eFa E-Mail Virus Protection Service
 -------------------------------------------------------------
 Bilagan "$filename" 
 är av en typ som inte godkänns av domänen och har blivit 

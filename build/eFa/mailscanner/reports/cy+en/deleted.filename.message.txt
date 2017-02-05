@@ -1,4 +1,4 @@
-Dyma neges gan Wasanaeth MailScanner  | This is a message from the MailScanner
+Dyma neges gan Wasanaeth eFa  | This is a message from the eFa
 sy'n Gwarchod rhag Firysau            | E-Mail Virus Protection Service
 ----------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ dywedodd y sganiwr firysau:           | the virus scanner said:
 $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%
