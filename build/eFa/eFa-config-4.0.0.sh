@@ -40,16 +40,14 @@ mkdir -p /var/eFa/lib/eFa-Configure
 touch /etc/sysconfig/eFa_trusted_networks
 
 # write issue file
-cat > /etc/issue << 'EOF'
-
-------------------------------
---- Welcome to eFa-$version ---
-------------------------------
-  http://www.efa-project.org
-------------------------------
-
-First time login: root/EfaPr0j3ct
-EOF
+echo '' > /etc/issue
+echo '------------------------------' >> /etc/issue
+echo "--- Welcome to eFa-$version ---" >> /etc/issue
+echo '------------------------------' >> /etc/issue
+echo '   https://efa-project.org' >> /etc/issue
+echo '------------------------------' >> /etc/issue
+echo '' >> /etc/issue
+echo 'First time login: root/eFaPr0j3ct' >> /etc/issue
 
 cp $srcdir/eFa/eFa-SA-Update /usr/sbin/eFa-SA-Update
 chmod 700 /usr/sbin/eFa-SA-Update
