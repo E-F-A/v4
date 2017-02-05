@@ -1,5 +1,5 @@
-Neges yw hwn gan Wasanaeth Gwarchod   | This is a message from the MailScanner
-rhag Feirws E-bost MailScanner.       | E-Mail Virus Protection Service.
+Neges yw hwn gan Wasanaeth Gwarchod   | This is a message from the eFa
+rhag Feirws E-bost eFa.               | E-Mail Virus Protection Service.
 --------------------------------------|---------------------------------------
                                       |
 Yr oedd y neges e-bost gwreiddiol â   | The original e-mail message contained
@@ -29,7 +29,7 @@ Nodyn i'r Ddesg Gymorth: Edrychwch ar | Note to Help Desk: Look on
                            (neges/message $id).
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

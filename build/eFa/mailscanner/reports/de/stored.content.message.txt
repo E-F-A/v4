@@ -1,4 +1,4 @@
-Dies ist eine Nachricht vom MailScanner E-Mail-Virus-Schutzdienst
+Dies ist eine Nachricht vom eFa E-Mail-Virus-Schutzdienst
 ----------------------------------------------------------------------
 Die ursprüngliche E-Mail-Nachricht enthielt potenziell gefährliche Inhalte,
 die zu Ihrer Sicherheit entfernt wurden.
