@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Upozorneni: Nalezen virus
-X-%org-name%-MailScanner: vytvoren
+X-%org-name%-MailScanner-eFa: vytvoren
 
 Nas detektor viru byl spusten zpravou, kterou posilate:-
   Komu: $to
@@ -16,7 +16,7 @@ Detektor viru ohlasil o teto zprave nasledujici:
 Hlaseni: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

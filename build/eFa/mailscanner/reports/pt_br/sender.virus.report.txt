@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Aviso: Detectado vírus de e-mail
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Nosso sistema de detecção de vírus foi acionado ao analisar uma mensagem que
 você enviou:-

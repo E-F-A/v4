@@ -16,7 +16,7 @@ Följande meddelade har genererats:
 Rapport: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

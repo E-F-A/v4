@@ -31,7 +31,7 @@ scana calculatorul de pe care a fost trimis mailul.
 The virus detector said this about the message:
 Report: $report
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Atención: Virus detectado en e-mail
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 MIME-Version: 1.0
 Content-type: text/plain; charset=ISO-8859-1
 Content-transfer-encoding: Quoted-Printable
@@ -19,7 +19,7 @@ El detector de virus dijo lo siguiente acerca del mensaje:
 Informe: $report
 
 -- 
-MailScanner
+eFa
 Protección contra Virus de E-mail
 %org-long-name%
 %web-site%

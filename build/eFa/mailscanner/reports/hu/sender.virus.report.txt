@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: ON VIRUST KULDOTT!
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Viruskeresonk az On altal kuldott levelben virusgyanus fajlt talalt:
 Our virus detector has just been triggered by a message you sent:
@@ -20,7 +20,7 @@ $report
 
 -- 
 $localpostmaster
-MailScanner - Email Virus Scanner - http://www.mailscanner.info
+eFa - email Filter appliance - https://efa-project.org
 %org-long-name%
 %web-site%
 

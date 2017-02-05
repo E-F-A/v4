@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Waarschuwing: E-mail virus ontdekt
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Onze virusscanner reageerde op een bericht dat u verstuurde:
   To: $to
@@ -16,7 +16,7 @@ De virusscanner gaf onderstaande melding:
 $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

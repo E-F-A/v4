@@ -20,7 +20,7 @@ $report
 Contactez $localpostmaster pour plus d'informations.
 
 -- 
-MailScanner
+eFa
 %org-long-name%
 %web-site%
 

@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Upozornenie: E-mail virus zisteny
-X-%org-name%-MailScanner: vytvoreny
+X-%org-name%-MailScanner-eFa: vytvoreny
 
 Nas detektor virusov prave zistil, ze sprava ktoru posielate:-
   Komu: $to
@@ -16,7 +16,7 @@ Detektor virusov oznamuje o tejto sprave:
 Hlasenie: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%
