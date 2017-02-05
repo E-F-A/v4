@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Warning: E-mail viruses detected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Our e-mail content detector has just been triggered by a message you sent:
   To: $to
@@ -18,7 +18,7 @@ The virus detector said this about the message:
 Report: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

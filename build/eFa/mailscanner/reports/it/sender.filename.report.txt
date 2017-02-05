@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Attenzione: rilevata E-mail infetta
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Il sistema antivirus ha rilevato una infezione nel messaggio:-
   To: $to
@@ -16,7 +16,7 @@ Il sistema antivirus riporta:
 Rapporto: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

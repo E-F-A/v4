@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Upozorneni: Zjisten virus/nepovolena priloha
-X-%org-name%-MailScanner: vytvoren
+X-%org-name%-MailScanner-eFa: vytvoren
 
 Detektor viru byl spusten zpravou, kterou jste zaslali:-
   Komu: $to
@@ -17,7 +17,7 @@ a chcete je dorucit, vlozte je prosim priste do "zip" souboru.
 Detektor viru ohlasil o teto zprave nasledujici:                                                
 Hlaseni: $report
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

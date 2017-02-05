@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Rhybudd: Canfuwyd firws e-bost/Warning: E-mail viruses detected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Mae neges a anfonasoch newydd roi ein | Our virus detector has just been
 canfyddwr firysau ar waith:-          | triggered by a message you sent:-
@@ -26,7 +26,7 @@ Adroddiad:                            | Report:
         $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%
