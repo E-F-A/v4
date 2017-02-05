@@ -6,7 +6,7 @@ Los virus han sido eliminados y los archivos desinfectados se han
 anexado a este mensaje.
 
 -- 
-MailScanner
+eFa
 Protección contra Virus de E-mail
 %org-long-name%
 %web-site%

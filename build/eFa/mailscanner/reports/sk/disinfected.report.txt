@@ -5,7 +5,7 @@ obsahovala jeden alebo viac virusov, ktore by mali byt odstranene.
 Virusy boli odstranene a ocisteny subor je pripojeny k tejto sprave.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

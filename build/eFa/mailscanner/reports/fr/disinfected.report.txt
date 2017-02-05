@@ -9,7 +9,7 @@ Les pièces jointes désinfectées sont jointes à ce courriel.
 Contactez $localpostmaster pour plus d'informations.
 
 -- 
-MailScanner
+eFa
 %org-long-name%
 %web-site%
 

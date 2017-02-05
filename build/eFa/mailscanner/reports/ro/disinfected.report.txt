@@ -16,7 +16,7 @@ a fost infectat cu unul sau mai multi virusi.
 Atasamentele au fost devirusate si sunt atasate la acest mesaj. 
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

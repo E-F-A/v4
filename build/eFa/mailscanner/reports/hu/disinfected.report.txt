@@ -5,7 +5,7 @@ a csatolt mellekletekbol.
 
 -- 
 $localpostmaster
-MailScanner - Email Virus Scanner - http://www.mailscanner.info
+eFa - email Filter appliance - https://efa-project.org
 %org-long-name%
 %web-site%
 

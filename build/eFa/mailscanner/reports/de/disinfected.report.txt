@@ -6,7 +6,7 @@ Die Viren wurden entfernt und die virenfreien Dateien wurden an diese E-Mail
 angehängt.
 
 --
-MailScanner
+eFa
 E-Mail-Virus-Scanner
 %org-long-name%
 %web-site%

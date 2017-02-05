@@ -4,7 +4,7 @@ innehöll ett eller flera virus.
 Meddelandet och bilagor har rensats från virus.
 
 -- 
-MailScanner
+eFa
 Email Processor
 %org-long-name%
 %web-site%

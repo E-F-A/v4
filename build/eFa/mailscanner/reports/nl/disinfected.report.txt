@@ -1,4 +1,4 @@
-Dit is een bericht van het MailScanner virus beschermingssysteem
+Dit is een bericht van het eFa virus beschermingssysteem
 ----------------------------------------------------------------
 Een bericht dat u onlangs ontving van $from met als
 onderwerp $subject
@@ -8,7 +8,7 @@ De virussen zijn verwijderd en de ontsmette bestanden zijn als
 bijlage toegevoegd aan dit bericht.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

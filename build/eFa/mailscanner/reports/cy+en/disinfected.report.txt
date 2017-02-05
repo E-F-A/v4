@@ -11,7 +11,7 @@ ffeiliau diheintiedig ynghlwm wrth      | the disinfected files are attached
 y neges hon.                            | to this message.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%
