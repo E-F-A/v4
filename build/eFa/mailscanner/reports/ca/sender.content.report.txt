@@ -1,7 +1,7 @@
 De: "$postmastername" <$localpostmaster>
 A: $from
 Assumpte: Correu electrònic potencialment perillós rebutjat
-X-%org-name%-MailScanner: generat
+X-%org-name%-MailScanner-eFa: generat
 
 Els nostres filtres de contingut de correu electrònic han estat activats per un missatge que heu enviat:-
   A: $to
@@ -19,7 +19,7 @@ Si teniu cap pregunta sobre això o creieu que heu rebut aquest missatge
 per error, si us plau, contacteu amb els vostres administradors de sistema.
 
 -- 
-MailScanner
+eFa
 L'Escànner de Virus de Correu Electrònic
 %org-long-name%
 %web-site%

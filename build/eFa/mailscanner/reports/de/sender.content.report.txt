@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Potenziell gefährliche Inhalte zurückgewiesen
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Unsere Nachrichten-Filter wurden durch eine von Ihnen gesendete Nachricht
 ausgelöst:
@@ -21,7 +21,7 @@ Wenn Sie Fragen haben oder glauben, diese Nachricht zu Unrecht erhalten zu
 haben, kontaktieren Sie bitte die Systemadministratoren.
 
 --
-MailScanner
+eFa
 E-Mail-Virus-Scanner
 %org-long-name%
 %web-site%

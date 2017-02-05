@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Mogelijk gevaarlijke email geweigerd
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Onze email filters zijn geactiveerd door een bericht dat u heeft verzonden:-
   To: $to
@@ -21,7 +21,7 @@ vergissing betreft, gelieve dan contact op te nemen met de beheerder of
 afdeling systeembeheer.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

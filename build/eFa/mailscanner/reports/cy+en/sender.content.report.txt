@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: E-bost allai fod yn beryglus wedi ei wrthod/Potentially dangerous email rejected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Cafodd ein hidlyddion cynnwys e-bost eu| Our email content filters have been
 rhybuddio gan neges a yrrwyd gennych:- | triggered by a message you sent:-
@@ -30,7 +30,7 @@ neges hwn trwy amryfusedd, cysylltwch  | this message in error, please contact
 â gweinyddwyr y system.                | the site system administrators.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

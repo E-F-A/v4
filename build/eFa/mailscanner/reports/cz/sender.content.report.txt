@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Potencialne nebezpecny email vymazan
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
  
 Nas system kontroly obsahu elektronicke posty byl spusten zpravou, 
 kterou jste zaslali:-
@@ -20,7 +20,7 @@ souboru a prilozte ji ke zprave.
 Pokud mate jakekoliv dotazy, kontaktujte prosim administratora 
 systemu.
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

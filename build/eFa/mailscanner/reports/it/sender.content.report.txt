@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Potentially dangerous email rejected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Our email content filters have been triggered by a message you sent:-
   To: $to
@@ -19,7 +19,7 @@ If you have any questions about this, or you believe you have received
 this message in error, please contact the site system administrators.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

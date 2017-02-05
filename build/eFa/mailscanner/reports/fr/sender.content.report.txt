@@ -1,7 +1,7 @@
 From: "Passerelle antivirus $postmastername" <$localpostmaster>
 To: $from
 Subject: ALERTE: Courriel dangereux =?ISO-8859-1?Q?rejet=E9?=
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Notre passerelle antivirus refuse de transmettre le courriel que vous
 venez d'envoyer:
@@ -25,7 +25,7 @@ page sur disque et ensuite de la joindre au courriel.
 Contactez $localpostmaster pour plus d'informations.
 
 -- 
-MailScanner
+eFa
 %org-long-name%
 %web-site%
 

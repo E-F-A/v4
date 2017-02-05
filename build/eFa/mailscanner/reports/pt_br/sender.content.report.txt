@@ -1,7 +1,7 @@
 From: "$postmastername"<$localpostmaster>
 To: $from
 Subject: Email com conteúdo perigoso rejeitado
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Nossos filtros de conteúdo foram disparados por uma mensagem enviada para você de:-
   To: $to
