@@ -1,4 +1,4 @@
-MailScanner har klassat följande meddelande
+eFa har klassat följande meddelande
  
           Från: $from
           Ämne: $subject

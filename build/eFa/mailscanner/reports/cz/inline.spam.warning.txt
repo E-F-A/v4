@@ -1,4 +1,4 @@
-Nas system ochrany obsahu elektronicke posty MailScanner se domniva ze priloha vam zaslane zpravy
+Nas system ochrany obsahu elektronicke posty eFa se domniva ze priloha vam zaslane zpravy
    
     From: $from
  Subject: $subject

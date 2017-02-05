@@ -1,4 +1,4 @@
-Mailscanner vermoed dat de bijlage in deze e-mail
+eFa vermoed dat de bijlage in deze e-mail
 
    Afzender:  $from
    Onderwerp: $subject

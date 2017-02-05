@@ -1,4 +1,4 @@
-Unser MailScanner denkt, dass der Anhang dieser Nachricht
+Unser eFa denkt, dass der Anhang dieser Nachricht
 
  Absender: $from
   Betreff: $subject

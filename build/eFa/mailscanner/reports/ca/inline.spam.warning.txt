@@ -1,4 +1,4 @@
-El nostre MailScanner creu que el fitxer adjunt que se us ha enviat
+El nostre eFa creu que el fitxer adjunt que se us ha enviat
    
     De: $from
  Assumpte: $subject

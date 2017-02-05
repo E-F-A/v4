@@ -1,4 +1,4 @@
-Mae ein MailScanner yn credu bod yr   | Our MailScanner believes that the
+Mae ein eFa yn credu bod yr           | Our eFa believes that the
 atodiad i'r neges hon a anfonwyd atoch| attachment to this message sent to you
 
 

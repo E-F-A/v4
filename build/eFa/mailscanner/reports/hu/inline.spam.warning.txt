@@ -1,4 +1,4 @@
-Our MailScanner believes that the attachment to this message sent to you
+Our eFa believes that the attachment to this message sent to you
    
     From: $from
  Subject: $subject

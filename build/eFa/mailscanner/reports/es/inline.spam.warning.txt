@@ -1,4 +1,4 @@
-Nuestro MailScanner cree que el anexo a este mensaje que le fué enviado a Ud.
+Nuestro eFa cree que el anexo a este mensaje que le fué enviado a Ud.
 
       De: $from
   Asunto: $subject
