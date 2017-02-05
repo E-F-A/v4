@@ -103,8 +103,9 @@ mkdir /var/spool/MailScanner/incoming
 echo "none /var/spool/MailScanner/incoming tmpfs noatime 0 0">>/etc/fstab
 mount -a
 
-# Remove all reports except en and modify all texts
-# TODO: Modify existing reports for all translations
+# Replace reports with eFa versions
+rm -rf /usr/share/MailScanner/reports
+cp -ra $srcdir/mailscanner/reports /usr/share/MailScanner/reports
 
 # Add CustomAction.pm for token handling
 # Remove as a copy will throw a mailscanner --lint error
