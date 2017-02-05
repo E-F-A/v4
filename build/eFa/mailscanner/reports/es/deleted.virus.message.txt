@@ -1,5 +1,5 @@
 Este es un mensaje del Servicio de Protección de Virus para Correo
-Electrónico MailScanner
+Electrónico eFa
 ----------------------------------------------------------------------
 Se considera que el archivo anexado original "$filename"
 ha sido infectado por un virus y por ello, ha sido 

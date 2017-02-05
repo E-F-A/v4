@@ -1,4 +1,4 @@
-Dette er en meddelelse fra MailScanner e-post virus beskyttelses tjenesten
+Dette er en meddelelse fra eFa e-post virus beskyttelses tjenesten
 --------------------------------------------------------------------------
 Vi har ikke kunnet levere den originale vedhæftede fil: "$filename"
 da den muligvis indeholder virus og dermed kan være til skade for din computer.

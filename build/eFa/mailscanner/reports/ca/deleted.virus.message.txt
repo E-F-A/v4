@@ -1,4 +1,4 @@
-Missatge del Servei de Protecció de Virus de Correu Electrònic de MailScanner
+Missatge del Servei de Protecció de Virus de Correu Electrònic de eFa
 -----------------------------------------------------------------------------
 El fitxer adjunt original "$filename"
 ha estat considerat que era perillós i/o infectat per un virus i ha estat
