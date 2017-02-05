@@ -1,7 +1,7 @@
 From: $to
 To: $from
 Subject: Unrequested mail rejected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 You have sent a mail message to us which was not requested and has been
 rejected. Please do not send any more mail to us at this address:
@@ -13,7 +13,7 @@ If you have any questions about this, or you believe you have received
 this message in error, please contact the site system administrators.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%
