@@ -1,0 +1,7 @@
+
+-- 
+Ce message a été vérifié pour des virus ou des polluriels par 
+eFa Project, et rien de suspect n'a été trouvé.
+
+Cliquez ici pour signaler ce message comme spam.
+https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

@@ -1,0 +1,7 @@
+
+-- 
+This message has been scanned for viruses and dangerous content by 
+eFa Project, and is believed to be clean.
+
+Click here to report this message as spam.
+https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

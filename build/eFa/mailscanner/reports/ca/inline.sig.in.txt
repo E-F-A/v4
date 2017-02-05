@@ -1,0 +1,7 @@
+
+-- 
+Aquest missatge ha estat analitzat per trobar-hi virus i contingut perillós per
+eFa Project, i es considera que és net.
+
+Feu clic aquí per informar d'aquest missatge com spam.
+https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

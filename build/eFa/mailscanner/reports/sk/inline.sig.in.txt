@@ -1,0 +1,7 @@
+
+-- 
+Tato sprava bola prehladana na vyskyt virusov a nebezpecneho obsahu antivirovym systemom
+eFa Project, a zda sa byt cista.
+
+Kliknite tu nahlásiť túto správu ako spam.
+https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

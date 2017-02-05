@@ -1,0 +1,7 @@
+
+-- 
+Meddelandet har kontrollerats mot virus samt skadligt innehåll av
+eFa Project, och förmodas vara säkert.
+
+Klicka här för att rapportera det här meddelandet som skräppost.
+https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

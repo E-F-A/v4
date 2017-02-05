@@ -1,0 +1,7 @@
+
+-- 
+Denne meddelelse er blevet skannet for virus og farligt indhold af
+eFa Project, og er fundet ufarlig.
+
+Klik her for at rapportere denne meddelelse som spam.
+https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token
