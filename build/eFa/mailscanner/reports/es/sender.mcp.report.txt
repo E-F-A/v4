@@ -4,7 +4,7 @@ Subject: Contenido no acpetado almacenado para ser revisado
 MIME-Version: 1.0
 Content-type: text/plain; charset=ISO-8859-1
 Content-transfer-encoding: Quoted-Printable
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 
 Nuestro detector de virus ha sido activado por un mensaje enviado por Usted:
@@ -18,7 +18,7 @@ erróneamente, por favor, contácte con los administradores de correo
 del sitio.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

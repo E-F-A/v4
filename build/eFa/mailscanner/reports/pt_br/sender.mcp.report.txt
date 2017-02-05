@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Conteúdo bloqueado armazenado para revisão
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 
 Nosso detector de conteúdo de mensagens foi ativado por uma mensagem que
