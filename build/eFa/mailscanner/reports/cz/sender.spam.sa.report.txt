@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: {Bounce} Nevyzadana komercni posta - odmitnuta
-X-%org-name%-MailScanner: vytvoren
+X-%org-name%-MailScanner-eFa: vytvoren
 
 Nas detektor UCE (spam-u) byl spusten zpravou, kterou posilate:-
   Komu: $to
@@ -22,7 +22,7 @@ Pokud k tomu mate jakekoliv otazky nebo pripominky, pripadne jste obdrzeli toto
 upozorneni omylem, kontaktujte prosim nase administratory.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

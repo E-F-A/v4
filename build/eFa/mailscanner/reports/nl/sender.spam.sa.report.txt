@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: {Bounce} Ongewenste (commerciele) e-mail geweigerd
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Onze spamdetector reageerde op een bericht dat u heeft verzonden:
   To: $to
@@ -21,7 +21,7 @@ Indien u van mening bent dat deze melding onjuist is raden we u aan om
 contact op te nemen met beheerder.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

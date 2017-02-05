@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: {Bounce} Gwrthod e-bost masnachol na ofynnwyd amdano/Unsolicited commercial email rejected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Mae neges yr ydych wedi'i hanfon wedi | Our UCE (spam) detectors have been
 rhoi ein canfyddwyr UCE (sbam) ar     | triggered by a message you sent:-
@@ -35,7 +35,7 @@ gam, cysylltwch â gweinyddwyr system  | the site system administrators.
 y safle.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%
