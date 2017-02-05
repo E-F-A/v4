@@ -32,7 +32,7 @@ setlogsock('unix');
 my($db_name) = 'efa';
 my($db_host) = 'localhost';
 my($db_user) = 'efa';
-# Issue #66 Grab Passwords from EFA-Config
+# Issue #66 Grab Passwords from eFa-Config
 my($fh);
 my($pw_config) = '/etc/eFa-Config';
 open($fh, "<", $pw_config);
