@@ -1,4 +1,4 @@
-Meddelande från MailScanner Email Virus Protection Service
+Meddelande från eFa Email Virus Protection Service
 ----------------------------------------------------------------
 
 Orginalbilagan "$filename" i meddelandet är av en typ som inte godkänns

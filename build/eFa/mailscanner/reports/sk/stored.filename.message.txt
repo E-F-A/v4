@@ -1,4 +1,4 @@
-Toto je sprava od antivirovej ochrany elektronickej posty 'MailScanner'
+Toto je sprava od antivirovej ochrany elektronickej posty 'eFa'
 -----------------------------------------------------------------------
 Povodna priloha "$filename" je na zozname nepripustnych priloh nasho
 systemu a bola prepisana tymto upozornenim.

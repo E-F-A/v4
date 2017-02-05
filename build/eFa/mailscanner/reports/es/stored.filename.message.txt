@@ -1,5 +1,5 @@
 Este es un mensaje del Servicio de Protección de Virus para Correo
-Electrónico MailScanner
+Electrónico eFa
 ----------------------------------------------------------------------
 El archivo anexado original "$filename"
 está en la lista de anexos inaceptables para este sitio y el mismo

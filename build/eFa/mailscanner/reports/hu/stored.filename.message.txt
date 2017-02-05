@@ -1,4 +1,4 @@
-Ez egy automata uzenet a MailScanner E-Mail virusvedelmi rendszertol
+Ez egy automata uzenet a eFa E-Mail virusvedelmi rendszertol
 --------------------------------------------------------------------
 Az Onnek kuldott level "$filename" nevu melleklete a
 levelezoszerver szamara elfogadhatatlan kiterjesztessel rendelkezo
@@ -15,7 +15,7 @@ Azonosito: $hostname $quarantinedir/$datenumber (message $id).
 
 -- 
 $localpostmaster
-MailScanner - Email Virus Scanner - http://www.mailscanner.info
+eFa - email Filter appliance - https://efa-project.org
 %org-long-name%
 %web-site%
 
