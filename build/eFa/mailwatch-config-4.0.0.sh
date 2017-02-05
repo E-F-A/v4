@@ -33,21 +33,21 @@ sed -i '/^short_open_tag =/ c\short_open_tag = On' /etc/php.ini
 
 # Set up connection for MailWatch
 sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/MailWatch.pm
-sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/EFA-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatch.pm
+sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatch.pm
 
 # Set up SQLBlackWhiteList
 sed -i "/^    my (\$db_user) =/ c\    my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/SQLBlackWhiteList.pm
-sed -i "/^    my (\$db_pass) =/ c\    my (\$fh);\nmy (\$pw_config) = '/etc/EFA-Config';\n    open(\$fh, \"<\", \$pw_config);\n    if(\!\$fh) {\n      MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n      return;\n    }\n    my (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n    \$db_pass =~ s/MAILWATCHSQLPWD://;\n    \$db_pass =~ s/\\\n//;\n    close(\$fh);" /usr/share/MailScanner/perl/custom/SQLBlackWhiteList.pm
+sed -i "/^    my (\$db_pass) =/ c\    my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\n    open(\$fh, \"<\", \$pw_config);\n    if(\!\$fh) {\n      MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n      return;\n    }\n    my (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n    \$db_pass =~ s/MAILWATCHSQLPWD://;\n    \$db_pass =~ s/\\\n//;\n    close(\$fh);" /usr/share/MailScanner/perl/custom/SQLBlackWhiteList.pm
 
 # Set up SQLSpamSettings
 sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/SQLSpamSettings.pm
-sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/EFA-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/SQLSpamSettings.pm
+sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/SQLSpamSettings.pm
 
-sed -i "/^define('DB_PASS',/ c\$efa_config = preg_grep('/^MAILWATCHSQLPWD/', file('/etc/EFA-Config'));\nforeach(\$efa_config as \$num => \$line) {\n  if (\$line) {\n    \$db_pass_tmp = chop(preg_replace('/^MAILWATCHSQLPWD:(.*)/','\$1', \$line));\n  }\n}\ndefine('DB_PASS', \$db_pass_tmp);" /var/www/html/mailscanner/conf.php
+sed -i "/^define('DB_PASS',/ c\$efa_config = preg_grep('/^MAILWATCHSQLPWD/', file('/etc/eFa-Config'));\nforeach(\$efa_config as \$num => \$line) {\n  if (\$line) {\n    \$db_pass_tmp = chop(preg_replace('/^MAILWATCHSQLPWD:(.*)/','\$1', \$line));\n  }\n}\ndefine('DB_PASS', \$db_pass_tmp);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('DB_USER',/ c\define('DB_USER', 'mailwatch');" /var/www/html/mailscanner/conf.php
 sed -i "/^define('TIME_ZONE',/ c\define('TIME_ZONE', 'Etc/UTC');" /var/www/html/mailscanner/conf.php
 sed -i "/^define('QUARANTINE_USE_FLAG',/ c\define('QUARANTINE_USE_FLAG', true);" /var/www/html/mailscanner/conf.php
-sed -i "/^define('QUARANTINE_REPORT_FROM_NAME',/ c\define('QUARANTINE_REPORT_FROM_NAME', 'EFA - Email Filter Appliance');" /var/www/html/mailscanner/conf.php
+sed -i "/^define('QUARANTINE_REPORT_FROM_NAME',/ c\define('QUARANTINE_REPORT_FROM_NAME', 'eFa - Email Filter Appliance');" /var/www/html/mailscanner/conf.php
 sed -i "/^define('QUARANTINE_USE_SENDMAIL',/ c\define('QUARANTINE_USE_SENDMAIL', true);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('AUDIT',/ c\define('AUDIT', true);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('MS_LOG',/ c\define('MS_LOG', '/var/log/maillog');" /var/www/html/mailscanner/conf.php
@@ -79,7 +79,7 @@ cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
 /bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images
 /bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images/favicon.png
 
-# EFA Branding
+# eFa Branding
 cp $srcdir/mailwatch/EFAlogo-47px.gif /var/www/html/mailscanner/images/EFAlogo-47px.gif
 cp $srcdir/mailwatch/EFAlogo-79px.png /var/www/html/mailscanner/images/EFAlogo-79px.png
 mv /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.png.orig
@@ -97,15 +97,15 @@ sed -i 's/#F7CE4A/#999999/g' /var/www/html/mailscanner/style.css
 # TODO
 
 # Add munin to mailwatch
-# sed -i "/^    echo '<li><a href=\"geoip_update.php\">/a\    /*Begin EFA*/\n    echo '<li><a href=\"mailgraph.php\">View Mailgraph Statistics</a>';\n    \$hostname = gethostname\(\);\n    echo '<li><a href=\"https://' \. \$hostname \. ':10000\">Webmin</a>';\n    \$efa_config = preg_grep('/^MUNINPWD/', file('/etc/EFA-Config'));\n    foreach(\$efa_config as \$num => \$line) {\n      if (\$line) {\n        \$munin_pass = chop(preg_replace('/^MUNINPWD:(.*)/','\$1', \$line));\n      }\n    }\n    echo '<li><a href=\"https://munin:' . \$munin_pass . '@'  . \$hostname . '/munin\">View Munin Statistics</a>';\n    /*End EFA*/" other.php
+# sed -i "/^    echo '<li><a href=\"geoip_update.php\">/a\    /*Begin eFa*/\n    echo '<li><a href=\"mailgraph.php\">View Mailgraph Statistics</a>';\n    \$hostname = gethostname\(\);\n    echo '<li><a href=\"https://' \. \$hostname \. ':10000\">Webmin</a>';\n    \$efa_config = preg_grep('/^MUNINPWD/', file('/etc/EFA-Config'));\n    foreach(\$efa_config as \$num => \$line) {\n      if (\$line) {\n        \$munin_pass = chop(preg_replace('/^MUNINPWD:(.*)/','\$1', \$line));\n      }\n    }\n    echo '<li><a href=\"https://munin:' . \$munin_pass . '@'  . \$hostname . '/munin\">View Munin Statistics</a>';\n    /*End eFa*/" other.php
 
 cat >> /var/www/html/mailscanner/functions.php << 'EOF'
 /**
- * EFA Version
+ * eFa Version
  */
 function efa_version()
 {
-  return file_get_contents( '/etc/EFA-Version', NULL, NULL, 0, 15 );
+  return file_get_contents( '/etc/eFa-Version', NULL, NULL, 0, 15 );
 }
 EOF
 
@@ -132,7 +132,7 @@ chmod -R 750 /var/spool/postfix/incoming
 
 # Allow apache to sudo and run the MailScanner lint test
 sed -i '/Defaults    requiretty/ c\#Defaults    requiretty' /etc/sudoers
-echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/EFA-Services
+echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
 
 # EFA MSRE Support
 sed -i "/^define('MSRE'/ c\define('MSRE', true);" /var/www/html/mailscanner/conf.php
