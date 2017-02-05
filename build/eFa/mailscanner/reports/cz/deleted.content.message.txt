@@ -1,4 +1,4 @@
-Toto je zprava od systemu antivirove ochrany elektronicke posty 'MailScanner'
+Toto je zprava od systemu antivirove ochrany elektronicke posty 'eFa'
 -----------------------------------------------------------------------------  
 Originalni zprava obsahovala potencialne nebezpecny obsah,
 ktery byl z duvodu vasi bezpecnosti vymazan.
