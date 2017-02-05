@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Contenuto bloccato ma memorizzato per revisione
-X-%org-name%-MailScanner: generato
+X-%org-name%-MailScanner-eFa: generato
 
 I nostri servizi di analisi dei contenuti sono stati attivati da un tuo
 messaggio:-
@@ -21,7 +21,7 @@ comunicate agli amministratori di sistema:
    Codice data: $datenumber
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

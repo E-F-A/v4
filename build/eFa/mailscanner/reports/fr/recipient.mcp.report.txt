@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Contenu interdit conservé pour révision
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Notre vérificateur de contenu de messages a été activé par un message
 que vous avez reçu:
@@ -20,7 +20,7 @@ Vos administrateurs de système auront besoin de l'information suivante:
   Code de date: $datenumber
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

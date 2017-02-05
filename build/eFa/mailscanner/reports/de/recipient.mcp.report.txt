@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Gesperrter Inhalt für Untersuchung gespeichert
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Unsere Nachrichten-Detektoren wurden durch eine an Sie adressierte Nachricht
 ausgelöst:
@@ -20,7 +20,7 @@ Ihre Administratoren werden die folgenden Informationen benötigen:
   Datum: $datenumber
 
 --
-MailScanner
+eFa
 E-Mail-Virus-Scanner
 %org-long-name%
 %web-site%

@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Zakazany obsah byl ulozen k posouzeni
-X-%org-name%-MailScanner: vytvoren
+X-%org-name%-MailScanner-eFa: vytvoren
  
 Nas system kontroly obsahu elektronicke posty byl spusten zpravou, kterou
 jste zaslali:-
@@ -18,7 +18,7 @@ Administrator systemu bude potrebovat nasledujici informace:
     Kod data: $datenumber
  
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

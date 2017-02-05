@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Ongewenste inhoud opgeslagen ter nadere bestudering
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Onze scanner op de inhoud van berichten is geactiveerd door een bericht
 dat aan u verzonden is:-
@@ -21,7 +21,7 @@ Uw beheerder heeft de volgende informatie nodig:
   Datum code: $datenumber
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

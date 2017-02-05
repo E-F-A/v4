@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $to
 Subject: Contenido prohibido archivado para ser revisado
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Nuestros detectores de contenido fueron activados por un mensaje que 
 Usted recibió:
@@ -21,7 +21,7 @@ Los administradores del sitio necesitarán la siguiente información:
    Código de fecha: $datenumber
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%
