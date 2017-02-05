@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: {Bounce} Aviso: Rejeição de SPAM
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Nosso sistema de detecção de SPAM  foi acionado ao analisar uma mensagem que
 você enviou:-

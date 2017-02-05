@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: {Bounce} Skräppost stoppad
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Vårt SPAM-skydd har stoppat ett meddelande ni skickat.
   Till: $to
@@ -16,7 +16,7 @@ Om ni har frågor eller tycker att något fel begåtts
 kontakta domänens systemadministratör.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

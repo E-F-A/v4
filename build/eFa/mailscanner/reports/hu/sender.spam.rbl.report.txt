@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: {Bounce} Nem kivant uzenet visszautasitva
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Az SPAM (UCE) ellenorzonk SPAM gyanus levelet talalt:
   Cimzett:  $to
@@ -18,7 +18,7 @@ kapta ezt a levelet, keresse meg a helyi rendszergazdat.
 
 -- 
 $localpostmaster
-MailScanner - Email Virus Scanner - http://www.mailscanner.info
+eFa - email Filter appliance - https://efa-project.org
 %org-long-name%
 %web-site%
 

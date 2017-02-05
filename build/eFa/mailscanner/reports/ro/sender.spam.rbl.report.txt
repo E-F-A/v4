@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: {Bounce} Unsolicited commercial email rejected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 English Version:
 
@@ -35,7 +35,7 @@ Pentru orice detalii spulimentare, va rugam sa luati legatura cu
 administratorul acelui server.
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

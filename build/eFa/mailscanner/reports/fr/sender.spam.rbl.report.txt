@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: {Bounce} Courriel non =?ISO-8859-1?Q?sollicit=E9?= =?ISO-8859-1?Q?_rejet=E9?=
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 (English follows)
 
@@ -35,7 +35,7 @@ this message in error, please contact the site system administrators.
 
 -- 
 $localpostmaster
-MailScanner
+eFa
 %org-long-name%
 %web-site%
 
