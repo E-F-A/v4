@@ -141,10 +141,4 @@ echo -e "allow\t.*\t-\t-" >> /etc/MailScanner/filetype.rules.allowall.conf
 sed -i '/^\/usr\/sbin\/ms-cron DAILY/ c\/usr/sbin/ms-cron DAILY >/dev/null 2>&1' /etc/cron.daily/mailscanner
 sed -i '/^\/usr\/sbin\/ms-cron MAINT/ c\/usr/sbin/ms-cron MAINT >/dev/null 2>&1' /etc/cron.daily/mailscanner
 
-# selinux configuration
-# Allow apache to access MailScanner configuration
-checkmodule -M -m -o $srcdir/mailscanner/MailScannerhttpd.mod $srcdir/mailscanner/MailScannerhttpd.te
-semodule_package -o $srcdir/mailscanner/MailScannerhttpd.pp -m $srcdir/mailscanner/MailScannerhttpd.mod
-semodule -i $srcdir/mailscanner/MailScannerhttpd.pp
-
 echo "Configuring MailScanner...done"

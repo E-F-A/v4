@@ -1,0 +1,51 @@
+
+module eFa 1.0.0;
+
+require {
+    type httpd_sys_script_t;
+    type postfix_etc_t;
+    type postfix_public_t;
+    type postfix_master_t;
+    type postfix_bounce_t;
+    type postfix_spool_t;
+    type postfix_showq_t;
+    type postfix_pickup_t;
+    type postfix_qmgr_t;
+    type httpd_t;
+    class file { getattr open read };
+    class dir { getattr read open search };
+    class sock_file write;
+    class unix_stream_socket connectto;
+}
+
+#============= httpd_t ==============
+# allow httpd access to mailscanner
+allow httpd_t mscan_etc_t:file { getattr open read };
+allow httpd_t mscan_etc_t:dir { getattr read };
+# allow httpd access to postfix 
+allow httpd_t postfix_etc_t:file { getattr open read };
+allow httpd_t postfix_etc_t:dir read;
+allow httpd_t postfix_public_t:sock_file write;
+allow httpd_t postfix_spool_t:dir read;
+
+#============= httpd_sys_script_t ==============
+# allow script functions in mailwatch
+allow httpd_sys_script_t postfix_etc_t:dir { read open search };
+allow httpd_sys_script_t postfix_etc_t:file { getattr open read };
+allow httpd_sys_script_t postfix_spool_t:dir search;
+allow httpd_sys_script_t postfix_public_t:dir search;
+allow httpd_sys_script_t postfix_bounce_t:dir getattr;
+allow httpd_sys_script_t postfix_master_t:unix_stream_socket connectto;
+allow httpd_sys_script_t postfix_master_t:dir { getattr search };
+allow httpd_sys_script_t postfix_master_t:file { read open };
+allow httpd_sys_script_t postfix_showq_t:dir { getattr search };
+allow httpd_sys_script_t postfix_showq_t:file { read open };
+allow httpd_sys_script_t postfix_public_t:sock_file write;
+allow httpd_sys_script_t postfix_pickup_t:dir { getattr search };
+allow httpd_sys_script_t postfix_pickup_t:file { read open };
+allow httpd_sys_script_t postfix_qmgr_t:dir { getattr search };
+allow httpd_sys_script_t postfix_qmgr_t:file { read open };
+allow httpd_sys_script_t httpd_t:dir { getattr search };
+allow httpd_sys_script_t httpd_t:file { read open };
+dontaudit httpd_sys_script_t;
+

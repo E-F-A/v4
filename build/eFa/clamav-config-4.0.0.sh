@@ -30,8 +30,6 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring clamav..."
 clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server)
 
-setsebool -P antivirus_can_scan_system 1
-setsebool -P clamd_use_jit on
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
 cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/scan.conf
 sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf

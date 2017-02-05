@@ -144,4 +144,3 @@ ln -s /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh /usr/local
 chmod ugo+x /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh
 
 cp $srcdir/mailwatch/geoip_update_cmd.php /usr/sbin/geoip_update_cmd.php
-

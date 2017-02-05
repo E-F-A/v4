@@ -83,5 +83,23 @@ EOF
 # Compress logs from logrotate
 sed -i "s/#compress/compress/g" /etc/logrotate.conf
 
-  # Set the system as unconfigured
+# eFa selinux policy
+# selinux configuration
+
+# Needed for apache to access postfix
+setsebool -P daemons_enable_cluster_mode 1
+
+# Needed for apache to exec binaries on server side
+setsebool -P httpd_ssi_exec 1
+
+# Needed for clamd to access system
+setsebool -P antivirus_can_scan_system 1
+setsebool -P clamd_use_jit 1
+
+# eFa policy module
+# checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
+# semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod
+# semodule -i $srcdir/eFa/eFa.pp
+
+# Set the system as unconfigured
 echo 'CONFIGURED:NO' > /etc/eFa-Config
