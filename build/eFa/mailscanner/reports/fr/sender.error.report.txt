@@ -1,7 +1,7 @@
 From: "Passerelle antivirus $postmastername" <$localpostmaster>
 To: $from
 Subject: ALERTE: =?ISO-8859-1?Q?pi=E8ces?= jointes =?ISO-8859-1?Q?intercept=E9es?=
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Notre passerelle antivirus n'a pu analyser ce courriel que vous avez 
 envoyé:
@@ -21,7 +21,7 @@ $report
 Contactez $localpostmaster pour plus d'informations.
 
 -- 
-MailScanner
+eFa
 %org-long-name%
 %web-site%
 

@@ -1,7 +1,7 @@
 De: "$postmastername" <$localpostmaster>
 A: $from
 Assumpte: Avís: s'ha detectat errors al correu electrònic
-X-%org-name%-MailScanner: generat
+X-%org-name%-MailScanner-eFa: generat
 
 El nostre detector de virus no ha pogut analitzar completament un missatge que heu enviat:-
   A: $to
@@ -22,7 +22,7 @@ El detector de virus ha dit el següent sobre el missatge:
 L'informe: $report
 
 -- 
-MailScanner
+eFa
 L'Escànner de Virus de Correu Electrònic
 %org-long-name%
 %web-site%

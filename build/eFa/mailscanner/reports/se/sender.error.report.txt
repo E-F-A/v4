@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Varning: Formateringfel har upptäckts
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Virusscannern misslyckades med att analysera följande meddelande:
 Till: $to
@@ -15,6 +15,6 @@ Virusscannern genererade följande meddelande:
 $report
 
 -- 
-MailScanner
+eFa
 %org-long-name%
 %web-site%

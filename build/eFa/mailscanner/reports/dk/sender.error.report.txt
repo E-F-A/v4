@@ -1,4 +1,4 @@
-From: "MailScanner" <$Config::LocalPostmaster>
+From: "eFa" <$Config::LocalPostmaster>
 To: $from
 Subject: Advarsel! Dit e-brev er ikke blevet leveret korrekt
 

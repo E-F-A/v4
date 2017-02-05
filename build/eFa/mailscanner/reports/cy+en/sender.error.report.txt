@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Rhybudd: Gwall e-bost wedi'i ganfod./Warning: E-mail error detected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Methodd ein canfyddwr firysau â llwyr | Our virus detector failed to analyse
  ddadansoddi neges a anfonasoch:-     | completely a message you sent:-
@@ -25,7 +25,7 @@ Adroddiad:                            | Report:
         $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

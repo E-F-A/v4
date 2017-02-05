@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: E-mail formatum hiba
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 A viruskereso program nem tudta analizalni az On altal kuldott levelet.
   Cimzett:  $to
@@ -18,7 +18,7 @@ $report
 
 -- 
 $localpostmaster
-MailScanner - Email Virus Scanner - http://www.mailscanner.info
+eFa - email Filter appliance - https://efa-project.org
 %org-long-name%
 %web-site%
 

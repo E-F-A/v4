@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Warnung: E-Mail-Fehler festgestellt!
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Unser Virenscanner konnte eine Nachricht von Ihnen nicht komplett untersuchen:
   An: $to
@@ -22,7 +22,7 @@ Der Virusscanner meinte zu der Nachricht:
 Report: $report
 
 --
-MailScanner
+eFa
 E-Mail-Virus-Scanner
 %org-long-name%
 %web-site%

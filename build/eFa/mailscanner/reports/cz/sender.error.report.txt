@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Upozorneni: Zjistena chyba pri analyze zpravy
-X-%org-name%-MailScanner: vytvoren
+X-%org-name%-MailScanner-eFa: vytvoren
 
 
 Detektor viru selhal pri kompletni analyze zpravy, kterou jste posilali:-
@@ -17,7 +17,7 @@ Detektor viru ohhlasil o teto zprave nasledujici:
 Hlaseni: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Attenzione: rilevata E-mail contenente errori
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Il sistema antivirus non e' riuscito ad analizzare completamente il messaggio spedito:-
   To: $to
@@ -16,7 +16,7 @@ Il sistema antivirus riporta:
 rapporto: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

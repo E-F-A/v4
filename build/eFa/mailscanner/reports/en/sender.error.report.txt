@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Warning: E-mail error detected
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Our virus detector failed to completely analyse a message you sent:-
   To: $to
@@ -22,7 +22,7 @@ The virus detector said this about the message:
 Report: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

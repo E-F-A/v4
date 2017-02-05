@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Aviso: Erro de e-mail detectado
-X-%org-name%-MailScanner: generated
+X-%org-name%-MailScanner-eFa: generated
 
 Nosso sistema de detecção de vírus falhou ao analisar uma mensagem que
 você enviou:-

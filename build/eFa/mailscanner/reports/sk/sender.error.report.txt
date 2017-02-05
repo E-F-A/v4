@@ -1,7 +1,7 @@
 From: "$postmastername" <$localpostmaster>
 To: $from
 Subject: Upozornenie:: E-mail, zitena chyba
-X-%org-name%-MailScanner: vytvoreny
+X-%org-name%-MailScanner-eFa: vytvoreny
 
 
 Detektor virusov zlyhal pri kompletnej analyze spravy, ktoru ste posielali:-
@@ -17,7 +17,7 @@ Virus detektor hlasi o tejto sprave nasledovne:
 Hlasenie: $report
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%
