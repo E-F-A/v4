@@ -1,4 +1,4 @@
-This is a message from the MailScanner E-Mail Virus Protection Service
+This is a message from the eFa E-Mail Virus Protection Service
 ----------------------------------------------------------------------
 The original e-mail attachment "$filename"
 was believed to be infected by a virus and has been replaced by this warning

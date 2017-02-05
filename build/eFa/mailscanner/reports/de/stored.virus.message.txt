@@ -1,4 +1,4 @@
-Dies ist eine Nachricht vom MailScanner E-Mail-Virus-Schutzdienst
+Dies ist eine Nachricht vom eFa E-Mail-Virus-Schutzdienst
 -------------------------------------------------------------------------
 Der ursprüngliche Dateianhang "$filename"
 ist von einem Virus verseucht und wurde durch diese Nachricht ersetzt.

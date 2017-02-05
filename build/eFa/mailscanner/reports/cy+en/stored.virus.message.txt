@@ -1,4 +1,4 @@
-Dyma neges gan Wasanaeth MailScanner  | This is a message from the MailScanner
+Dyma neges gan Wasanaeth eFa          | This is a message from the eFa
 sy'n Gwarchod rhag Firysau            | E-Mail Virus Protection Service
 ----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ Nodyn i'r Ddesg Gymorth: Edrychwch ar | Note to Help Desk: Look on
                            (neges/message $id).
 
 -- 
-MailScanner
+eFa
 Email Virus Scanner
 %org-long-name%
 %web-site%

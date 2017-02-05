@@ -1,4 +1,4 @@
-Meddelande från MailScanner Email Virus Protection Service
+Meddelande från eFa Email Virus Protection Service
 ----------------------------------------------------------------
 
 Original bilagan "$filename"

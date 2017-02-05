@@ -1,4 +1,4 @@
-Avertissement de la passerelle antivirus MailScanner
+Avertissement de la passerelle antivirus eFa
 ----------------------------------------------------
 
 La pièce jointe "$filename"
@@ -17,7 +17,7 @@ Contactez $localpostmaster pour plus d'informations.
 Information de repérage: $hostname:$quarantinedir/$datenumber/$id
 
 -- 
-MailScanner
+eFa
 %org-long-name%
 %web-site%
 

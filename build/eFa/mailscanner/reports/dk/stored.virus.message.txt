@@ -1,4 +1,4 @@
-Dette er en meddelelse fra MailScanner e-post virus beskyttelses tjenesten
+Dette er en meddelelse fra eFa e-post virus beskyttelses tjenesten
 --------------------------------------------------------------------------
 Det originale e-brevs bilag "$filename"
 forventes at indeholde vira og er blevet erstattet af en advarsel.

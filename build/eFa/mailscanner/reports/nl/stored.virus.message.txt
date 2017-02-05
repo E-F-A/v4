@@ -1,4 +1,4 @@
-Dit is een bericht van het MailScanner virus beschermingssysteem
+Dit is een bericht van het eFa virus beschermingssysteem
 ----------------------------------------------------------------
 De oorspronkelijke e-mail bijlage "$filename"
 scheen te zijn geinfecteerd door een virus. De bijlage is vervangen

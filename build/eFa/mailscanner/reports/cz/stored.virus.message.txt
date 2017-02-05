@@ -1,4 +1,4 @@
-Toto je zprava od systemu antivirove ochrany elektronicke posty 'MailScanner'
+Toto je zprava od systemu antivirove ochrany elektronicke posty 'eFa'
 -----------------------------------------------------------------------
 Puvodni priloha "$filename" oznacena jako infikovana virem, byla nahrazena
 timto upozornenim.

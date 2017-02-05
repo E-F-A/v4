@@ -1,4 +1,4 @@
-Comunicazione dal servizio di Protezione della posta dai Virus "MailScanner"
+Comunicazione dal servizio di Protezione della posta dai Virus "eFa"
 ----------------------------------------------------------------------------
 L'allegato originale "$filename"
 probabilmente contiene un virus ed e' stato sostituito da questo messaggio di avviso.
