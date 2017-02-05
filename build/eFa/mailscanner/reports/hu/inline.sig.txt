@@ -1,4 +1,4 @@
 -- 
 Ezen uzenet virusellenorzesen esett at, es virusmentesnek bizonyult.
-MailScanner - Email Virus Scanner - http://www.mailscanner.info
+eFa - email Filter appliance - https://efa-project.org
 
