@@ -317,6 +317,8 @@ Requires:  checkpolicy >= 2.5-4
     # checkpolicy                                # base    # selinux
 Requires:  policycoreutils-python >= 2.5-11
     # policycoreutils-python                     # base    # selinux
+Requires: perl-Net-DNS-Nameserver >= 0.72-6
+    # perl-Net-DNS-Nameserver                    # base    # Spamassassin
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
