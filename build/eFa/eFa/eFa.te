@@ -59,12 +59,12 @@ require {
     type dcc_client_exec_t;
     type cdcc_exec_t;
     type mysqld_db_t;
-    class file { getattr open read ioctl execute create lock append };
+    class file { getattr open read ioctl execute create lock append write };
     class dir { getattr read open search write add_name setattr create remove_name };
     class sock_file write;
     class unix_stream_socket connectto;
     class chr_file getattr;
-    class lnk_file read;
+    class lnk_file { getattr read };
     class tcp_socket name_connect;
 }
 
