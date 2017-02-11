@@ -16,6 +16,7 @@ require {
     type httpd_t;
     type mscan_etc_t;
     type mscan_t;
+    type mscan_spool_t;
     type unconfined_t;
     type etc_mail_t;
     type spamd_var_lib_t;
@@ -60,7 +61,7 @@ require {
     type cdcc_exec_t;
     type mysqld_db_t;
     type dcc_client_map_t;
-    class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans };
+    class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file write;
     class unix_stream_socket connectto;
