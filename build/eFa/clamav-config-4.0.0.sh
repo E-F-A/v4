@@ -80,6 +80,7 @@ chcon -u system_u -r object_r -t antivirus_log_t /var/log/clamd.scan
 mkdir -p /var/run/clamd.scan
 chown -R clamupdate:clamupdate /var/run/clamd.scan
 chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.scan
+echo "d /var/run/clamd.scan 0755 clamupdate clamupdate -" > /usr/lib/tmpfiles.d/clamd.conf
 usermod clamupdate -G mtagroup
 
 echo "Configuring clamav...done"
