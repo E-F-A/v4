@@ -57,7 +57,7 @@ chmod 700 /usr/sbin/eFa-MS-Update
 # Write SSH banner
 sed -i "/^#Banner / c\Banner /etc/banner"  /etc/ssh/sshd_config
 cat > /etc/banner << 'EOF'
-   Welcome to eFa (http://www.efa-project.org)
+   Welcome to eFa (https://efa-project.org)
 
  Warning!
 
