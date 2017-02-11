@@ -96,6 +96,9 @@ setsebool -P httpd_ssi_exec 1
 setsebool -P antivirus_can_scan_system 1
 setsebool -P clamd_use_jit 1
 
+# Needed for mailscanner to bind to tcp_socket
+setsebool -P nis_enabled 1
+
 # eFa policy module
 checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
 semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod

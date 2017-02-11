@@ -15,6 +15,7 @@ require {
     type postfix_smtp_t;
     type httpd_t;
     type mscan_etc_t;
+    type mscan_t;
     type unconfined_t;
     type etc_mail_t;
     type spamd_var_lib_t;
@@ -52,20 +53,20 @@ require {
     type devpts_t;
     type rpm_t;
     type dcc_var_t;
-    class file { getattr open read ioctl execute};
-    class dir { getattr read open search };
+    type tmpfs_t;
+    class file { getattr open read ioctl execute create lock };
+    class dir { getattr read open search write add_name setattr create remove_name };
     class sock_file write;
     class unix_stream_socket connectto;
     class chr_file getattr;
     class lnk_file read;
+    class tcp_socket name_connect;
 }
 
 #============= httpd_t ==============
-# allow httpd access to mailscanner
+# allow httpd access to mailscanner and postfix
 allow httpd_t mscan_etc_t:file { getattr open read };
 allow httpd_t mscan_etc_t:dir { getattr read };
-
-# allow httpd access to postfix 
 allow httpd_t postfix_etc_t:file { getattr open read };
 allow httpd_t postfix_etc_t:dir read;
 allow httpd_t postfix_public_t:sock_file write;
@@ -76,6 +77,7 @@ allow httpd_t postfix_spool_t:dir read;
 # todo: check and limit further
 allow httpd_sys_script_t unconfined_t:dir { getattr search };
 allow httpd_sys_script_t unconfined_t:file { open read };
+allow httpd_sys_script_t mscan_t:dir getattr;
 
 # allow ps to read postfix process
 # todo: check and limit further
@@ -86,6 +88,14 @@ allow httpd_sys_script_t postfix_pickup_t:dir { getattr search };
 allow httpd_sys_script_t postfix_pickup_t:file { read open };
 allow httpd_sys_script_t postfix_qmgr_t:dir { getattr search };
 allow httpd_sys_script_t postfix_qmgr_t:file { read open };
+allow httpd_sys_script_t postfix_showq_t:dir { search read };
+allow httpd_sys_script_t postfix_showq_t:file { read open }
+allow httpd_sys_script_t postfix_cleanup_t:dir getattr;
+allow httpd_sys_script_t postfix_etc_t:dir { read open search };
+allow httpd_sys_script_t postfix_etc_t:file { getattr open read };
+allow httpd_sys_script_t postfix_spool_t:dir search;
+allow httpd_sys_script_t postfix_public_t:dir search;
+allow httpd_sys_script_t postfix_public_t:sock_file write;
 
 # suppress other ps output denials
 # won't suppress everything in every scenario but should
@@ -120,13 +130,6 @@ allow httpd_sys_script_t postfix_qmgr_t:file { read open };
 # dontaudit httpd_sys_script_t devpts_t:dir getattr;
 # dontaudit httpd_sys_script_t rpm_t:dir getattr;
 
-# allow mailwatch to query queues
-allow httpd_sys_script_t postfix_etc_t:dir { read open search };
-allow httpd_sys_script_t postfix_etc_t:file { getattr open read };
-allow httpd_sys_script_t postfix_spool_t:dir search;
-allow httpd_sys_script_t postfix_public_t:dir search;
-allow httpd_sys_script_t postfix_public_t:sock_file write;
-
 # allow spamassassin lint
 allow httpd_sys_script_t etc_mail_t:dir search;
 allow httpd_sys_script_t spamd_var_lib_t:dir { getattr search read open };
@@ -137,3 +140,21 @@ allow httpd_sys_script_t etc_mail_t:lnk_file read;
 allow httpd_sys_script_t mscan_etc_t:dir search;
 allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl };
 allow httpd_sys_script_t dcc_var_t:dir getattr;
+
+# allow mailscanner access to postfix etc.
+allow mscan_t postfix_spool_t:dir { search read open };
+allow mscan_t postfix_spool_t:file { append getattr read };
+allow mscan_t postfix_spool_t:lnk_file getattr;
+allow mscan_t etc_mail_t:dir { search getattr read open };
+allow mscan_t etc_mail_t:file { getattr read open ioctl };
+allow mscan_t etc_mail_t:lnk_file read;
+allow mscan_t tmpfs_t:dir { write add_name create setattr read remove_name};
+allow mscan_t tmpfs_t:file { create read write getattr open lock };
+allow mscan_t mscan_etc_t:lnk_file read;
+allow mscan_t mysqld_db_t:dir search;
+allow mscan_t cdcc_exec_t:file getattr;
+allow mscan_t dcc_client_exec_t:file getattr;
+allow mscan_t dcc_var_t:dir { getattr search };
+allow mscan_t razor_port_t:tcp_socket name_connect;
+allow mscan_t spamc_exec_t:file getattr;
+allow mscan_t spamd_var_lib_t:file execute;
