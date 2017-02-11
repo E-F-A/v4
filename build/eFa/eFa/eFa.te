@@ -52,6 +52,8 @@ require {
     type devpts_t;
     type rpm_t;
     type dcc_var_t;
+    type systemd_lsmd_t;
+    type systemd_logind_t;
     class file { getattr open read ioctl execute};
     class dir { getattr read open search };
     class sock_file write;
