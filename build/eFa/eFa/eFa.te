@@ -94,7 +94,7 @@ allow httpd_sys_script_t postfix_pickup_t:file { read open };
 allow httpd_sys_script_t postfix_qmgr_t:dir { getattr search };
 allow httpd_sys_script_t postfix_qmgr_t:file { read open };
 allow httpd_sys_script_t postfix_showq_t:dir { search read };
-allow httpd_sys_script_t postfix_showq_t:file { read open }
+allow httpd_sys_script_t postfix_showq_t:file { read open };
 allow httpd_sys_script_t postfix_cleanup_t:dir getattr;
 allow httpd_sys_script_t postfix_etc_t:dir { read open search };
 allow httpd_sys_script_t postfix_etc_t:file { getattr open read };
