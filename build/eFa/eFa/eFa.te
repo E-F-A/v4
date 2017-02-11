@@ -150,9 +150,9 @@ allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl };
 allow httpd_sys_script_t dcc_var_t:dir getattr;
 
 # allow mailscanner access to postfix etc.
-allow mscan_t postfix_spool_t:dir { search read open getattr ioctl write };
-allow mscan_t postfix_spool_t:file { append getattr read ioctl lock };
-allow mscan_t postfix_spool_t:lnk_file getattr;
+allow mscan_t postfix_spool_t:dir { search read open getattr ioctl write add_name };
+allow mscan_t postfix_spool_t:file { append getattr read ioctl lock open write };
+allow mscan_t postfix_spool_t:lnk_file { getattr read };
 allow mscan_t etc_mail_t:dir { search getattr read open };
 allow mscan_t etc_mail_t:file { getattr read open ioctl };
 allow mscan_t etc_mail_t:lnk_file read;
@@ -160,11 +160,11 @@ allow mscan_t tmpfs_t:dir { write add_name create setattr read remove_name};
 allow mscan_t tmpfs_t:file { create read write getattr open lock append unlink ioctl setattr };
 allow mscan_t mscan_etc_t:lnk_file read;
 allow mscan_t mysqld_db_t:dir search;
-allow mscan_t cdcc_exec_t:file { getattr execute };
-allow mscan_t dcc_client_exec_t:file { getattr execute };
+allow mscan_t cdcc_exec_t:file { getattr execute open read };
+allow mscan_t dcc_client_exec_t:file { getattr execute open read };
 allow mscan_t dcc_var_t:dir { getattr search };
 allow mscan_t razor_port_t:tcp_socket name_connect;
-allow mscan_t spamc_exec_t:file getattr;
+allow mscan_t spamc_exec_t:file { getattr execute };
 allow mscan_t spamd_var_lib_t:file execute;
 
 #============= greylist_milter_t ==============
