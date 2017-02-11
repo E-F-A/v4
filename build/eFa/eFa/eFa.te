@@ -59,8 +59,8 @@ require {
     type dcc_client_exec_t;
     type cdcc_exec_t;
     type mysqld_db_t;
-    class file { getattr open read ioctl execute create lock };
-    class dir { getattr read open search write add_name setattr create remove_name append };
+    class file { getattr open read ioctl execute create lock append };
+    class dir { getattr read open search write add_name setattr create remove_name };
     class sock_file write;
     class unix_stream_socket connectto;
     class chr_file getattr;
