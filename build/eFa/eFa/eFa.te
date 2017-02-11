@@ -117,7 +117,6 @@ dontaudit httpd_sys_script_t user_tty_device_t:chr_file getattr;
 dontaudit httpd_sys_script_t named_t:dir getattr;
 dontaudit httpd_sys_script_t system_cronjob_t:dir getattr;
 dontaudit httpd_sys_script_t initrc_t:dir getattr;
-dontaudit httpd_sys_script_t httpd_t:dir getattr;
 dontaudit httpd_sys_script_t devpts_t:dir getattr;
 dontaudit httpd_sys_script_t rpm_t:dir getattr;
 
