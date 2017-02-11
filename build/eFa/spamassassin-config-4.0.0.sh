@@ -103,9 +103,9 @@ echo 'exit 0'>>trim-sql-awl-weekly
 chmod +x trim-sql-awl-weekly
 
 # Create .spamassassin directory (error reported in lint test)
-mkdir /var/www/.spamassassin
+mkdir -p /var/www/.spamassassin
 chown postfix:mtagroup /var/www/.spamassassin
-mkdir /user/share/httpd/.spamassassin
+mkdir -p /user/share/httpd/.spamassassin
 chown postfix:mtagroup /usr/share/httpd/.spamassassin
 
 # Issue #82 re2c spamassassin rule complilation
