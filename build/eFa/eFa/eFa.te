@@ -52,8 +52,6 @@ require {
     type devpts_t;
     type rpm_t;
     type dcc_var_t;
-    type systemd_lsmd_t;
-    type systemd_logind_t;
     class file { getattr open read ioctl execute};
     class dir { getattr read open search };
     class sock_file write;
@@ -102,7 +100,7 @@ dontaudit httpd_sys_script_t irqbalance_t:dir getattr;
 dontaudit httpd_sys_script_t hypervkvp_t:dir getattr;
 dontaudit httpd_sys_script_t policykit_t:dir getattr;
 dontaudit httpd_sys_script_t systemd_logind_t:dir getattr;
-dontaudit httpd_sys_script_t systemd_lsmd_t:dir getattr;
+dontaudit httpd_sys_script_t lsmd_t:dir getattr;
 dontaudit httpd_sys_script_t abrt_watch_log_t:dir getattr;
 dontaudit httpd_sys_script_t fsdaemon_t:dir getattr;
 dontaudit httpd_sys_script_t system_dbusd_t:dir getattr;
@@ -140,11 +138,11 @@ allow httpd_sys_script_t postfix_public_t:sock_file write;
 
 # allow spamassassin lint
 allow httpd_sys_script_t etc_mail_t:dir search;
-allow httpd_sys_script_t spamd_var_lib_t:dir { getattr search read open } ;
+allow httpd_sys_script_t spamd_var_lib_t:dir { getattr search read open };
 allow httpd_sys_script_t etc_mail_t:dir { getattr read open };
-allow httpd_sys_script_t spamd_var_lib_t:file { getattr read open ioctl execute } ;
+allow httpd_sys_script_t spamd_var_lib_t:file { getattr read open ioctl execute };
 allow httpd_sys_script_t etc_mail_t:file { getattr read open ioctl };
-allow httpd_sys_script_t etc_mail_t:lnk_file { read };
-allow httpd_sys_script_t mscan_etc_t:dir { search };
+allow httpd_sys_script_t etc_mail_t:lnk_file read;
+allow httpd_sys_script_t mscan_etc_t:dir search;
 allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl };
-allow httpd_sys_script_t dcc_var_t:dir { getattr };
+allow httpd_sys_script_t dcc_var_t:dir getattr;
