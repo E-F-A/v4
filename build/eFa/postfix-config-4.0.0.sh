@@ -31,7 +31,7 @@ echo "Configuring postfix..."
 
 mkdir /etc/postfix/ssl
 echo /^Received:/ HOLD>>/etc/postfix/header_checks
-postconf -e "inet_protocols = ipv4"
+postconf -e "inet_protocols = ipv4, ipv6"
 postconf -e "inet_interfaces = all"
 postconf -e "mynetworks = 127.0.0.0/8"
 postconf -e "header_checks = regexp:/etc/postfix/header_checks"
