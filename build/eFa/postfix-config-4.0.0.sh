@@ -80,7 +80,8 @@ postconf -e "smtpd_helo_restrictions =  check_helo_access hash:/etc/postfix/helo
 postconf -e "smtpd_sender_restrictions = permit_sasl_authenticated, check_sender_access hash:/etc/postfix/sender_access, reject_non_fqdn_sender, reject_unknown_sender_domain"
 postconf -e "smtpd_data_restrictions =  reject_unauth_pipelining"
 postconf -e "smtpd_client_restrictions = permit_sasl_authenticated, reject_rbl_client zen.spamhaus.org"
-postconf -e "smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
+postconf -e "smtpd_relay_restrictions = permit_sasl_authenticated, permit_mynetworks, defer_unauth_destination"
+postconf -e "smtpd_recipient_restrictions = reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
 postconf -e "masquerade_domains = \$mydomain"
 #other configuration files
 newaliases
