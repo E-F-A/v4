@@ -81,8 +81,6 @@ mkdir -p /var/run/clamd.scan
 chown -R clamupdate:clamupdate /var/run/clamd.scan
 chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.scan
 echo "d /var/run/clamd.scan 0755 clamupdate clamupdate -" > /usr/lib/tmpfiles.d/clamd.conf
-mkdir -p /var/spool/MailScanner/incoming/clamav-tmp
-chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
 usermod clamupdate -G mtagroup
 
 echo "Configuring clamav...done"

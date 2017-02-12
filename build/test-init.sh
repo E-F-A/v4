@@ -210,6 +210,11 @@ function func_configure-system() {
 
   cd /etc/postfix/ssl
   openssl req -new -x509 -nodes -out smtpd.pem -keyout smtpd.pem -days 3650
+  
+  service mailscanner start
+  mkdir -p /var/spool/MailScanner/incoming/clamav-tmp
+  chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
+  service mailscanner stop
 
   echo "HOSTNAME:$HOSTNAME" >> /etc/eFa-Config
   echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa-Config
