@@ -74,7 +74,7 @@ require {
     class service enable;
     class filesystem getattr;
     class capability2 mac_admin;
-    class fifo_file write;
+    class fifo_file { getattr ioctl write open };
 }
 
 #============= httpd_t ==============
