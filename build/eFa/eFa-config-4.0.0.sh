@@ -105,6 +105,9 @@ setsebool -P rsync_full_access 1
 # Needed for httpd to connect to razor
 setsebool -P httpd_can_network_connect 1
 
+# Allow httpd to write content
+setsebool -P httpd_unified 1
+
 # eFa policy module
 checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
 semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod
