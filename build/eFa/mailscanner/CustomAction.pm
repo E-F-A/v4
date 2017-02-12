@@ -88,7 +88,7 @@ sub EFACreateToken {
   my($db_host) = 'localhost';
   my($db_user) = 'efa';
   my($fh);
-  my($pw_config) = '/etc/EFA-Config';
+  my($pw_config) = '/etc/eFa-Config';
   open($fh, "<", $pw_config);
   if(!$fh) {
     MailScanner::Log::WarnLog("Unable to open %s to retrieve password", $pw_config);
