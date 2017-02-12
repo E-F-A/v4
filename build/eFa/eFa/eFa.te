@@ -86,18 +86,20 @@ allow httpd_t postfix_etc_t:dir read;
 allow httpd_t postfix_public_t:sock_file write;
 allow httpd_t postfix_spool_t:dir read;
 allow httpd_t mscan_spool_t:dir read;
-allow httpd_t mscan_spool_t:file read;
+allow httpd_t mscan_spool_t:file { read getattr open };
 
 #============= httpd_sys_script_t ==============
 # allow ps to read MailScanner process
-# todo: check and limit further
 allow httpd_sys_script_t unconfined_t:dir { getattr search };
 allow httpd_sys_script_t unconfined_t:file { open read };
 allow httpd_sys_script_t mscan_t:dir { getattr search };
 allow httpd_sys_script_t mscan_t:file { open read };
 
+# allow ps to read antivirus process
+allow httpd_sys_script_t antivirus_t:dir { getattr search };
+allow httpd_sys_script_t antivirus_t:file { read open };
+
 # allow ps to read postfix process
-# todo: check and limit further
 allow httpd_sys_script_t postfix_master_t:unix_stream_socket connectto;
 allow httpd_sys_script_t postfix_master_t:dir { getattr search };
 allow httpd_sys_script_t postfix_master_t:file { read open };
@@ -107,11 +109,11 @@ allow httpd_sys_script_t postfix_qmgr_t:dir { getattr search };
 allow httpd_sys_script_t postfix_qmgr_t:file { read open };
 allow httpd_sys_script_t postfix_showq_t:dir { getattr search read };
 allow httpd_sys_script_t postfix_showq_t:file { read open };
-allow httpd_sys_script_t postfix_cleanup_t:dir getattr;
+allow httpd_sys_script_t postfix_cleanup_t:dir { getattr search };
 allow httpd_sys_script_t postfix_cleanup_t:file read;
 allow httpd_sys_script_t postfix_etc_t:dir { read open search };
 allow httpd_sys_script_t postfix_etc_t:file { getattr open read };
-allow httpd_sys_script_t postfix_spool_t:dir { getattr read search open write add_name };
+allow httpd_sys_script_t postfix_spool_t:dir { getattr read search open write add_name remove_name };
 allow httpd_sys_script_t postfix_spool_t:file { append getattr read open ioctl write create };
 allow httpd_sys_script_t postfix_spool_t:lnk_file { getattr read };
 allow httpd_sys_script_t postfix_public_t:dir search;
@@ -182,7 +184,7 @@ allow mscan_t postfix_spool_t:dir { search read open getattr ioctl write add_nam
 allow mscan_t postfix_spool_t:file { append getattr read ioctl lock open write create rename setattr unlink };
 allow mscan_t postfix_spool_t:lnk_file { getattr read };
 allow mscan_t postfix_public_t:dir search;
-allow mscan_t postfix_public_t:fifo_file write;
+allow mscan_t postfix_public_t:fifo_file { getattr ioctl write open };
 allow mscan_t etc_mail_t:dir { search getattr read open };
 allow mscan_t etc_mail_t:file { getattr read open ioctl };
 allow mscan_t etc_mail_t:lnk_file read;
@@ -193,8 +195,8 @@ allow mscan_t mscan_etc_t:lnk_file read;
 allow mscan_t mysqld_db_t:dir search;
 allow mscan_t cdcc_exec_t:file { getattr execute open read execute_no_trans };
 allow mscan_t dcc_client_exec_t:file { getattr execute open read execute_no_trans };
-allow mscan_t dcc_client_map_t:file { read write open };
-allow mscan_t dcc_var_t:dir { getattr search write };
+allow mscan_t dcc_client_map_t:file { getattr read write open };
+allow mscan_t dcc_var_t:dir { getattr search write add_name };
 allow mscan_t dcc_var_t:file { getattr read write };
 allow mscan_t razor_port_t:tcp_socket name_connect;
 allow mscan_t spamc_exec_t:file { getattr execute open read execute_no_trans ioctl };
