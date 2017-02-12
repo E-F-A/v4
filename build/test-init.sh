@@ -208,6 +208,9 @@ function func_configure-system() {
   WATERMARK=$PASSWORD
   sed -i "/^Watermark Secret =/ c\Watermark Secret = %org-name%-$WATERMARK" /etc/MailScanner/MailScanner.conf
 
+  cd /etc/postfix/ssl
+  openssl req -new -x509 -nodes -out smtpd.pem -keyout smtpd.pem -days 3650
+
   echo "HOSTNAME:$HOSTNAME" >> /etc/eFa-Config
   echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa-Config
   echo "ADMINEMAIL:$ADMINEMAIL" >> /etc/eFa-Config
@@ -215,6 +218,9 @@ function func_configure-system() {
   echo "IP4ADDRESS:$IP4ADDRESS" >> /etc/eFa-Config
   echo "IP4NETMASK:$IP4NETMASK" >> /etc/eFa-Config
   echo "IP4GATEWAY:$IP4GATEWAY" >> /etc/eFa-Config
+  echo "IP6ADDRESS:$IP6ADDRESS" >> /etc/eFa-Config
+  echo "IP6CIDR:$IP6CIDR" >> /etc/eFa-Config
+  echo "IP6GATEWAY:$IP6GATEWAY" >> /etc/eFa-Config
   if [[ "$RECUSE" -eq 1 ]]; then
     echo "RECURSION:ENABLED" >> /etc/eFa-Config
   else
