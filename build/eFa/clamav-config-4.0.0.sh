@@ -31,6 +31,7 @@ echo "Configuring clamav..."
 clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server)
 
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
+sed -i '/REMOVE ME/d' /etc/sysconfig/freshclam
 cp /usr/share/doc/clamav-server-$clamav_version/clamd.conf /etc/clamd.d/scan.conf
 sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf
 sed -i '/^User <USER>/ c\User clamupdate' /etc/clamd.d/scan.conf
