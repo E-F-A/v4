@@ -211,12 +211,6 @@ function func_configure-system() {
   cd /etc/postfix/ssl
   openssl req -new -x509 -nodes -out smtpd.pem -keyout smtpd.pem -days 3650
   
-  service mailscanner start
-  mkdir -p /var/spool/MailScanner/incoming/clamav-tmp
-  chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
-  chmod 770 /var/spool/MailScanner/incoming/clamav-tmp
-  service mailscanner stop
-
   echo "HOSTNAME:$HOSTNAME" >> /etc/eFa-Config
   echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa-Config
   echo "ADMINEMAIL:$ADMINEMAIL" >> /etc/eFa-Config
@@ -251,6 +245,12 @@ function func_configure-system() {
   chown root:mtagroup /etc/eFa-Config
   chmod 640 /etc/eFa-Config
 
+  service mailscanner start >/dev/null 2>&1
+  mkdir -p /var/spool/MailScanner/incoming/clamav-tmp
+  chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
+  chmod 770 /var/spool/MailScanner/incoming/clamav-tmp
+  service mailscanner stop
+  
   chkconfig mailscanner on
   systemctl enable postfix
   systemctl enable httpd
