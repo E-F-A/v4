@@ -214,6 +214,7 @@ function func_configure-system() {
   service mailscanner start
   mkdir -p /var/spool/MailScanner/incoming/clamav-tmp
   chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
+  chmod 770 /var/spool/MailScanner/incoming/clamav-tmp
   service mailscanner stop
 
   echo "HOSTNAME:$HOSTNAME" >> /etc/eFa-Config
