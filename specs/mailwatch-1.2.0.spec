@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.0
 Epoch:         1
-Release:       2.eFa%{?dist}
+Release:       3.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/1.2.0/tree/develop
@@ -39,7 +39,7 @@ Requires:      php-mbstring >= 5.4.16
 Requires:      mariadb-server >= 5.5.52
 Requires:      php-mysql >= 5.4.16
 Requires:      php-ldap >= 5.4.16
-Requires:      perl(Encoding::FixLatin)
+Requires:      perl(Encoding::FixLatin) >= 1.04-1
 
 %description
 MailWatch for MailScanner is a web-based front-end to MailScanner written in
@@ -113,8 +113,7 @@ EOF
 %{_bindir}/mailwatch/tools/UTF8_Database/*
 %{_bindir}/mailwatch/tools/sudo/*
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
-%attr(0755, root, apache) %{_localstatedir}/www/html/mailscanner/images
-#%attr(0755, root, apache) %{_localstatedir}/www/html/mailscanner/images/cache
+%attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/auto-release.php
 %{_localstatedir}/www/html/mailscanner/bayes_info.php
@@ -194,6 +193,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sun Feb 12 2017 Shawn Iverson <shawniverson@gmail.com> - 1.2.0-3
+- Correct permissions on images
+
 * Sun Feb 12 2017 Shawn Iverson <shawniverson@gmail.com> - 1.2.0-2
 - Correct permissions on temp
 
