@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.0
 Epoch:         1
-Release:       1.eFa%{?dist}
+Release:       2.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/1.2.0/tree/develop
@@ -115,7 +115,7 @@ EOF
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
 %attr(0755, root, apache) %{_localstatedir}/www/html/mailscanner/images
 #%attr(0755, root, apache) %{_localstatedir}/www/html/mailscanner/images/cache
-%attr(0755, root, apache) %{_localstatedir}/www/html/mailscanner/temp
+%attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/auto-release.php
 %{_localstatedir}/www/html/mailscanner/bayes_info.php
 %{_localstatedir}/www/html/mailscanner/checklogin.php
@@ -194,5 +194,8 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sun Feb 12 2017 Shawn Iverson <shawniverson@gmail.com> - 1.2.0-2
+- Correct permissions on temp
+
 * Sat Jan 21 2017 Shawn Iverson <shawniverson@gmail.com> - 1.2.0-1
 - Initial Build for eFa https://efa-project.org
