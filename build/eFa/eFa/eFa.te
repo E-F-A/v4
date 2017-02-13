@@ -205,6 +205,7 @@ allow mscan_t self:capability { fowner fsetid };
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
+allow greylist_milter_t mysqld_port_t:tcp_socket name_connect;
 
 #============= unconfined_t ==============
 allow unconfined_t init_t:service enable;
