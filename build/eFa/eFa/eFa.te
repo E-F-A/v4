@@ -198,7 +198,7 @@ allow mscan_t cdcc_exec_t:file { getattr execute open read execute_no_trans };
 allow mscan_t dcc_client_exec_t:file { getattr execute open read execute_no_trans };
 allow mscan_t dcc_client_map_t:file { getattr read write open lock };
 allow mscan_t dcc_var_t:dir { getattr search write add_name remove_name };
-allow mscan_t dcc_var_t:file { getattr read write create open lock };
+allow mscan_t dcc_var_t:file { getattr read write create open lock rename unlink };
 allow mscan_t razor_port_t:tcp_socket name_connect;
 allow mscan_t spamc_exec_t:file { getattr execute open read execute_no_trans ioctl };
 allow mscan_t spamd_var_lib_t:file execute;
