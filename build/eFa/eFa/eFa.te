@@ -111,7 +111,7 @@ allow httpd_sys_script_t postfix_qmgr_t:file { read open };
 allow httpd_sys_script_t postfix_showq_t:dir { getattr search read };
 allow httpd_sys_script_t postfix_showq_t:file { read open };
 allow httpd_sys_script_t postfix_cleanup_t:dir { getattr search };
-allow httpd_sys_script_t postfix_cleanup_t:file read;
+allow httpd_sys_script_t postfix_cleanup_t:file { read open };
 allow httpd_sys_script_t postfix_etc_t:dir { read open search };
 allow httpd_sys_script_t postfix_etc_t:file { getattr open read };
 allow httpd_sys_script_t postfix_spool_t:dir { getattr read search open write add_name remove_name };
@@ -120,6 +120,12 @@ allow httpd_sys_script_t postfix_spool_t:lnk_file { getattr read };
 allow httpd_sys_script_t postfix_public_t:dir search;
 allow httpd_sys_script_t postfix_public_t:sock_file write;
 allow httpd_sys_script_t postfix_smtp_t:dir search;
+allow httpd_sys_script_t postfix_bounce_t:dir { getattr search };
+allow httpd_sys_script_t postfix_bounce_t:file { read open };
+allow httpd_sys_script_t postfix_smtp_t:dir { getattr search };
+allow httpd_sys_script_t postfix_smtp_t:file { read open };
+allow httpd_sys_script_t postfix_smtpd_t:dir { getattr search };
+allow httpd_sys_script_t postfix_smtpd_t:dir { read open };
 
 # suppress other ps output denials
 # won't suppress everything in every scenario but should
@@ -153,6 +159,11 @@ dontaudit httpd_sys_script_t system_cronjob_t:dir getattr;
 dontaudit httpd_sys_script_t initrc_t:dir getattr;
 dontaudit httpd_sys_script_t devpts_t:dir getattr;
 dontaudit httpd_sys_script_t rpm_t:dir getattr;
+dontaudit httpd_sys_script_t devpts_t:dir search;
+dontaudit httpd_sys_script_t getty_t:dir getattr;
+dontaudit httpd_sys_script_t greylist_milter_t:dir getattr;
+dontaudit httpd_sys_script_t mysqld_safe_t:dir getattr;
+dontaudit httpd_sys_script_t mysqld_t:dir getattr;
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
