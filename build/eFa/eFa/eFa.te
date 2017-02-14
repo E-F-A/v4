@@ -62,6 +62,7 @@ require {
     type mysqld_db_t;
     type mysqld_port_t;
     type dcc_client_map_t;
+    type shadow_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file write;
@@ -126,6 +127,7 @@ allow httpd_sys_script_t postfix_smtp_t:dir { getattr search };
 allow httpd_sys_script_t postfix_smtp_t:file { read open };
 allow httpd_sys_script_t postfix_smtpd_t:dir { getattr search };
 allow httpd_sys_script_t postfix_smtpd_t:dir { read open };
+allow httpd_sys_script_t postfix_smtpd_t:dir search;
 
 # suppress other ps output denials
 # won't suppress everything in every scenario but should
@@ -175,6 +177,7 @@ allow httpd_sys_script_t etc_mail_t:lnk_file read;
 allow httpd_sys_script_t mscan_etc_t:dir { search open read };
 allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl lock };
 allow httpd_sys_script_t mscan_etc_t:lnk_file read;
+allow httpd_sys_script_t mscan_spool_t:file { getattr read open };
 allow httpd_sys_script_t dcc_var_t:dir { getattr search write add_name remove_name };
 allow httpd_sys_script_t dcc_var_t:file { getattr create open lock rename unlink read write };
 allow httpd_sys_script_t dcc_client_map_t:file { getattr open read write lock };
@@ -186,6 +189,13 @@ allow httpd_sys_script_t tmpfs_t:dir { setattr write add_name create read remove
 allow httpd_sys_script_t tmpfs_t:file { append getattr open ioctl setattr create read write lock unlink };
 allow httpd_sys_script_t tmpfs_t:filesystem getattr;
 allow httpd_sys_script_t antivirus_t:unix_stream_socket connectto;
+
+# Allow sa-learn
+allow httpd_sys_script_t spamd_update_t:dir getattr;
+allow spamd_update_t self:capability dac_override;
+allow spamd_update_t shadow_t:file read;
+allow spamd_update_t spamd_var_lib_t:file execute;
+allow spamd_update_t system_cronjob_tmp_t:file write;
 
 # Allow geoip updates
 allow httpd_sys_script_t httpd_t:dir { getattr search };
