@@ -67,6 +67,8 @@ require {
     type getty_t;
     type spamd_update_t;
     type system_cronjob_tmp_t;
+    type kdumpctl_t;
+    type systemd_hostnamed_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file write;
@@ -170,6 +172,8 @@ dontaudit httpd_sys_script_t getty_t:dir getattr;
 dontaudit httpd_sys_script_t greylist_milter_t:dir getattr;
 dontaudit httpd_sys_script_t mysqld_safe_t:dir getattr;
 dontaudit httpd_sys_script_t mysqld_t:dir getattr;
+dontaudit httpd_sys_script_t kdumpctl_t:dir getattr;
+dontaudit httpd_sys_script_t systemd_hostnamed_t:dir getattr;
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
