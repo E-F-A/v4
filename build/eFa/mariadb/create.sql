@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `maillog` (
 --
 -- Indexes for table `maillog`
 --
-ALTER TABLE `maillog` ADD FULLTEXT KEY `subject_idx` (`subject`);
+-- ALTER TABLE `maillog` ADD FULLTEXT KEY `subject_idx` (`subject`);
 
 -- --------------------------------------------------------
 
