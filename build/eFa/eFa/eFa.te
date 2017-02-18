@@ -69,6 +69,9 @@ require {
     type system_cronjob_tmp_t;
     type kdumpctl_t;
     type systemd_hostnamed_t;
+    type mandb_t;
+    type rpm_script_t;
+    type sysstat_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file write;
@@ -107,7 +110,7 @@ allow httpd_sys_script_t mscan_t:file { open read };
 allow httpd_sys_script_t antivirus_t:dir { getattr search };
 allow httpd_sys_script_t antivirus_t:file { read open };
 
-# allow ps to read postfix process
+# allow ps/scripts to read postfix process and files
 allow httpd_sys_script_t postfix_master_t:unix_stream_socket connectto;
 allow httpd_sys_script_t postfix_master_t:dir { getattr search };
 allow httpd_sys_script_t postfix_master_t:file { read open };
@@ -131,9 +134,8 @@ allow httpd_sys_script_t postfix_bounce_t:dir { getattr search };
 allow httpd_sys_script_t postfix_bounce_t:file { read open };
 allow httpd_sys_script_t postfix_smtp_t:dir { getattr search };
 allow httpd_sys_script_t postfix_smtp_t:file { read open };
-allow httpd_sys_script_t postfix_smtpd_t:dir { getattr search };
-allow httpd_sys_script_t postfix_smtpd_t:dir { read open };
-allow httpd_sys_script_t postfix_smtpd_t:dir search;
+allow httpd_sys_script_t postfix_smtpd_t:dir { getattr search read open};
+allow httpd_sys_script_t postfix_smtpd_t:file { read };
 
 # suppress other ps output denials
 # won't suppress everything in every scenario but should
@@ -174,6 +176,10 @@ dontaudit httpd_sys_script_t mysqld_safe_t:dir getattr;
 dontaudit httpd_sys_script_t mysqld_t:dir getattr;
 dontaudit httpd_sys_script_t kdumpctl_t:dir getattr;
 dontaudit httpd_sys_script_t systemd_hostnamed_t:dir getattr;
+dontaudit httpd_sys_script_t mandb_t:dir getattr;
+dontaudit httpd_sys_script_t rpm_script_t:dir getattr;
+dontaudit httpd_sys_script_t sysstat_t:dir getattr;
+
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -199,7 +205,7 @@ allow httpd_sys_script_t tmpfs_t:filesystem getattr;
 allow httpd_sys_script_t antivirus_t:unix_stream_socket connectto;
 
 # Allow sa-learn
-allow httpd_sys_script_t spamd_update_t:dir getattr;
+allow httpd_sys_script_t spamd_update_t:dir { getattr search };
 allow spamd_update_t self:capability dac_override;
 allow spamd_update_t shadow_t:file read;
 allow spamd_update_t spamd_var_lib_t:file execute;
