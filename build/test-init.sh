@@ -239,18 +239,19 @@ function func_configure-system() {
   echo "EFASQLPWD:$EFASQLPWD" >> /etc/eFa-Config
   echo "MYSQLROOTPWD:$PASSWORD" >> /etc/eFa-Config
   echo "POSTMASTEREMAIL:$POSTMASTEREMAIL" >> /etc/eFa-Config
-  
+
   sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa-Config
 
   chown root:mtagroup /etc/eFa-Config
   chmod 640 /etc/eFa-Config
 
   service mailscanner start >/dev/null 2>&1
+
   mkdir -p /var/spool/MailScanner/incoming/clamav-tmp
   chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
   chmod 770 /var/spool/MailScanner/incoming/clamav-tmp
   service mailscanner stop
-  
+
   chkconfig mailscanner on
   systemctl enable postfix
   systemctl enable httpd
@@ -266,7 +267,7 @@ function func_configure-system() {
   #chkconfig munin-node off
   systemctl enable chronyd
   systemctl enable yum-cron
-  
+
   echo -e "$green[eFa]$clean - Done"
 }
 # +---------------------------------------------------+
@@ -297,10 +298,14 @@ cyan='\E[00;36m'
 clean='\e[00m'
 
 func_echo-header
-CONFIGURED="`grep CONFIGURED /etc/eFa-Config | sed 's/^.*://'`"
-if [ $CONFIGURED == "NO" ]; then
-   echo -e "$green[eFa]$clean Configuring system..."
-   func_configure-system
+if [[ -e /etc/eFa-Config ]]; then
+  CONFIGURED="`grep CONFIGURED /etc/eFa-Config | sed 's/^.*://'`"
+  if [ $CONFIGURED == "NO" ]; then
+    echo -e "$green[eFa]$clean Configuring system..."
+    func_configure-system
+  else
+    echo -e "$red         ERROR: eFa is already configured $clean"
+  fi
 else
-   echo -e "$red         ERROR: eFa is already configured $clean"
+  echo -e "$red         ERROR: eFa is not installed $clean"
 fi
