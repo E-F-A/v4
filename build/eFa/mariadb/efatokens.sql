@@ -9,6 +9,6 @@ USE efa;
 CREATE TABLE tokens (
   token char(32) NOT NULL,
   datestamp datetime NOT NULL
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 
