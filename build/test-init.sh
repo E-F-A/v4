@@ -20,9 +20,9 @@
 
 #-----------------------------------------------------------------------------#
 # This script provides quick configuration of a development eFa environment
-# for testing purposes.  It is not meant to be secure or to ever be used in 
+# for testing purposes.  It is not meant to be secure or to ever be used in
 # production.  It is non-interactive and sets a default working configuration
-# for testing purposes.  It should not be bundled with eFa and should be 
+# for testing purposes.  It should not be bundled with eFa and should be
 # explicitly downloaded for development purposes.
 #-----------------------------------------------------------------------------#
 
@@ -66,7 +66,7 @@ INTERFACE='eth0'
 function func_configure-system() {
 
  # Start mariadb Daemon
-  systemctl start mariadb 
+  systemctl start mariadb
 
   # Network settings
   echo -e "$green[eFa]$clean - Setting new hostname"
@@ -74,6 +74,7 @@ function func_configure-system() {
   echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
   echo "$IPADDRESS   $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
   echo "$HOSTNAME.$DOMAINNAME" > /etc/hostname
+  hostname $HOSTNAME.$DOMAINNAME
 
   echo -e "$green[eFa]$clean - Setting DNS"
   echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
@@ -99,7 +100,7 @@ function func_configure-system() {
   echo "IPV6_DEFAULTGW=\"$IP6GATEWAY\"" >> /etc/sysconfig/network
   systemctl restart network
   systemctl start unbound
-  
+
   echo -e "$green[eFa]$clean - Creating user"
   useradd -m -d /home/$USERNAME -s /bin/bash $USERNAME
   echo "$USERNAME:$PASSWORD" | chpasswd --md5 $USERNAME
@@ -109,15 +110,15 @@ function func_configure-system() {
   rm -f /etc/ssh/ssh_host_dsa_key
   ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
   ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
-  
+
   echo -e "$green[eFa]$clean - Configure timezone"
   rm -f /etc/localtime
   ln -s /usr/share/zoneinfo/$TZONE /etc/localtime
   echo "ZONE=$TZONE">>/etc/sysconfig/clock
-  
+
   # Write ianacode to freshclam config.
   sed -i "/^#DatabaseMirror / c\DatabaseMirror db.$IANACODE.clamav.net" /etc/freshclam.conf
-  
+
   echo -e "$green[eFa]$clean - Configuring razor"
   su postfix -s /bin/bash -c 'razor-admin -create'
   su postfix -s /bin/bash -c 'razor-admin -register'
@@ -127,7 +128,7 @@ function func_configure-system() {
   # setgid to lock in mtagroup group for new files
   chmod ug+s /var/spool/postfix/.razor
   chmod ug+rw /var/spool/postfix/.razor/*
-  
+
   echo -e "$green[eFa]$clean - Updating AV and SA rules"
 
   systemctl start clamd@scan
@@ -210,7 +211,7 @@ function func_configure-system() {
 
   cd /etc/postfix/ssl
   openssl req -new -x509 -nodes -out smtpd.pem -keyout smtpd.pem -days 3650
-  
+
   echo "HOSTNAME:$HOSTNAME" >> /etc/eFa-Config
   echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa-Config
   echo "ADMINEMAIL:$ADMINEMAIL" >> /etc/eFa-Config
