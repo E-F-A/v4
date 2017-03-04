@@ -31,6 +31,8 @@ rm -f /etc/httpd/conf.d/welcome.conf
 
 # Remove unwanted modules
 sed -i 's/LoadModule version_module modules\/mod_version.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule actions_module modules\/mod_actions.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+
 
 # TODO check what can be removed from:
 #/etc/httpd/conf.modules.d/00-base.conf

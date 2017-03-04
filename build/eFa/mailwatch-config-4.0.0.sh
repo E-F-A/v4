@@ -66,7 +66,7 @@ cat > /var/www/html/index.html << 'EOF'
     <head>
     <title>MailWatch</title>
     <meta http-equiv="refresh" content="0; url=/mailscanner/" />
-    </head>"
+    </head>
     <body>
          <a href="/mailscanner/">Click Here for MailWatch</a>
     </body>
@@ -80,13 +80,11 @@ cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
 /bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images/favicon.png
 
 # eFa Branding
-cp $srcdir/mailwatch/eFa4logo-47px.gif /var/www/html/mailscanner/images/eFa4logo-47px.gif
-cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/eFa4logo-79px.png
 mv /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.png.orig
 mv /var/www/html/mailscanner/images/mailscannerlogo.gif /var/www/html/mailscanner/images/mailscannerlogo.gif.orig
-ln -s /var/www/html/mailscanner/images/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.png
-ln -s /var/www/html/mailscanner/images/eFa4logo-47px.gif /var/www/html/mailscanner/images/mailscannerlogo.gif
-ln -s /var/www/html/mailscanner/images/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.gif
+cp $srcdir/mailwatch/eFa4logo-47px.gif /var/www/html/mailscanner/images/mailscannerlogo.gif
+cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.png
+cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.gif
 
 sed -i 's/#f7ce4a/#999999/g' /var/www/html/mailscanner/login.php
 
