@@ -29,15 +29,50 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 rm -f /etc/httpd/conf.d/welcome.conf
 
-# Remove unwanted modules
+# Remove not needed modules from Apache config 00-base.conf
 sed -i 's/LoadModule version_module modules\/mod_version.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule actions_module modules\/mod_actions.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule authn_anon_module modules\/mod_authn_anon.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule authn_dbd_module modules\/mod_authn_dbd.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule authn_dbm_module modules\/mod_authn_dbm.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule authn_socache_module modules\/mod_authn_socache.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule authz_dbd_module modules\/mod_authz_dbd.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule authz_dbm_module modules\/mod_authz_dbm.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule autoindex_module modules\/mod_autoindex.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule cache_module modules\/mod_cache.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule cache_disk_module modules\/mod_cache_disk.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule data_module modules\/mod_data.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule dbd_module modules\/mod_dbd.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule dumpio_module modules\/mod_dumpio.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule echo_module modules\/mod_echo.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule env_module modules\/mod_env.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule expires_module modules\/mod_expires.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule ext_filter_module modules\/mod_ext_filter.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule filter_module modules\/mod_filter.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule headers_module modules\/mod_headers.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule include_module modules\/mod_include.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule info_module modules\/mod_info.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule negotiation_module modules\/mod_negotiation.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule remoteip_module modules\/mod_remoteip.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule socache_dbm_module modules\/mod_socache_dbm.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule socache_memcache_module modules\/mod_socache_memcache.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule socache_shmcb_module modules\/mod_socache_shmcb.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule status_module modules\/mod_status.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule status_module modules\/mod_status.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule userdir_module modules\/mod_userdir.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 
+# Remove not needed modules from Apache config 00-dav.conf
+sed -i 's/LoadModule dav_module modules\/mod_dav.so/#&/' /etc/httpd/conf.modules.d/00-dav.conf
+sed -i 's/LoadModule dav_fs_module modules\/mod_dav_fs.so/#&/' /etc/httpd/conf.modules.d/00-dav.conf
+sed -i 's/LoadModule dav_lock_module modules\/mod_dav_lock.so/#&/' /etc/httpd/conf.modules.d/00-dav.conf
+
+# Remove not needed modules from Apache config 00-lua.conf
+sed -i 's/LoadModule lua_module modules\/mod_lua.so/#&/' /etc/httpd/conf.modules.d/00-lua.conf
+
+# We don't use auto index so remove the file
+mv /etc/httpd/conf.d/autoindex.conf /etc/httpd/conf.d/autoindex.conf.orig
 
 # TODO check what can be removed from:
-#/etc/httpd/conf.modules.d/00-base.conf
-#/etc/httpd/conf.modules.d/00-dav.conf
-#/etc/httpd/conf.modules.d/00-lua.conf
 #/etc/httpd/conf.modules.d/00-mpm.conf
 #/etc/httpd/conf.modules.d/00-proxy.conf
 #/etc/httpd/conf.modules.d/00-ssl.conf
@@ -45,33 +80,6 @@ sed -i 's/LoadModule actions_module modules\/mod_actions.so/#&/' /etc/httpd/conf
 #/etc/httpd/conf.modules.d/01-cgi.conf
 #/etc/httpd/conf.modules.d/10-mod_security.conf
 #/etc/httpd/conf.modules.d/10-php.conf
-
-
-# Remove unwanted modules(changed in centos 7)
-#sed -i '/LoadModule ldap_module modules\/mod_ldap.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule authnz_ldap_module modules\/mod_authnz_ldap.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule dav_module modules\/mod_dav.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule autoindex_module modules\/mod_autoindex.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule info_module modules\/mod_info.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule dav_fs_module modules\/mod_dav_fs.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule userdir_module modules\/mod_userdir.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule proxy_module modules\/mod_proxy.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule proxy_balancer_module modules\/mod_proxy_balancer.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule proxy_ftp_module modules\/mod_proxy_ftp.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule proxy_http_module modules\/mod_proxy_http.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule proxy_ajp_module modules\/mod_proxy_ajp.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule proxy_connect_module modules\/mod_proxy_connect.so/d' /etc/httpd/conf/httpd.conf
-#sed -i '/LoadModule version_module modules\/mod_version.so/d' /etc/httpd/conf/httpd.conf
-
-# Remove config for disabled modules
-#sed -i '/IndexOptions /d' /etc/httpd/conf/httpd.conf
-#sed -i '/AddIconByEncoding /d' /etc/httpd/conf/httpd.conf
-#sed -i '/AddIconByType /d' /etc/httpd/conf/httpd.conf
-#sed -i '/AddIcon /d' /etc/httpd/conf/httpd.conf
-#sed -i '/DefaultIcon /d' /etc/httpd/conf/httpd.conf
-#sed -i '/ReadmeName /d' /etc/httpd/conf/httpd.conf
-#sed -i '/HeaderName /d' /etc/httpd/conf/httpd.conf
-#sed -i '/IndexIgnore /d' /etc/httpd/conf/httpd.conf
 
 # Configure HTTP
 sed -i '/    Options Indexes FollowSymLinks/ c\    Options None' /etc/httpd/conf/httpd.conf
