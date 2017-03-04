@@ -22,6 +22,7 @@
 #
 # - Configure email for yum-cron
 # - Add all eFa-Init functions, tests and questions..
+# - change ServerAdmin in /etc/httpd/conf/httpd.conf
 
 
 # +---------------------------------------------------+

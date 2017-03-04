@@ -319,6 +319,9 @@ Requires:  policycoreutils-python >= 2.5-11
     # policycoreutils-python                     # base    # selinux
 Requires: perl-Net-DNS-Nameserver >= 0.72-6
     # perl-Net-DNS-Nameserver                    # base    # Spamassassin
+Requires:  mod_security_crs
+    # mod_security rule set                      # base    # httpd
+    # #     mod_security                         #         #
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
