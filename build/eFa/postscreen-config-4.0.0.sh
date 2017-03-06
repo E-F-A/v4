@@ -51,3 +51,101 @@ sed -i '/^#dnsblog.*unix.*dnsblog$/s/^#//g' /etc/postfix/master.cf
 # Postscreen access cidr file (TODO auto update from eFa servers ?)
 touch /etc/postfix/postscreen_access.cidr
 postconf -e postscreen_access_list="permit_mynetworks, cidr:/etc/postfix/postscreen_access.cidr"
+
+
+
+################################### ######
+# Postscreen tests NOTES
+########
+
+
+#------------------------
+# Controls
+#------------------------
+# postscreen_command_filter
+# postscreen_discard_ehlo_keyword_address_maps
+# postscreen_discard_ehlo_keywords
+# dns_ncache_ttl_fix_enable
+# postscreen_expansion_filter
+# postscreen_reject_foot
+# soft_bounce
+
+#------------------------
+# Before postscreen
+#------------------------
+# postscreen_upstream_proxy_protocol
+# postscreen_upstream_proxy_timeout
+
+#------------------------
+# Permanent tests
+#------------------------
+postscreen_access_list 		= permit_mynetworks, cidr:$config_directory/postscreen_access.cidr
+postscreen_blacklist_action 	= drop
+
+#------------------------
+# Before 220 greeting
+#------------------------
+# dnsblog_service_name
+postscreen_dnsbl_action 	     = enforce							                               # Or drop?
+postscreen_dnsbl_reply_map 	   = pcre:$config_directory/postscreen_dnsbl_reply_map.pcre	# should we use this with free services (as there are no passwords)?
+postscreen_dnsbl_sites 		     = zen.spamhaus.org*3						                       # free for 100k
+        			                   ib.barracudacentral.org*2					                 # free to use no warranty
+        			                   bl.spameatingmonkey.net*2					                 # free for 100k reqs
+           			                 bl.spamcop.net						                           # free to use no warrany
+        			                   dnsbl.sorbs.net						                         # free for 100k reqs
+        			                   psbl.surriel.com						                         # free to use (rsync to eFa as it is available?)
+        			                   bl.mailspike.net						                         # free for 100k reqs
+       				                   list.dnswl.org=127.[0..255].[0..255].0*-2			     # free for 100k reqs
+        			                   list.dnswl.org=127.[0..255].[0..255].1*-3			     # free for 100k reqs
+        			                   list.dnswl.org=127.[0..255].[0..255].[2..255]*-4		 # free for 100k reqs
+        			                   # swl.spamhaus.org*-4						                   # Doesn't exist anymore
+# postscreen_dnsbl_threshold	=
+# postscreen_greet_action	=
+# postscreen_greet_banner	=
+# postscreen_greet_wait		=
+# smtpd_service_name		=
+# postscreen_dnsbl_whitelist_threshold	=
+# postscreen_dnsbl_timeout	=
+
+#------------------------
+# After 220 greeting
+#------------------------
+# postscreen_bare_newline_action
+# postscreen_bare_newline_enable
+# postscreen_disable_vrfy_command
+# postscreen_forbidden_commands
+# postscreen_helo_required
+# postscreen_non_smtp_command_action
+# postscreen_non_smtp_command_enable
+# postscreen_pipelining_action
+# postscreen_pipelining_enable
+
+#------------------------
+# Cache Controls
+#------------------------
+# postscreen_cache_cleanup_interval
+# postscreen_cache_map
+# postscreen_cache_retention_time
+# postscreen_bare_newline_ttl
+# postscreen_dnsbl_max_ttl
+# postscreen_dnsbl_min_ttl
+# postscreen_greet_ttl
+# postscreen_non_smtp_command_ttl
+# postscreen_pipelining_ttl
+
+#------------------------
+# Resource Controls
+#------------------------
+# line_length_limit
+# postscreen_client_connection_count_limit
+# postscreen_command_count_limit
+# postscreen_command_time_limit
+# postscreen_post_queue_limit
+# postscreen_pre_queue_limit
+# postscreen_watchdog_timeout
+
+#------------------------
+# STARTTTLS controls
+#------------------------
+# postscreen_tls_security_level
+# tlsproxy_service_name
