@@ -48,6 +48,6 @@ sed -i '/^#tlsproxy.*unix.*tlsproxy$/s/^#//g' /etc/postfix/master.cf
 echo "- Uncommenting 'dnsblog unix ... dnsblog' service in master.cf"
 sed -i '/^#dnsblog.*unix.*dnsblog$/s/^#//g' /etc/postfix/master.cf
 
-# Postscreen access cidr file (TODO auto update from eFa ?)
+# Postscreen access cidr file (TODO auto update from eFa servers ?)
 touch /etc/postfix/postscreen_access.cidr
 postconf -e postscreen_access_list="permit_mynetworks, cidr:/etc/postfix/postscreen_access.cidr"
