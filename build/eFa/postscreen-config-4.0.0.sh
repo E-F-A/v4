@@ -86,19 +86,19 @@ postscreen_blacklist_action 	= drop
 # Before 220 greeting
 #------------------------
 # dnsblog_service_name
-postscreen_dnsbl_action 	     = enforce							                               # Or drop?
-postscreen_dnsbl_reply_map 	   = pcre:$config_directory/postscreen_dnsbl_reply_map.pcre	# should we use this with free services (as there are no passwords)?
-postscreen_dnsbl_sites 		     = zen.spamhaus.org*3						                       # free for 100k
-        			                   ib.barracudacentral.org*2					                 # free to use no warranty
-        			                   bl.spameatingmonkey.net*2					                 # free for 100k reqs
-           			                 bl.spamcop.net						                           # free to use no warrany
-        			                   dnsbl.sorbs.net						                         # free for 100k reqs
-        			                   psbl.surriel.com						                         # free to use (rsync to eFa as it is available?)
-        			                   bl.mailspike.net						                         # free for 100k reqs
-       				                   list.dnswl.org=127.[0..255].[0..255].0*-2			     # free for 100k reqs
-        			                   list.dnswl.org=127.[0..255].[0..255].1*-3			     # free for 100k reqs
-        			                   list.dnswl.org=127.[0..255].[0..255].[2..255]*-4		 # free for 100k reqs
-        			                   # swl.spamhaus.org*-4						                   # Doesn't exist anymore
+postscreen_dnsbl_action 	= enforce                               		# Or drop?
+postscreen_dnsbl_reply_map 	= pcre:$config_directory/postscreen_dnsbl_reply_map.pcre	# should we use this with free services (as there are no passwords)?
+postscreen_dnsbl_sites 		= zen.spamhaus.org*3					# free for 100k
+        			  ib.barracudacentral.org*2				# free to use no warranty
+        			  bl.spameatingmonkey.net*2				# free for 100k reqs
+           			  bl.spamcop.net					# free to use no warrany
+        			  dnsbl.sorbs.net					# free for 100k reqs
+        			  psbl.surriel.com					# free to use (rsync to eFa as it is available?)
+        			  bl.mailspike.net					# free for 100k reqs
+       				  list.dnswl.org=127.[0..255].[0..255].0*-2     	# free for 100k reqs
+        			  list.dnswl.org=127.[0..255].[0..255].1*-3     	# free for 100k reqs
+        			  list.dnswl.org=127.[0..255].[0..255].[2..255]*-4 	# free for 100k reqs
+        			  # swl.spamhaus.org*-4					# Doesn't exist anymore
 # postscreen_dnsbl_threshold	=
 # postscreen_greet_action	=
 # postscreen_greet_banner	=
