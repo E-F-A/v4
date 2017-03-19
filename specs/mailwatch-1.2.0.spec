@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.0
 Epoch:         1
-Release:       3.eFa%{?dist}
+Release:       4.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/1.2.0/tree/develop
@@ -67,15 +67,17 @@ mkdir -p %{buildroot}%{_datarootdir}/MailScanner/perl/custom
 cp MailScanner_perl_scripts/MailWatch.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
 cp MailScanner_perl_scripts/SQLBlackWhiteList.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
 cp MailScanner_perl_scripts/SQLSpamSettings.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
+cp MailScanner_perl_scripts/00MailWatchConf.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
 
 mkdir -p %{buildroot}/%{_bindir}/mailwatch
 cp -a tools %{buildroot}%{_bindir}/mailwatch
 rm -f %{buildroot}%{_bindir}/mailwatch/tools/Cron_jobs/INSTALL
 mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
 echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
-echo "/usr/bin/mailwatch/tools/Cron_jobs/db_clean.php >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
-echo "/usr/bin/mailwatch/tools/Cron_jobs/quarantine_maint.php --clean >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
-echo "/usr/bin/mailwatch/tools/Cron_jobs/quarantine_report.php >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
+
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_db_clean.php >> /dev/null 2>&1 >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_quarantine_maint.php --clean >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_quarantine_report.php >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
 
 mkdir -p %{buildroot}%{_localstatedir}/www/html
 cp -a mailscanner %{buildroot}%{_localstatedir}/www/html/mailscanner
@@ -86,8 +88,8 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.hourly
 cat > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh << 'EOF'
 #!/bin/bash
 
-/usr/bin/php /var/www/html/mailscanner/postfix_relay.php --refresh
-/usr/bin/php /var/www/html/mailscanner/mailscanner_relay.php --refresh
+/usr/bin/php /var/www/html/mailscanner/mailwatch_postfix_relay.php --refresh
+/usr/bin/php /var/www/html/mailscanner/mailwatch_mailscanner_relay.php --refresh
 EOF
 
 %pre
@@ -193,6 +195,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sun Mar 19 2017 Shawn Iverson <shawniverson@gmail.com> - 1.2.0-4
+- Mailwatch Update
+
 * Sun Feb 12 2017 Shawn Iverson <shawniverson@gmail.com> - 1.2.0-3
 - Correct permissions on images
 

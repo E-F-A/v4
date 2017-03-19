@@ -32,16 +32,8 @@ source /usr/src/eFa/eFa-settings.inc
 sed -i '/^short_open_tag =/ c\short_open_tag = On' /etc/php.ini
 
 # Set up connection for MailWatch
-sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/MailWatch.pm
-sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatch.pm
-
-# Set up SQLBlackWhiteList
-sed -i "/^    my (\$db_user) =/ c\    my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/SQLBlackWhiteList.pm
-sed -i "/^    my (\$db_pass) =/ c\    my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\n    open(\$fh, \"<\", \$pw_config);\n    if(\!\$fh) {\n      MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n      return;\n    }\n    my (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n    \$db_pass =~ s/MAILWATCHSQLPWD://;\n    \$db_pass =~ s/\\\n//;\n    close(\$fh);" /usr/share/MailScanner/perl/custom/SQLBlackWhiteList.pm
-
-# Set up SQLSpamSettings
-sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/SQLSpamSettings.pm
-sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/SQLSpamSettings.pm
+sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/00MailWatchConf.pm
+sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/00MailWatchConf.pm
 
 sed -i "/^define('DB_PASS',/ c\$efa_config = preg_grep('/^MAILWATCHSQLPWD/', file('/etc/eFa-Config'));\nforeach(\$efa_config as \$num => \$line) {\n  if (\$line) {\n    \$db_pass_tmp = chop(preg_replace('/^MAILWATCHSQLPWD:(.*)/','\$1', \$line));\n  }\n}\ndefine('DB_PASS', \$db_pass_tmp);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('DB_USER',/ c\define('DB_USER', 'mailwatch');" /var/www/html/mailscanner/conf.php
@@ -68,7 +60,6 @@ cat > /var/www/html/index.html << 'EOF'
     <meta http-equiv="refresh" content="0; url=/mailscanner/" />
     </head>
     <body>
-         <a href="/mailscanner/">Click Here for MailWatch</a>
     </body>
 </html>
 EOF
