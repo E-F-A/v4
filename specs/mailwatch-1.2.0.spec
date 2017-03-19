@@ -110,10 +110,11 @@ EOF
 %{_datarootdir}/MailScanner/perl/custom/*
 %{_bindir}/mailwatch/tools/MailScanner_rule_editor/*
 %{_bindir}/mailwatch/tools/Postfix_relay/*
-%{_bindir}/mailwatch/tools/Sendmail_queue/*
+%{_bindir}/mailwatch/tools/Sendmail-Exim_queue/*
 %{_bindir}/mailwatch/tools/Sendmail_relay/*
-%{_bindir}/mailwatch/tools/UTF8_Database/*
+%{_bindir}/mailwatch/tools/LDAP/*
 %{_bindir}/mailwatch/tools/sudo/*
+%{_bindir}/mailwatch/tools/MailScanner_config/*
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
@@ -142,7 +143,6 @@ EOF
 %{_localstatedir}/www/html/mailscanner/login.php
 %{_localstatedir}/www/html/mailscanner/logout.php
 %{_localstatedir}/www/html/mailscanner/mailq.php
-%{_localstatedir}/www/html/mailscanner/mailscanner_relay.php
 %{_localstatedir}/www/html/mailscanner/mcafee.awk
 %{_localstatedir}/www/html/mailscanner/mcafee_status.php
 %{_localstatedir}/www/html/mailscanner/mcp_rules_update.php
@@ -153,11 +153,12 @@ EOF
 %{_localstatedir}/www/html/mailscanner/msre_index.php
 %{_localstatedir}/www/html/mailscanner/msre_table_functions.php
 %{_localstatedir}/www/html/mailscanner/msrule.php
+%{_localstatedir}/www/html/mailscanner/mtalogprocessor.inc.php
 %{_localstatedir}/www/html/mailscanner/mysql_status.php
 %{_localstatedir}/www/html/mailscanner/other.php
+%{_localstatedir}/www/html/mailscanner/password_reset.php
 %{_localstatedir}/www/html/mailscanner/postfix.inc.php
 %{_localstatedir}/www/html/mailscanner/postfixmailq.php
-%{_localstatedir}/www/html/mailscanner/postfix_relay.php
 %{_localstatedir}/www/html/mailscanner/quarantine_action.php
 %{_localstatedir}/www/html/mailscanner/quarantine.php
 %{_localstatedir}/www/html/mailscanner/rep_audit_log.php
@@ -190,6 +191,7 @@ EOF
 %{_localstatedir}/www/html/mailscanner/sophos_status.php
 %{_localstatedir}/www/html/mailscanner/status.php
 %{_localstatedir}/www/html/mailscanner/style.css
+%{_localstatedir}/www/html/mailscanner/syslog_parser.inc.php
 %{_localstatedir}/www/html/mailscanner/user_manager.php
 %{_localstatedir}/www/html/mailscanner/viewmail.php
 %{_localstatedir}/www/html/mailscanner/viewpart.php
