@@ -67,6 +67,18 @@ else
   /usr/bin/wget $mirror/rpm/eFa4/eFa4.repo
 fi  
 
+echo "- Adding mariadb Repo"
+cat > /etc/yum.repos.d/mariadb.repo << 'EOF'
+# MariaDB 10.1 CentOS repository list - created 2017-03-19 11:09 UTC
+# http://downloads.mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.1/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+enabled=1
+EOF
+
 echo "- Adding epel Repo"
 yum -y install epel-release
 yum -y update

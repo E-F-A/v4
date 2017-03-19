@@ -46,9 +46,9 @@ Requires:  clamav-update >= 0.99.2-1
 Requires:  clamav-server >= 0.99.2-1
     # clamav-server                              # epel    # MailScanner
     # #     nmap-ncat                            # base    #
-Requires:  mariadb-server >= 5.5.52-1
+Requires:  mariadb-server >= 10.1.22-1
     # mariadb-server                             # base    # postfix, mailwatch
-    # #     mariadb                              #         #
+    # #     mariadb-common                       #         #
     # #     perl-Compress-Raw-Bzip2              #         #
     # #     perl-Compress-Raw-Zlib               #         #
     # #     perl-DBD-MySQL                       #         #
@@ -57,6 +57,10 @@ Requires:  mariadb-server >= 5.5.52-1
     # #     perl-IO-Compress                     #         #
     # #     perl-Net-Daemon                      #         #
     # #     perl-PlRPC                           #         #
+    # #     mariadb-client                       #         #
+    # #     mariadb-shared                       #         #
+    # #     galera                               #         #
+    # #     jemalloc                             #         #
 Requires:  php >= 5.4.16-42
     # php                                        # base    # mailwatch
     # #     libzip                               #         #
