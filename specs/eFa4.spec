@@ -368,6 +368,7 @@ if [ "$1" = "1" ]; then
     /bin/sh %{_usrsrc}/eFa/postfix-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/mailscanner-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/clamav-unofficial-sigs-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/spamassassin-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh
     /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh
