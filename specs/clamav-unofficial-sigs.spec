@@ -33,6 +33,7 @@ URL:           https://github.com/extremeshok/clamav-unofficial-sigs
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:      clamav >= 0.99
+Requires:      bind-utils >= 9.9.4
 
 %description
 The clamav-unofficial-sigs script provides a simple way to download, test, and update third-party
@@ -62,9 +63,7 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 # Nothing to do
 
 %post
-/usr/bin/clamav-unofficial-sigs.sh --install-cron
-/usr/bin/clamav-unofficial-sigs.sh --install-logrotate
-/usr/bin/clamav-unofficial-sigs.sh --install-man
+# Nothing to do
 
 %clean
 %{__rm} -rf %{buildroot}

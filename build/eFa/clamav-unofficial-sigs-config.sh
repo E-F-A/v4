@@ -1,6 +1,6 @@
 #!/bin/sh
 #-----------------------------------------------------------------------------#
-# eFa 4.0.0 initial prepare script
+# eFa 4.0.0 initial clamav unofficial-sigs-configuration script
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2017 https://efa-project.org
 #
@@ -23,14 +23,15 @@
 #-----------------------------------------------------------------------------#
 source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
-# Change the root password
-echo "- Changing the root password"
-echo "root:$password" | chpasswd --md5 root
 
-echo "- Adding Firewall rules"
-firewall-cmd --permanent --add-service=smtp
-firewall-cmd --permanent --add-service=ssh
-firewall-cmd --permanent --add-port 80/tcp
-firewall-cmd --permanent --add-port 443/tcp
-firewall-cmd --permanent --add-port 587/tcp
-firewall-cmd --reload
+#-----------------------------------------------------------------------------#
+# Start configuration of clamav unofficial sigs
+#-----------------------------------------------------------------------------#
+sed -i '/^#user_configuration_complete="yes"/s/^#//g' /etc/clamav-unofficial-sigs/user.conf
+
+#-----------------------------------------------------------------------------#
+# Finalize the installation
+#-----------------------------------------------------------------------------#
+/usr/bin/clamav-unofficial-sigs.sh --install-cron
+/usr/bin/clamav-unofficial-sigs.sh --install-logrotate
+/usr/bin/clamav-unofficial-sigs.sh --install-man
