@@ -20,11 +20,11 @@
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
-# yum -y install 
+# yum -y install
 #-----------------------------------------------------------------------------#
 Summary:       clamav-unofficial-sigs Maintained and provided by https://eXtremeSHOK.com
 Name:          clamav-unofficial-sigs
-Version:       5.4.1
+Version:       5.6.2
 Epoch:         1
 Release:       1.eFa%{?dist}
 License:       Copyright (c) Adrian Jon Kriel admin@extremeshok.com
@@ -71,13 +71,16 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 
 %files
 %defattr(-, root, root)
-%doc INSTALL LICENSE README.md 
+%doc INSTALL LICENSE README.md
 %attr(0755, root, root) %{_bindir}/clamav-unofficial-sigs.sh
 %dir %{_sysconfdir}/clamav-unofficial-sigs/
 %config(noreplace) %{_sysconfdir}/clamav-unofficial-sigs/*
 %dir %{_var}/log/clamav-unofficial-sigs/
 
 %changelog
+* Sat Nov 11 2017 darky83 <darky83@efa-project.org> - 5.6.2-1
+- Updated for eFa https://efa-project.org
+
 * Sun Aug 21 2016 Shawn Iverson <shawniverson@gmail.com> - 5.4.1-1
 - Updated for eFa https://efa-project.org
 
