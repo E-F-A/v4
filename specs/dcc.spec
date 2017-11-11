@@ -20,11 +20,11 @@
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
-# yum -y install 
+# yum -y install sendmail-devel
 #-----------------------------------------------------------------------------#
 Name:      dcc
 Summary:   DCC Distributed Checksum Clearinghouse
-Version:   1.3.158
+Version:   1.3.159
 Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     System Environment/Daemons
@@ -50,7 +50,7 @@ of mail messages.
 %build
 ./configure --disable-dccm --with-installroot=$RPM_BUILD_ROOT --mandir=/usr/share/man --bindir=/usr/bin
 
-make %{?_smp_mflags} 
+make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -76,5 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Nov 11 2017 darky83 <darky83@efa-project.org> - 1.3.159-1
+- Updated for eFa https://efa-project.org
+
 * Sun Jan 22 2017 Shawn Iverson <shawniverson@gmail.com> - 1.3.158-1
 - Initial Build for eFa v4 on CentOS7 <https://efa-project.org>

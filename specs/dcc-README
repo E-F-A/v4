@@ -1,4 +1,6 @@
 Building dcc caveat
 
-Requires build as root due to internal package logic
-
+- Download the https://www.dcc-servers.net/dcc/source/dcc.tar.Z file
+    and rename to dcc-<VERSION>.tar.gz
+    
+- Requires build as root due to internal package logic
