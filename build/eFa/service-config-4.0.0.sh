@@ -48,6 +48,7 @@ systemctl disable clamd@scan
 chkconfig sqlgrey off
 #chkconfig mailgraph-init off
 chkconfig adcc off
+chkconfig mysql off
 #chkconfig webmin off
 systemctl disable unbound
 #chkconfig munin-node off
