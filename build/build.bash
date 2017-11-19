@@ -80,7 +80,7 @@ enabled=1
 EOF
 
 echo "- Adding epel Repo"
-yum -y install epel-release
+yum -y install epel-release deltarpm
 yum -y update
 
 yum -y remove \
