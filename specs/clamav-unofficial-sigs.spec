@@ -78,7 +78,7 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 
 %changelog
 * Sat Nov 19 2017 Shawn Iverson <shawniverson@gmail.com> - 5.6.2-2
-- Fist %post error, add systemd scripts
+- Fix %post error, add systemd scripts
 
 * Sat Nov 11 2017 darky83 <darky83@efa-project.org> - 5.6.2-1
 - Updated for eFa https://efa-project.org
