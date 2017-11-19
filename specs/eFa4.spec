@@ -283,7 +283,7 @@ Requires:  postfix >= 3.1.3-3
     # #    perl-Date-Calc postgresql-libs        #         #
     # #    tinycdb                               # epel    #
 Requires:  sqlgrey >= 1.8.0-1
-    # sqlgrey                                    # eFa     # Greylisting
+    # sqlgrey                                    # epel     # Greylisting
 Requires:  spamassassin >= 3.4.1-1
     # spamassassin                               # eFa     # MailScanner
     # #    perl-DB_File                          # base    #

@@ -37,7 +37,6 @@ touch /etc/sqlgrey/clients_fqdn_whitelist.local
 sed -i '/conf_dir =/ c\conf_dir = /etc/sqlgrey' /etc/sqlgrey/sqlgrey.conf
 sed -i '/user =/ c\user = sqlgrey' /etc/sqlgrey/sqlgrey.conf
 sed -i '/group =/ c\group = sqlgrey' /etc/sqlgrey/sqlgrey.conf
-sed -i '/confdir =/ c\confdir = /etc/sqlgrey' /etc/sqlgrey/sqlgrey.conf
 sed -i '/connect_src_throttle =/ c\connect_src_throttle = 5' /etc/sqlgrey/sqlgrey.conf
 sed -i "/awl_age = 32/d" /etc/sqlgrey/sqlgrey.conf
 sed -i "/group_domain_level = 10/d" /etc/sqlgrey/sqlgrey.conf
