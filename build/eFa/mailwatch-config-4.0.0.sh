@@ -72,8 +72,8 @@ cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
 
 # eFa Branding
 mv /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.png.orig
-mv /var/www/html/mailscanner/images/mailscannerlogo.gif /var/www/html/mailscanner/images/mailscannerlogo.gif.orig
-cp $srcdir/mailwatch/eFa4logo-47px.gif /var/www/html/mailscanner/images/mailscannerlogo.gif
+#mv /var/www/html/mailscanner/images/mailscannerlogo.gif /var/www/html/mailscanner/images/mailscannerlogo.gif.orig
+#cp $srcdir/mailwatch/eFa4logo-47px.gif /var/www/html/mailscanner/images/mailscannerlogo.gif
 cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.png
 cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.gif
 

@@ -51,7 +51,6 @@ Requires:  mariadb-server >= 10.1.22-1
     # #     mariadb-common                       #         #
     # #     perl-Compress-Raw-Bzip2              #         #
     # #     perl-Compress-Raw-Zlib               #         #
-    # #     perl-DBD-MySQL                       #         #
     # #     perl-DBI                             #         #
     # #     perl-Data-Dumper                     #         #
     # #     perl-IO-Compress                     #         #
@@ -61,6 +60,8 @@ Requires:  mariadb-server >= 10.1.22-1
     # #     mariadb-shared                       #         #
     # #     galera                               #         #
     # #     jemalloc                             #         #
+Requires:  perl-DBD-mysql >= 4.023-5
+    # perl-DBD-mysql                             # base    # spamassassin
 Requires:  php >= 5.4.16-42
     # php                                        # base    # mailwatch
     # #     libzip                               #         #
@@ -363,26 +364,33 @@ mv * $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
 if [ "$1" = "1" ]; then
     # Perform Installation tasks
-    /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/postfix-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/mailscanner-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/clamav-unofficial-sigs-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/spamassassin-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/mailwatch-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/dcc-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
-    /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
+    mkdir -p /var/log/eFa
+    (
+        # Perform Installation tasks
+        echo -e "\nPreparing to install eFa"
 
-    echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
-    echo "Build completed!"
+        /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/postfix-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/mailscanner-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/clamav-unofficial-sigs-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/spamassassin-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/mailwatch-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/dcc-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
+
+        echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
+        echo "Build completed!"
+    ) | tee -a /var/log/eFa/build.log 2>&1
+
 elif [ "$1" = "2" ]; then
     # Perform Update tasks
     echo "no update available yet"
@@ -396,5 +404,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_usrsrc}/eFa
 
 %changelog
-* Sun Jan 22 2017 Shawn Iverson <shawniverson@gmail.com> - 4.0.0-1
+* Sun Jan 22 2017 eFa Project <somebody@efa-project.org> - 4.0.0-1
 - Initial Build for eFa v4 on CentOS7 <https://efa-project.org>

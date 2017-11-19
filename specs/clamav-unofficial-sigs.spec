@@ -26,7 +26,7 @@ Summary:       clamav-unofficial-sigs Maintained and provided by https://eXtreme
 Name:          clamav-unofficial-sigs
 Version:       5.6.2
 Epoch:         1
-Release:       1.eFa%{?dist}
+Release:       2.eFa%{?dist}
 License:       Copyright (c) Adrian Jon Kriel admin@extremeshok.com
 Group:         Applications/Utilities
 URL:           https://github.com/extremeshok/clamav-unofficial-sigs
@@ -52,18 +52,15 @@ The script will also generate and install cron, logrotate, and man files.
 
 mkdir -p %{buildroot}/usr/bin
 mkdir %{buildroot}/etc
+mkdir -p %{buildroot}/usr/lib/systemd/system
 cp clamav-unofficial-sigs.sh %{buildroot}/usr/bin
 mkdir %{buildroot}/etc/clamav-unofficial-sigs
 cp config/master.conf %{buildroot}/etc/clamav-unofficial-sigs
 cp config/os.centos7.conf %{buildroot}/etc/clamav-unofficial-sigs/os.conf
 cp config/user.conf %{buildroot}/etc/clamav-unofficial-sigs
+cp systemd/clamav-unofficial-sigs.service %{buildroot}/usr/lib/systemd/system
+cp systemd/clamav-unofficial-sigs.timer %{buildroot}/usr/lib/systemd/system
 mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
-
-%pre
-# Nothing to do
-
-%post
-# Nothing to do
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -75,8 +72,14 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 %dir %{_sysconfdir}/clamav-unofficial-sigs/
 %config(noreplace) %{_sysconfdir}/clamav-unofficial-sigs/*
 %dir %{_var}/log/clamav-unofficial-sigs/
+%dir %{_usr}/lib/systemd/system/
+%attr(0755, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.service
+%attr(0755, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.timer
 
 %changelog
+* Sat Nov 19 2017 Shawn Iverson <shawniverson@gmail.com> - 5.6.2-2
+- Fist %post error, add systemd scripts
+
 * Sat Nov 11 2017 darky83 <darky83@efa-project.org> - 5.6.2-1
 - Updated for eFa https://efa-project.org
 

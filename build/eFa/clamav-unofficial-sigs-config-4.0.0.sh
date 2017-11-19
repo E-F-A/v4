@@ -32,6 +32,7 @@ sed -i '/^#user_configuration_complete="yes"/s/^#//g' /etc/clamav-unofficial-sig
 #-----------------------------------------------------------------------------#
 # Finalize the installation
 #-----------------------------------------------------------------------------#
-/usr/bin/clamav-unofficial-sigs.sh --install-cron
+# Using systemd instead
+#/usr/bin/clamav-unofficial-sigs.sh --install-cron
 /usr/bin/clamav-unofficial-sigs.sh --install-logrotate
 /usr/bin/clamav-unofficial-sigs.sh --install-man

@@ -260,6 +260,7 @@ function func_configure-system() {
   #chkconfig saslauthd off
   systemctl enable crond
   systemctl enable clamd@scan
+  systemctl enable clamav-unofficial-sigs
   chkconfig sqlgrey on
   #chkconfig mailgraph-init off
   chkconfig adcc on
