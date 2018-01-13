@@ -56,7 +56,7 @@ sed -i 's/LoadModule negotiation_module modules\/mod_negotiation.so/#&/' /etc/ht
 sed -i 's/LoadModule remoteip_module modules\/mod_remoteip.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule socache_dbm_module modules\/mod_socache_dbm.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule socache_memcache_module modules\/mod_socache_memcache.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
-sed -i 's/LoadModule socache_shmcb_module modules\/mod_socache_shmcb.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+#sed -i 's/LoadModule socache_shmcb_module modules\/mod_socache_shmcb.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule status_module modules\/mod_status.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule status_module modules\/mod_status.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule userdir_module modules\/mod_userdir.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
