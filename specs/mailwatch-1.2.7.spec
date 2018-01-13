@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,12 +24,12 @@
 #-----------------------------------------------------------------------------#
 Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
-Version:       1.2.0
+Version:       1.2.7
 Epoch:         1
-Release:       4.eFa%{?dist}
+Release:       1.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
-URL:           https://github.com/mailwatch/1.2.0/tree/develop
+URL:           https://github.com/mailwatch/MailWatch
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:      httpd >= 2.4.6
@@ -67,17 +67,23 @@ mkdir -p %{buildroot}%{_datarootdir}/MailScanner/perl/custom
 cp MailScanner_perl_scripts/MailWatch.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
 cp MailScanner_perl_scripts/SQLBlackWhiteList.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
 cp MailScanner_perl_scripts/SQLSpamSettings.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
-cp MailScanner_perl_scripts/00MailWatchConf.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
+cp MailScanner_perl_scripts/MailWatchConf.pm %{buildroot}%{_datarootdir}/MailScanner/perl/custom
 
 mkdir -p %{buildroot}/%{_bindir}/mailwatch
 cp -a tools %{buildroot}%{_bindir}/mailwatch
 rm -f %{buildroot}%{_bindir}/mailwatch/tools/Cron_jobs/INSTALL
+
 mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
 echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_quarantine_report.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_quarantine_maint.php --clean >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_db_clean.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
 
-echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_db_clean.php >> /dev/null 2>&1 >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
-echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_quarantine_maint.php --clean >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
-echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_quarantine_report.php >> /dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.daily/mailwatch
+mkdir -p %{buildroot}%{_sysconfdir}/cron.monthly
+echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
+echo "UPDATEMAXDELAY=3600" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
+echo 'sleep $[( $RANDOM % $UPDATEMAXDELAY )+1]s' >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 
 mkdir -p %{buildroot}%{_localstatedir}/www/html
 cp -a mailscanner %{buildroot}%{_localstatedir}/www/html/mailscanner
@@ -197,6 +203,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sat Jan 18 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-1
+- MailWatch Update
+
 * Sun Mar 19 2017 Shawn Iverson <shawniverson@gmail.com> - 1.2.0-4
 - Mailwatch Update
 
