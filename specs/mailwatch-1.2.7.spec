@@ -125,7 +125,7 @@ EOF
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
-%{_localstatedir}/www/html/mailscanner/\.htaccess
+%{_localstatedir}/www/html/mailscanner/.htaccess
 %{_localstatedir}/www/html/mailscanner/auto-release.php
 %{_localstatedir}/www/html/mailscanner/bayes_info.php
 %{_localstatedir}/www/html/mailscanner/checklogin.php
