@@ -36,17 +36,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # Control dependencies here as updates are released
 # Use version and release numbers required for each update
 # to maintain strict version control and dependency resolution
-Requires:  clamav >= 0.99.2-1
+Requires:  clamav >= 0.99.2-13
     # clamav                                     # epel    # MailScanner
     # #     clamav-data                          #         #
     # #     clamav-filesystem                    #         #
     # #     clamav-lib                           #         #
-Requires:  clamav-update >= 0.99.2-1
+Requires:  clamav-update >= 0.99.2-13
     # clamav-update                              # epel    # MailScanner
-Requires:  clamav-server >= 0.99.2-1
+Requires:  clamav-server >= 0.99.2-13
     # clamav-server                              # epel    # MailScanner
     # #     nmap-ncat                            # base    #
-Requires:  mariadb-server >= 10.1.22-1
+Requires:  mariadb-server >= 10.1.30-1
     # mariadb-server                             # base    # postfix, mailwatch
     # #     mariadb-common                       #         #
     # #     perl-Compress-Raw-Bzip2              #         #
@@ -60,9 +60,9 @@ Requires:  mariadb-server >= 10.1.22-1
     # #     mariadb-shared                       #         #
     # #     galera                               #         #
     # #     jemalloc                             #         #
-Requires:  perl-DBD-mysql >= 4.023-5
+Requires:  perl-DBD-MySQL >= 4.023-5
     # perl-DBD-mysql                             # base    # spamassassin
-Requires:  php >= 5.4.16-42
+Requires:  php >= 5.4.16-43
     # php                                        # base    # mailwatch
     # #     libzip                               #         #
     # #     php-cli                              #         #
@@ -71,32 +71,32 @@ Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
 Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # screen                                     # base    # basic system tools
-Requires:  php-gd >= 5.4.16-42
+Requires:  php-gd >= 5.4.16-43
     # php-gd                                     # base    # mailwatch
     # #     libXpm                               #         #
     # #     t11ib                                #         #
-Requires:  php-mbstring >= 5.4.16-42
+Requires:  php-mbstring >= 5.4.16-43
     # php-mbstring                               # base    # mailwatch
-Requires:  php-mysql >= 5.4.16-42
+Requires:  php-mysqlnd >= 5.4.16-43
     # php-mysql                                  # base    # mailwatch
     # #     php-pdo                              #         #
-Requires:  php-ldap >= 5.4.16-42
+Requires:  php-ldap >= 5.4.16-43
     # php-ldap                                   # base    # mailwatch
-Requires:  httpd >= 2.4.6-45
+Requires:  httpd >= 2.4.6-67
     # httpd                                      # base    # mailwatch
     # #     apr                                  #         #
     # #     apr-util                             #         #
     # #     httpd-tools                          #         #
     # #     mailcap                              #         #
-Requires:  cyrus-sasl-md5 >= 2.1.26-20
+Requires:  cyrus-sasl-md5 >= 2.1.26-21
     # cyrus-sasl-md5                             # base    # postfix
-Requires:  cyrus-sasl-sql >= 2.1.26-20
+Requires:  cyrus-sasl-sql >= 2.1.26-21
     # cyrus-sasl-sql                             # base    # postfix
-Requires:  cyrus-sasl-ldap >= 2.1.26-20
+Requires:  cyrus-sasl-ldap >= 2.1.26-21
     # cyrus-sasl-ldap                            # base    # postfix
-Requires:  mod_ssl >= 2.4.6-45
+Requires:  mod_ssl >= 2.4.6-67
     # mod_ssl                                    # base    # httpd
-Requires:  openssl-devel >= 1.0.1e-60
+Requires:  openssl-devel >= 1.0.2k-8
     # openssl-devel                              # base    # MailScanner
     # #     keyutils-libs-devel                  #         #
     # #     libcom_err-devel                     #         #
@@ -113,9 +113,9 @@ Requires:  pyzor >= 0.5.0-10
     # pyzor                                      # epel    # MailScanner
 Requires:  re2c >= 0.14.3-2
     # re2c                                       # epel    # MailScanner
-Requires:  tnef >= 1.4.12-2
+Requires:  tnef >= 1.4.15-1
     # tnef                                       # epel    # MailScanner
-Requires:  gcc >= 4.8.5-11
+Requires:  gcc >= 4.8.5-16
     # gcc                                        # base    # MailScanner
     # #     cpp                                  #         #
     # #     libmpc                               #         #
@@ -143,7 +143,7 @@ Requires:  perl-Convert-TNEF >= 0.18-2
     # #     perl-Net-SSLeay                      #         #
     # #     perl-TimeDate                        #         #
     # #     perl-MIME-tools                      # epel    #
-Requires:  perl-CPAN >= 1.9800-291
+Requires:  perl-CPAN >= 1.9800-292
     # perl-CPAN                                  # base    # MailScanner
     # #     perl-local-lib                       #         #
 Requires:  perl-Data-Dump >= 1.22-1
@@ -164,7 +164,7 @@ Requires:  perl-Encode-Detect >= 1.01-13
     # perl-Encode-Detect                         # base    # MailScanner
 Requires:  perl-Env >= 1.04-2
     # perl-Env                                   # base    # MailScanner
-Requires:  perl-ExtUtils-CBuilder >= 0.28.2.6-291
+Requires:  perl-ExtUtils-CBuilder >= 0.28.2.6-292
     # perl-ExtUtils-CBuilder                     # base    # MailScanner
     # #     perl-IPC-Cmd                         #         #
     # #     perl-Locale-Maketext                 #         #
@@ -270,7 +270,7 @@ Requires:  perl-Test-Pod >= 1.48-3
     # #     perl-Test-Simple                     #         #
 Requires:  perl-YAML >= 0.84-5
     # perl-YAML                                  # base    # MailScanner
-Requires:  libtool-ltdl >= 2.4.2-21
+Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 5.4.5-1
     # PKG='  unrar                               # eFa     # MailScanner
@@ -295,13 +295,13 @@ Requires:  spamassassin >= 3.4.1-1
     # #    perl-Net-Patricia                     #         #
 Requires:  MailScanner >= 5.0.4-3
     # MailScanner                                # eFa     # MailScanner
-Requires:  clamav-unofficial-sigs >= 5.4.1-1
+Requires:  clamav-unofficial-sigs >= 5.6.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
 Requires:  perl-IP-Country >= 2.28-1
     # perl-IP-Country                            # eFa     # MailScanner, Spamassassin
 Requires:  perl-Mail-SPF-Query >= 1.999.1-1
     # perl-Mail-SPF-Query                        # eFa     # MailScanner
-Requires:  perl-Geography-Countries >= 2009041301-1
+Requires:  perl-Geography-Countries >= 2009041301-17
     # perl-Geography-Countries                   # eFa     # Spamassassin
 Requires:  perl-libnet >= 3.10-1
     # perl-libnet                                # eFa     # Spamassassin
@@ -309,18 +309,18 @@ Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
 Requires:  mailwatch >= 1:1.2.0-4
     # mailwatch                                  # eFa     # MailWatch Frontend
-Requires:  dcc >= 1.3.158-1
+Requires:  dcc >= 1.3.159-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
-Requires:  unbound >= 1.4.20-28
+Requires:  unbound >= 1.4.20-34
     # unbound                                    # base    # DNS
     #     ldns                                   #         #
     #     libevent                               #         #
     #     unbound-libs                           #         #
-Requires:  yum-cron >= 3.4.3-150
+Requires:  yum-cron >= 3.4.3-154
     # Yum auto updates                           # base    # yum-cron
 Requires:  checkpolicy >= 2.5-4
     # checkpolicy                                # base    # selinux
-Requires:  policycoreutils-python >= 2.5-11
+Requires:  policycoreutils-python >= 2.5-17.1
     # policycoreutils-python                     # base    # selinux
 Requires: perl-Net-DNS-Nameserver >= 0.72-6
     # perl-Net-DNS-Nameserver                    # base    # Spamassassin
