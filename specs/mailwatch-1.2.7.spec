@@ -112,6 +112,7 @@ EOF
 %doc CHANGELOG.md CONTRIBUTING.md LICENSE.md README.md
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/Cron_jobs/*
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/mailwatch
+%attr(0755, root, root) %{_sysconfdir}/cron.monthly/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %{_datarootdir}/MailScanner/perl/custom/*
 %{_bindir}/mailwatch/tools/MailScanner_rule_editor/*
@@ -142,6 +143,7 @@ EOF
 %{_localstatedir}/www/html/mailscanner/functions.php
 %{_localstatedir}/www/html/mailscanner/geoip_update.php
 %{_localstatedir}/www/html/mailscanner/index.php
+%{_localstatedir}/www/html/mailscanner/js
 %{_localstatedir}/www/html/mailscanner/languages
 %{_localstatedir}/www/html/mailscanner/lib
 %{_localstatedir}/www/html/mailscanner/lists.php
@@ -155,9 +157,8 @@ EOF
 %{_localstatedir}/www/html/mailscanner/msconfig.php
 %{_localstatedir}/www/html/mailscanner/ms_lint.php
 %{_localstatedir}/www/html/mailscanner/msre_edit.php
-%{_localstatedir}/www/html/mailscanner/msre_function_global_vars.php
-%{_localstatedir}/www/html/mailscanner/msre_index.php
 %{_localstatedir}/www/html/mailscanner/msre_table_functions.php
+%{_localstatedir}/www/html/mailscanner/msre_index.php
 %{_localstatedir}/www/html/mailscanner/msrule.php
 %{_localstatedir}/www/html/mailscanner/mtalogprocessor.inc.php
 %{_localstatedir}/www/html/mailscanner/mysql_status.php
@@ -167,12 +168,12 @@ EOF
 %{_localstatedir}/www/html/mailscanner/postfixmailq.php
 %{_localstatedir}/www/html/mailscanner/quarantine_action.php
 %{_localstatedir}/www/html/mailscanner/quarantine.php
+%{_localstatedir}/www/html/mailscanner/quarantine_report.inc.php
 %{_localstatedir}/www/html/mailscanner/rep_audit_log.php
 %{_localstatedir}/www/html/mailscanner/rep_mcp_rule_hits.php
 %{_localstatedir}/www/html/mailscanner/rep_mcp_score_dist.php
 %{_localstatedir}/www/html/mailscanner/rep_message_listing.php
 %{_localstatedir}/www/html/mailscanner/rep_message_ops.php
-%{_localstatedir}/www/html/mailscanner/rep_mrtg_style.php
 %{_localstatedir}/www/html/mailscanner/reports.php
 %{_localstatedir}/www/html/mailscanner/rep_sa_rule_hits.php
 %{_localstatedir}/www/html/mailscanner/rep_sa_score_dist.php
@@ -203,7 +204,7 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
-* Sat Jan 18 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-1
+* Sat Jan 13 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-1
 - MailWatch Update
 
 * Sun Mar 19 2017 Shawn Iverson <shawniverson@gmail.com> - 1.2.0-4
