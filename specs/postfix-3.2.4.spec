@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -65,8 +65,8 @@
 
 Name: postfix
 Summary: Postfix Mail Transport Agent
-Version: 3.1.3
-Release: 3.eFa%{?dist}
+Version: 3.2.4
+Release: 1.eFa%{?dist}
 Epoch: 2
 Group: System Environment/Daemons
 URL: http://www.postfix.org
@@ -84,7 +84,7 @@ Provides: MTA smtpd smtpdaemon server(smtp)
 # included in this package
 Conflicts: postfix-pflogsumm postfix-perl-scripts
 
-Source0: ftp://ftp.porcupine.org/mirrors/postfix-release/official/postfix-%{version}.tar.gz
+Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-3.2.4.tar.gz
 Source1: postfix-etc-init.d-postfix
 Source2: postfix.service
 Source3: README-Postfix-SASL-RedHat.txt
@@ -93,7 +93,7 @@ Source5: postfix-chroot-update
 
 # Sources 50-99 are upstream [patch] contributions
 
-%define pflogsumm_ver 1.1.3
+%define pflogsumm_ver 1.1.5
 
 %if %{PFLOGSUMM}
 # Postfix Log Entry Summarizer: http://jimsun.linxnet.com/postfix_contrib.html
@@ -107,13 +107,11 @@ Source101: postfix-pam.conf
 
 # Patches
 
-Patch1: postfix-3.1.3-config.patch
-Patch2: postfix-3.1.3-files.patch
-Patch3: postfix-3.1.3-alternatives.patch
-Patch4: postfix-3.1.3-large-fs.patch
-Patch9: pflogsumm-1.1.3-datecalc.patch
-# Upstream patch
-Patch10: postfix-3.1.3-timestamps.patch
+Patch1: postfix-3.2.4-config.patch
+Patch2: postfix-3.2.4-files.patch
+Patch3: postfix-3.2.4-alternatives.patch
+Patch4: postfix-3.2.4-large-fs.patch
+Patch9: pflogsumm-1.1.5-datecalc.patch
 
 # Optional patches - set the appropriate environment variables to include
 #                    them when building the package/spec file
@@ -155,7 +153,6 @@ pushd pflogsumm-%{pflogsumm_ver}
 %patch9 -p1 -b .datecalc
 popd
 %endif
-%patch10 -p1 -b timestamps
 
 for f in README_FILES/TLS_{LEGACY_,}README TLS_ACKNOWLEDGEMENTS; do
 	iconv -f iso8859-1 -t utf8 -o ${f}{_,} &&
@@ -229,7 +226,7 @@ make -f Makefile.init makefiles shared=yes dynamicmaps=yes \
   AUXLIBS_SQLITE="${AUXLIBS_SQLITE}" AUXLIBS_CDB="${AUXLIBS_CDB}"\
   DEBUG="" SHLIB_RPATH="-Wl,-rpath,%{postfix_shlib_dir} $LDFLAGS" \
   OPT="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-comment" \
-  POSTFIX_INSTALL_OPTS=-keep-new-mtime
+  POSTFIX_INSTALL_OPTS=-keep-build-mtime
 
 make %{?_smp_mflags}
 
@@ -631,6 +628,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Jan 13 2018 Shawn Iverson <shawniverson@efa-project.org> - 2:3.2.4-1
+- Port fedora 26 postfix 3.2.4 to EFA v4 on CentOS 7
+
 * Tue Dec 27 2016 Shawn Iverson <shawniverson@gmail.com> - 2:3.1.3-3
 - Port fedora 25 postfix 3.1.3 to EFA v4 on CentOS 7
 
