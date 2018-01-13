@@ -274,7 +274,7 @@ Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 5.4.5-1
     # PKG='  unrar                               # eFa     # MailScanner
-Requires:  postfix >= 3.1.3-3
+Requires:  postfix >= 3.2.4-1
     # postfix                                    # eFa     # MTA
     # #    libicu                                # base    #
     # #    mariadb-libs                          #         #
