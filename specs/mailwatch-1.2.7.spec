@@ -125,6 +125,7 @@ EOF
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
+%{_localstatedir}/www/html/mailscanner/\.htaccess
 %{_localstatedir}/www/html/mailscanner/auto-release.php
 %{_localstatedir}/www/html/mailscanner/bayes_info.php
 %{_localstatedir}/www/html/mailscanner/checklogin.php
@@ -142,6 +143,7 @@ EOF
 %{_localstatedir}/www/html/mailscanner/f-secure_status.php
 %{_localstatedir}/www/html/mailscanner/functions.php
 %{_localstatedir}/www/html/mailscanner/geoip_update.php
+%{_localstatedir}/www/html/mailscanner/graphgenerator.inc.php
 %{_localstatedir}/www/html/mailscanner/index.php
 %{_localstatedir}/www/html/mailscanner/js
 %{_localstatedir}/www/html/mailscanner/languages
@@ -175,6 +177,7 @@ EOF
 %{_localstatedir}/www/html/mailscanner/rep_message_listing.php
 %{_localstatedir}/www/html/mailscanner/rep_message_ops.php
 %{_localstatedir}/www/html/mailscanner/reports.php
+%{_localstatedir}/www/html/mailscanner/rep_previous_day.php
 %{_localstatedir}/www/html/mailscanner/rep_sa_rule_hits.php
 %{_localstatedir}/www/html/mailscanner/rep_sa_score_dist.php
 %{_localstatedir}/www/html/mailscanner/rep_top_mail_relays.php
