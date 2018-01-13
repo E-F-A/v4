@@ -293,7 +293,7 @@ Requires:  spamassassin >= 3.4.1-1
     # #    procmail                              #         #
     # #    perl-Geo-IP                           #         #
     # #    perl-Net-Patricia                     #         #
-Requires:  MailScanner >= 5.0.4-3
+Requires:  MailScanner >= 5.0.7-2
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -327,6 +327,10 @@ Requires: perl-Net-DNS-Nameserver >= 0.72-6
 #Requires:  mod_security_crs
     # mod_security rule set                      # base    # httpd
     # #     mod_security                         #         #
+Requires:  p7zip >= 16.02-2
+    # p7zip     `                                # epel    # MailScanner
+Requires:  p7zip-plugins >= 16.02-2
+    # p7zip-plugins                              # epel    # MailScanner
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
