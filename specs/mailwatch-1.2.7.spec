@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.7
 Epoch:         1
-Release:       2.eFa%{?dist}
+Release:       3.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -98,8 +98,8 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.hourly
 cat > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh << 'EOF'
 #!/bin/bash
 
-/usr/bin/php /var/www/html/mailscanner/mailwatch_postfix_relay.php --refresh
-/usr/bin/php /var/www/html/mailscanner/mailwatch_mailscanner_relay.php --refresh
+/usr/bin/php /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php --refresh
+/usr/bin/php /usr/bin/mailwatch/tools/mailwatch_mailscanner_relay.php --refresh
 EOF
 
 %pre
@@ -214,6 +214,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sun Jan 14 2018 Shawn Iverson <shawniverson2efa-project.org> - 1.2.7-3
+- Fix paths for postfix relay scripts
+
 * Sun Jan 14 2018 Shawn Iverson <shawniverson2efa-project.org> - 1.2.7-2
 - Fix msre_reload.sh and include msre_reload crontab
 
