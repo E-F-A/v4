@@ -61,8 +61,8 @@ sed -i '/optmethod =/ c\optmethod = optout' /etc/sqlgrey/sqlgrey.conf
 
 # start and stop sqlgrey (first launch will create all database tables)
 # We give it 15 seconds to populate the database and then stop it again.
-service sqlgrey start
+systemctl start sqlgrey
 sleep 15
-service sqlgrey stop
+systemctl stop sqlgrey
 
 echo "Configuring sqlgrey...done"
