@@ -222,7 +222,7 @@ allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl lock };
 allow httpd_sys_script_t mscan_etc_t:lnk_file read;
 allow httpd_sys_script_t mscan_spool_t:file { getattr read open };
 allow httpd_sys_script_t dcc_var_t:dir { getattr search write add_name remove_name };
-allow httpd_sys_script_t dcc_var_t:sock_file getattr;
+allow httpd_sys_script_t dcc_var_t:sock_file { getattr write };
 allow httpd_sys_script_t dcc_var_t:file { getattr create open lock rename unlink read write };
 allow httpd_sys_script_t dcc_client_map_t:file { getattr open read write lock };
 allow httpd_sys_script_t self:capability { setgid setuid chown dac_override dac_read_search sys_resource fsetid fowner audit_write };
