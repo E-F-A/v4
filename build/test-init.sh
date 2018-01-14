@@ -110,6 +110,10 @@ function func_configure-system() {
   rm -f /etc/ssh/ssh_host_dsa_key
   ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
   ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
+  
+  echo -e "$green[eFa]$clean - Generating dh key for postfix..."
+  openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
+  postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
 
   echo -e "$green[eFa]$clean - Configure timezone"
   rm -f /etc/localtime

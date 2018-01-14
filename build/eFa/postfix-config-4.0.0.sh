@@ -103,10 +103,6 @@ postmap /etc/postfix/sasl_passwd
 
 chmod 0600 /etc/postfix/sasl_passwd
 
-# Logjam Vulnerability Protection
-openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
-postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
-
 echo "pwcheck_method: auxprop">/usr/lib64/sasl2/smtpd.conf
 echo "auxprop_plugin: sasldb">>/usr/lib64/sasl2/smtpd.conf
 echo "mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5">>/usr/lib64/sasl2/smtpd.conf
