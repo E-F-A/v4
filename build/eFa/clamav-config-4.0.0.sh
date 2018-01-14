@@ -30,7 +30,7 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring clamav..."
 clamav_version=$(rpm -q --queryformat=%{VERSION} clamav-server)
 
-useradd -d /var/lib/clamav -c "Clam Anti Virus Checker" -G virusgroup,clamupdate -s /sbin/nologin -M clam
+useradd -d /var/lib/clamav -c "Clam Anti Virus Checker" -G virusgroup,clamupdate,mtagroup -s /sbin/nologin -M clam
 
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
 sed -i '/REMOVE ME/d' /etc/sysconfig/freshclam
