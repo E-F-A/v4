@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 initial apache-configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -72,14 +72,22 @@ sed -i 's/LoadModule lua_module modules\/mod_lua.so/#&/' /etc/httpd/conf.modules
 # We don't use auto index so remove the file
 mv /etc/httpd/conf.d/autoindex.conf /etc/httpd/conf.d/autoindex.conf.orig
 
-# TODO check what can be removed from:
-#/etc/httpd/conf.modules.d/00-mpm.conf
-#/etc/httpd/conf.modules.d/00-proxy.conf
-#/etc/httpd/conf.modules.d/00-ssl.conf
-#/etc/httpd/conf.modules.d/00-systemd.conf
-#/etc/httpd/conf.modules.d/01-cgi.conf
-#/etc/httpd/conf.modules.d/10-mod_security.conf
-#/etc/httpd/conf.modules.d/10-php.conf
+# Disable proxy modules
+sed -i 's/LoadModule proxy_module modules/mod_proxy.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule lbmethod_bybusyness_module modules/mod_lbmethod_bybusyness.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule lbmethod_bytraffic_module modules/mod_lbmethod_bytraffic.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule lbmethod_heartbeat_module modules/mod_lbmethod_heartbeat.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_ajp_module modules/mod_proxy_ajp.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_balancer_module modules/mod_proxy_balancer.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_connect_module modules/mod_proxy_connect.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_express_module modules/mod_proxy_express.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_fdpass_module modules/mod_proxy_fdpass.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_ftp_module modules/mod_proxy_ftp.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_http_module modules/mod_proxy_http.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_scgi_module modules/mod_proxy_scgi.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+sed -i 's/LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 
 # Configure HTTP
 sed -i '/    Options Indexes FollowSymLinks/ c\    Options None' /etc/httpd/conf/httpd.conf
