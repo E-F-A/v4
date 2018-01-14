@@ -75,7 +75,7 @@ require {
     type user_devpts_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
-    class sock_file write;
+    class sock_file { getattr write };
     class unix_stream_socket connectto;
     class chr_file getattr;
     class lnk_file { getattr read };
@@ -206,6 +206,8 @@ allow httpd_sys_script_t mandb_t:dir getattr;
 allow httpd_sys_script_t rpm_script_t:dir getattr;
 allow httpd_sys_script_t sysstat_t:dir getattr;
 allow httpd_sys_script_t user_devpts_t:chr_file getattr;
+allow httpd_sys_script_t mandb_t:dir { getattr search };
+allow httpd_sys_script_t mandb_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -219,6 +221,7 @@ allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl lock };
 allow httpd_sys_script_t mscan_etc_t:lnk_file read;
 allow httpd_sys_script_t mscan_spool_t:file { getattr read open };
 allow httpd_sys_script_t dcc_var_t:dir { getattr search write add_name remove_name };
+allow httpd_sys_script_t dcc_var_t:sock_file getattr;
 allow httpd_sys_script_t dcc_var_t:file { getattr create open lock rename unlink read write };
 allow httpd_sys_script_t dcc_client_map_t:file { getattr open read write lock };
 allow httpd_sys_script_t self:capability { setgid setuid chown dac_override dac_read_search sys_resource fsetid fowner audit_write };
@@ -229,6 +232,7 @@ allow httpd_sys_script_t tmpfs_t:dir { setattr write add_name create read remove
 allow httpd_sys_script_t tmpfs_t:file { append getattr open ioctl setattr create read write lock unlink };
 allow httpd_sys_script_t tmpfs_t:filesystem getattr;
 allow httpd_sys_script_t antivirus_t:unix_stream_socket connectto;
+allow httpd_sys_script_t user_tmp_t:file setattr;
 
 # Allow sa-learn
 allow httpd_sys_script_t spamd_update_t:dir { getattr search };
