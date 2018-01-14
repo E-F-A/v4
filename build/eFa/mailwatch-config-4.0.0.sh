@@ -32,8 +32,8 @@ source /usr/src/eFa/eFa-settings.inc
 sed -i '/^short_open_tag =/ c\short_open_tag = On' /etc/php.ini
 
 # Set up connection for MailWatch
-sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/00MailWatchConf.pm
-sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/00MailWatchConf.pm
+sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/MailWatchConf.pm
+sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatchConf.pm
 
 sed -i "/^define('DB_PASS',/ c\$efa_config = preg_grep('/^MAILWATCHSQLPWD/', file('/etc/eFa-Config'));\nforeach(\$efa_config as \$num => \$line) {\n  if (\$line) {\n    \$db_pass_tmp = chop(preg_replace('/^MAILWATCHSQLPWD:(.*)/','\$1', \$line));\n  }\n}\ndefine('DB_PASS', \$db_pass_tmp);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('DB_USER',/ c\define('DB_USER', 'mailwatch');" /var/www/html/mailscanner/conf.php
@@ -50,6 +50,7 @@ sed -i "/^define('SHOW_SFVERSION',/ c\define('SHOW_SFVERSION', false);" /var/www
 sed -i "/^define('SHOW_DOC',/ c\define('SHOW_DOC', false);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('HIDE_UNKNOWN',/ c\define('HIDE_UNKNOWN', true);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('SA_PREFS', MS_CONFIG_DIR . 'spam.assassin.prefs.conf');/ c\define('SA_PREFS', MS_CONFIG_DIR . 'spamassassin.conf');" /var/www/html/mailscanner/conf.php
+sed -i "/^define('MAILWATCH_HOME',/ c\define('MAILWATCH_HOME', '/var/www/html/mailscanner');" conf.php
 
 # Set up a redirect in web root to MailWatch
 cat > /var/www/html/index.html << 'EOF'
@@ -72,15 +73,10 @@ cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
 
 # eFa Branding
 mv /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.png.orig
-#mv /var/www/html/mailscanner/images/mailscannerlogo.gif /var/www/html/mailscanner/images/mailscannerlogo.gif.orig
-#cp $srcdir/mailwatch/eFa4logo-47px.gif /var/www/html/mailscanner/images/mailscannerlogo.gif
 cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.png
 cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.gif
 
-sed -i 's/#f7ce4a/#999999/g' /var/www/html/mailscanner/login.php
-
-# Change the yellow to match website colors..
-sed -i 's/#F7CE4A/#999999/g' /var/www/html/mailscanner/style.css
+sed -i 's/#f7ce4a/#999999/ig' /var/www/html/mailscanner/style.css
 
 # Add Mailgraph link and remove dnsreport link
 # TODO
@@ -128,8 +124,7 @@ sed -i "/^define('MSRE'/ c\define('MSRE', true);" /var/www/html/mailscanner/conf
 chgrp -R apache /etc/MailScanner/rules
 chmod g+rwxs /etc/MailScanner/rules
 chmod g+rw /etc/MailScanner/rules/*.rules
-ln -s /usr/bin/mailwatch/tools/Cron_jobs/msre_reload.crond /etc/cron.d/msre_reload.crond
-ln -s /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh /usr/local/bin/msre_reload.sh
+
 chmod ugo+x /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh
 
-cp $srcdir/mailwatch/geoip_update_cmd.php /usr/sbin/geoip_update_cmd.php
+
