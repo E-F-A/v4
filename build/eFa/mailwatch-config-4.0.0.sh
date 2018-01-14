@@ -125,6 +125,3 @@ chgrp -R apache /etc/MailScanner/rules
 chmod g+rwxs /etc/MailScanner/rules
 chmod g+rw /etc/MailScanner/rules/*.rules
 
-chmod ugo+x /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh
-
-
