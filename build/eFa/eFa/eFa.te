@@ -72,6 +72,7 @@ require {
     type mandb_t;
     type rpm_script_t;
     type sysstat_t;
+    type user_devpts_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file write;
@@ -139,50 +140,47 @@ allow httpd_sys_script_t postfix_smtpd_t:file { read };
 
 # Allow ps to get process information for other processes
 # Without this, ps fails to get MailScanner process over time
-allow httpd_sys_script_t init_t:dir getattr;
-allow httpd_sys_script_t kernel_t:dir getattr;
-allow httpd_sys_script_t syslogd_t:dir getattr;
-allow httpd_sys_script_t lvm_t:dir getattr;
-allow httpd_sys_script_t udev_t:dir getattr;
-allow httpd_sys_script_t auditd_t:dir getattr;
-allow httpd_sys_script_t irqbalance_t:dir getattr;
+allow httpd_sys_script_t init_t:dir { getattr search };
+allow httpd_sys_script_t kernel_t:dir { getattr search };
+allow httpd_sys_script_t syslogd_t:dir { getattr search };
+allow httpd_sys_script_t lvm_t:dir { getattr search };
+allow httpd_sys_script_t udev_t:dir { getattr search };
+allow httpd_sys_script_t auditd_t:dir { getattr search };
+allow httpd_sys_script_t irqbalance_t:dir { getattr search };
 # allow httpd_sys_script_t hypervkvp_t:dir getattr;
-allow httpd_sys_script_t policykit_t:dir getattr;
-allow httpd_sys_script_t systemd_logind_t:dir getattr;
-allow httpd_sys_script_t lsmd_t:dir getattr;
+allow httpd_sys_script_t policykit_t:dir { getattr search };
+allow httpd_sys_script_t systemd_logind_t:dir { getattr search };
+allow httpd_sys_script_t lsmd_t:dir { getattr search };
 allow httpd_sys_script_t abrt_watch_log_t:dir getattr;
 allow httpd_sys_script_t fsdaemon_t:dir getattr;
-allow httpd_sys_script_t system_dbusd_t:dir getattr;
+allow httpd_sys_script_t system_dbusd_t:dir { getattr search };
 # allow httpd_sys_script_t hypervvssd_t:dir getattr;
-allow httpd_sys_script_t chronyd_t:dir getattr;
-allow httpd_sys_script_t crond_t:dir getattr;
-allow httpd_sys_script_t local_login_t:dir getattr;
-allow httpd_sys_script_t firewalld_t:dir getattr;
+allow httpd_sys_script_t chronyd_t:dir { getattr search };
+allow httpd_sys_script_t crond_t:dir { getattr search };
+allow httpd_sys_script_t local_login_t:dir { getattr search };
+allow httpd_sys_script_t firewalld_t:dir { getattr search };
 allow httpd_sys_script_t syslogd_t:dir getattr;
-allow httpd_sys_script_t tuned_t:dir getattr;
-allow httpd_sys_script_t sshd_t:dir getattr;
-allow httpd_sys_script_t NetworkManager_t:dir getattr;
+allow httpd_sys_script_t tuned_t:dir { getattr search };
+allow httpd_sys_script_t sshd_t:dir { getattr search };
+allow httpd_sys_script_t NetworkManager_t:dir { getattr search };
 allow httpd_sys_script_t user_tty_device_t:chr_file getattr;
-allow httpd_sys_script_t named_t:dir getattr;
-allow httpd_sys_script_t system_cronjob_t:dir getattr;
-allow httpd_sys_script_t initrc_t:dir getattr;
+allow httpd_sys_script_t named_t:dir { getattr search };
+allow httpd_sys_script_t system_cronjob_t:dir { getattr search };
+allow httpd_sys_script_t initrc_t:dir { getattr search };
 allow httpd_sys_script_t devpts_t:dir getattr;
-allow httpd_sys_script_t rpm_t:dir getattr;
+allow httpd_sys_script_t devpts_t:chr_file getattr;
+allow httpd_sys_script_t rpm_t:dir { getattr search };
 allow httpd_sys_script_t devpts_t:dir search;
 allow httpd_sys_script_t getty_t:dir getattr;
-allow httpd_sys_script_t greylist_milter_t:dir getattr;
+allow httpd_sys_script_t greylist_milter_t:dir { getattr search };
 allow httpd_sys_script_t mysqld_safe_t:dir getattr;
-allow httpd_sys_script_t mysqld_t:dir getattr;
+allow httpd_sys_script_t mysqld_t:dir { getattr search };
 allow httpd_sys_script_t kdumpctl_t:dir getattr;
 allow httpd_sys_script_t systemd_hostnamed_t:dir getattr;
 allow httpd_sys_script_t mandb_t:dir getattr;
 allow httpd_sys_script_t rpm_script_t:dir getattr;
 allow httpd_sys_script_t sysstat_t:dir getattr;
-
-# suppress other ps output denials
-# won't suppress everything in every scenario but should
-# reduce it without over suppressing
-# todo
+allow httpd_sys_script_t user_devpts_t:chr_file getattr;
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
