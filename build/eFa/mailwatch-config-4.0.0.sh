@@ -27,6 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of mailwatch
 #-----------------------------------------------------------------------------#
+echo "Configuring MailWatch..."
 
 # Set php parameters needed
 sed -i '/^short_open_tag =/ c\short_open_tag = On' /etc/php.ini
@@ -50,7 +51,7 @@ sed -i "/^define('SHOW_SFVERSION',/ c\define('SHOW_SFVERSION', false);" /var/www
 sed -i "/^define('SHOW_DOC',/ c\define('SHOW_DOC', false);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('HIDE_UNKNOWN',/ c\define('HIDE_UNKNOWN', true);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('SA_PREFS', MS_CONFIG_DIR . 'spam.assassin.prefs.conf');/ c\define('SA_PREFS', MS_CONFIG_DIR . 'spamassassin.conf');" /var/www/html/mailscanner/conf.php
-sed -i "/^define('MAILWATCH_HOME',/ c\define('MAILWATCH_HOME', '/var/www/html/mailscanner');" conf.php
+sed -i "/^define('MAILWATCH_HOME',/ c\define('MAILWATCH_HOME', '/var/www/html/mailscanner');" /var/www/html/mailscanner/conf.php
 
 # Set up a redirect in web root to MailWatch
 cat > /var/www/html/index.html << 'EOF'
@@ -124,4 +125,6 @@ sed -i "/^define('MSRE'/ c\define('MSRE', true);" /var/www/html/mailscanner/conf
 chgrp -R apache /etc/MailScanner/rules
 chmod g+rwxs /etc/MailScanner/rules
 chmod g+rw /etc/MailScanner/rules/*.rules
+
+echo "Configuring MailWatch...done"
 
