@@ -106,7 +106,7 @@ allow httpd_t mscan_spool_t:file { read getattr open };
 allow httpd_sys_script_t unconfined_t:dir { getattr search };
 allow httpd_sys_script_t unconfined_t:file { open read };
 allow httpd_sys_script_t mscan_t:dir { getattr search };
-allow httpd_sys_script_t mscan_t:file { open read };
+allow httpd_sys_script_t mscan_t:file { ioctl open read };
 
 # allow ps to read antivirus process
 allow httpd_sys_script_t antivirus_t:dir { getattr search };
