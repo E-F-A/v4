@@ -99,7 +99,7 @@ cat > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh << 'EOF'
 #!/bin/bash
 
 /usr/bin/php /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php --refresh
-/usr/bin/php /usr/bin/mailwatch/tools/mailwatch_mailscanner_relay.php --refresh
+/usr/bin/php /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_mailscanner_relay.php --refresh
 EOF
 
 %pre
