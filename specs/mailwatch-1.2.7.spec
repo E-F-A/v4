@@ -120,7 +120,8 @@ EOF
 %attr(0755, root, root) %{_sysconfdir}/cron.monthly/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %{_datarootdir}/MailScanner/perl/custom/*
-%{_bindir}/mailwatch/tools/MailScanner_rule_editor/*
+%{_bindir}/mailwatch/tools/MailScanner_rule_editor/msre_reload.crontab
+%{_bindir}/mailwatch/tools/MailScanner_rule_editor/INSTALL
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh
 %{_bindir}/mailwatch/tools/Postfix_relay/*
 %{_bindir}/mailwatch/tools/Sendmail-Exim_queue/*
