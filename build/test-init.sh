@@ -138,7 +138,7 @@ function func_configure-system() {
   systemctl start clam.scan
   freshclam
 
-  /usr/bin/clamav-unofficial-sigs.sh
+  /usr/sbin/clamav-unofficial-sigs.sh
 
   sa-update
   sa-compile
