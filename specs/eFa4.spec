@@ -331,6 +331,9 @@ Requires:  p7zip >= 16.02-2
     # p7zip     `                                # epel    # MailScanner
 Requires:  p7zip-plugins >= 16.02-2
     # p7zip-plugins                              # epel    # MailScanner
+Requires:  tmpwatch >= 2.11-5
+    # tmpwatch                                   # base    # Spamassassin
+    #   psmisc                                   #         #
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
