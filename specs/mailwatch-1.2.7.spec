@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.7
 Epoch:         1
-Release:       1.eFa%{?dist}
+Release:       2.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -85,6 +85,10 @@ echo "UPDATEMAXDELAY=3600" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 echo 'sleep $[( $RANDOM % $UPDATEMAXDELAY )+1]s' >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 
+mkdir -p  %{buildroot}%{_sysconfdir}/cron.d
+echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.d/msre_reload
+echo "*/5 * * * *   root    /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh" >> %{buildroot}%{_sysconfdir}/cron.d/msre_reload
+
 mkdir -p %{buildroot}%{_localstatedir}/www/html
 cp -a mailscanner %{buildroot}%{_localstatedir}/www/html/mailscanner
 mv %{buildroot}%{_localstatedir}/www/html/mailscanner/conf.php.example %{buildroot}%{_localstatedir}/www/html/mailscanner/conf.php
@@ -111,11 +115,13 @@ EOF
 %defattr(-, root, root)
 %doc CHANGELOG.md CONTRIBUTING.md LICENSE.md README.md
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/Cron_jobs/*
+%attr(0755, root, root) %{_sysconfdir}/cron.d/msre_reload
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.monthly/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %{_datarootdir}/MailScanner/perl/custom/*
 %{_bindir}/mailwatch/tools/MailScanner_rule_editor/*
+%attr(0755, root, root) %{_bindir}/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh
 %{_bindir}/mailwatch/tools/Postfix_relay/*
 %{_bindir}/mailwatch/tools/Sendmail-Exim_queue/*
 %{_bindir}/mailwatch/tools/Sendmail_relay/*
@@ -207,6 +213,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sun Jan 14 2018 Shawn Iverson <shawniverson2efa-project.org> - 1.2.7-2
+- Fix msre_reload.sh and include msre_reload crontab
+
 * Sat Jan 13 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-1
 - MailWatch Update
 
