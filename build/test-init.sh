@@ -135,7 +135,7 @@ function func_configure-system() {
 
   echo -e "$green[eFa]$clean - Updating AV and SA rules"
 
-  systemctl start clamd@scan
+  systemctl start clam.scan
   freshclam
 
   /usr/bin/clamav-unofficial-sigs.sh
@@ -215,6 +215,10 @@ function func_configure-system() {
 
   cd /etc/postfix/ssl
   openssl req -new -x509 -nodes -out smtpd.pem -keyout smtpd.pem -days 3650
+  
+  echo -e "$green[eFa]$clean Generating Apache self-signed cert"
+  cd /etc/pki/tls/certs
+  openssl req -new -x509 -nodes -out localhost.crt -keyout ../private/localhost.key
 
   echo "HOSTNAME:$HOSTNAME" >> /etc/eFa-Config
   echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa-Config
@@ -250,22 +254,23 @@ function func_configure-system() {
   chown root:mtagroup /etc/eFa-Config
   chmod 640 /etc/eFa-Config
 
-  service mailscanner start >/dev/null 2>&1
+  systemctl start mailscanner >/dev/null 2>&1
 
   mkdir -p /var/spool/MailScanner/incoming/clamav-tmp
   chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
   chmod 770 /var/spool/MailScanner/incoming/clamav-tmp
-  service mailscanner stop
+  systemctl stop mailscanner
 
-  chkconfig mailscanner on
+  systemctl enable mailscanner
   systemctl enable postfix
   systemctl enable httpd
   systemctl enable mariadb
   #chkconfig saslauthd off
   systemctl enable crond
-  systemctl enable clamd@scan
+  systemctl enable clam.scan
+  systemctl enable clam.freshclam
   systemctl enable clamav-unofficial-sigs
-  chkconfig sqlgrey on
+  systemctl enable sqlgrey
   #chkconfig mailgraph-init off
   chkconfig adcc on
   #chkconfig webmin off
