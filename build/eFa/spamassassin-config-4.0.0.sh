@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 initial spamassasin-configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -68,13 +68,13 @@ echo '    txrep_factory                   Mail::SpamAssassin::SQLBasedAddrList' 
 echo '    txrep_track_messages            0' >> /etc/MailScanner/spamassassin.conf
 echo '    user_awl_sql_override_username  TxRep' >> /etc/MailScanner/spamassassin.conf
 echo '    user_awl_sql_table              txrep' >> /etc/MailScanner/spamassassin.conf
-echo '    use_txrep                       0' >> /etc/MailScanner/spamassassin.conf
+echo '    use_txrep                       1' >> /etc/MailScanner/spamassassin.conf
 echo 'endif' >> /etc/MailScanner/spamassassin.conf
 echo '' >> /etc/MailScanner/spamassassin.conf
 echo '#End eFa mods for MySQL' >> /etc/MailScanner/spamassassin.conf
 
 # Enable Auto White Listing
-sed -i '/^#loadplugin Mail::SpamAssassin::Plugin::AWL/ c\loadplugin Mail::SpamAssassin::Plugin::AWL' /etc/mail/spamassassin/v310.pre
+#sed -i '/^#loadplugin Mail::SpamAssassin::Plugin::AWL/ c\loadplugin Mail::SpamAssassin::Plugin::AWL' /etc/mail/spamassassin/v310.pre
 
 # Enable TxRep Plugin
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::TxRep/ c\loadplugin Mail::SpamAssassin::Plugin::TxRep" /etc/mail/spamassassin/v341.pre
@@ -107,6 +107,13 @@ mkdir -p /var/www/.spamassassin
 chown postfix:mtagroup /var/www/.spamassassin
 mkdir -p /usr/share/httpd/.spamassassin
 chown postfix:mtagroup /usr/share/httpd/.spamassassin
+
+cat > /etc/cron.daily/eFa-SAClean << 'EOF'
+#!/bin/sh
+# MailScanner_incoming SA Cleanup
+/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp 
+EOF
+chmod ugo+x /etc/cron.daily/eFa-SAClean
 
 # Issue #82 re2c spamassassin rule complilation
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/ c\loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody" /etc/mail/spamassassin/v320.pre
