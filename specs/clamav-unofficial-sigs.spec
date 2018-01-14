@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~201 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ Summary:       clamav-unofficial-sigs Maintained and provided by https://eXtreme
 Name:          clamav-unofficial-sigs
 Version:       5.6.2
 Epoch:         1
-Release:       2.eFa%{?dist}
+Release:       3.eFa%{?dist}
 License:       Copyright (c) Adrian Jon Kriel admin@extremeshok.com
 Group:         Applications/Utilities
 URL:           https://github.com/extremeshok/clamav-unofficial-sigs
@@ -39,7 +39,6 @@ Requires:      bind-utils >= 9.9.4
 The clamav-unofficial-sigs script provides a simple way to download, test, and update third-party
 signature databases provided by Sanesecurity, FOXHOLE, OITC, Scamnailer, BOFHLAND, CRDF,
 Porcupine, Securiteinfo, MalwarePatrol, Yara-Rules Project, etc.
-The script will also generate and install cron, logrotate, and man files.
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -50,7 +49,7 @@ The script will also generate and install cron, logrotate, and man files.
 %install
 %{__rm} -rf %{buildroot}
 
-mkdir -p %{buildroot}/usr/bin
+mkdir -p %{buildroot}/usr/sbin
 mkdir %{buildroot}/etc
 mkdir -p %{buildroot}/usr/lib/systemd/system
 cp clamav-unofficial-sigs.sh %{buildroot}/usr/bin
@@ -68,7 +67,7 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 %files
 %defattr(-, root, root)
 %doc INSTALL LICENSE README.md
-%attr(0755, root, root) %{_bindir}/clamav-unofficial-sigs.sh
+%attr(0755, root, root) %{_sbindir}/clamav-unofficial-sigs.sh
 %dir %{_sysconfdir}/clamav-unofficial-sigs/
 %config(noreplace) %{_sysconfdir}/clamav-unofficial-sigs/*
 %dir %{_var}/log/clamav-unofficial-sigs/
@@ -77,6 +76,9 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 %attr(0755, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.timer
 
 %changelog
+* Sun Jan 14 2018 Shawn Iverson <shawniverson@efa-project.org> - 5.6.2-3
+- Move clamav-unofficial-sigs.sh to /usr/sbin
+
 * Sat Nov 19 2017 Shawn Iverson <shawniverson@gmail.com> - 5.6.2-2
 - Fix %post error, add systemd scripts
 
