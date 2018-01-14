@@ -73,6 +73,7 @@ require {
     type rpm_script_t;
     type sysstat_t;
     type user_devpts_t;
+    type user_tmp_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
