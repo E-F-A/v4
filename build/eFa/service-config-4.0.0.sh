@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 initial service-configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ systemctl disable abrtd
 # These services we disable for now and enable them after eFa-Init.
 # Most of these are not enabled by default but add them here just to
 # make sure we don't forget them at eFa-Init.
-chkconfig mailscanner off
+systemctl disable mailscanner
 systemctl disable postfix
 systemctl disable httpd
 systemctl disable mariadb
