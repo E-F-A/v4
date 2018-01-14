@@ -75,6 +75,9 @@ postconf -e "smtpd_tls_mandatory_protocols = !SSLv2,!SSLv3"
 postconf -e "smtp_tls_mandatory_protocols = !SSLv2,!SSLv3"
 postconf -e "smtpd_tls_protocols = !SSLv2,!SSLv3"
 postconf -e "smtp_tls_protocols = !SSLv2,!SSLv3"
+postconf -e "tls_preempt_cipherlist = yes"
+postconf -e "tls_medium_cipherlist = ECDSA+AESGCM:ECDH+AESGCM:DH+AESGCM:ECDSA+AES:ECDH+AES:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"
+postconf -e "smtpd_tls_ciphers = medium"
 # restrictions
 postconf -e "smtpd_helo_restrictions =  check_helo_access hash:/etc/postfix/helo_access, reject_invalid_hostname"
 postconf -e "smtpd_sender_restrictions = permit_sasl_authenticated, check_sender_access hash:/etc/postfix/sender_access, reject_non_fqdn_sender, reject_unknown_sender_domain"
@@ -103,7 +106,6 @@ chmod 0600 /etc/postfix/sasl_passwd
 # Logjam Vulnerability Protection
 openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
 postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
-postconf -e "smtpd_tls_ciphers = low"
 
 echo "pwcheck_method: auxprop">/usr/lib64/sasl2/smtpd.conf
 echo "auxprop_plugin: sasldb">>/usr/lib64/sasl2/smtpd.conf
