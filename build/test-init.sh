@@ -218,6 +218,7 @@ function func_configure-system() {
   openssl req -new -x509 -nodes -days 3650 -out localhost.crt -keyout ../private/localhost.key
   cp localhost.crt /etc/postfix/ssl/smtpd.pem
   cat /etc/pki/tls/private/localhost.key >> /etc/postfix/ssl/smtpd.pem
+  cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
 
   echo "HOSTNAME:$HOSTNAME" >> /etc/eFa-Config
   echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa-Config
