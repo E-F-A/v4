@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 initial mariadb-configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -68,4 +68,13 @@ echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
 
 # add the AWL table to sa_bayes
 /usr/bin/mysql -u root -p"$password" sa_bayes < $srcdir/mariadb/awl_mysql.sql
+
+sed -i "/^\[mysqld\]/ a\character-set-server = utf8mb4" /etc/my.cnf.d/server.cnf
+sed -i "/^\[mysqld\]/ a\init-connect = 'SET NAMES utf8mb4'" /etc/my.cnf.d/server.cnf
+sed -i "/^\[mysqld\]/ a\collation-server = utf8mb4_unicode_ci" /etc/my.cnf.d/server.cnf
+
+mkdir /var/lib/mysql/temp
+chown mysql:mysql /var/lib/mysql/temp
+sed -i "/^\[mysqld\]/ a\tmpdir = /var/lib/mysql/temp" /etc/my.cnf.d/server.cnf
+
 echo "Configuring mariadb...done"
