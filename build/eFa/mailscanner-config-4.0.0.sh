@@ -116,9 +116,6 @@ cp $srcdir/mailscanner/CustomAction.pm /usr/share/MailScanner/perl/custom/Custom
 cp $srcdir/mailscanner/EFA-Tokens-Cron /etc/cron.daily/eFa-Tokens-Cron
 chmod 700 /etc/cron.daily/eFa-Tokens-Cron
 
-# Force mailscanner init to return a code on all failures
-sed -i 's/failure/failure \&\& RETVAL=1/g' /etc/init.d/mailscanner
-
 sed -i "/^run_mailscanner/ c\run_mailscanner=1" /etc/MailScanner/defaults
 sed -i "/^ramdisk_sync/ c\ramdisk_sync=1" /etc/MailScanner/defaults
 
@@ -137,6 +134,10 @@ echo -e "FromOrTo:\tdefault\tyes" >> /etc/MailScanner/rules/content.scanning.rul
 
 echo -e "allow\t.*\t-\t-" > /etc/MailScanner/filename.rules.allowall.conf
 echo -e "allow\t.*\t-\t-" >> /etc/MailScanner/filetype.rules.allowall.conf
+
+echo -e "From:\t127.0.0.1\tno" > /etc/MailScanner/numeric.phishing.rules
+echo -e "FromOrTo:\tDefault\tyes" >> /etc/MailScanner/numeric.phishing.rules
+sed -i '/^Also Find Numeric Phishing =/ c\Also Find Numeric Phishing = %etc-dir%/numeric.phishing.rules' /etc/MailScanner/MailScanner.conf
 
 sed -i '/^\/usr\/sbin\/ms-cron DAILY/ c\/usr/sbin/ms-cron DAILY >/dev/null 2>&1' /etc/cron.daily/mailscanner
 sed -i '/^\/usr\/sbin\/ms-cron MAINT/ c\/usr/sbin/ms-cron MAINT >/dev/null 2>&1' /etc/cron.daily/mailscanner
