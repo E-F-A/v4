@@ -52,7 +52,7 @@ Porcupine, Securiteinfo, MalwarePatrol, Yara-Rules Project, etc.
 mkdir -p %{buildroot}/usr/sbin
 mkdir %{buildroot}/etc
 mkdir -p %{buildroot}/usr/lib/systemd/system
-cp clamav-unofficial-sigs.sh %{buildroot}/usr/bin
+cp clamav-unofficial-sigs.sh %{buildroot}/usr/sbin
 mkdir %{buildroot}/etc/clamav-unofficial-sigs
 cp config/master.conf %{buildroot}/etc/clamav-unofficial-sigs
 cp config/os.centos7.conf %{buildroot}/etc/clamav-unofficial-sigs/os.conf
@@ -79,7 +79,7 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 * Sun Jan 14 2018 Shawn Iverson <shawniverson@efa-project.org> - 5.6.2-3
 - Move clamav-unofficial-sigs.sh to /usr/sbin
 
-* Sat Nov 19 2017 Shawn Iverson <shawniverson@gmail.com> - 5.6.2-2
+* Sun Nov 19 2017 Shawn Iverson <shawniverson@gmail.com> - 5.6.2-2
 - Fix %post error, add systemd scripts
 
 * Sat Nov 11 2017 darky83 <darky83@efa-project.org> - 5.6.2-1
