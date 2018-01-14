@@ -278,6 +278,7 @@ function func_configure-system() {
   #chkconfig munin-node off
   systemctl enable chronyd
   systemctl enable yum-cron
+  systemctl enable sshd
 
   echo -e "$green[eFa]$clean - Done"
 }
