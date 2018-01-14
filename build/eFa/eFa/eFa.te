@@ -234,6 +234,7 @@ allow httpd_sys_script_t tmpfs_t:file { append getattr open ioctl setattr create
 allow httpd_sys_script_t tmpfs_t:filesystem getattr;
 allow httpd_sys_script_t antivirus_t:unix_stream_socket connectto;
 allow httpd_sys_script_t user_tmp_t:file setattr;
+allow httpd_sys_script_t initrc_t:unix_stream_socket connectto;
 
 # Allow sa-learn
 allow httpd_sys_script_t spamd_update_t:dir { getattr search };
