@@ -49,7 +49,7 @@ sed -i '/^DBCLEAN_LOGDAYS=/ c\DBCLEAN_LOGDAYS=1' /var/dcc/dcc_conf
 sed -i '/^DCCIFD_LOGDIR=/ c\DCCIFD_LOGDIR="/var/dcc/log"' /var/dcc/dcc_conf
 chown postfix:mtagroup /var/dcc
 
-ln -s /var/dcc/libexec/rcDCC /etc/init.d/adcc
+cp /var/dcc/libexec/rcDCC /etc/init.d/adcc
 sed -i "s/#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/g" /etc/mail/spamassassin/v310.pre
 echo "Configuring dcc...done"
 
