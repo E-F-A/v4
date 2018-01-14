@@ -295,7 +295,7 @@ Requires:  spamassassin >= 3.4.1-1
     # #    perl-Net-Patricia                     #         #
 Requires:  MailScanner >= 5.0.7-2
     # MailScanner                                # eFa     # MailScanner
-Requires:  clamav-unofficial-sigs >= 5.6.2-1
+Requires:  clamav-unofficial-sigs >= 5.6.2-3
     # clamav-unofficial-sigs                     # eFa     # clamav
 Requires:  perl-IP-Country >= 2.28-1
     # perl-IP-Country                            # eFa     # MailScanner, Spamassassin
