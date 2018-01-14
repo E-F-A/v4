@@ -45,10 +45,9 @@ systemctl disable mariadb
 #chkconfig saslauthd off
 systemctl disable crond
 systemctl disable clamd@scan
-chkconfig sqlgrey off
+systemctl disable sqlgrey
 #chkconfig mailgraph-init off
 chkconfig adcc off
-chkconfig mysql off
 #chkconfig webmin off
 systemctl disable unbound
 #chkconfig munin-node off
