@@ -213,12 +213,11 @@ function func_configure-system() {
   WATERMARK=$PASSWORD
   sed -i "/^Watermark Secret =/ c\Watermark Secret = %org-name%-$WATERMARK" /etc/MailScanner/MailScanner.conf
 
-  cd /etc/postfix/ssl
-  openssl req -new -x509 -nodes -out smtpd.pem -keyout smtpd.pem -days 3650
-  
-  echo -e "$green[eFa]$clean Generating Apache self-signed cert"
+  echo -e "$green[eFa]$clean Generating Apache and postfix self-signed cert"
   cd /etc/pki/tls/certs
-  openssl req -new -x509 -nodes -out localhost.crt -keyout ../private/localhost.key
+  openssl req -new -x509 -nodes -days 3650 -out localhost.crt -keyout ../private/localhost.key
+  cp localhost.crt /etc/postfix/ssl/smtpd.pem
+  cat /etc/pki/tls/private/localhost.key >> /etc/postfix/ssl/smtpd.pem
 
   echo "HOSTNAME:$HOSTNAME" >> /etc/eFa-Config
   echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa-Config
