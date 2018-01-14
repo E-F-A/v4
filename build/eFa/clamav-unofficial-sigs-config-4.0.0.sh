@@ -28,11 +28,13 @@ source /usr/src/eFa/eFa-settings.inc
 # Start configuration of clamav unofficial sigs
 #-----------------------------------------------------------------------------#
 sed -i '/^#user_configuration_complete="yes"/s/^#//g' /etc/clamav-unofficial-sigs/user.conf
+sed -i '/^ExecStart=/ c\ExecStart=/usr/sbin/clamav-unofficial-sigs.sh' /usr/lib/systemd/system/clamav-unofficial-sigs.service
+sed -i '/^WantedBy=/ c\WantedBy=clam.scan.service'  /usr/lib/systemd/system/clamav-unofficial-sigs.timer
+sed -i '/^clamd_restart_opt=/ c\clamd_restart_opt=systemctl restart clam.scan' /etc/clamav-unofficial-sigs/os.conf
+sed -i '/^clamd_reload_opt=/ c\clamd_reload_opt=="clamdscan --config-file=/etc/clamd.d/clamd.conf --reload' /etc/clamav-unofficial-sigs/os.conf
 
 #-----------------------------------------------------------------------------#
 # Finalize the installation
 #-----------------------------------------------------------------------------#
-# Using systemd instead
-#/usr/bin/clamav-unofficial-sigs.sh --install-cron
 /usr/bin/clamav-unofficial-sigs.sh --install-logrotate
 /usr/bin/clamav-unofficial-sigs.sh --install-man
