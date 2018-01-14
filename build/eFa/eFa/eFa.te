@@ -100,6 +100,7 @@ allow httpd_t postfix_public_t:sock_file write;
 allow httpd_t postfix_spool_t:dir read;
 allow httpd_t mscan_spool_t:dir read;
 allow httpd_t mscan_spool_t:file { read getattr open };
+allow httpd_t tmpfs_t:file getattr;
 
 #============= httpd_sys_script_t ==============
 # allow ps to read MailScanner process
