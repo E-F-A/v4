@@ -1,9 +1,0 @@
-###-------------------------------------------------------------------------------------------###
-### ISSUE
-###-------------------------------------------------------------------------------------------###
-
-Installing : perl-Net-Server-2.007-2.el7.noarch                                                                                                               214/218
-useradd: warning: the home directory already exists.
-Not copying any file from skel directory into it.
-
-(Not really an eFa issue, upstream package issue)
