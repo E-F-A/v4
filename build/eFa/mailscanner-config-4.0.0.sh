@@ -141,4 +141,7 @@ echo -e "allow\t.*\t-\t-" >> /etc/MailScanner/filetype.rules.allowall.conf
 sed -i '/^\/usr\/sbin\/ms-cron DAILY/ c\/usr/sbin/ms-cron DAILY >/dev/null 2>&1' /etc/cron.daily/mailscanner
 sed -i '/^\/usr\/sbin\/ms-cron MAINT/ c\/usr/sbin/ms-cron MAINT >/dev/null 2>&1' /etc/cron.daily/mailscanner
 
+sed -i '/^BADSRC=/ c\BADSRC="https://dl.efa-project.org/MailScanner/phishing.bad.sites.conf"' /usr/sbin/ms-update-phishing
+sed -i '/^SAFESRC=/ c\SAFESRC="https://dl.efa-project.org/MailScanner/phishing.safe.sites.conf"' /usr/sbin/ms-update-phishing
+
 echo "Configuring MailScanner...done"
