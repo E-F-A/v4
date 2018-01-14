@@ -81,7 +81,7 @@ mkdir -p /var/log/clamd.scan
 chown -R clam:clam /var/log/clamd.scan
 chcon -u system_u -r object_r -t antivirus_log_t /var/log/clamd.scan
 mkdir -p /var/run/clamd.scan
-chown -R clam:clam /var/run/clamd.scan
+chown -R clam:mtagroup /var/run/clamd.scan
 chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.scan
 echo "d /var/run/clamd.scan 0750 clam mtagroup -" > /usr/lib/tmpfiles.d/clamd.conf
 
