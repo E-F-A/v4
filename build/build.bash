@@ -58,8 +58,7 @@ fi
 if [[ "$action" == "testing" ]]; then
   echo "- Adding eFa Testing Repo"
   rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
-  cd /etc/yum.repos.d/
-  /usr/bin/wget $mirror/rpm/eFa4/eFa4-testing.repo
+  /usr/bin/wget -O /etc/yum.repos.d/eFa4-testing.repo $mirror/rpm/eFa4/eFa4-testing.repo
 else
   echo "- Adding eFa Repo"
   rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
