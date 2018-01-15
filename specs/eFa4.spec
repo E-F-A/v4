@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -62,31 +62,31 @@ Requires:  mariadb-server >= 10.1.30-1
     # #     jemalloc                             #         #
 Requires:  perl-DBD-MySQL >= 4.023-5
     # perl-DBD-mysql                             # base    # spamassassin
-Requires:  php >= 5.4.16-43
-    # php                                        # base    # mailwatch
+Requires:  rh-php71-php >= 7.1.8-1
+    # rh-php71-php                               # scl     # mailwatch, frontend
     # #     libzip                               #         #
-    # #     php-cli                              #         #
-    # #     php-common                           #         #
+    # #     rh-php71-php-cli                     #         #
+    # #     rh-php71-php-common                  #         #
 Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
 Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # screen                                     # base    # basic system tools
-Requires:  php-gd >= 5.4.16-43
-    # php-gd                                     # base    # mailwatch
+Requires:  rh-php71-php-gd >= 7.1.8-1
+    # rh-php71-php-gd                            # scl     # mailwatch, frontend
     # #     libXpm                               #         #
     # #     t11ib                                #         #
-Requires:  php-mbstring >= 5.4.16-43
-    # php-mbstring                               # base    # mailwatch
-Requires:  php-mysqlnd >= 5.4.16-43
-    # php-mysql                                  # base    # mailwatch
-    # #     php-pdo                              #         #
-Requires:  php-ldap >= 5.4.16-43
-    # php-ldap                                   # base    # mailwatch
-Requires:  httpd >= 2.4.6-67
-    # httpd                                      # base    # mailwatch
+Requires:  rh-php71-php-mbstring >= 7.1.8-1
+    # rh-php71-php-mbstring                      # scl     # mailwatch, frontend
+Requires:  rh-php71-php-mysqlnd >= 7.1.8-1
+    # rh-php71-php-mysqlnd                       # scl     # mailwatch, frontend
+    # #     rh-php71-php-pdo                     #         #
+Requires:  rh-php71-php-ldap >= 7.1.8-1
+    # rh-php71-php-ldap                          # scl     # mailwatch, frontend
+Requires:  httpd24-httpd >= 2.4.27-8
+    # httpd24-httpd                              # scl     # mailwatch, frontend
     # #     apr                                  #         #
     # #     apr-util                             #         #
-    # #     httpd-tools                          #         #
+    # #     httpd24-httpd-tools                  #         #
     # #     mailcap                              #         #
 Requires:  cyrus-sasl-md5 >= 2.1.26-21
     # cyrus-sasl-md5                             # base    # postfix
@@ -94,8 +94,8 @@ Requires:  cyrus-sasl-sql >= 2.1.26-21
     # cyrus-sasl-sql                             # base    # postfix
 Requires:  cyrus-sasl-ldap >= 2.1.26-21
     # cyrus-sasl-ldap                            # base    # postfix
-Requires:  mod_ssl >= 2.4.6-67
-    # mod_ssl                                    # base    # httpd
+Requires:  httpd24-mod_ssl >= 1:2.4.27-8
+    # httpd24-mod_ssl                            # scl     # httpd
 Requires:  openssl-devel >= 1.0.2k-8
     # openssl-devel                              # base    # MailScanner
     # #     keyutils-libs-devel                  #         #
