@@ -26,19 +26,19 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.7
 Epoch:         1
-Release:       3.eFa%{?dist}
+Release:       4.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:      httpd >= 2.4.6
-Requires:      php >= 5.4.16
-Requires:      php-gd >= 5.4.16
-Requires:      php-mbstring >= 5.4.16
-Requires:      mariadb-server >= 5.5.52
-Requires:      php-mysql >= 5.4.16
-Requires:      php-ldap >= 5.4.16
+Requires:      php >= 7.2.1
+Requires:      php-gd >= 7.2.1
+Requires:      php-mbstring >=7.2.1
+Requires:      MariaDB-server >= 10.1.30
+Requires:      php-mysqlnd >= 7.2.1
+Requires:      php-ldap >= 7.2.1
 Requires:      perl(Encoding::FixLatin) >= 1.04-1
 
 %description
@@ -214,10 +214,13 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
-* Sun Jan 14 2018 Shawn Iverson <shawniverson2efa-project.org> - 1.2.7-3
+* Mon Jan 15 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-4
+- Update version requirements
+
+* Sun Jan 14 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-3
 - Fix paths for postfix relay scripts
 
-* Sun Jan 14 2018 Shawn Iverson <shawniverson2efa-project.org> - 1.2.7-2
+* Sun Jan 14 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-2
 - Fix msre_reload.sh and include msre_reload crontab
 
 * Sat Jan 13 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-1

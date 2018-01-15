@@ -81,8 +81,9 @@ EOF
 echo "- Adding epel Repo"
 yum -y install epel-release
 
-echo "- Adding CentOS SCL repo"
-yum -y install centos-release-scl
+echo "- Adding Remi Repo"
+yum -y install http://rpms.remirepo.net/enterprise/remi-release-6.rpm
+yum-config-manager --enable remi-php72
 
 yum -y remove \
 iwl100-firmware \
