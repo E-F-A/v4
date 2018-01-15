@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.7
 Epoch:         1
-Release:       4.eFa%{?dist}
+Release:       5.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -39,6 +39,7 @@ Requires:      php-mbstring >= 7.2.1
 Requires:      MariaDB-server >= 10.1.30
 Requires:      php-mysqlnd >= 7.2.1
 Requires:      php-ldap >= 7.2.1
+Requires:      php-xml >= 7.2.1
 Requires:      perl(Encoding::FixLatin) >= 1.04-1
 
 %description
@@ -214,6 +215,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Mon Jan 15 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-5
+- Add php-xml as a requirement
+
 * Mon Jan 15 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-4
 - Update version requirements
 
