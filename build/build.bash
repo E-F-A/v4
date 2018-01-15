@@ -81,7 +81,9 @@ EOF
 
 echo "- Adding epel Repo"
 yum -y install epel-release
-yum -y update
+
+echo "- Adding CentOS SCL repo"
+yum -y install centos-release-scl
 
 yum -y remove \
 iwl100-firmware \
