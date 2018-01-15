@@ -307,7 +307,7 @@ Requires:  perl-libnet >= 3.10-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  mailwatch >= 1:1.2.7-3
+Requires:  mailwatch >= 1:1.2.7-4
     # mailwatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 1.3.159-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
