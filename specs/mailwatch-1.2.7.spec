@@ -35,7 +35,7 @@ BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:      httpd >= 2.4.6
 Requires:      php >= 7.2.1
 Requires:      php-gd >= 7.2.1
-Requires:      php-mbstring >=7.2.1
+Requires:      php-mbstring >= 7.2.1
 Requires:      MariaDB-server >= 10.1.30
 Requires:      php-mysqlnd >= 7.2.1
 Requires:      php-ldap >= 7.2.1
