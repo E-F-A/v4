@@ -1,0 +1,7 @@
+module mailwatch_etc 1.0.0;
+
+type mailwatch_etc_t;
+require {
+    attribute file_type;
+}
+typeattribute mailwatch_etc_t file_type;
