@@ -334,6 +334,8 @@ Requires:  p7zip-plugins >= 16.02-2
 Requires:  tmpwatch >= 2.11-5
     # tmpwatch                                   # base    # Spamassassin
     #   psmisc                                   #         #
+Requires: php-fpm >= 7.2.1-1
+    # php-fpm                                    # remi    # mailwatch, frontend
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a

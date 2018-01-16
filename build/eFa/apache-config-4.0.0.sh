@@ -73,7 +73,8 @@ sed -i 's/LoadModule lua_module modules\/mod_lua.so/#&/' /etc/httpd/conf.modules
 mv /etc/httpd/conf.d/autoindex.conf /etc/httpd/conf.d/autoindex.conf.orig
 
 # Disable proxy modules
-sed -i 's/LoadModule proxy_module modules\/mod_proxy.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+# Needed for php-fpm
+#sed -i 's/LoadModule proxy_module modules\/mod_proxy.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 sed -i 's/LoadModule lbmethod_bybusyness_module modules\/mod_lbmethod_bybusyness.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 sed -i 's/LoadModule lbmethod_byrequests_module modules\/mod_lbmethod_byrequests.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 sed -i 's/LoadModule lbmethod_bytraffic_module modules\/mod_lbmethod_bytraffic.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
@@ -82,7 +83,8 @@ sed -i 's/LoadModule proxy_ajp_module modules\/mod_proxy_ajp.so/#&/' /etc/httpd/
 sed -i 's/LoadModule proxy_balancer_module modules\/mod_proxy_balancer.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 sed -i 's/LoadModule proxy_connect_module modules\/mod_proxy_connect.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 sed -i 's/LoadModule proxy_express_module modules\/mod_proxy_express.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
-sed -i 's/LoadModule proxy_fcgi_module modules\/mod_proxy_fcgi.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
+# Needed for php-fpm
+#sed -i 's/LoadModule proxy_fcgi_module modules\/mod_proxy_fcgi.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 sed -i 's/LoadModule proxy_fdpass_module modules\/mod_proxy_fdpass.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 sed -i 's/LoadModule proxy_ftp_module modules\/mod_proxy_ftp.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
 sed -i 's/LoadModule proxy_http_module modules\/mod_proxy_http.so/#&/' /etc/httpd/conf.modules.d/00-proxy.conf
@@ -105,3 +107,13 @@ sed -i '/^SSLCipherSuite ECDSA+AESGCM:ECDH+AESGCM:ECDSA+AES:ECDH+AES:RSA+AESGCM:
 
 # Disable PHP functions
 sed -i '/disable_functions =/ c\disable_functions = apache_child_terminate,apache_setenv,define_syslog_variables,escapeshellcmd,eval,fp,fput,ftp_connect,ftp_exec,ftp_get,ftp_login,ftp_nb_fput,ftp_put,ftp_raw,ftp_rawlist,highlight_file,ini_alter,ini_get_all,ini_restore,inject_code,openlog,phpAds_remoteInfo,phpAds_XmlRpc,phpAds_xmlrpcDecode,phpAds_xmlrpcEncode,posix_getpwuid,posix_kill,posix_mkfifo,posix_setpgid,posix_setsid,posix_setuid,posix_setuid,posix_uname,proc_close,proc_get_status,proc_nice,proc_open,proc_terminate,syslog,system,xmlrpc_entity_decode,curl_multi_exec' /etc/php.ini
+
+# Configure php-fpm
+cat /etc/httpd/conf.d/fpm.conf << 'EOF'
+# PHP scripts setup
+ProxyPassMatch ^/(.*.php)$ fcgi://127.0.0.1:9000/var/www/html
+
+Alias / /var/www/html/
+EOF
+# Pass a PATH environment variable to php-fpm for exec to call binaries
+sed -i '/^;env[PATH] =/ c\env[PATH] = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin' /etc/php-fpm.d/www.conf

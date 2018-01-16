@@ -279,6 +279,7 @@ function func_configure-system() {
   systemctl enable chronyd
   systemctl enable yum-cron
   systemctl enable sshd
+  systemctl enable php-fpm
 
   echo -e "$green[eFa]$clean - Done"
 }
