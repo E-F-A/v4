@@ -114,5 +114,8 @@ checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
 semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod
 semodule -i $srcdir/eFa/eFa.pp
 
+# Set EFA-Init to run at first root login:
+sed -i '1i\\/usr\/sbin\/eFa-Init' /root/.bashrc
+
 # Set the system as unconfigured
-echo 'CONFIGURED:NO' > /etc/eFa-Config
+echo 'CONFIGURED:NO' > /etc/eFa/eFa-Config
