@@ -90,10 +90,6 @@ Requires:  httpd >= 2.4.6-67
     # #     mailcap                              #         #
 Requires:  cyrus-sasl-md5 >= 2.1.26-21
     # cyrus-sasl-md5                             # base    # postfix
-Requires:  cyrus-sasl-sql >= 2.1.26-21
-    # cyrus-sasl-sql                             # base    # postfix
-Requires:  cyrus-sasl-ldap >= 2.1.26-21
-    # cyrus-sasl-ldap                            # base    # postfix
 Requires:  mod_ssl >= 2.4.6-67
     # mod_ssl                                    # base    # httpd
 Requires:  openssl-devel >= 1.0.2k-8
