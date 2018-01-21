@@ -308,6 +308,7 @@ allow mscan_t self:capability { fowner fsetid };
 allow mscan_t initrc_t:unix_stream_socket connectto;
 allow mscan_t efasql_etc_t:file { read open ioctl getattr };
 allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
+allow mscan_t spamd_compiled_t:dir { search };
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
