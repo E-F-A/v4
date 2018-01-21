@@ -88,7 +88,7 @@ require {
     class unix_stream_socket connectto;
     class chr_file getattr;
     class lnk_file { getattr read };
-    class tcp_socket name_connect;
+    class tcp_socket { name_connect getattr ioctl };
     class capability { kill setuid setgid chown dac_override dac_read_search sys_resource fsetid fowner audit_write };
     class netlink_audit_socket { create write nlmsg_relay read };
     class process setrlimit;
