@@ -173,8 +173,7 @@ function func_ask-ipv6mask() {
   while [ $nmcheck != 0 ]
    do
     # Between 1 and 128, power of 2
-    if [[ $IPV6MASK =~ ^[0-9]{1,3}$ && $IPV6MASK -ge 1 && $IPV6MASK -le 128 && $(( $IPV6MASK & ($IPV6MASK - 1) )) -eq 0]]; 
-    then
+    if [[ $IPV6MASK =~ ^[0-9]{1,3}$ && $IPV6MASK -ge 1 && $IPV6MASK -le 128 && $(( $IPV6MASK & ($IPV6MASK - 1) )) -eq 0 ]]; then
        nmcheck=0
      else
        echo -e "       $red ERROR: The ipv6 MASK $IPV6MASK seems to be invalid"
@@ -421,7 +420,7 @@ function func_ask-webusername() {
 # +---------------------------------------------------+
 function func_ask-webuserpassword() {
   func_echo-header
-  echo -e "$green[eFa]$clean Please enter the password for the local user."
+  echo -e "$green[eFa]$clean Please enter the password for the web user."
   echo -e "$green[eFa]$clean This password will also be used to logon to the webinterface"
   echo -e -n "$green[eFa]$clean Password: "
   read -s efauserpwd
@@ -438,7 +437,7 @@ function func_ask-webuserpassword() {
             echo -e ""
             echo -e "       $red ERROR: The passwords do not seem to match"
             echo -e "        ERROR: Please try again$clean"
-            echo -e "$green[eFa]$clean Please enter the password for the local user."
+            echo -e "$green[eFa]$clean Please enter the password for the web user."
             echo -e -n "$green[eFa]$clean Password: "
             read -s efauserpwd
             echo -e ""
@@ -484,7 +483,7 @@ function func_ask-rootpassword() {
 }
 # +---------------------------------------------------+
 
- +---------------------------------------------------+
+#+---------------------------------------------------+
 # detect virtual system
 # Todo: selinux policies needed for each
 # +---------------------------------------------------+
@@ -560,7 +559,7 @@ function func_ask-keyboard() {
   echo -e "$green[eFa]$clean We will now launch the build in Keyboard layout selector"
   pause
   /usr/sbin/system-config-keyboard --text
-  KEYBOARD=`cat /etc/sysconfig/keyboard  | grep KEYTABLE | sed 's/KEYTABLE=//;s/"//g'`
+  KEYBOARD=`localectl | grep Keymap | awk '{print $3}'`
 }
 # +---------------------------------------------------+
 
@@ -585,8 +584,7 @@ function func_ask-mailserver() {
      elif checkip6 $MAILSERVER
        then
          mailcheck=0
-     fi
-      else
+     else
         echo -e "       $red ERROR: The hostname $MAILSERVER seems to be invalid"
         echo -e "        ERROR: please re-enter the mail server$clean"
         echo -e -n "$green[eFa]$clean : "
@@ -673,7 +671,7 @@ function func_verify-settings() {
     echo -e "13) Secondary DNS       : $DNS2"
     echo -e "14) User                : $USERNAME"
     echo -e "15) User PWD            : <hidden>"
-    echo -e "16) Root PWD           : <hidden>"
+    echo -e "16) Root PWD            : <hidden>"
     echo -e -n "17) Hypervisor Agents   : "; if [[ "$InstallOpenVMTools" -eq 1 ]]; then echo "VMware: Installing Open-VM-Tools."; elif [[ "$InstallQEMUAgent" -eq 1 ]]; then echo "KVM: Installing the QEMU Guest Agent."; elif [[ "$InstallHyperVTools" -eq 1 ]]; then echo "Hyper-V: Please go to the wiki for more information."; else echo "Not needed."; fi
     echo -e -n "18) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
     echo -e "19) Keyboard            : $KEYBOARD"
@@ -692,7 +690,7 @@ function func_verify-settings() {
                         ;;
                 2)        func_ask-domainname
                         ;;
-                3)        func_ask-adminemail
+                3)        func_ask-email
                         ;;
                 4)        func_interfaces
                         ;;
@@ -934,7 +932,7 @@ function func_configure-system() {
   echo -e "$green[eFa]$clean - Setting DNS"
   echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
   echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
-  if [[ "$RECURSE" -eq "1" ]]; then
+  if [[ $enablerecursion -eq 1 ]]; then
     echo "  forward-first: yes" >> /etc/unbound/conf.d/forwarders.conf
   else
     echo "  forward-addr: $DNSIP1" >> /etc/unbound/conf.d/forwarders.conf
@@ -951,7 +949,7 @@ function func_configure-system() {
   if [[ -n $IPV6ADDRESS ]]; then
     sed -i '/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF="no"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     echo "IPV6ADDR=\"$IPV6ADDRESS/$IPV6MASK\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    echo "IPV6_DEFAULTGW=\"$IP6GATEWAY\"" >> /etc/sysconfig/network
+    echo "IPV6_DEFAULTGW=\"$IP6GATEWAY\"" >> /etc/sysconfig/network/ifcfg-$INTERFACE
   fi
 
   echo "DNS1=\"127.0.0.1\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
@@ -1197,13 +1195,13 @@ if [ $CONFIGURED == "NO" ]
       func_ask-keyboard
       func_ask-hostname
       func_ask-domainname
-      func_ask-adminemail
+      func_ask-email
       func_interfaces
 
       checkipv4=1
       while [ $checkipv4 -ne 0 ]; do
         func_echo-header
-        echo echo -e -n "$green[eFa]$clean Configure IPv4? (Y/n) -> "
+        echo -e -n "$green[eFa]$clean Configure IPv4? (Y/n) -> "
         read askipv4
         if [[ $askipv4 =~ ^[Yy]$ || -z $askipv4 ]]; then
             func_ask-ipv4address
@@ -1218,7 +1216,7 @@ if [ $CONFIGURED == "NO" ]
       checkipv6=1
       while [ $checkipv6 -ne 0 ]; do
         func_echo-header
-        echo echo -e -n "$green[eFa]$clean Configure IPv6? (Y/n) -> "
+        echo -e -n "$green[eFa]$clean Configure IPv6? (Y/n) -> "
         read askipv6
         if [[ $askipv6 =~ ^[Yy]$ || -z $askipv6 ]]; then
             func_ask-ipv6address
