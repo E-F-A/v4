@@ -34,11 +34,11 @@ my($db_host) = 'localhost';
 my($db_user) = 'efa';
 # Issue #66 Grab Passwords from eFa-Config
 my($fh);
-my($pw_config) = '/etc/eFa-Config';
+my($pw_config) = '/etc/eFa/eFaSQL-Config';
 open($fh, "<", $pw_config);
 if (!$fh) {
   openlog($0,'','user');
-  syslog('error', "Unable to retrieve password from /etc/eFa-Config, aborting!");
+  syslog('error', "Unable to retrieve password from /etc/eFa/eFaSQL-Config, aborting!");
   closelog;
   exit 1;
 }

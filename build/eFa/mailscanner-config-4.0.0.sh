@@ -112,8 +112,8 @@ cp -ra $srcdir/mailscanner/reports /usr/share/MailScanner/reports
 rm -f /usr/share/MailScanner/perl/custom/CustomAction.pm
 cp $srcdir/mailscanner/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
 
-# Add EFA-Tokens-Cron
-cp $srcdir/mailscanner/EFA-Tokens-Cron /etc/cron.daily/eFa-Tokens-Cron
+# Add eFa-Tokens-Cron
+cp $srcdir/mailscanner/eFa-Tokens-Cron /etc/cron.daily/eFa-Tokens-Cron
 chmod 700 /etc/cron.daily/eFa-Tokens-Cron
 
 sed -i "/^run_mailscanner/ c\run_mailscanner=1" /etc/MailScanner/defaults
