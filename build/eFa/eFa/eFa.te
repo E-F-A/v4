@@ -6,6 +6,7 @@ type sqlgreysql_etc_t;
 type sasql_etc_t;
 type efasql_etc_t;
 type mysqlsql_etc_t;
+type vmtools_t;
 
 require {
     attribute file_type;
@@ -84,7 +85,9 @@ require {
     type user_tmp_t;
     type tty_device_t;
     type unconfined_service_t;
+    type spamd_compiled_t;
     type tmp_t;
+    type vmtools_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -232,10 +235,11 @@ allow httpd_sys_script_t mandb_t:dir { getattr search };
 allow httpd_sys_script_t mandb_t:file { read open };
 allow httpd_sys_script_t httpd_t:tcp_socket { getattr ioctl };
 allow httpd_sys_script_t unconfined_service_t:dir { getattr search };
-allow httpd_sys_script_t unconfined_service_t:file { read };
+allow httpd_sys_script_t unconfined_service_t:file { open read };
 allow httpd_sys_script_t getty_t:dir search;
 allow httpd_sys_script_t getty_t:file { read open };
 allow httpd_sys_script_t tty_device_t:chr_file getattr;
+allow httpd_sys_script_t vmtools_t:dir { getattr };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -264,6 +268,7 @@ allow httpd_sys_script_t user_tmp_t:file setattr;
 allow httpd_sys_script_t initrc_t:unix_stream_socket connectto;
 allow httpd_sys_script_t mailwatchsql_etc_t:file { ioctl getattr read open };
 allow httpd_sys_script_t postfix_spool_t:file { unlink ioctl };
+allow httpd_sys_script_t spamd_compiled_t:dir { search };
 
 # Allow sa-learn
 allow httpd_sys_script_t spamd_update_t:dir { getattr search };
