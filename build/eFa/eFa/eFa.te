@@ -119,9 +119,10 @@ allow httpd_t postfix_etc_t:file { getattr open read };
 allow httpd_t postfix_etc_t:dir read;
 allow httpd_t postfix_public_t:sock_file write;
 allow httpd_t postfix_spool_t:dir read;
-allow httpd_t mscan_spool_t:dir read;
-allow httpd_t mscan_spool_t:file { read getattr open };
+allow httpd_t mscan_spool_t:dir { read write remove_name };
+allow httpd_t mscan_spool_t:file { read getattr open unlink };
 allow httpd_t tmpfs_t:file getattr;
+
 # Allow access to MailWatch-Configuration
 allow httpd_t mailwatchsql_etc_t:file { getattr read open };
 
@@ -239,7 +240,8 @@ allow httpd_sys_script_t unconfined_service_t:file { open read };
 allow httpd_sys_script_t getty_t:dir search;
 allow httpd_sys_script_t getty_t:file { read open };
 allow httpd_sys_script_t tty_device_t:chr_file getattr;
-allow httpd_sys_script_t vmtools_t:dir { getattr };
+allow httpd_sys_script_t vmtools_t:dir { getattr search };
+allow httpd_sys_script_t vmtools_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -269,6 +271,11 @@ allow httpd_sys_script_t initrc_t:unix_stream_socket connectto;
 allow httpd_sys_script_t mailwatchsql_etc_t:file { ioctl getattr read open };
 allow httpd_sys_script_t postfix_spool_t:file { unlink ioctl };
 allow httpd_sys_script_t spamd_compiled_t:dir { search };
+allow httpd_sys_script_t spamd_compiled_t:file { getattr read open ioctl };
+
+# Allow file release
+allow httpd_sys_script_t postfix_spool_t:file { rename setattr };
+allow httpd_sys_script_t postfix_public_t:sock_file { getattr };
 
 # Allow sa-learn
 allow httpd_sys_script_t spamd_update_t:dir { getattr search };
