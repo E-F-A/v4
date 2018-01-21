@@ -312,7 +312,7 @@ allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
 allow greylist_milter_t mysqld_port_t:tcp_socket name_connect;
-allow greylist_milter_t tmp_t:dir { add_name };
+allow greylist_milter_t tmp_t:dir { add_name write };
 
 #============= unconfined_t ==============
 allow unconfined_t init_t:service enable;
