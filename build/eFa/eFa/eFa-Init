@@ -712,9 +712,9 @@ function func_verify-settings() {
                         ;;
                 13)        func_ask-dns2
                         ;;
-                14)       func_ask-username
+                14)       func_ask-webusername
                         ;;
-                15)       func_ask-userpassword
+                15)       func_ask-webuserpassword
                         ;;
                 16)       func_ask-rootpassword
                         ;;
@@ -949,7 +949,7 @@ function func_configure-system() {
   if [[ -n $IPV6ADDRESS ]]; then
     sed -i '/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF="no"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     echo "IPV6ADDR=\"$IPV6ADDRESS/$IPV6MASK\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    echo "IPV6_DEFAULTGW=\"$IP6GATEWAY\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    echo "IPV6_DEFAULTGW=\"$IPV6GATEWAY\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
   fi
 
   echo "DNS1=\"127.0.0.1\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
@@ -1030,7 +1030,7 @@ function func_configure-system() {
   sed -i "/^define('TIME_ZONE',/ c\define('TIME_ZONE', '$TZONE');" /var/www/html/mailscanner/conf.php
   sed -i "/^define('MAILWATCH_HOSTURL'/ c\define('MAILWATCH_HOSTURL', 'https:\/\/' . rtrim(gethostname()) . '\/mailscanner');" /var/www/html/mailscanner/conf.php
 
-  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$PASSWORD'), fullname = 'Administrator', type ='A'"
+  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$efauserpwd'), fullname = 'Administrator', type ='A'"
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '127.0.0.1'"
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '::1'"
 
@@ -1232,8 +1232,8 @@ if [ $CONFIGURED == "NO" ]
       done
 
       func_ask-recursion
-      func_ask-username
-      func_ask-userpassword
+      func_ask-webusername
+      func_ask-webuserpassword
       func_ask-rootpassword
       func_detect-virtual
       func_ask-timezone
