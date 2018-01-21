@@ -52,6 +52,9 @@ echo 'First time login: root/eFaPr0j3ct' >> /etc/issue
 cp $srcdir/eFa/eFa-SA-Update /usr/sbin/eFa-SA-Update
 chmod 700 /usr/sbin/eFa-SA-Update
 
+cp $srcdir/eFa/eFa-Init /usr/sbin/eFa-Init
+chmod 755 /usr/sbin/eFa-Init
+
 # Write SSH banner
 sed -i "/^#Banner / c\Banner /etc/banner"  /etc/ssh/sshd_config
 cat > /etc/banner << 'EOF'
@@ -118,4 +121,5 @@ semodule -i $srcdir/eFa/eFa.pp
 sed -i '1i\\/usr\/sbin\/eFa-Init' /root/.bashrc
 
 # Set the system as unconfigured
+mkdir -p /etc/eFa
 echo 'CONFIGURED:NO' > /etc/eFa/eFa-Config
