@@ -82,6 +82,7 @@ require {
     type sysstat_t;
     type user_devpts_t;
     type user_tmp_t;
+    type tty_device_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -155,7 +156,7 @@ allow httpd_sys_script_t postfix_bounce_t:file { read open };
 allow httpd_sys_script_t postfix_smtp_t:dir { getattr search };
 allow httpd_sys_script_t postfix_smtp_t:file { read open };
 allow httpd_sys_script_t postfix_smtpd_t:dir { getattr search read open};
-allow httpd_sys_script_t postfix_smtpd_t:file { read };
+allow httpd_sys_script_t postfix_smtpd_t:file { open read };
 
 # Allow ps to get process information for other processes
 # Without this, ps fails to get MailScanner process over time
@@ -228,6 +229,11 @@ allow httpd_sys_script_t user_devpts_t:chr_file getattr;
 allow httpd_sys_script_t mandb_t:dir { getattr search };
 allow httpd_sys_script_t mandb_t:file { read open };
 allow httpd_sys_script_t httpd_t:tcp_socket { getattr ioctl };
+allow httpd_sys_script_t unconfined_service_t:dir { getattr search };
+allow httpd_sys_script_t unconfined_service_t:file { read };
+allow httpd_sys_script_t getty_t:dir search;
+allow httpd_sys_script_t getty_t:file { read open };
+allow httpd_sys_script_t tty_device_t:chr_file getattr;
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -254,9 +260,8 @@ allow httpd_sys_script_t tmpfs_t:filesystem getattr;
 allow httpd_sys_script_t antivirus_t:unix_stream_socket connectto;
 allow httpd_sys_script_t user_tmp_t:file setattr;
 allow httpd_sys_script_t initrc_t:unix_stream_socket connectto;
-allow httpd_sys_script_t mailwatchsql_etc_t:file { getattr read open };
-allow httpd_sys_script_t postfix_spool_t:file unlink;
-
+allow httpd_sys_script_t mailwatchsql_etc_t:file { ioctl getattr read open };
+allow httpd_sys_script_t postfix_spool_t:file { unlink ioctl };
 
 # Allow sa-learn
 allow httpd_sys_script_t spamd_update_t:dir { getattr search };
@@ -294,10 +299,13 @@ allow mscan_t spamc_exec_t:file { getattr execute open read execute_no_trans ioc
 allow mscan_t spamd_var_lib_t:file execute;
 allow mscan_t self:capability { fowner fsetid };
 allow mscan_t initrc_t:unix_stream_socket connectto;
+allow mscan_t efasql_etc_t:file { read open ioctl getattr };
+allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
 allow greylist_milter_t mysqld_port_t:tcp_socket name_connect;
+allow greylist_milter_t tmp_t:dir { add_name };
 
 #============= unconfined_t ==============
 allow unconfined_t init_t:service enable;
