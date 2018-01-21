@@ -27,6 +27,7 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of apache
 #-----------------------------------------------------------------------------#
+echo "Configuring Apache..."
 rm -f /etc/httpd/conf.d/welcome.conf
 
 # Remove not needed modules from Apache config 00-base.conf
@@ -109,7 +110,7 @@ sed -i '/^SSLCipherSuite ECDSA+AESGCM:ECDH+AESGCM:ECDSA+AES:ECDH+AES:RSA+AESGCM:
 sed -i '/disable_functions =/ c\disable_functions = apache_child_terminate,apache_setenv,define_syslog_variables,escapeshellcmd,eval,fp,fput,ftp_connect,ftp_exec,ftp_get,ftp_login,ftp_nb_fput,ftp_put,ftp_raw,ftp_rawlist,highlight_file,ini_alter,ini_get_all,ini_restore,inject_code,openlog,phpAds_remoteInfo,phpAds_XmlRpc,phpAds_xmlrpcDecode,phpAds_xmlrpcEncode,posix_getpwuid,posix_kill,posix_mkfifo,posix_setpgid,posix_setsid,posix_setuid,posix_setuid,posix_uname,proc_close,proc_get_status,proc_nice,proc_open,proc_terminate,syslog,system,xmlrpc_entity_decode,curl_multi_exec' /etc/php.ini
 
 # Configure php-fpm
-cat /etc/httpd/conf.d/fpm.conf << 'EOF'
+cat > /etc/httpd/conf.d/fpm.conf << 'EOF'
 # PHP scripts setup
 ProxyPassMatch ^/(.*.php)$ fcgi://127.0.0.1:9000/var/www/html
 
@@ -117,3 +118,4 @@ Alias / /var/www/html/
 EOF
 # Pass a PATH environment variable to php-fpm for exec to call binaries
 sed -i '/^;env[PATH] =/ c\env[PATH] = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin' /etc/php-fpm.d/www.conf
+echo "Configuring Apache...Done"

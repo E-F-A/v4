@@ -664,7 +664,7 @@ function func_verify-settings() {
     echo -e "6)  IP v4 Netmask       : $IPV4NETMASK"
     echo -e "7)  IP v4 Gateway       : $IPV4GATEWAY"
     echo -e "8)  IP v6 Address       : $IPV6ADDRESS"
-    echo -e "9)  IP v6 Netmask       : $IPV6MASK"
+    echo -e "9)  IP v6 Mask          : $IPV6MASK"
     echo -e "10) IP v6 Gateway       : $IPV6GATEWAY"
     echo -e -n "11) Use Recursion       : "; [[ "$enablerecursion" -eq 1 ]] && echo "Enabled" || echo "Disabled"
     echo -e "12) Primary DNS         : $DNS1"
@@ -1072,10 +1072,13 @@ function func_configure-system() {
   randompw
   WATERMARK=$PASSWD
   sed -i "/^Watermark Secret =/ c\Watermark Secret = %org-name%-$WATERMARK" /etc/MailScanner/MailScanner.conf
-  
+
   sed -i "/^ServerAdmin/ c\ServerAdmin $ADMINEMAIL" /etc/httpd/conf/httpd.conf
   sed -i "/^email_from =/ c\email_from = root@$HOSTNAME.$DOMAINNAME" /etc/yum/yum-cron.conf
   sed -i "/^email_to =/ c\email_to = $ADMINEMAIL" /etc/yum/yum-cron.conf
+
+  echo -e "$green[eFa]$clean - Changing root password"
+  echo "root:$efarootpwd" | chpasswd --md5 root
 
   echo -e "$green[eFa]$clean Generating Apache and postfix self-signed cert"
   cd /etc/pki/tls/certs
