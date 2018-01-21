@@ -949,7 +949,7 @@ function func_configure-system() {
   if [[ -n $IPV6ADDRESS ]]; then
     sed -i '/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF="no"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     echo "IPV6ADDR=\"$IPV6ADDRESS/$IPV6MASK\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    echo "IPV6_DEFAULTGW=\"$IP6GATEWAY\"" >> /etc/sysconfig/network/ifcfg-$INTERFACE
+    echo "IPV6_DEFAULTGW=\"$IP6GATEWAY\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
   fi
 
   echo "DNS1=\"127.0.0.1\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
