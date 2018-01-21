@@ -10,6 +10,7 @@ type mysqlsql_etc_t;
 require {
     attribute file_type;
     type httpd_sys_script_t;
+    type sendmail_t;
     type postfix_etc_t;
     type postfix_public_t;
     type postfix_master_t;
@@ -115,6 +116,8 @@ allow httpd_t postfix_spool_t:dir read;
 allow httpd_t mscan_spool_t:dir read;
 allow httpd_t mscan_spool_t:file { read getattr open };
 allow httpd_t tmpfs_t:file getattr;
+# Allow access to MailWatch-Configuration
+allow httpd_t mailwatchsql_etc_t:file { getattr read };
 
 #============= httpd_sys_script_t ==============
 # allow ps to read MailScanner process
@@ -224,6 +227,7 @@ allow httpd_sys_script_t sysstat_t:dir getattr;
 allow httpd_sys_script_t user_devpts_t:chr_file getattr;
 allow httpd_sys_script_t mandb_t:dir { getattr search };
 allow httpd_sys_script_t mandb_t:file { read open };
+allow httpd_sys_script_t httpd_t:tcp_socket { getattr ioctl };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -286,6 +290,7 @@ allow mscan_t razor_port_t:tcp_socket name_connect;
 allow mscan_t spamc_exec_t:file { getattr execute open read execute_no_trans ioctl };
 allow mscan_t spamd_var_lib_t:file execute;
 allow mscan_t self:capability { fowner fsetid };
+allow mscan_t initrc_t:unix_stream_socket connectto;
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
@@ -294,3 +299,6 @@ allow greylist_milter_t mysqld_port_t:tcp_socket name_connect;
 #============= unconfined_t ==============
 allow unconfined_t init_t:service enable;
 allow unconfined_t self:capability2 mac_admin;
+
+#============= sendmail_t ==============
+allow sendmail_t postfix_etc_t:dir read;

@@ -51,5 +51,8 @@ chown postfix:mtagroup /var/dcc
 
 cp /var/dcc/libexec/rcDCC /etc/init.d/adcc
 sed -i "s/#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/g" /etc/mail/spamassassin/v310.pre
+
+restorecon -R /var/dcc/dccifd
+
 echo "Configuring dcc...done"
 
