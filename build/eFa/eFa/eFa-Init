@@ -1107,11 +1107,11 @@ function func_configure-system() {
   echo "MAILSERVER:$MAILSERVER" >> /etc/eFa/eFa-Config
   echo "ORGNAME:$ORGNAME" >> /etc/eFa/eFa-Config
   
-  echo "SAUSERSQLPWD:$SAUSERSQLPWD" >> /etc/eFa/SA-Config
-  echo "MAILWATCHSQLPWD:$MAILWATCHSQLPWD" >> /etc/eFa/MailWatch-Config
-  echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" >> /etc/eFa/SQLGrey-Config
-  echo "EFASQLPWD:$EFASQLPWD" >> /etc/eFa/eFaSQL-Config
-  echo "MYSQLROOTPWD:$PASSWORD" >> /etc/eFa/MySQL-Config
+  echo "SAUSERSQLPWD:$SAUSERSQLPWD" > /etc/eFa/SA-Config
+  echo "MAILWATCHSQLPWD:$MAILWATCHSQLPWD" > /etc/eFa/MailWatch-Config
+  echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" > /etc/eFa/SQLGrey-Config
+  echo "EFASQLPWD:$EFASQLPWD" > /etc/eFa/eFaSQL-Config
+  echo "MYSQLROOTPWD:$PASSWORD" > /etc/eFa/MySQL-Config
 
   SAUSERSQLPWD=
   MAILWATCHSQLPWD=

@@ -1,7 +1,14 @@
 
 module eFa 1.0.0;
 
+type mailwatchsql_etc_t;
+type sqlgreysql_etc_t;
+type sasql_etc_t;
+type efasql_etc_t;
+type mysqlsql_etc_t;
+
 require {
+    attribute file_type;
     type httpd_sys_script_t;
     type postfix_etc_t;
     type postfix_public_t;
@@ -89,6 +96,13 @@ require {
     class capability2 mac_admin;
     class fifo_file { getattr ioctl write open };
 }
+
+# Configuration security hardening
+typeattribute mailwatchsql_etc_t file_type;
+typeattribute sasql_etc_t file_type;
+typeattribute sqlgreysql_etc_t file_type;
+typeattribute efasql_etc_t file_type;
+typeattribute mysqlsql_etc_t file_type;
 
 #============= httpd_t ==============
 # allow httpd access to mailscanner and postfix
