@@ -6,9 +6,9 @@ type sqlgreysql_etc_t;
 type sasql_etc_t;
 type efasql_etc_t;
 type mysqlsql_etc_t;
-type vmtools_t;
-type hypervkvp_t;
-type hypervvssd_t;
+#type vmtools_t;
+#type hypervkvp_t;
+#type hypervvssd_t;
 
 require {
     attribute file_type;
@@ -38,14 +38,14 @@ require {
     type udev_t;
     type auditd_t;
     type irqbalance_t;
-    type hypervkvp_t;
+    #type hypervkvp_t;
     type policykit_t;
     type systemd_logind_t;
     type lsmd_t;
     type abrt_watch_log_t;
     type fsdaemon_t;
     type system_dbusd_t;
-    type hypervvssd_t;
+    #type hypervvssd_t;
     type chronyd_t;
     type crond_t;
     type local_login_t;
@@ -89,7 +89,7 @@ require {
     type unconfined_service_t;
     type spamd_compiled_t;
     type tmp_t;
-    type vmtools_t;
+    #type vmtools_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -242,8 +242,8 @@ allow httpd_sys_script_t unconfined_service_t:file { open read };
 allow httpd_sys_script_t getty_t:dir search;
 allow httpd_sys_script_t getty_t:file { read open };
 allow httpd_sys_script_t tty_device_t:chr_file getattr;
-allow httpd_sys_script_t vmtools_t:dir { getattr search };
-allow httpd_sys_script_t vmtools_t:file { read open };
+#allow httpd_sys_script_t vmtools_t:dir { getattr search };
+#allow httpd_sys_script_t vmtools_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
