@@ -162,80 +162,78 @@ allow httpd_sys_script_t postfix_smtpd_t:file { open read };
 
 # Allow ps to get process information for other processes
 # Without this, ps fails to get MailScanner process over time
-allow httpd_sys_script_t init_t:dir { getattr search };
-allow httpd_sys_script_t init_t:file { read open };
-allow httpd_sys_script_t kernel_t:dir { getattr search };
-allow httpd_sys_script_t kernel_t:file { read open };
-allow httpd_sys_script_t syslogd_t:dir { getattr search };
-allow httpd_sys_script_t syslogd_t:file { read open };
-allow httpd_sys_script_t lvm_t:dir { getattr search };
-allow httpd_sys_script_t lvm_t:file { read open };
-allow httpd_sys_script_t udev_t:dir { getattr search };
-allow httpd_sys_script_t udev_t:file { read open };
-allow httpd_sys_script_t auditd_t:dir { getattr search };
-allow httpd_sys_script_t auditd_t:file { read open };
-allow httpd_sys_script_t irqbalance_t:dir { getattr search };
-allow httpd_sys_script_t irqbalance_t:file { read open };
-#allow httpd_sys_script_t hypervkvp_t:dir getattr;
-allow httpd_sys_script_t policykit_t:dir { getattr search };
-allow httpd_sys_script_t policykit_t:file { read open };
-allow httpd_sys_script_t systemd_logind_t:dir { getattr search };
-allow httpd_sys_script_t systemd_logind_t:file { read open };
-allow httpd_sys_script_t lsmd_t:dir { getattr search };
-allow httpd_sys_script_t lsmd_t:file { read open };
-allow httpd_sys_script_t abrt_watch_log_t:dir getattr;
-allow httpd_sys_script_t fsdaemon_t:dir getattr;
-allow httpd_sys_script_t system_dbusd_t:dir { getattr search };
-allow httpd_sys_script_t system_dbusd_t:file { read open };
-#allow httpd_sys_script_t hypervvssd_t:dir getattr;
-allow httpd_sys_script_t chronyd_t:dir { getattr search };
-allow httpd_sys_script_t chronyd_t:file { read open };
-allow httpd_sys_script_t crond_t:dir { getattr search };
-allow httpd_sys_script_t crond_t:file { read open };
-allow httpd_sys_script_t local_login_t:dir { getattr search };
-allow httpd_sys_script_t local_login_t:file { read open };
-allow httpd_sys_script_t firewalld_t:dir { getattr search };
-allow httpd_sys_script_t firewalld_t:file { read open };
-allow httpd_sys_script_t syslogd_t:dir getattr;
-allow httpd_sys_script_t syslogd_t:file { read open };
-allow httpd_sys_script_t tuned_t:dir { getattr search };
-allow httpd_sys_script_t tuned_t:file { read open };
-allow httpd_sys_script_t sshd_t:dir { getattr search };
-allow httpd_sys_script_t sshd_t:file { read open };
-allow httpd_sys_script_t NetworkManager_t:dir { getattr search };
-allow httpd_sys_script_t NetworkManager_t:file { read open };
-allow httpd_sys_script_t user_tty_device_t:chr_file getattr;
-allow httpd_sys_script_t named_t:dir { getattr search };
-allow httpd_sys_script_t named_t:file { read open };
-allow httpd_sys_script_t system_cronjob_t:dir { getattr search };
-allow httpd_sys_script_t system_cronjob_t:file { read open };
-allow httpd_sys_script_t initrc_t:dir { getattr search };
-allow httpd_sys_script_t initrc_t:file { read open };
-allow httpd_sys_script_t devpts_t:dir getattr;
-allow httpd_sys_script_t devpts_t:chr_file getattr;
-allow httpd_sys_script_t rpm_t:dir { getattr search };
-allow httpd_sys_script_t rpm_t:file { read open };
-allow httpd_sys_script_t devpts_t:dir search;
-allow httpd_sys_script_t getty_t:dir getattr;
-allow httpd_sys_script_t greylist_milter_t:dir { getattr search };
-allow httpd_sys_script_t greylist_milter_t:file { read open };
-allow httpd_sys_script_t mysqld_safe_t:dir getattr;
-allow httpd_sys_script_t mysqld_t:dir { getattr search };
-allow httpd_sys_script_t mysqld_t:file { read open };
-allow httpd_sys_script_t kdumpctl_t:dir getattr;
-allow httpd_sys_script_t systemd_hostnamed_t:dir getattr;
-allow httpd_sys_script_t mandb_t:dir getattr;
-allow httpd_sys_script_t rpm_script_t:dir getattr;
-allow httpd_sys_script_t sysstat_t:dir getattr;
-allow httpd_sys_script_t user_devpts_t:chr_file getattr;
-allow httpd_sys_script_t mandb_t:dir { getattr search };
-allow httpd_sys_script_t mandb_t:file { read open };
-allow httpd_sys_script_t httpd_t:tcp_socket { getattr ioctl };
-allow httpd_sys_script_t unconfined_service_t:dir { getattr search };
-allow httpd_sys_script_t unconfined_service_t:file { open read };
-allow httpd_sys_script_t getty_t:dir search;
-allow httpd_sys_script_t getty_t:file { read open };
-allow httpd_sys_script_t tty_device_t:chr_file getattr;
+# allow httpd_sys_script_t init_t:dir { getattr search };
+# allow httpd_sys_script_t init_t:file { read open };
+# allow httpd_sys_script_t kernel_t:dir { getattr search };
+# allow httpd_sys_script_t kernel_t:file { read open };
+# allow httpd_sys_script_t syslogd_t:dir { getattr search };
+# allow httpd_sys_script_t syslogd_t:file { read open };
+# allow httpd_sys_script_t lvm_t:dir { getattr search };
+# allow httpd_sys_script_t lvm_t:file { read open };
+# allow httpd_sys_script_t udev_t:dir { getattr search };
+# allow httpd_sys_script_t udev_t:file { read open };
+# allow httpd_sys_script_t auditd_t:dir { getattr search };
+# allow httpd_sys_script_t auditd_t:file { read open };
+# allow httpd_sys_script_t irqbalance_t:dir { getattr search };
+# allow httpd_sys_script_t irqbalance_t:file { read open };
+# allow httpd_sys_script_t policykit_t:dir { getattr search };
+# allow httpd_sys_script_t policykit_t:file { read open };
+# allow httpd_sys_script_t systemd_logind_t:dir { getattr search };
+# allow httpd_sys_script_t systemd_logind_t:file { read open };
+# allow httpd_sys_script_t lsmd_t:dir { getattr search };
+# allow httpd_sys_script_t lsmd_t:file { read open };
+# allow httpd_sys_script_t abrt_watch_log_t:dir getattr;
+# allow httpd_sys_script_t fsdaemon_t:dir getattr;
+# allow httpd_sys_script_t system_dbusd_t:dir { getattr search };
+# allow httpd_sys_script_t system_dbusd_t:file { read open };
+# allow httpd_sys_script_t chronyd_t:dir { getattr search };
+# allow httpd_sys_script_t chronyd_t:file { read open };
+# allow httpd_sys_script_t crond_t:dir { getattr search };
+# allow httpd_sys_script_t crond_t:file { read open };
+# allow httpd_sys_script_t local_login_t:dir { getattr search };
+# allow httpd_sys_script_t local_login_t:file { read open };
+# allow httpd_sys_script_t firewalld_t:dir { getattr search };
+# allow httpd_sys_script_t firewalld_t:file { read open };
+# allow httpd_sys_script_t syslogd_t:dir getattr;
+# allow httpd_sys_script_t syslogd_t:file { read open };
+# allow httpd_sys_script_t tuned_t:dir { getattr search };
+# allow httpd_sys_script_t tuned_t:file { read open };
+# allow httpd_sys_script_t sshd_t:dir { getattr search };
+# allow httpd_sys_script_t sshd_t:file { read open };
+# allow httpd_sys_script_t NetworkManager_t:dir { getattr search };
+# allow httpd_sys_script_t NetworkManager_t:file { read open };
+# allow httpd_sys_script_t user_tty_device_t:chr_file getattr;
+# allow httpd_sys_script_t named_t:dir { getattr search };
+# allow httpd_sys_script_t named_t:file { read open };
+# allow httpd_sys_script_t system_cronjob_t:dir { getattr search };
+# allow httpd_sys_script_t system_cronjob_t:file { read open };
+# allow httpd_sys_script_t initrc_t:dir { getattr search };
+# allow httpd_sys_script_t initrc_t:file { read open };
+# allow httpd_sys_script_t devpts_t:dir getattr;
+# allow httpd_sys_script_t devpts_t:chr_file getattr;
+# allow httpd_sys_script_t rpm_t:dir { getattr search };
+# allow httpd_sys_script_t rpm_t:file { read open };
+# allow httpd_sys_script_t devpts_t:dir search;
+# allow httpd_sys_script_t getty_t:dir getattr;
+# allow httpd_sys_script_t greylist_milter_t:dir { getattr search };
+# allow httpd_sys_script_t greylist_milter_t:file { read open };
+# allow httpd_sys_script_t mysqld_safe_t:dir getattr;
+# allow httpd_sys_script_t mysqld_t:dir { getattr search };
+# allow httpd_sys_script_t mysqld_t:file { read open };
+# allow httpd_sys_script_t kdumpctl_t:dir getattr;
+# allow httpd_sys_script_t systemd_hostnamed_t:dir getattr;
+# allow httpd_sys_script_t mandb_t:dir getattr;
+# allow httpd_sys_script_t rpm_script_t:dir getattr;
+# allow httpd_sys_script_t sysstat_t:dir getattr;
+# allow httpd_sys_script_t user_devpts_t:chr_file getattr;
+# allow httpd_sys_script_t mandb_t:dir { getattr search };
+# allow httpd_sys_script_t mandb_t:file { read open };
+# allow httpd_sys_script_t httpd_t:tcp_socket { getattr ioctl };
+# allow httpd_sys_script_t unconfined_service_t:dir { getattr search };
+# allow httpd_sys_script_t unconfined_service_t:file { open read };
+# allow httpd_sys_script_t getty_t:dir search;
+# allow httpd_sys_script_t getty_t:file { read open };
+# allow httpd_sys_script_t tty_device_t:chr_file getattr;
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -271,18 +269,19 @@ allow httpd_sys_script_t spamd_compiled_t:file { getattr read open ioctl execute
 allow httpd_sys_script_t postfix_spool_t:file { rename setattr };
 allow httpd_sys_script_t postfix_public_t:sock_file { getattr };
 
+# Allow geoip updates
+allow httpd_sys_script_t httpd_t:dir { getattr search };
+allow httpd_sys_script_t httpd_t:file { read open };
+
 # Allow sa-learn
 allow httpd_sys_script_t spamd_update_t:dir { getattr search };
+#============= spamd_update_t ==============
 allow spamd_update_t self:capability dac_override;
 allow spamd_update_t shadow_t:file read;
 allow spamd_update_t spamd_var_lib_t:file execute;
 allow spamd_update_t system_cronjob_tmp_t:file write;
 
-# Allow geoip updates
-allow httpd_sys_script_t httpd_t:dir { getattr search };
-allow httpd_sys_script_t httpd_t:file { read open };
-
-# allow mailscanner access to postfix etc.
+#============= mscan_t ==============
 allow mscan_t postfix_spool_t:dir { search read open getattr ioctl write add_name remove_name };
 allow mscan_t postfix_spool_t:file { append getattr read ioctl lock open write create rename setattr unlink };
 allow mscan_t postfix_spool_t:lnk_file { getattr read };
@@ -310,7 +309,7 @@ allow mscan_t initrc_t:unix_stream_socket connectto;
 allow mscan_t efasql_etc_t:file { read open ioctl getattr };
 allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
 allow mscan_t spamd_compiled_t:dir { search };
-allow mscan_t spamd_compiled_t:file { getattr };
+allow mscan_t spamd_compiled_t:file { read getattr };
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
