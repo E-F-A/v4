@@ -168,7 +168,7 @@ function func_ask-ipv6mask() {
   echo -e ""
   echo -e "$green[eFa]$clean Please enter the IPv6 MASK"
   echo -e -n "$green[eFa]$clean : "
-  read -i "$CIPV6MASK6" -e IPV6MASK
+  read -i "$CIPV6MASK" -e IPV6MASK
   nmcheck=1
   while [ $nmcheck != 0 ]
    do
