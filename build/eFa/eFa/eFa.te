@@ -160,8 +160,9 @@ allow httpd_sys_script_t postfix_smtp_t:file { read open };
 allow httpd_sys_script_t postfix_smtpd_t:dir { getattr search read open};
 allow httpd_sys_script_t postfix_smtpd_t:file { open read };
 
-# Allow ps to get process information for other processes
-# Without this, ps fails to get MailScanner process over time
+# Allow ps to get process information for MailWatch and postfix
+allow httpd_sys_script_t httpd_t:tcp_socket { ioctl getattr };
+
 # allow httpd_sys_script_t init_t:dir { getattr search };
 # allow httpd_sys_script_t init_t:file { read open };
 # allow httpd_sys_script_t kernel_t:dir { getattr search };
@@ -309,7 +310,7 @@ allow mscan_t initrc_t:unix_stream_socket connectto;
 allow mscan_t efasql_etc_t:file { read open ioctl getattr };
 allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
 allow mscan_t spamd_compiled_t:dir { search };
-allow mscan_t spamd_compiled_t:file { read getattr };
+allow mscan_t spamd_compiled_t:file { open read getattr };
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
