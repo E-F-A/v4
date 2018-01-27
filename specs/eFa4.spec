@@ -371,32 +371,28 @@ mv * $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
 if [ "$1" = "1" ]; then
     # Perform Installation tasks
-    mkdir -p /var/log/eFa
-    (
-        # Perform Installation tasks
-        echo -e "\nPreparing to install eFa"
+    echo -e "\nPreparing to install eFa"
 
-        /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/postfix-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/mailscanner-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/clamav-unofficial-sigs-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/spamassassin-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/mailwatch-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/dcc-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/postfix-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/mailscanner-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/clamav-unofficial-sigs-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/spamassassin-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/mailwatch-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/dcc-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
+    /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
 
-        echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
-        echo "Build completed!"
-    ) | tee -a /var/log/eFa/build.log 2>&1
+    echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
+    echo "Build completed!"
 
 elif [ "$1" = "2" ]; then
     # Perform Update tasks
