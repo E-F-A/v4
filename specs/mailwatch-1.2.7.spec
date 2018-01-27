@@ -85,6 +85,7 @@ echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 echo "UPDATEMAXDELAY=3600" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 echo 'sleep $[( $RANDOM % $UPDATEMAXDELAY )+1]s' >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 
 mkdir -p  %{buildroot}%{_sysconfdir}/cron.d
 echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.d/msre_reload
