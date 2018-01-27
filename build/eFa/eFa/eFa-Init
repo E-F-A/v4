@@ -396,16 +396,7 @@ function func_ask-webusername() {
    do
      if [[ $USERNAME =~ ^[a-z_][a-z0-9_-]{1,30}+$ ]]
       then
-        if [[ ! $USERNAME =~ ^root|apache|halt|mail|uucp|operator|games|gopher|ftp|nobody|dbus|vcsa|abrt|haldaemon|ntp|saslauth|postfix|sshd|mysql|tcpdump|clam|clamupdate|mtagroup|sqlgrey|unbound$ ]]
-          then
-            uncheck=0
-          else
-            echo -e "       $red ERROR: The user-name $USERNAME already exists"
-            echo -e "        ERROR: please re-enter the user-name$clean"
-            echo -e "$green[eFa]$clean Please enter the user-name you would like to have."
-            echo -e -n "$green[eFa]$clean : "
-            read USERNAME
-        fi
+       uncheck=0
       else
         echo -e "       $red ERROR: The user-name $USERNAME seems to be invalid"
         echo -e "        ERROR: please re-enter the user-name$clean"
@@ -449,43 +440,84 @@ function func_ask-webuserpassword() {
 # +---------------------------------------------------+
 
 # +---------------------------------------------------+
-function func_ask-rootpassword() {
+function func_ask-cliusername() {
   func_echo-header
-  echo -e "$green[eFa]$clean Please enter the password for the root user."
-  echo -e "$green[eFa]$clean This password is needed in case something goes"
-  echo -e "$green[eFa]$clean wrong and you need to recover the system."
+  echo -e "$green[eFa]$clean Please enter the user-name you would like to have."
+  echo -e "$green[eFa]$clean This user will be used to logon to the shell"
+  echo -e -n "$green[eFa]$clean : "
+  read CLIUSERNAME
+  uncheck=1
+  while [ $uncheck != 0 ]
+   do
+     if [[ $CLIUSERNAME =~ ^[a-z_][a-z0-9_-]{1,30}+$ ]]
+      then
+        if [[ -n $( cat /etc/passwd | awk -F":" '{print $1}' | grep -e "^$CLIUSERNAME$") ]]
+          then
+            uncheck=0
+          else
+            echo -e "       $red ERROR: The user-name $CLIUSERNAME already exists"
+            echo -e "        ERROR: please re-enter the user-name$clean"
+            echo -e "$green[eFa]$clean Please enter the user-name you would like to have."
+            echo -e -n "$green[eFa]$clean : "
+            read CLIUSERNAME
+        fi
+      else
+        echo -e "       $red ERROR: The user-name $CLIUSERNAME seems to be invalid"
+        echo -e "        ERROR: please re-enter the user-name$clean"
+        echo -e "$green[eFa]$clean Please enter the user-name you would like to have."
+        echo -e -n "$green[eFa]$clean : "
+        read CLIUSERNAME
+     fi
+    done
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+function func_ask-clipassword() {
+  func_echo-header
+  echo -e "$green[eFa]$clean Please enter the password for the cli user."
+  echo -e "$green[eFa]$clean This password is needed in case you need to"
+  echo -e "$green[eFa]$clean work in the shell."
   echo -e ""
   echo -e "$green[eFa]$clean Please make this password long, strong and"
-  echo -e "$green[eFa]$clean different from the user password."
+  echo -e "$green[eFa]$clean different from the web user password."
   echo -e -n "$green[eFa]$clean Password: "
-  read -s efarootpwd
+  read -s efaclipwd
   echo -e ""
   echo -e -n "$green[eFa]$clean Password Again: "
-  read -s efarootpwd2
-  efarootpwdcheck=1
-  while [ $efarootpwdcheck != 0 ]
+  read -s efaclipwd2
+  efaclipwdcheck=1
+  while [ $efaclipwdcheck != 0 ]
    do
-     if [[ $efarootpwd = "$efarootpwd2" ]]
-          then
-            efarootpwdcheck=0
-         else
-            echo -e ""
-            echo -e "       $red ERROR: The passwords do not seem to match"
-            echo -e "        ERROR: Please try again$clean"
-            echo -e "$green[eFa]$clean Please enter the password for the root user."
-            echo -e -n "$green[eFa]$clean Password: "
-            read -s efarootpwd
-            echo -e ""
-            echo -e -n "$green[eFa]$clean Password Again: "
-            read -s efarootpwd2
-     fi
+    if [[ "$efauserpwd" == "$efaclipwd" ]]; then
+        echo -e ""
+        echo -e "       $red ERROR: This password cannot be reused for the cli"
+        echo -e "        ERROR: Please try again$clean"
+        echo -e "$green[eFa]$clean Please enter the password for the cli user."
+        echo -e -n "$green[eFa]$clean Password: "
+        read -s efaclipwd
+        echo -e ""
+        echo -e -n "$green[eFa]$clean Password Again: "
+        read -s efaclipwd2
+    elif [[ $efaclipwd == "$efaclipwd2" ]]; then
+        efaclipwdcheck=0
+    else
+        echo -e ""
+        echo -e "       $red ERROR: The passwords do not seem to match"
+        echo -e "        ERROR: Please try again$clean"
+        echo -e "$green[eFa]$clean Please enter the password for the cli user."
+        echo -e -n "$green[eFa]$clean Password: "
+        read -s efaclipwd
+        echo -e ""
+        echo -e -n "$green[eFa]$clean Password Again: "
+        read -s efaclipwd2
+    fi
   done
 }
 # +---------------------------------------------------+
 
 #+---------------------------------------------------+
 # detect virtual system
-# Todo: selinux policies needed for each
 # +---------------------------------------------------+
 function func_detect-virtual() {
   func_echo-header
@@ -669,15 +701,16 @@ function func_verify-settings() {
     echo -e -n "11) Use Recursion       : "; [[ "$enablerecursion" -eq 1 ]] && echo "Enabled" || echo "Disabled"
     echo -e "12) Primary DNS         : $DNS1"
     echo -e "13) Secondary DNS       : $DNS2"
-    echo -e "14) User                : $USERNAME"
-    echo -e "15) User PWD            : <hidden>"
-    echo -e "16) Root PWD            : <hidden>"
-    echo -e -n "17) Hypervisor Agents   : "; if [[ "$InstallOpenVMTools" -eq 1 ]]; then echo "VMware: Installing Open-VM-Tools."; elif [[ "$InstallQEMUAgent" -eq 1 ]]; then echo "KVM: Installing the QEMU Guest Agent."; elif [[ "$InstallHyperVTools" -eq 1 ]]; then echo "Hyper-V: Please go to the wiki for more information."; else echo "Not needed."; fi
-    echo -e -n "18) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
-    echo -e "19) Keyboard            : $KEYBOARD"
-    echo -e "20) IANA Code           : $IANACODE"
-    echo -e "21) Mail Server         : $MAILSERVER"
-    echo -e "22) Org. name           : $ORGNAME"
+    echo -e "14) Web User            : $USERNAME"
+    echo -e "15) Web User PWD        : <hidden>"
+    echo -e "16) CLI User            : $CLIUSERNAME"
+    echo -e "17) CLI User PWD        : <hidden>"
+    echo -e -n "18) Hypervisor Agents   : "; if [[ "$InstallOpenVMTools" -eq 1 ]]; then echo "VMware: Installing Open-VM-Tools."; elif [[ "$InstallQEMUAgent" -eq 1 ]]; then echo "KVM: Installing the QEMU Guest Agent."; elif [[ "$InstallHyperVTools" -eq 1 ]]; then echo "Hyper-V: Please go to the wiki for more information."; else echo "Not needed."; fi
+    echo -e -n "19) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
+    echo -e "20) Keyboard            : $KEYBOARD"
+    echo -e "21) IANA Code           : $IANACODE"
+    echo -e "22) Mail Server         : $MAILSERVER"
+    echo -e "23) Org. name           : $ORGNAME"
     echo -e "--------------------------------------------------------------"
     echo -e ""
     echo -e "$green[eFa]$clean If these settings are correct type 'OK' to continue."
@@ -716,19 +749,21 @@ function func_verify-settings() {
                         ;;
                 15)       func_ask-webuserpassword
                         ;;
-                16)       func_ask-rootpassword
+                16)       func_ask-cliusername
                         ;;
-                17)       func_detect-virtual
+                17)       func_ask-clipassword
                         ;;
-                18)       func_ask-timezone
+                18)       func_detect-virtual
                         ;;
-                19)       func_ask-keyboard
+                19)       func_ask-timezone
                         ;;
-                20)       func_ask-ianacode
+                20)       func_ask-keyboard
                         ;;
-                21)       func_ask-mailserver
+                21)       func_ask-ianacode
                         ;;
-                22)       func_ask-orgname
+                22)       func_ask-mailserver
+                        ;;
+                23)       func_ask-orgname
                         ;;
                 OK)       verifymenu=0
                         ;;
@@ -834,13 +869,8 @@ func_Install-OpenVMTools(){
   echo -e "$green[eFa]$clean Depending on the speed of your system this"
   echo -e "$green[eFa]$clean might take a while."
   pause
-  # Disable excludes
-  sed -i "s/^exclude=\(.*\)$/#exclude=\1/" /etc/yum.conf
   yum -y install glib2-devel pam-devel libdnet-devel gcc-c++ libicu-devel open-vm-tools
-  # Restore excludes
-  sed -i "s/^#exclude=\(.*\)$/exclude=\1/" /etc/yum.conf
-  chkconfig vmtoolsd on
-  service vmtoolsd start
+  systemctl enable vmtoolsd
   func_echo-header
   echo -e "$green[eFa]$clean Installation of Open VM tools completed"
   pause
@@ -856,11 +886,8 @@ func_Install-QEMUAgent(){
   echo -e "$green[eFa]$clean Depending on the speed of your system this"
   echo -e "$green[eFa]$clean might take a while."
   pause
-  # Disable excludes
-  sed -i "s/^exclude=\(.*\)$/#exclude=\1/" /etc/yum.conf
   yum -y install qemu-guest-agent
-  # Restore excludes
-  sed -i "s/^#exclude=\(.*\)$/exclude=\1/" /etc/yum.conf
+  systemctl enable qemu-guest-agent
   func_echo-header
   echo -e "$green[eFa]$clean Installation of the QEMU Guest Agent has completed"
   pause
@@ -1077,9 +1104,13 @@ function func_configure-system() {
   sed -i "/^email_from =/ c\email_from = root@$HOSTNAME.$DOMAINNAME" /etc/yum/yum-cron.conf
   sed -i "/^email_to =/ c\email_to = $ADMINEMAIL" /etc/yum/yum-cron.conf
 
-  echo -e "$green[eFa]$clean - Changing root password"
-  echo "root:$efarootpwd" | chpasswd --md5 root
+  echo -e "$green[eFa]$clean - Unsetting root password"
+  chage -E 0 root
 
+  echo -e "$green[eFa]$clean - Creating cli user"
+  useradd -m -d /home/$CLIUSERNAME -s /bin/bash -G wheel $CLIUSERNAME
+  echo "$CLIUSERNAME:$efaclipwd" | chpasswd --md5 $CLIUSERNAME
+  
   echo -e "$green[eFa]$clean Generating Apache and postfix self-signed cert"
   cd /etc/pki/tls/certs
   openssl req -new -x509 -nodes -days 3650 -out localhost.crt -keyout ../private/localhost.key
