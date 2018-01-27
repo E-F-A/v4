@@ -1105,6 +1105,8 @@ function func_configure-system() {
   sed -i "/^email_to =/ c\email_to = $ADMINEMAIL" /etc/yum/yum-cron.conf
 
   echo -e "$green[eFa]$clean - Unsetting root password"
+  passwd --delete root
+  passwd --lock root
   chage -E 0 root
 
   echo -e "$green[eFa]$clean - Creating cli user"
