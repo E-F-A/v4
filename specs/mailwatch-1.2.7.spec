@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.7
 Epoch:         1
-Release:       5.eFa%{?dist}
+Release:       6.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -215,6 +215,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sat Jan 27 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-6
+- Repackage to include mailwatch_update_sarules.php and forked ps fix
+
 * Mon Jan 15 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-5
 - Add php-xml as a requirement
 
