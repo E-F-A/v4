@@ -451,7 +451,7 @@ function func_ask-cliusername() {
    do
      if [[ $CLIUSERNAME =~ ^[a-z_][a-z0-9_-]{1,30}+$ ]]
       then
-        if [[ -n $( cat /etc/passwd | awk -F":" '{print $1}' | grep -e "^$CLIUSERNAME$") ]]
+        if [[ -z $( cat /etc/passwd | awk -F":" '{print $1}' | grep -e "^$CLIUSERNAME$") ]]
           then
             uncheck=0
           else
@@ -1268,7 +1268,8 @@ if [ $CONFIGURED == "NO" ]
       func_ask-recursion
       func_ask-webusername
       func_ask-webuserpassword
-      func_ask-rootpassword
+      func_ask-cliusername
+      func_ask-clipassword
       func_detect-virtual
       func_ask-timezone
       func_ask-ianacode
