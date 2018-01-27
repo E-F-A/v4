@@ -113,9 +113,9 @@ setsebool -P httpd_unified 1
 setsebool -P httpd_read_user_content 1
 
 # eFa policy module
-checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
-semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod -f $srcdir/eFa/eFa.fc
-semodule -i $srcdir/eFa/eFa.pp
+#checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
+#semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod -f $srcdir/eFa/eFa.fc
+#semodule -i $srcdir/eFa/eFa.pp
 
 # Set EFA-Init to run at first root login:
 sed -i '1i\\/usr\/sbin\/eFa-Init' /root/.bashrc
