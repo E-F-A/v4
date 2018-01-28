@@ -317,7 +317,7 @@ allow mscan_t spamd_compiled_t:file { open read getattr ioctl };
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
 allow greylist_milter_t mysqld_port_t:tcp_socket name_connect;
-allow greylist_milter_t tmp_t:dir { add_name write };
+allow greylist_milter_t tmp_t:dir { add_name write create };
 
 #============= unconfined_t ==============
 allow unconfined_t init_t:service enable;
