@@ -558,10 +558,19 @@ function func_detect-virtual() {
       InstallHyperVTools="0"
     fi
   elif [[ $virtplatform == "hyperv" ]]; then
-    echo -e "$green[eFa]$clean I am running on Hyper-V, please go to the eFa wiki for more information."
-    InstallQEMUAgent="0"
-    InstallOpenVMTools="0"
-    InstallHyperVTools="1"
+    echo -e "$green[eFa]$clean You seem to be running on a Hyper-V based hypervisor"
+    echo -e "$green[eFa]$clean Would you like to install the Hyper-V Tools?"
+    echo -e -n "$green[eFa]$clean [Y/n]:"
+    read HyperVInstallChoice
+    if [[ $HyperVInstallChoice == "" || $HyperVInstallChoice == "Y" || $HyperVnstallChoice == "y" ]]; then
+        InstallQEMUAgent="0"
+        InstallOpenVMTools="0"
+        InstallHyperVTools="1"
+    else
+        InstallQEMUAgent="0"
+        InstallOpenVMTools="0"
+        InstallHyperVTools="0"
+    fi
   else
     echo -e "$green[eFa]$clean I was not able to determine the hypervisor technology that I am running on."
     echo -e "$green[eFa]$clean If this is a physical machine, please ignore."
@@ -705,7 +714,7 @@ function func_verify-settings() {
     echo -e "15) Web User PWD        : <hidden>"
     echo -e "16) CLI User            : $CLIUSERNAME"
     echo -e "17) CLI User PWD        : <hidden>"
-    echo -e -n "18) Hypervisor Agents   : "; if [[ "$InstallOpenVMTools" -eq 1 ]]; then echo "VMware: Installing Open-VM-Tools."; elif [[ "$InstallQEMUAgent" -eq 1 ]]; then echo "KVM: Installing the QEMU Guest Agent."; elif [[ "$InstallHyperVTools" -eq 1 ]]; then echo "Hyper-V: Please go to the wiki for more information."; else echo "Not needed."; fi
+    echo -e -n "18) Hypervisor Agents   : "; if [[ "$InstallOpenVMTools" -eq 1 ]]; then echo "VMware: Installing Open-VM-Tools."; elif [[ "$InstallQEMUAgent" -eq 1 ]]; then echo "KVM: Installing the QEMU Guest Agent."; elif [[ "$InstallHyperVTools" -eq 1 ]]; then echo "Hyper-V: Installiing Hyper-V Tools."; else echo "Not needed."; fi
     echo -e -n "19) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
     echo -e "20) Keyboard            : $KEYBOARD"
     echo -e "21) IANA Code           : $IANACODE"
@@ -876,6 +885,27 @@ func_Install-OpenVMTools(){
   semodule -i /var/eFa/lib/selinux/eFavmtools.pp
   func_echo-header
   echo -e "$green[eFa]$clean Installation of Open VM tools completed"
+  pause
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Install Hyper-V Tools
+# +---------------------------------------------------+
+func_Install-HyperVTools(){
+  func_echo-header
+  echo -e "$green[eFa]$clean Starting the installation of Hyper-V Tools"
+  echo -e "$green[eFa]$clean Depending on the speed of your system this"
+  echo -e "$green[eFa]$clean might take a while."
+  pause
+  yum -y install hyperv-tools hyperv-daemons hypervkvpd hypervvssd
+  systemctl enable hypervkvpd
+  systemctl enable hypervvssd
+  checkmodule -M -m -o /var/eFa/lib/selinux/eFahyperv.mod /var/eFa/lib/selinux/eFahyperv.te
+  semodule_package -o /var/eFa/lib/selinux/eFahyperv.pp -m /var/eFa/lib/selinux/eFahyperv.mod
+  semodule -i /var/eFa/lib/selinux/eFahyperv.pp
+  func_echo-header
+  echo -e "$green[eFa]$clean Installation of Hyper-V Tools completed"
   pause
 }
 # +---------------------------------------------------+
@@ -1203,6 +1233,8 @@ function func_configure-system() {
     func_Install-OpenVMTools
   elif [[ "$InstallQEMUAgent" -eq 1 ]]; then
     func_Install-QEMUAgent
+  elif [[ "$InstallHyperVTools" -eq 1 ]]; then 
+    func_Install-HyperVTools
   else
     echo -e "Hypervisor tools are not needed."
   fi

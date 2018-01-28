@@ -58,5 +58,7 @@ systemctl disable chronyd
 systemctl disable yum-cron
 systemctl disable sshd
 systemctl disable php-fpm
+systemctl disable hypervkvpd
+systemctl disable hypervvssd
 
 echo "Configuring services...done"
