@@ -85,30 +85,6 @@ echo "- Adding Remi Repo"
 yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 yum-config-manager --enable remi-php72
 
-yum -y remove \
-iwl100-firmware \
-iwl2030-firmware \
-iwl5000-firmware \
-iwl6000-firmware \
-iwl3160-firmware \
-iwl105-firmware \
-iwl135-firmware \
-iwl1000-firmware \
-iwl7260-firmware \
-alsa-firmware \
-iwl6000g2b-firmware \
-wl6050-firmware \
-iwl6000g2a-firmware \
-iwl5150-firmware \
-iwl7265-firmware \
-iwl3945-firmware \
-ivtv-firmware \
-iwl2000-firmware \
-iwl4965-firmware \
-alsa-tools-firmware \
-alsa-lib \
-postfix
-
 echo "- Updating the OS"
 yum -y update
 
