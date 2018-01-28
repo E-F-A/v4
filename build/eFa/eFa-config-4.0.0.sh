@@ -34,7 +34,13 @@ mkdir -p /var/eFa/backup/KAM
 
 # pre-create the EFA lib directory
 mkdir -p /var/eFa/lib
+mkdir -p /var/eFa/lib/selinux
 mkdir -p /var/eFa/lib/eFa-Configure
+
+# Copy agent selinux modules rulesets
+cp $srcdir/eFa/eFavmtools.te /var/eFa/lib/selinux/eFavmtools.te
+cp $srcdir/eFa/eFahyperv.te /var/eFa/lib/selinux/eFahyperv.te
+cp $srcdir/eFa/eFaqemu.te /var/eFa/lib/selinux/eFaqemu.te
 
 # pre-create the EFA Trusted Networks Config
 touch /etc/sysconfig/eFa_trusted_networks

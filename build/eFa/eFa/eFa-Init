@@ -871,6 +871,9 @@ func_Install-OpenVMTools(){
   pause
   yum -y install glib2-devel pam-devel libdnet-devel gcc-c++ libicu-devel open-vm-tools
   systemctl enable vmtoolsd
+  checkmodule -M -m -o /var/eFa/lib/selinux/eFavmtools.mod /var/eFa/lib/selinux/eFavmtools.te
+  semodule_package -o /var/eFa/lib/selinux/eFavmtools.pp -m /var/eFa/lib/selinux/eFavmtools.mod
+  semodule -i /var/eFa/lib/selinux/eFavmtools.pp
   func_echo-header
   echo -e "$green[eFa]$clean Installation of Open VM tools completed"
   pause
@@ -888,6 +891,9 @@ func_Install-QEMUAgent(){
   pause
   yum -y install qemu-guest-agent
   systemctl enable qemu-guest-agent
+  checkmodule -M -m -o /var/eFa/lib/selinux/eFaqemu.mod /var/eFa/lib/selinux/eFaqemu.te
+  semodule_package -o /var/eFa/lib/selinux/eFaqemu.pp -m /var/eFa/lib/selinux/eFaqemu.mod
+  semodule -i /var/eFa/lib/selinux/eFaqemu.pp
   func_echo-header
   echo -e "$green[eFa]$clean Installation of the QEMU Guest Agent has completed"
   pause
