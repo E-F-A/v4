@@ -29,14 +29,6 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 echo "Configuring services..."
 
-# These services we really don't need.
-# Hold on....maybe we do need them for folks on physical systems...
-# Todo: re-evaluate this
-systemctl disable lvm2-monitor
-systemctl disable mdmonitor
-systemctl disable smartd
-systemctl disable abrtd
-
 # These services we disable for now and enable them after eFa-Init.
 # Most of these are not enabled by default but add them here just to
 # make sure we don't forget them at eFa-Init.
