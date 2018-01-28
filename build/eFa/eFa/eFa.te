@@ -262,7 +262,7 @@ allow httpd_sys_script_t user_tmp_t:file setattr;
 allow httpd_sys_script_t initrc_t:unix_stream_socket connectto;
 allow httpd_sys_script_t mailwatchsql_etc_t:file { ioctl getattr read open };
 allow httpd_sys_script_t postfix_spool_t:file { unlink ioctl };
-allow httpd_sys_script_t spamd_compiled_t:dir { search };
+allow httpd_sys_script_t spamd_compiled_t:dir { search getattr };
 allow httpd_sys_script_t spamd_compiled_t:file { getattr read open ioctl execute };
 
 # Allow file release
