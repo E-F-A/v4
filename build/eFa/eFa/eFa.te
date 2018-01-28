@@ -84,6 +84,7 @@ require {
     type unconfined_service_t;
     type spamd_compiled_t;
     type tmp_t;
+    type sysctl_vm_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -234,6 +235,8 @@ dontaudit httpd_sys_script_t unconfined_service_t:file { open read };
 dontaudit httpd_sys_script_t getty_t:dir search;
 dontaudit httpd_sys_script_t getty_t:file { read open };
 dontaudit httpd_sys_script_t tty_device_t:chr_file getattr;
+dontaudit httpd_sys_script_t sysctl_vm_t:file { read open };
+dontaudit httpd_sys_script_t sysctl_vm_t:dir { getattr search };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
