@@ -1229,7 +1229,7 @@ function func_configure-system() {
   systemctl enable sshd
   systemctl enable php-fpm
 
-  if [[ "$InstallOpenTools" -eq 1 ]]; then
+  if [[ "$InstallOpenVMTools" -eq 1 ]]; then
     func_Install-OpenVMTools
   elif [[ "$InstallQEMUAgent" -eq 1 ]]; then
     func_Install-QEMUAgent
