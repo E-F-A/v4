@@ -240,7 +240,7 @@ dontaudit httpd_sys_script_t tty_device_t:chr_file getattr;
 dontaudit httpd_sys_script_t sysctl_vm_t:file { read open };
 dontaudit httpd_sys_script_t sysctl_vm_t:dir { getattr search };
 dontaudit httpd_sys_script_t sshd_net_t:dir { getattr search };
-dontaudit httpd_sys_script_t sshd_net_t:dir { read open };
+dontaudit httpd_sys_script_t sshd_net_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
