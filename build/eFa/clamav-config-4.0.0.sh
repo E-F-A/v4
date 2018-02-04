@@ -85,7 +85,7 @@ mkdir -p /var/run/clamd.scan
 chown -R clam:mtagroup /var/run/clamd.scan
 chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.scan
 semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.scan
-echo "d /var/run/clamd.scan 0750 clam mtagroup -" > /usr/lib/tmpfiles.d/clamd.conf
+echo "d /var/run/clamd.scan 0750 clam mtagroup -" > /etc/tmpfiles.d/clamd.conf
 
 echo "Configuring clamav...done"
 
