@@ -55,7 +55,8 @@ sed -i '/^Virus Scanners =/ c\Virus Scanners = clamd' /etc/MailScanner/MailScann
 sed -i '/^Non-Forging Viruses =/ c\Non-Forging Viruses = Joke\/ OF97\/ WM97\/ W97M\/ eicar Zip-Password' /etc/MailScanner/MailScanner.conf
 sed -i '/^Web Bug Replacement =/ c\Web Bug Replacement = http:\/\/dl.efa-project.org\/static\/1x1spacer.gif' /etc/MailScanner/MailScanner.conf
 sed -i '/^Quarantine Whole Message =/ c\Quarantine Whole Message = yes' /etc/MailScanner/MailScanner.conf
-sed -i '/^Quarantine Infections =/ c\Quarantine Infections = no' /etc/MailScanner/MailScanner.conf
+# Set to yes to allow blocked file release
+sed -i '/^Quarantine Infections =/ c\Quarantine Infections = yes' /etc/MailScanner/MailScanner.conf
 sed -i '/^Keep Spam And MCP Archive Clean =/ c\Keep Spam And MCP Archive Clean = yes' /etc/MailScanner/MailScanner.conf
 sed -i 's/X-%org-name%-MailScanner/X-%org-name%-MailScanner-eFa/g' /etc/MailScanner/MailScanner.conf
 sed -i '/^Remove These Headers =/ c\Remove These Headers = X-Mozilla-Status: X-Mozilla-Status2: Disposition-Notification-To: Return-Receipt-To:' /etc/MailScanner/MailScanner.conf

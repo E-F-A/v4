@@ -41,7 +41,9 @@ sed -i "/^define('DB_USER',/ c\define('DB_USER', 'mailwatch');" /var/www/html/ma
 sed -i "/^define('TIME_ZONE',/ c\define('TIME_ZONE', 'Etc/UTC');" /var/www/html/mailscanner/conf.php
 sed -i "/^define('QUARANTINE_USE_FLAG',/ c\define('QUARANTINE_USE_FLAG', true);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('QUARANTINE_REPORT_FROM_NAME',/ c\define('QUARANTINE_REPORT_FROM_NAME', 'eFa - Email Filter Appliance');" /var/www/html/mailscanner/conf.php
-sed -i "/^define('QUARANTINE_USE_SENDMAIL',/ c\define('QUARANTINE_USE_SENDMAIL', true);" /var/www/html/mailscanner/conf.php
+# Set to false to allow attachment release
+sed -i "/^define('QUARANTINE_USE_SENDMAIL',/ c\define('QUARANTINE_USE_SENDMAIL', false);" /var/www/html/mailscanner/conf.php
+
 sed -i "/^define('AUDIT',/ c\define('AUDIT', true);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('MS_LOG',/ c\define('MS_LOG', '/var/log/maillog');" /var/www/html/mailscanner/conf.php
 sed -i "/^define('MAIL_LOG',/ c\define('MAIL_LOG', '/var/log/maillog');" /var/www/html/mailscanner/conf.php
