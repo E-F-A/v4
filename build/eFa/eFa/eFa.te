@@ -87,6 +87,8 @@ require {
     type tmp_t;
     type sysctl_vm_t;
     type sysfs_t;
+    type ifconfig_t;
+    type var_run_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -109,6 +111,11 @@ typeattribute sasql_etc_t file_type;
 typeattribute sqlgreysql_etc_t file_type;
 typeattribute efasql_etc_t file_type;
 typeattribute mysqlsql_etc_t file_type;
+
+#============ ifconfig_t ============
+# allow ifconfig to access /var/run
+# observed when /run/vmware-active-nics executes
+allow ifconfig_t var_run_t:file { read };
 
 #============= httpd_t ==============
 # allow httpd access to mailscanner and postfix
