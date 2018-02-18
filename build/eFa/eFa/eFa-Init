@@ -1181,7 +1181,7 @@ function func_configure-system() {
   echo "MAILWATCHSQLPWD:$MAILWATCHSQLPWD" > /etc/eFa/MailWatch-Config
   echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" > /etc/eFa/SQLGrey-Config
   echo "EFASQLPWD:$EFASQLPWD" > /etc/eFa/eFaSQL-Config
-  echo "MYSQLROOTPWD:$PASSWORD" > /etc/eFa/MySQL-Config
+  echo "MYSQLROOTPWD:$MYSQLROOTPWD" > /etc/eFa/MySQL-Config
 
   # Reset selinux labels
   touch /.autorelabel
@@ -1190,7 +1190,7 @@ function func_configure-system() {
   MAILWATCHSQLPWD=
   SQLGREYSQLPWD=
   EFASQLPWD=
-  PASSWORD=
+  MYSQLROOTPWD=
 
   rm -f /etc/issue
 
