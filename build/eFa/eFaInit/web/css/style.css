@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    font-family: verdana, sans-serif;
+}
+
+.inner-container {
+    border: solid 2px #000;
+    border-top: 0;
+    -webkit-border-radius: 0 0 15px 15px;
+    -moz-border-radius: 0 0 15px 15px;
+    border-radius: 0 0 15px 15px;
+}
+
+.initbody {
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
+.init {
+    margin: 50px auto;
+    width: 350px;
+}
+
+.init h1 {
+    background-color: #999999;
+    -webkit-border-radius: 15px 15px 0 0;
+    -moz-border-radius: 15px 15px 0 0;
+    border-radius: 15px 15px 0 0;
+    color: #222;
+    font-size: 28px;
+    padding: 15px 15px;
+    margin: 0;
+    text-align: center;
+    border: 2px solid #000000;
+    border-bottom: 0;
+}
+
+.init form {
+    border-top: 0;
+    color: #222;
+    border: 0;
+    margin: 0 0 8px;
+    padding: 20px 20px;
+    font-size: 28px;
+    text-align: center;
+}
+
+.init h2 {
+    color: #222;
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.init select {
+    font-size: 28px;
+    margin-bottom: 40px;
+    background-color: #999;
+    border: solid 2px #000;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.init select:hover {
+    background-color: #555;
+}
+
+.init button[type="submit"] {
+    font-size: 28px;
+    background-color: #999;
+    border: solid 2px #000;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.init button[type="submit"]:hover {
+    background-color: #555;
+}
+
+.center {
+    text-align: center;
+}
