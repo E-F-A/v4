@@ -6,15 +6,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends AbstractController
+class LanguageController extends AbstractController
 {
     /**
      * @Route("/{_locale}",
-     *     name="homepage",
+     *     name="languagepage",
      *     defaults={"_locale": "en"}
      * )
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return $this->render('default/index.html.twig');
     }
