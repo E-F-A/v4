@@ -50,13 +50,23 @@ body {
 .init h2 {
     color: #222;
     margin: 0 0 8px;
-    font-size: 28px;
+    font-size: 24px;
 }
 
 .init select {
     font-size: 28px;
     margin-bottom: 40px;
     background-color: #999;
+    border: solid 2px #000;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.init input {
+    font-size: 28px;
+    margin-bottom: 40px;
+    width: 200px;
     border: solid 2px #000;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;

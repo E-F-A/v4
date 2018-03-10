@@ -1,7 +1,7 @@
+{# app/Resources/views/language/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}{% trans %}Welcome to{% endtrans %} eFa{% endblock %}
-
 {% block body %}
     <div class="initbody">
         <div class="init">
@@ -10,18 +10,15 @@
             </div>
             <h1>{% trans %}Welcome to{% endtrans %} eFa</h1>
             <div class="inner-container">
-                <form name="languageform" class="initform" method="post" action="/{{ app.request.locale }}">
-                    <h2>
-                        <label for="language">{% trans %}Language{% endtrans %}</label>
-                    </h2>
-                    <div>
-                        <select onchange="window.location.replace(this.value)" autofocus>
-                            <option value="en" {% if app.request.locale == 'en' %}selected{% endif %}>English</option>
-                            <option value="fr" {% if app.request.locale == 'fr' %}selected{% endif %}>Français</option>
-                        </select>
-                    </div>
-                    <button type="submit" name="next" value="next">{% trans %}Next{% endtrans %}</button>
-                </form> 
+                {{ form_start(form) }}
+                <h2>
+                    {{ form_label(form.Language) }}
+                </h2>
+                <div>
+                    {{ form_widget(form.Language) }}
+                </div>
+                {{ form_row(form.Next) }}
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
@@ -30,3 +27,4 @@
 {% block stylesheets %}
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 {% endblock %}
+
