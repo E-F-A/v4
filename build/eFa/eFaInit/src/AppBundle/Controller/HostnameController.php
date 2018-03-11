@@ -19,7 +19,7 @@ class HostnameController extends Controller
      * )
      */
     public function indexAction(Request $request, SessionInterface $session)
-    {  
+    {
         $hostnameTask = new HostnameTask();
     
         $form = $this->createForm(HostnameTaskType::class, $hostnameTask, array('hostname' => $session->get('hostname')));
@@ -29,7 +29,7 @@ class HostnameController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $hostnameTask = $form->getData();
             
-            // Sotre hostname in session
+            // Store hostname in session
             $session->set('hostname', $hostnameTask->getHostname());
 
             $action = $form->get('Back')->isClicked() ? 'languagepage' : 'nextitem';
