@@ -15,7 +15,6 @@ class LanguageController extends Controller
     /**
      * @Route("/{_locale}",
      *     name="languagepage",
-     *     defaults={"_locale": "en"}
      * )
      */
     public function indexAction(Request $request, SessionInterface $session)
@@ -37,6 +36,22 @@ class LanguageController extends Controller
         return $this->render('language/index.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+    
+    /**
+     * @Route("/")
+     */
+    public function localeAction(Request $request) 
+    {
+        $clientLocale = strtolower(str_split($_SERVER['HTTP_ACCEPT_LANGUAGE'], 2)[0]);
+        switch ($clientLocale) {
+        case 'fr':
+            return $this->redirectToRoute('languagepage', array('_locale' => 'fr'));
+        break;
+        default:
+            return $this->redirectToRoute('languagepage', array('_locale' => 'en'));
+        break;
+        }
     }
 }
 ?>
