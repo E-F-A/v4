@@ -2,42 +2,42 @@
 // src/AppBundle/Controller/LanguageController.php
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\HostnameTask;
-use AppBundle\Form\HostnameTaskType;
+use AppBundle\Entity\EmailTask;
+use AppBundle\Form\EmailTaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class HostnameController extends Controller
+class EmailController extends Controller
 {
     /**
-     * @Route("/{_locale}/hostname",
-     *     name="hostnamepage",
+     * @Route("/{_locale}/email",
+     *     name="emailpage",
      *     defaults={"_locale": "en"}
      * )
      */
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $hostnameTask = new HostnameTask();
+        $emailTask = new EmailTask();
     
-        $form = $this->createForm(HostnameTaskType::class, $hostnameTask, array('hostname' => $session->get('hostname')));
+        $form = $this->createForm(EmailTaskType::class, $emailTask, array('email' => $session->get('email')));
     
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            $hostnameTask = $form->getData();
+            $emailTask = $form->getData();
             
-            // Store hostname in session
-            $session->set('hostname', $hostnameTask->getHostname());
+            // Store domainname in session
+            $session->set('email', $emailTask->getEmail());
 
-            $action = $form->get('Back')->isClicked() ? 'languagepage' : 'domainnamepage';
+            $action = $form->get('Back')->isClicked() ? 'domainnamepage' : 'ipv4addresspage';
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }
     
-        return $this->render('hostname/index.html.twig', array(
+        return $this->render('email/index.html.twig', array(
             'form' => $form->createView(),
         ));
     }

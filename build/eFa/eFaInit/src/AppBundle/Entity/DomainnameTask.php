@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class HostnameTask
+class DomainnameTask
 {
     /**
      * @Assert\NotBlank()
@@ -14,20 +14,20 @@ class HostnameTask
      *    max     = 256,
      * )
      * @Assert\Regex(
-     *    "/^[-a-zA-Z0-9]+$/",
+     *    "/^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*\.[a-z]{2,15}$/",
      * )
      */
-    protected $hostname;
+    protected $domainname;
 
 
-    public function getHostname()
+    public function getDomainname()
     {
-        return $this->hostname;
+        return $this->domainname;
     }
 
-    public function setHostname($hostname)
+    public function setDomainname($domainname)
     {
-        $this->hostname = $hostname;
+        $this->domainname = $domainname;
     }
 }
 ?>

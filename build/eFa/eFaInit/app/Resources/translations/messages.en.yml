@@ -6,3 +6,9 @@ Hostname: Hostname
 Back: Back
 English: English
 French: French
+Domainname: 'Domain Name'
+'Please enter a domain name': 'Please enter a domain name'
+Email: Email
+'Please enter an email address for important notifications': 'Please enter an email address for important notifications'
+'IPv4 Address': 'IPv4 Address'
+'Please enter a valid IPv4 address': 'Please enter a valid IPv4 address'

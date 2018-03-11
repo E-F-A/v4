@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class HostnameTask
+class EmailTask
 {
     /**
      * @Assert\NotBlank()
@@ -13,21 +13,19 @@ class HostnameTask
      *    min     = 2,
      *    max     = 256,
      * )
-     * @Assert\Regex(
-     *    "/^[-a-zA-Z0-9]+$/",
-     * )
+     * @Assert\Email()
      */
-    protected $hostname;
+    protected $email;
 
 
-    public function getHostname()
+    public function getEmail()
     {
-        return $this->hostname;
+        return $this->email;
     }
 
-    public function setHostname($hostname)
+    public function setEmail($email)
     {
-        $this->hostname = $hostname;
+        $this->email = $email;
     }
 }
 ?>

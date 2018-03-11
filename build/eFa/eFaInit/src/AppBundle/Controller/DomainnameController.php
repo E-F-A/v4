@@ -2,42 +2,42 @@
 // src/AppBundle/Controller/LanguageController.php
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\HostnameTask;
-use AppBundle\Form\HostnameTaskType;
+use AppBundle\Entity\DomainnameTask;
+use AppBundle\Form\DomainnameTaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class HostnameController extends Controller
+class DomainnameController extends Controller
 {
     /**
-     * @Route("/{_locale}/hostname",
-     *     name="hostnamepage",
+     * @Route("/{_locale}/domainname",
+     *     name="domainnamepage",
      *     defaults={"_locale": "en"}
      * )
      */
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $hostnameTask = new HostnameTask();
+        $domainnameTask = new DomainnameTask();
     
-        $form = $this->createForm(HostnameTaskType::class, $hostnameTask, array('hostname' => $session->get('hostname')));
+        $form = $this->createForm(DomainnameTaskType::class, $domainnameTask, array('domainname' => $session->get('domainname')));
     
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            $hostnameTask = $form->getData();
+            $domainnameTask = $form->getData();
             
-            // Store hostname in session
-            $session->set('hostname', $hostnameTask->getHostname());
+            // Store domainname in session
+            $session->set('domainname', $domainnameTask->getDomainname());
 
-            $action = $form->get('Back')->isClicked() ? 'languagepage' : 'domainnamepage';
+            $action = $form->get('Back')->isClicked() ? 'hostnamepage' : 'emailpage';
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }
     
-        return $this->render('hostname/index.html.twig', array(
+        return $this->render('domainname/index.html.twig', array(
             'form' => $form->createView(),
         ));
     }

@@ -3,6 +3,12 @@ Language: Langue
 Next: Suivant
 Hostname: 'Nom d''hôte'
 'Please enter a hostname': 'Veuillez entrer un nom d''hôte'
-Back: Verso
+Back: Retour
 English: Anglais
 French: Français
+Domainname: 'Nom de Domaine'
+'Please enter a domain name': 'Veuillez entrer un nom de domaine'
+Email: Email
+'Please enter an email address for important notifications': 'Veuillez entrer une adresse email pour les notifications importantes'
+'IPv4 Address': 'Adresse IPv4'
+'Please enter a valid IPv4 address': 'Veuillez entrer une adresse IPv4 valide'

@@ -2,42 +2,42 @@
 // src/AppBundle/Controller/LanguageController.php
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\HostnameTask;
-use AppBundle\Form\HostnameTaskType;
+use AppBundle\Entity\IPv4addressTask;
+use AppBundle\Form\IPv4addressTaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class HostnameController extends Controller
+class IPv4addressController extends Controller
 {
     /**
-     * @Route("/{_locale}/hostname",
-     *     name="hostnamepage",
+     * @Route("/{_locale}/ipv4address",
+     *     name="ipv4addresspage",
      *     defaults={"_locale": "en"}
      * )
      */
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $hostnameTask = new HostnameTask();
+        $ipv4addressTask = new IPv4addressTask();
     
-        $form = $this->createForm(HostnameTaskType::class, $hostnameTask, array('hostname' => $session->get('hostname')));
+        $form = $this->createForm(IPv4addressTaskType::class, $ipv4addressTask, array('ipv4address' => $session->get('ipv4address')));
     
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            $hostnameTask = $form->getData();
+            $ipv4addressTask = $form->getData();
             
-            // Store hostname in session
-            $session->set('hostname', $hostnameTask->getHostname());
+            // Store ipv4 address in session
+            $session->set('ipv4address', $ipv4addressTask->getIPv4address());
 
-            $action = $form->get('Back')->isClicked() ? 'languagepage' : 'domainnamepage';
+            $action = $form->get('Back')->isClicked() ? 'emailpage' : 'nextitem';
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }
     
-        return $this->render('hostname/index.html.twig', array(
+        return $this->render('ipv4address/index.html.twig', array(
             'form' => $form->createView(),
         ));
     }
