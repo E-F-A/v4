@@ -33,6 +33,7 @@ class LanguageTaskType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => LanguageTask::class,
+            'csrf_token_id' => 'language_task'
         ));
         $resolver->setRequired('locale');
     }

@@ -1,7 +1,7 @@
+{# app/Resources/views/hostname/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}{% trans %}Welcome to{% endtrans %} eFa -- {% trans %}Hostname{% endtrans %}{% endblock %}
-
 {% block body %}
     <div class="initbody">
         <div class="init">
@@ -9,17 +9,20 @@
                     <img src="{{ asset('images/logo.png') }}" alt="eFa Logo" />
             </div>
             <h1>{% trans %}Hostname{% endtrans %}</h1>
-            <div class="inner-container">
-                <form name="hostnameform" class="initform" method="post" action="/{{ app.request.locale }}">
-                    <h2>
-                        <label for="hostname">{% trans %}Please enter a hostname{% endtrans %}</label>
-                    </h2>
-                    <div>
-                        <input type="text" name="hostname" maxlength=256 autofocus />
-                    </div>
-                    <button type="submit" name="back" value="back">{% trans %}Back{% endtrans %}</button>
-                    <button type="submit" name="next" value="next">{% trans %}Next{% endtrans %}</button>
-                </form> 
+           <div class="inner-container">
+                {{ form_start(form) }}
+                <h2>
+                    {{ form_label(form.Hostname) }}
+                </h2>
+                <div>
+                    {{ form_widget(form.Hostname) }}
+                </div>
+                {{ form_widget(form.Back) }} 
+                {{ form_widget(form.Next) }}
+            </div>
+            {{ form_end(form) }}
+            <div class="error-container">
+                {{ form_errors(form) }}
             </div>
         </div>
     </div>
@@ -28,3 +31,4 @@
 {% block stylesheets %}
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 {% endblock %}
+

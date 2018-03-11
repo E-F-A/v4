@@ -23,6 +23,23 @@ body {
     width: 350px;
 }
 
+.error-container {
+    margin-top: 20px;
+}
+
+.error-container ul {
+   font-size: 24px;
+   padding: 3px;
+   color: #FFF;
+   list-style: none;
+   background-color: #900;
+   border: solid 2px #000;
+   -webkit-border-radius: 15px;
+   -moz-border-radius: 15px;
+   border-radius: 15px;
+   text-align: center;
+}
+
 .init h1 {
     background-color: #999999;
     -webkit-border-radius: 15px 15px 0 0;
@@ -49,7 +66,7 @@ body {
 
 .init h2 {
     color: #222;
-    margin: 0 0 8px;
+    margin: 20px 0 8px;
     font-size: 24px;
 }
 
