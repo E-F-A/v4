@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class HostnameController extends Controller
 {
@@ -17,16 +18,19 @@ class HostnameController extends Controller
      *     defaults={"_locale": "en"}
      * )
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request, SessionInterface $session)
+    {  
         $hostnameTask = new HostnameTask();
     
-        $form = $this->createForm(HostnameTaskType::class, $hostnameTask);
+        $form = $this->createForm(HostnameTaskType::class, $hostnameTask, array('hostname' => $session->get('hostname')));
     
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
             $hostnameTask = $form->getData();
+            
+            // Sotre hostname in session
+            $session->set('hostname', $hostnameTask->getHostname());
 
             $action = $form->get('Back')->isClicked() ? 'languagepage' : 'nextitem';
 

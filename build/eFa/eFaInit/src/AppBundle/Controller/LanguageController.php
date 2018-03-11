@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LanguageController extends Controller
 {
@@ -17,7 +18,7 @@ class LanguageController extends Controller
      *     defaults={"_locale": "en"}
      * )
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, SessionInterface $session)
     {
         $languageTask = new LanguageTask();
     
@@ -27,6 +28,8 @@ class LanguageController extends Controller
     
         if ($form->isSubmitted() && $form->isValid()) {
             $languageTask = $form->getData();
+
+            $session->set('locale', $languageTask->getlanguage()); 
 
             return $this->redirectToRoute('hostnamepage', array('_locale' => $languageTask->getLanguage()));
         }

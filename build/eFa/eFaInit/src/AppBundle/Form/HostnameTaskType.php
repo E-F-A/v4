@@ -18,7 +18,8 @@ class HostnameTaskType extends AbstractType
             ->add('Hostname', TextType::class, array(
                 'label'           => 'Please enter a hostname',
                 'required'        => false,
-                'trim'            => true
+                'trim'            => true,
+                'data'         => $options['hostname']
             ))
             ->add('Back', SubmitType::class, array(
                 'validation_groups' => false
@@ -32,6 +33,7 @@ class HostnameTaskType extends AbstractType
             'data_class'    => HostnameTask::class,
             'csrf_token_id' => 'hostname_task'
         ));
+        $resolver->setRequired('hostname');
     }
 }
 ?>
