@@ -101,6 +101,7 @@ body {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+    margin-bottom: 20px;
 }
 
 .init button[type="submit"]:hover {

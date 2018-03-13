@@ -32,7 +32,7 @@ class EmailController extends Controller
             // Store domainname in session
             $session->set('email', $emailTask->getEmail());
 
-            $action = $form->get('Back')->isClicked() ? 'domainnamepage' : 'ipv4addresspage';
+            $action = $form->get('Back')->isClicked() ? 'domainnamepage' : 'configipv4page';
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }

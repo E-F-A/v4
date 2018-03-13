@@ -32,7 +32,7 @@ class IPv4addressController extends Controller
             // Store ipv4 address in session
             $session->set('ipv4address', $ipv4addressTask->getIPv4address());
 
-            $action = $form->get('Back')->isClicked() ? 'emailpage' : 'nextitem';
+            $action = $form->get('Back')->isClicked() ? 'configipv4page' : 'nextitem';
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }

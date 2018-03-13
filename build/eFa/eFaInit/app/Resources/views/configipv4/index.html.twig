@@ -1,24 +1,24 @@
-{# app/Resources/views/domainname/index.html.twig #}
+{# app/Resources/views/configipv4/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Welcome to{% endtrans %} eFa -- {% trans %}Domainname{% endtrans %}{% endblock %}
+{% block title %}{% trans %}Welcome to{% endtrans %} eFa -- {% trans %}Configure IPv4?{% endtrans %}{% endblock %}
 {% block body %}
     <div class="initbody">
         <div class="init">
             <div class="center">
                     <img src="{{ asset('images/logo.png') }}" alt="eFa Logo" />
             </div>
-            <h1>{% trans %}Domainname{% endtrans %}</h1>
+            <h1>{% trans %}Configure IPv4?{% endtrans %}</h1>
            <div class="inner-container">
                 {{ form_start(form) }}
                 <h2>
-                    {{ form_label(form.Domainname) }}
+                    {% trans %}Do you want to set a static IPv4 address?{% endtrans %}
                 </h2>
                 <div>
-                    {{ form_widget(form.Domainname) }}
+                    {{ form_widget(form.Yes) }}
+                    {{ form_widget(form.No) }}
                 </div>
                 {{ form_widget(form.Back) }} 
-                {{ form_widget(form.Next) }}
             </div>
             {{ form_end(form) }}
             <div class="error-container">
