@@ -17,8 +17,14 @@ class LanguageTaskType extends AbstractType
         $builder
             ->add('Language', ChoiceType::class, array(
                 'choices' => array(
+                    'Chinese' => 'zh_CN',
+                    'Danish' => 'da',
+                    'Dutch' => 'nl',
                     'English' => 'en',
-                    'French' => 'fr'
+                    'French' => 'fr',
+                    'German' => 'de',
+                    'Portuguese' => 'pt_PT',
+                    'Turkish' => 'tr'
                     ),
                 'preferred_choices' => array($options['locale']),
                 'expanded' => false,

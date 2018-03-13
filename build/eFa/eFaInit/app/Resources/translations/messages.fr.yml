@@ -1,14 +1,17 @@
-'Welcome to': 'Bienvenue à'
+'Welcome to': 'Bienvenue dans'
 Language: Langue
 Next: Suivant
 Hostname: 'Nom d''hôte'
-'Please enter a hostname': 'Veuillez entrer un nom d''hôte'
-Back: Retour
+'Please enter a hostname': 'Merci da saisir un nom d''hôte'
+Back: Précédent
 English: Anglais
 French: Français
+Portuguese: __Portuguese
+German: __German
+Chinese: __Chinese
 Domainname: 'Nom de Domaine'
-'Please enter a domain name': 'Veuillez entrer un nom de domaine'
-Email: Email
-'Please enter an email address for important notifications': 'Veuillez entrer une adresse email pour les notifications importantes'
+'Please enter a domain name': 'Merci de saisir un nom de domaine'
+Email: Courriel
+'Please enter an email address for important notifications': 'Merci de saisir une adresse email pour les notifications importantes'
 'IPv4 Address': 'Adresse IPv4'
-'Please enter a valid IPv4 address': 'Veuillez entrer une adresse IPv4 valide'
+'Please enter a valid IPv4 address': 'Merci de saisir une adresse IPv4 valide'

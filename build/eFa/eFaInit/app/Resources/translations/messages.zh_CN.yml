@@ -1,0 +1,17 @@
+Welcome to': '欢迎'
+Language: 语言
+Next: 下一个
+Hostname: 主机名
+'Please enter a hostname': '请输入主机名'
+Back: 上一个
+English: 英语
+French: 法语
+German: __German
+Portuguese: __Portuguese
+Chinese: __Chinese
+Domainname: '域名'
+'Please enter a domain name': '请输入域名'
+Email: 电子邮箱地址 
+'Please enter an email address for important notifications': '请输入能够接收重要通知的电子邮箱地址'
+'IPv4 Address': 'IPv4 地址'
+'Please enter a valid IPv4 address': '请输入有效的 IPv4 地址'

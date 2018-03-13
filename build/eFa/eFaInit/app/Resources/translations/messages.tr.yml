@@ -1,0 +1,14 @@
+Welcome to': 'Hoşgeldiniz'
+Language: Dil
+Next: Sonraki
+Hostname: Sistem Adı
+'Please enter a hostname': 'Lütfen bir sistem adı giriniz'
+Back: Geri
+English: İngilizce
+French: Fransızca
+Domainname: 'Alan Adı'
+'Please enter a domain name': 'Lütfen bir alan adı giriniz'
+Email: Eposta
+'Please enter an email address for important notifications': 'Lütfen önemli bildirimlerin gönderileceği bir eposta adresi giriniz '
+'IPv4 Address': 'IPv4 Adresi'
+'Please enter a valid IPv4 address': 'Lütfen geçerli bir IPv4 adresi giriniz'
