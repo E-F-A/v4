@@ -1,17 +1,17 @@
-'Welcome to': 'Benvindo ao'
+'Welcome to': 'Bem-vindo'
 Language: Idioma
 Next: Seguinte
-Hostname: 'Nome do hosts' 
+Hostname: 'Nome do host' 
 'Please enter a hostname': 'Por favor escreva o nome do host/servidor'
 Back: Anterior
-English: Ingles
+English: Inglês
 French: Frances
-Portuguese: __Portuguese
-German: __German
-Chinese: __Chinese
+Portuguese: Portugues
+German: Alemão
+Chinese: Chines
 Domainname: 'Nome do Dominio'
 'Please enter a domain name': 'Por favor insira um nome de dominio'
-Email: 'Endereco Electronico'
-'Please enter an email address for important notifications': 'Por favor escreva um endereço electronico para as notificacoes importantes'
+Email: 'Endereco de email'
+'Please enter an email address for important notifications': 'Por favor escreva um endereço de email para as notificacoes importantes'
 'IPv4 Address': 'Endereco IPv4'
 'Please enter a valid IPv4 address': 'Por favor escreva um endereco IPv4 valido' 
