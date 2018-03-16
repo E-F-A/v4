@@ -4,11 +4,15 @@ Next: Suivant
 Hostname: 'Nom d''hôte'
 'Please enter a hostname': 'Merci da saisir un nom d''hôte'
 Back: Précédent
-English: Anglais
+English: English
+Danish: __Danish
+Dutch: __Dutch
 French: Français
-Portuguese: __Portuguese
-German: __German
-Chinese: __Chinese
+Portuguese: Portugues
+German: Deutsche
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
 Domainname: 'Nom de Domaine'
 'Please enter a domain name': 'Merci de saisir un nom de domaine'
 Email: Courriel

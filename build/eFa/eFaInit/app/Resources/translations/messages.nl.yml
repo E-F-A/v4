@@ -4,8 +4,15 @@ Next: Volgende
 Hostname: Hostname
 'Please enter a hostname': 'Voer een hostname in'
 Back: Terug
-English: Engels
-French: Frans
+English: English
+Danish: __Danish
+Dutch: __Dutch
+French: Français
+Portuguese: Portugues
+German: Deutsche
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
 Domainname: 'Domeinnaam'
 'Please enter a domain name': 'Voer een domeinnaam in'
 Email: Email

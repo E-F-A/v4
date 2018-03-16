@@ -1,0 +1,21 @@
+'Welcome to': '歡迎'
+Language: 語言
+Next: 下一個
+Hostname: 主機名稱
+'Please enter a hostname': '請輸入主機名稱'
+Back: 返回
+English: English
+Danish: __Danish
+Dutch: __Dutch
+French: Français
+Portuguese: Portugues
+German: Deutsche
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
+Domainname: '域名'
+'Please enter a domain name': '請輸入域名'
+Email: 電子郵箱地址
+'Please enter an email address for important notifications': '請輸入能夠接收重要通知的電子郵箱地址'
+'IPv4 Address': 'IPv4 地址'
+'Please enter a valid IPv4 address': '請輸入有效的 IPv4 地址'

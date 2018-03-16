@@ -4,11 +4,15 @@ Next: Seguinte
 Hostname: 'Nome do host' 
 'Please enter a hostname': 'Por favor escreva o nome do host/servidor'
 Back: Anterior
-English: Inglês
-French: Frances
+English: English
+Danish: __Danish
+Dutch: __Dutch
+French: Français
 Portuguese: Portugues
-German: Alemão
-Chinese: Chines
+German: Deutsche
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
 Domainname: 'Nome do Dominio'
 'Please enter a domain name': 'Por favor insira um nome de dominio'
 Email: 'Endereco de email'

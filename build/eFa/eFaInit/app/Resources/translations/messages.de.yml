@@ -4,10 +4,15 @@ Next: Weiter
 Hostname: Hostnamen
 'Please enter a hostname': 'Bitte Hostnamen eingeben'
 Back: Zurueck
-English: Englisch
-French: Franzoesisch
+English: English
+Danish: __Danish
+Dutch: __Dutch
+French: Français
+Portuguese: Portugues
 German: Deutsche
-Chinese: Chinese
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
 Domainname: 'Domain Namen'
 'Please enter a domain name': 'Bitte Domain Namen eingeben'
 Email: E-Mail

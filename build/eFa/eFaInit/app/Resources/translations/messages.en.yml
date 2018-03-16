@@ -5,10 +5,14 @@ Hostname: Hostname
 'Please enter a hostname': 'Please enter a hostname'
 Back: Back
 English: English
-French: French
-Portuguese: Portuguese
-German: German
-Chinese: Chinese
+Danish: __Danish
+Dutch: __Dutch
+French: Français
+Portuguese: Portugues
+German: Deutsche
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
 Domainname: 'Domain Name'
 'Please enter a domain name': 'Please enter a domain name'
 Email: Email

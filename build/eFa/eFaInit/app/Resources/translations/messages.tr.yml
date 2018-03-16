@@ -4,8 +4,15 @@ Next: Sonraki
 Hostname: Sistem Adı
 'Please enter a hostname': 'Lütfen bir sistem adı giriniz'
 Back: Geri
-English: İngilizce
-French: Fransızca
+English: English
+Danish: __Danish
+Dutch: __Dutch
+French: Français
+Portuguese: Portugues
+German: Deutsche
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
 Domainname: 'Alan Adı'
 'Please enter a domain name': 'Lütfen bir alan adı giriniz'
 Email: Eposta

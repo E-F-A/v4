@@ -4,8 +4,15 @@ Next: Næste
 Hostname: Hostname
 'Please enter a hostname': 'Angiv venligst et hostname'
 Back: Tilbage
-English: Engelsk
-French: Fransk
+English: English
+Danish: __Danish
+Dutch: __Dutch
+French: Français
+Portuguese: Portugues
+German: Deutsche
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
 Domainname: 'Domæne navn'
 'Please enter a domain name': 'Angiv venligst et domæne navn'
 Email: E-Mail

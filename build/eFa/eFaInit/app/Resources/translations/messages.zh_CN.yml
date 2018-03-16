@@ -1,14 +1,18 @@
-Welcome to': '欢迎'
+'Welcome to': '欢迎'
 Language: 语言
 Next: 下一个
 Hostname: 主机名
 'Please enter a hostname': '请输入主机名'
 Back: 上一个
-English: 英语
-French: 法语
-German: __German
-Portuguese: __Portuguese
-Chinese: __Chinese
+English: English
+Danish: __Danish
+Dutch: __Dutch
+French: Français
+Portuguese: Portugues
+German: Deutsche
+Turkish: __Turkish
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
 Domainname: '域名'
 'Please enter a domain name': '请输入域名'
 Email: 电子邮箱地址 
