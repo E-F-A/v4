@@ -19,3 +19,7 @@ Email: Email
 'Please enter an email address for important notifications': 'Please enter an email address for important notifications'
 'IPv4 Address': 'IPv4 Address'
 'Please enter a valid IPv4 address': 'Please enter a valid IPv4 address'
+'Do you want to set a static IPv4 address?': 'Do you want to set a static IPv4 address?'
+Yes: Yes
+No: No
+'Please enter a valid IPv4 netmask': 'Please enter a valid IPv4 netmask'
