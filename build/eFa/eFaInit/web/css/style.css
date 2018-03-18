@@ -11,6 +11,23 @@ body {
     border-radius: 0 0 15px 15px;
 }
 
+.inner-container td {
+      padding: 0 20px;
+}
+
+.inner-container table {
+    margin: 0 auto;
+    text-align: right;
+}
+
+.inner-container h2 {
+    font-size: 20px;
+}
+
+.greyhighlight {
+    background-color: #bbb;
+}
+
 .initbody {
     color: #000;
     font-family: Arial, Helvetica, sans-serif;
@@ -21,6 +38,11 @@ body {
 .init {
     margin: 50px auto;
     width: 350px;
+}
+
+.verify {
+    margin: 50px auto;
+    width: 1100px;
 }
 
 .error-container {
@@ -40,7 +62,7 @@ body {
    text-align: center;
 }
 
-.init h1 {
+h1 {
     background-color: #999999;
     -webkit-border-radius: 15px 15px 0 0;
     -moz-border-radius: 15px 15px 0 0;
@@ -54,7 +76,7 @@ body {
     border-bottom: 0;
 }
 
-.init form {
+form {
     border-top: 0;
     color: #222;
     border: 0;
@@ -64,13 +86,13 @@ body {
     text-align: center;
 }
 
-.init h2 {
+h2 {
     color: #222;
     margin: 20px 0 8px;
     font-size: 24px;
 }
 
-.init select {
+select {
     font-size: 28px;
     margin-bottom: 40px;
     background-color: #999;
@@ -90,7 +112,7 @@ body {
     border-radius: 6px;
 }
 
-.init input {
+input {
     font-size: 28px;
     margin-bottom: 40px;
     width: 200px;
@@ -100,11 +122,11 @@ body {
     border-radius: 6px;
 }
 
-.init select:hover {
+select:hover {
     background-color: #555;
 }
 
-.init button[type="submit"] {
+button[type="submit"] {
     font-size: 28px;
     background-color: #999;
     border: solid 2px #000;
@@ -114,7 +136,7 @@ body {
     margin-bottom: 20px;
 }
 
-.init button[type="submit"]:hover {
+button[type="submit"]:hover {
     background-color: #555;
 }
 

@@ -4,10 +4,16 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\eFaInitTask;
 use AppBundle\Form\LanguageTaskType;
+use AppBundle\Form\LanguageEditTaskType;
 use AppBundle\Form\YesNoTaskType;
+use AppBundle\Form\YesNoEditTaskType;
 use AppBundle\Form\TextboxTaskType;
+use AppBundle\Form\TextboxEditTaskType;
 use AppBundle\Form\PasswordTaskType;
+use AppBundle\Form\PasswordEditTaskType;
 use AppBundle\Form\TimezoneTaskType;
+use AppBundle\Form\TimezoneEditTaskType;
+use AppBundle\Form\VerifySettingsTaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,14 +24,23 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}",
      *     name="languagepage",
+           defaults={"edit"=null}
+     * )
+     * @Route("/{_locale}/{edit}",
+     *     name="languageeditpage",
+     *     requirements={"edit"="edit"}
      * )
      */
-    public function indexAction(Request $request, SessionInterface $session)
+    public function indexAction(Request $request, $edit, SessionInterface $session)
     {
         $task = new eFaInitTask();
     
-        $form = $this->createForm(LanguageTaskType::class, $task, array('locale' => $request->getLocale()));
-    
+        if ($edit === "edit") { 
+            $form = $this->createForm(LanguageEditTaskType::class, $task, array('locale' => $request->getLocale()));
+        } else {
+            $form = $this->createForm(LanguageTaskType::class, $task, array('locale' => $request->getLocale()));
+        }
+
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
@@ -33,12 +48,21 @@ class eFaInitController extends AbstractController
 
             $session->set('locale', $task->getLanguage()); 
 
-            return $this->redirectToRoute('textboxpage', array('_locale' => $task->getLanguage(), 'slug' => 'hostname'));
+            if ($edit === "edit") {
+                return $this->redirectToRoute('verifysettingspage', array('_locale' => $task->getLanguage(), 'slug' => 'verify'));
+            } else {
+                return $this->redirectToRoute('textboxpage', array('_locale' => $task->getLanguage(), 'slug' => 'hostname'));
+            }
         }
-    
-        return $this->render('language/index.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        if ($edit === "edit") {
+            return $this->render('languageedit/index.html.twig', array(
+                'form' => $form->createView(),
+            ));
+        } else { 
+            return $this->render('language/index.html.twig', array(
+                'form' => $form->createView(),
+            ));
+        }
     }
     
     /**
@@ -82,10 +106,15 @@ class eFaInitController extends AbstractController
      * @Route("/{_locale}/{slug}",
      *     name="textboxpage",
      *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname"},
+     *     defaults={"_locale": "en", "edit" = null}
+     * )
+     * @Route("/{_locale}/{slug}/{edit}",
+     *     name="textboxeditpage",
+     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname", "edit"="edit"},
      *     defaults={"_locale": "en"}
      * )
      */
-    public function textboxAction(Request $request, $slug, SessionInterface $session)
+    public function textboxAction(Request $request, $edit, $slug, SessionInterface $session)
     {
         $task = new eFaInitTask();
 
@@ -262,8 +291,8 @@ class eFaInitController extends AbstractController
                     'varProperty' => 'Orgname'
                 );
                 $varTitle     = 'Organization Name';
-                $nextSlug     = '';
-                $nextPage     = '';
+                $nextSlug     = 'verify';
+                $nextPage     = 'verifysettingspage';
                 $previousSlug = 'ianacode';
                 $previousPage = 'textboxpage';
             break;
@@ -271,7 +300,11 @@ class eFaInitController extends AbstractController
         }
         $options['varData'] = $session->get($slug);
 
-        $form = $this->createForm(TextboxTaskType::class, $task, $options);
+        if ($edit === 'edit') {
+            $form = $this->createForm(TextboxEditTaskType::class, $task, $options);
+        } else { 
+            $form = $this->createForm(TextboxTaskType::class, $task, $options);
+        }
 
         $form->handleRequest($request);
 
@@ -280,30 +313,49 @@ class eFaInitController extends AbstractController
 
             $getMethod = "get" . $slug;
             $session->set($slug, $task->$getMethod());
-
-            $action = $form->get('Next')->isClicked() ? $nextSlug : $previousSlug;
-            $page   = $form->get('Next')->isClicked() ? $nextPage : $previousPage;
+            if ($edit === 'edit') {
+                $action = 'verify';
+                $page   = 'verifysettingspage';
+            } else {
+                $action = $form->get('Next')->isClicked() ? $nextSlug : $previousSlug;
+                $page   = $form->get('Next')->isClicked() ? $nextPage : $previousPage;
+            }
 
             return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
         }
-
-        return $this->render('textbox/index.html.twig', array(
-            'form' => $form->createView(),
-            'title' => $varTitle
-        ));
+        
+        if ($edit === 'edit') {
+            return $this->render('textboxedit/index.html.twig', array(
+                'form' => $form->createView(),
+                'title' => $varTitle
+            ));
+        } else {
+            return $this->render('textbox/index.html.twig', array(
+                'form' => $form->createView(),
+                'title' => $varTitle
+            ));
+        }
     }
 
     /**
      * @Route("/{_locale}/{slug}",
      *     name="yesnopage",
      *     requirements={"slug"="configipv4|configipv6|configrecursion|configvirtual|configutc"},
+     *     defaults={"_locale": "en", "edit" = null}
+     * )
+     * @Route("/{_locale}/{slug}/{edit}",
+     *     name="yesnoeditpage",
+     *     requirements={"slug"="configipv4|configipv6|configrecursion|configvirtual|configutc","edit"="edit"},
      *     defaults={"_locale": "en"}
      * )
      */
-    public function yesnoAction(Request $request, $slug, SessionInterface $session)
+    public function yesnoAction(Request $request, $slug, $edit, SessionInterface $session)
     {
-
-        $form = $this->createForm(YesNoTaskType::class);
+        if ($edit === 'edit') {
+            $form = $this->createForm(YesNoEditTaskType::class);
+        } else {
+            $form = $this->createForm(YesNoTaskType::class);
+        }
 
         switch($slug) 
         {
@@ -362,38 +414,64 @@ class eFaInitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            if ($form->get('Back')->isClicked()) {
-                $action = $previousPage;
-                $slug   = $previousSlug;
-            } elseif ($form->get('Yes')->isClicked()) {
-                $session->set($slug, '1');
-                $action = $yesPage;
-                $slug   = $yesSlug;
-            } else {
-                $session->set($slug, '0');
-                $action = $noPage;
-                $slug   = $noSlug;
-            }
+            if ($edit === 'edit') {
+                if ($form->get('Return')->isClicked()) {
+                    $action = 'verifysettingspage';
+                    $slug   = 'verify';
+                } elseif ($form->get('Yes')->isClicked()) {
+                    $session->set($slug, '1');
+                    $action = 'verifysettingspage';
+                    $slug   = 'verify';
+                } else {
+                   $session->set($slug, '0');
+                   $action = 'verifysettingspage';
+                   $slug   = 'verify';
+                }
+           } else {
+                if ($form->get('Back')->isClicked()) {
+                    $action = $previousPage;
+                   $slug   = $previousSlug;
+                } elseif ($form->get('Yes')->isClicked()) {
+                    $session->set($slug, '1');
+                    $action = $yesPage;
+                    $slug   = $yesSlug;
+                } else {
+                   $session->set($slug, '0');
+                   $action = $noPage;
+                   $slug   = $noSlug;
+                }
+           }
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale(), 'slug' => $slug));
         }
-
-        return $this->render('yesno/index.html.twig', array(
-            'form' => $form->createView(),
-            'title' => $varTitle,
-            'question' => $varQuestion
-        ));
+        if ($edit === 'edit') {
+            return $this->render('yesnoedit/index.html.twig', array(
+                'form' => $form->createView(),
+                'title' => $varTitle,
+                'question' => $varQuestion
+                ));
+        } else {
+            return $this->render('yesno/index.html.twig', array(
+                'form' => $form->createView(),
+                'title' => $varTitle,
+                'question' => $varQuestion
+                ));
+        }
     }
 
     /**
      * @Route("/{_locale}/{slug}",
      *     name="passwordpage",
      *     requirements={"slug"="webpassword|clipassword"},
+     *     defaults={"_locale": "en", "edit" = null}
+     * )
+     * @Route("/{_locale}/{slug}/{edit}",
+     *     name="passwordeditpage",
+     *     requirements={"slug"="webpassword|clipassword", "edit" = "edit"},
      *     defaults={"_locale": "en"}
      * )
      */
-    public function passwordAction(Request $request, $slug, SessionInterface $session)
+    public function passwordAction(Request $request, $slug, $edit, SessionInterface $session)
     {
         $task = new eFaInitTask();
 
@@ -427,8 +505,11 @@ class eFaInitController extends AbstractController
             break;
 
         }
-
-        $form = $this->createForm(PasswordTaskType::class, $task, $options);
+        if ($edit === 'edit') {
+             $form = $this->createForm(PasswordEditTaskType::class, $task, $options);
+        } else {
+             $form = $this->createForm(PasswordTaskType::class, $task, $options);
+        }
 
         $form->handleRequest($request);
 
@@ -437,33 +518,54 @@ class eFaInitController extends AbstractController
 
             $getMethod = "get" . $options['varProperty1'];
             $session->set($slug, $task->$getMethod());
-
-            $action = $form->get('Next')->isClicked() ? $nextSlug : $previousSlug;
-            $page   = $form->get('Next')->isClicked() ? $nextPage : $previousPage;
+            
+            if ($edit === 'edit') {
+                $action = 'verify';
+                $page   = 'verifysettingspage';
+            } else {
+                $action = $form->get('Next')->isClicked() ? $nextSlug : $previousSlug;
+                $page   = $form->get('Next')->isClicked() ? $nextPage : $previousPage;
+            }
 
             return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
         }
-
-        return $this->render('passwordbox/index.html.twig', array(
-            'form' => $form->createView(),
-            'title' => $varTitle,
-        ));
+        
+        if ($edit === 'edit') {
+            return $this->render('passwordeditbox/index.html.twig', array(
+                'form' => $form->createView(),
+                'title' => $varTitle,
+            ));
+        } else {
+            return $this->render('passwordbox/index.html.twig', array(
+                'form' => $form->createView(),
+                'title' => $varTitle,
+            ));
+        }
     }
 
     /**
      * @Route("/{_locale}/{slug}",
      *     name="timezonepage",
      *     requirements={"slug"="timezone"},
+     *     defaults={"_locale": "en", "edit" = null}
+     * )
+      * @Route("/{_locale}/{slug}/{edit}",
+     *     name="timezoneeditpage",
+     *     requirements={"slug"="timezone", "edit" = "edit"},
      *     defaults={"_locale": "en"}
      * )
      */
-    public function timezoneAction(Request $request, $slug, SessionInterface $session)
+    public function timezoneAction(Request $request, $slug, $edit, SessionInterface $session)
     {
         $task = new eFaInitTask();
 
         $varData = $session->get($slug);
-    
-        $form = $this->createForm(TimezoneTaskType::class, $task, array('varData' => $varData));
+        
+        if ($edit === 'edit') {
+            $form = $this->createForm(TimezoneEditTaskType::class, $task, array('varData' => $varData));
+        } else { 
+            $form = $this->createForm(TimezoneTaskType::class, $task, array('varData' => $varData));
+        }
     
         $form->handleRequest($request);
     
@@ -471,17 +573,81 @@ class eFaInitController extends AbstractController
             $task = $form->getData();
 
             $session->set('timezone', $task->getTimezone()); 
-        
-            $action = $form->get('Next')->isClicked() ? 'mailserver' : 'configutc';
-            $page   = $form->get('Next')->isClicked() ? 'textboxpage' : 'yesnopage';
+            
+            if ($edit === 'edit') {
+                $action = 'verify';
+                $page   = 'verifysettingspage';
+            } else {
+                $action = $form->get('Next')->isClicked() ? 'mailserver' : 'configutc';
+                $page   = $form->get('Next')->isClicked() ? 'textboxpage' : 'yesnopage';
+            }
 
+            return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
+        }
+
+        if ($edit === 'edit') {
+            return $this->render('timezoneedit/index.html.twig', array(
+                'form' => $form->createView(),
+                'title' => 'Timezone Selection'
+            ));
+        } else {
+            return $this->render('timezone/index.html.twig', array(
+                'form' => $form->createView(),
+                'title' => 'Timezone Selection'
+            ));
+        }
+    }
+
+     /**
+     * @Route("/{_locale}/{slug}",
+     *     name="verifysettingspage",
+     *     requirements={"slug"="verify"},
+     *     defaults={"_locale": "en"}
+     * )
+     */
+    public function verifySettingsAction(Request $request, $slug, SessionInterface $session)
+    {
+        $task = new eFaInitTask();
+
+        $form = $this->createForm(VerifySettingsTaskType::class, $task);
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+
+            $action = '';
+            $page   = '';
 
             return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
         }
     
-        return $this->render('timezone/index.html.twig', array(
+        return $this->render('verifysettings/index.html.twig', array(
             'form' => $form->createView(),
-            'title' => 'Timezone Selection'
+            'title' => 'Verify Settings',
+            'language' => $session->get('locale'),
+            'hostname' => $session->get('hostname'),
+            'domainname' => $session->get('domainname'),
+            'email' => $session->get('email'),
+            'configipv4' => $session->get('configipv4'),
+            'ipv4address' => $session->get('ipv4address'),
+            'ipv4netmask' => $session->get('ipv4netmask'),
+            'ipv4gateway' => $session->get('ipv4gateway'),
+            'configipv6' => $session->get('configipv6'),
+            'ipv6address' => $session->get('ipv6address'),
+            'ipv6mask' => $session->get('ipv6mask'),
+            'ipv6gateway' => $session->get('ipv6gateway'),
+            'configrecursion' => $session->get('configrecursion'),
+            'dns1' => $session->get('dns1'),
+            'dns2' => $session->get('dns2'),
+            'webusername' => $session->get('webusername'),
+            'cliusername' => $session->get('cliusername'),
+            'configvirtual' => $session->get('configvirtual'),
+            'configutc' => $session->get('configutc'),
+            'timezone' => $session->get('timezone'),
+            'mailserver' => $session->get('mailserver'),
+            'ianacode' => $session->get('ianacode'),
+            'orgname' => $session->get('orgname'),
         ));
     }
  
