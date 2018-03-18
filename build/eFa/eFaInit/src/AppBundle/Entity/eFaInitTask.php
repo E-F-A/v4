@@ -5,10 +5,6 @@ namespace AppBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Assert\GroupSequence({"eFaInitTask", "Webpassword1", "Webpassword2"})
- * @Assert\GroupSequence({"eFaInitTask", "CLIpassword1", "CLIpassword2"})
- */
 class eFaInitTask
 {
 
@@ -449,6 +445,92 @@ class eFaInitTask
     {
          return $this->clipassword1 === $this->clipassword2;
     }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"Timezone"}
+     * )
+     */
+    protected $timezone;
+
+
+    public function getTimezone()
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone($var)
+    {
+        $this->timezone = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"Mailserver"}
+     * )
+     * @Assert\Regex(
+     *    "/^[-a-zA-Z0-9\.]{2,256}+$/",
+     *    groups={"Mailserver"}
+     * )
+     */
+    protected $mailserver;
+
+
+    public function getMailserver()
+    {
+        return $this->mailserver;
+    }
+
+    public function setMailserver($var)
+    {
+        $this->mailserver = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"IANAcode"}
+     * )
+     * @Assert\Regex(
+     *    "/^[a-z]{1,2}$/",
+     *    groups={"IANAcode"}
+     * )
+     */
+    protected $ianacode;
+
+
+    public function getIANAcode()
+    {
+        return $this->ianacode;
+    }
+
+    public function setIANAcode($var)
+    {
+        $this->ianacode = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"Orgname"}
+     * )
+     * @Assert\Regex(
+     *    "/^[a-zA-Z1-9]{2,253}$/",
+     *    groups={"Orgname"}
+     * )
+     */
+    protected $orgname;
+
+
+    public function getOrgname()
+    {
+        return $this->orgname;
+    }
+
+    public function setOrgname($var)
+    {
+        $this->orgname = $var;
+    }
+
+
 
 }
 ?>

@@ -80,6 +80,16 @@ body {
     border-radius: 6px;
 }
 
+.timezone-container select {
+    font-size: 20px;
+    margin-bottom: 40px;
+    background-color: #999;
+    border: solid 2px #000;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
 .init input {
     font-size: 28px;
     margin-bottom: 40px;

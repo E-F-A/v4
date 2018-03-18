@@ -7,6 +7,7 @@ use AppBundle\Form\LanguageTaskType;
 use AppBundle\Form\YesNoTaskType;
 use AppBundle\Form\TextboxTaskType;
 use AppBundle\Form\PasswordTaskType;
+use AppBundle\Form\TimezoneTaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,7 +29,7 @@ class eFaInitController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            $languageTask = $form->getData();
+            $task = $form->getData();
 
             $session->set('locale', $task->getLanguage()); 
 
@@ -80,10 +81,7 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}/{slug}",
      *     name="textboxpage",
-     *     requirements={"slug"="
-     *         hostname|
-     *         domainname|
-     *         email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername|cliusername"},
+     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -236,6 +234,39 @@ class eFaInitController extends AbstractController
                 $previousSlug = 'webpassword';
                 $previousPage = 'passwordpage';
             break;
+            case "mailserver":
+                $options = array(
+                    'varLabel'    => 'Please enter the IP or hostname of the local mail server',
+                    'varProperty' => 'Mailserver'
+                );
+                $varTitle     = 'Local Mail Server';
+                $nextSlug     = 'ianacode';
+                $nextPage     = 'textboxpage';
+                $previousSlug = 'timezone';
+                $previousPage = 'timezonepage';
+            break;
+            case "ianacode":
+                $options = array(
+                    'varLabel'    => 'Please enter your IANA country code (https://www.iso.org/obp)',
+                    'varProperty' => 'IANAcode'
+                );
+                $varTitle     = 'IANA Code';
+                $nextSlug     = 'orgname';
+                $nextPage     = 'textboxpage';
+                $previousSlug = 'mailserver';
+                $previousPage = 'textboxpage';
+            break;
+            case "orgname":
+                $options = array(
+                    'varLabel'    => 'Please enter your organization name (No spaces, dots, or underscores)',
+                    'varProperty' => 'Orgname'
+                );
+                $varTitle     = 'Organization Name';
+                $nextSlug     = '';
+                $nextPage     = '';
+                $previousSlug = 'ianacode';
+                $previousPage = 'textboxpage';
+            break;
  
         }
         $options['varData'] = $session->get($slug);
@@ -265,7 +296,7 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}/{slug}",
      *     name="yesnopage",
-     *     requirements={"slug"="configipv4|configipv6|configrecursion"},
+     *     requirements={"slug"="configipv4|configipv6|configrecursion|configvirtual|configutc"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -306,7 +337,26 @@ class eFaInitController extends AbstractController
                 $previousPage = 'yesnopage';
                 $previousSlug = 'configipv6';
             break;
-
+            case "configvirtual":
+                $varTitle     = 'Configure Hypervisor Tools';
+                $varQuestion  = 'Do you want to install hypervisor tools for your hypervisor?';
+                $yesSlug      = 'configutc';
+                $yesPage      = 'yesnopage';
+                $noSlug       = 'configutc';
+                $noPage       = 'yesnopage';
+                $previousPage = 'passwordpage';
+                $previousSlug = 'clipassword';
+            break;
+            case "configutc":
+                $varTitle     = 'Configure UTC Time';
+                $varQuestion  = 'Is the host set to UTC time?';
+                $yesSlug      = 'timezone';
+                $yesPage      = 'timezonepage';
+                $noSlug       = 'timezone';
+                $noPage       = 'timezonepage';
+                $previousPage = 'yesnopage';
+                $previousSlug = 'configvirtual';
+            break;
         }
 
         $form->handleRequest($request);
@@ -370,8 +420,8 @@ class eFaInitController extends AbstractController
                     'varProperty2' => 'CLIpassword2'
                 );
                 $varTitle     = 'Console Admin Password';
-                $nextSlug     = '';
-                $nextPage     = '';
+                $nextSlug     = 'configvirtual';
+                $nextPage     = 'yesnopage';
                 $previousSlug = 'cliusername';
                 $previousPage = 'textboxpage';
             break;
@@ -400,7 +450,41 @@ class eFaInitController extends AbstractController
         ));
     }
 
+    /**
+     * @Route("/{_locale}/{slug}",
+     *     name="timezonepage",
+     *     requirements={"slug"="timezone"},
+     *     defaults={"_locale": "en"}
+     * )
+     */
+    public function timezoneAction(Request $request, $slug, SessionInterface $session)
+    {
+        $task = new eFaInitTask();
 
+        $varData = $session->get($slug);
+    
+        $form = $this->createForm(TimezoneTaskType::class, $task, array('varData' => $varData));
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+
+            $session->set('timezone', $task->getTimezone()); 
+        
+            $action = $form->get('Next')->isClicked() ? 'mailserver' : 'configutc';
+            $page   = $form->get('Next')->isClicked() ? 'textboxpage' : 'yesnopage';
+
+
+            return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
+        }
+    
+        return $this->render('timezone/index.html.twig', array(
+            'form' => $form->createView(),
+            'title' => 'Timezone Selection'
+        ));
+    }
+ 
 
 }
 ?>
