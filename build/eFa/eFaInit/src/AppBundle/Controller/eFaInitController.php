@@ -80,7 +80,10 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}/{slug}",
      *     name="textboxpage",
-     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername"},
+     *     requirements={"slug"="
+     *         hostname|
+     *         domainname|
+     *         email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername|cliusername"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -222,6 +225,18 @@ class eFaInitController extends AbstractController
                 $previousSlug = 'configrecursion';
                 $previousPage = 'yesnopage';
             break;
+            case "cliusername":
+                $options = array(
+                    'varLabel'    => 'Please enter the username for the admin console interface',
+                    'varProperty' => 'CLIusername'
+                );
+                $varTitle     = 'Console Admin Username';
+                $nextSlug     = 'clipassword';
+                $nextPage     = 'passwordpage';
+                $previousSlug = 'webpassword';
+                $previousPage = 'passwordpage';
+            break;
+ 
         }
         $options['varData'] = $session->get($slug);
 
@@ -324,7 +339,7 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}/{slug}",
      *     name="passwordpage",
-     *     requirements={"slug"="webpassword"},
+     *     requirements={"slug"="webpassword|clipassword"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -342,11 +357,25 @@ class eFaInitController extends AbstractController
                     'varProperty2' => 'Webpassword2'
                 );
                 $varTitle     = 'Web Admin Password';
-                $nextSlug     = '';
-                $nextPage     = '';
+                $nextSlug     = 'cliusername';
+                $nextPage     = 'textboxpage';
                 $previousSlug = 'webusername';
                 $previousPage = 'textboxpage';
             break;
+            case "clipassword":
+                $options = array(
+                    'varLabel1'    => 'Please enter the console admin password',
+                    'varLabel2'    => 'Please re-enter the console admin password',
+                    'varProperty1'  => 'CLIpassword1',
+                    'varProperty2' => 'CLIpassword2'
+                );
+                $varTitle     = 'Console Admin Password';
+                $nextSlug     = '';
+                $nextPage     = '';
+                $previousSlug = 'cliusername';
+                $previousPage = 'textboxpage';
+            break;
+
         }
 
         $form = $this->createForm(PasswordTaskType::class, $task, $options);

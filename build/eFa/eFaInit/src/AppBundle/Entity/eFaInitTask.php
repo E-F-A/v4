@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Assert\GroupSequence({"eFaInitTask", "Webpassword1", "Webpassword2"})
+ * @Assert\GroupSequence({"eFaInitTask", "CLIpassword1", "CLIpassword2"})
  */
 class eFaInitTask
 {
@@ -335,6 +336,28 @@ class eFaInitTask
 
     /**
      * @Assert\NotBlank(
+     *    groups={"CLIusername"}
+     * )
+     * @Assert\Regex(
+     *    "/^[a-z_][a-z0-9_-]{1,30}+$/",
+     *    groups={"CLIusername"}
+     * )
+     */
+    protected $cliusername;
+
+
+    public function getCLIusername()
+    {
+        return $this->cliusername;
+    }
+
+    public function setCLIusername($var)
+    {
+        $this->cliusername = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
      *    groups={"Webpassword1"}
      * )
      * @Assert\Length(
@@ -375,9 +398,57 @@ class eFaInitTask
      * )
      *        
      */
-    public function isPasswordSame()
+    public function isWebPasswordSame()
     {
          return $this->webpassword1 === $this->webpassword2;
     }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"CLIpassword1"}
+     * )
+     * @Assert\Length(
+     *    min=1,
+     *    max=256,
+     *    groups={"CLIpassword1"}
+     * )
+     */
+    protected $clipassword1;
+    protected $clipassword2;
+
+
+    public function getCLIpassword2()
+    {
+        return $this->clipassword2;
+    }
+
+    public function setCLIpassword2($var)
+    {
+        $this->clipassword2 = $var;
+    }
+    
+    public function getCLIpassword1()
+    {
+        return $this->clipassword1;
+    }
+
+    public function setCLIpassword1($var)
+    {
+        $this->clipassword1 = $var;
+    }
+
+
+    /**
+     * @Assert\IsTrue(
+     *     message="Passwords do not match",
+     *     groups={"CLIpassword2"}
+     * )
+     *        
+     */
+    public function isCLIPasswordSame()
+    {
+         return $this->clipassword1 === $this->clipassword2;
+    }
+
 }
 ?>
