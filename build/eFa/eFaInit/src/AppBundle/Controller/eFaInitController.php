@@ -247,7 +247,7 @@ class eFaInitController extends AbstractController
             break;
             case "ianacode":
                 $options = array(
-                    'varLabel'    => 'Please enter your IANA country code (https://www.iso.org/obp)',
+                    'varLabel'    => 'Please enter your IANA country code',
                     'varProperty' => 'IANAcode'
                 );
                 $varTitle     = 'IANA Code';
