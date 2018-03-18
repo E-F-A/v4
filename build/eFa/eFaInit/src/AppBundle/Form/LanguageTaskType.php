@@ -3,7 +3,7 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\LanguageTask;
+use AppBundle\Entity\eFaInitTask;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,7 +39,7 @@ class LanguageTaskType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => LanguageTask::class,
+            'data_class' => eFaInitTask::class,
             'csrf_token_id' => 'language_task'
         ));
         $resolver->setRequired('locale');
