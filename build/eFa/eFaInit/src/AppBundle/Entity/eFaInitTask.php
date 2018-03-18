@@ -187,5 +187,83 @@ class eFaInitTask
     {
         $this->ipv4gateway = $var;
     }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"IPv6address"}
+     * )
+     * @Assert\Length(
+     *    min     = 3,
+     *    max     = 40,
+     *    groups={"IPv6address"}
+     * )
+     * @Assert\Ip(
+     *    version = 6,
+     *    groups={"IPv6address"}
+     * )
+     */
+    protected $ipv6address;
+
+
+    public function getIPv6address()
+    {
+        return $this->ipv6address;
+    }
+
+    public function setIPv6address($var)
+    {
+        $this->ipv6address = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"IPv6mask"}
+     * )
+     * @Assert\Range(
+     *    min = 8,
+     *    max = 127,
+     *    groups={"IPv6mask"}
+     * )
+     */
+    protected $ipv6mask;
+
+
+    public function getIPv6mask()
+    {
+        return $this->ipv6mask;
+    }
+
+    public function setIPv6mask($var)
+    {
+        $this->ipv6mask = $var;
+    }
+
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"IPv6gateway"}
+     *)
+     * @Assert\Length(
+     *    min     = 3,
+     *    max     = 40,
+     *    groups={"IPv6gateway"}
+     * )
+     * @Assert\Ip(
+     *    version = 6,
+     *    groups={"IPv6gateway"}
+     * )
+     */
+    protected $ipv6gateway;
+
+
+    public function getIPv6gateway()
+    {
+        return $this->ipv6gateway;
+    }
+
+    public function setIPv6gateway($var)
+    {
+        $this->ipv6gateway = $var;
+    }
 }
 ?>

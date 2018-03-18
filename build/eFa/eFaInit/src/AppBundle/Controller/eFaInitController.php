@@ -79,7 +79,7 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}/{slug}",
      *     name="textboxpage",
-     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway"},
+     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -96,7 +96,9 @@ class eFaInitController extends AbstractController
                 );
                 $varTitle     = 'Hostname';
                 $nextSlug     = 'domainname';
+                $nextPage     = 'textboxpage';
                 $previousSlug = 'language';
+                $previousPage = 'languagepage';
             break;
             case "domainname":
                 $options = array(
@@ -105,7 +107,9 @@ class eFaInitController extends AbstractController
                 );
                 $varTitle     = 'Domain Name';
                 $nextSlug     = 'email';
+                $nextPage     = 'textboxpage';
                 $previousSlug = 'hostname';
+                $previousPage = 'textboxpage';
             break;
             case "email":
                 $options = array(
@@ -114,7 +118,9 @@ class eFaInitController extends AbstractController
                 );
                 $varTitle     = 'Email';
                 $nextSlug     = 'configipv4';
+                $nextPage     = 'yesnopage';
                 $previousSlug = 'domainname';
+                $previousPage = 'textboxpage';
             break;
             case "ipv4address":
                 $options = array(
@@ -123,7 +129,9 @@ class eFaInitController extends AbstractController
                 );
                 $varTitle     = 'IPv4 Address';
                 $nextSlug     = 'ipv4netmask';
+                $nextPage     = 'textboxpage';
                 $previousSlug = 'configipv4';
+                $previousPage = 'yesnopage';
             break;
             case "ipv4netmask":
                 $options = array(
@@ -132,7 +140,9 @@ class eFaInitController extends AbstractController
                 );
                 $varTitle     = 'IPv4 Netmask';
                 $nextSlug     = 'ipv4gateway';
+                $nextPage     = 'textboxpage';
                 $previousSlug = 'ipv4address';
+                $previousPage = 'textboxpage';
             break;
             case "ipv4gateway":
                 $options = array(
@@ -140,8 +150,43 @@ class eFaInitController extends AbstractController
                     'varProperty' => 'IPv4gateway'
                 );
                 $varTitle     = 'IPv4 Gateway';
-                $nextSlug     = 'nextitem';
+                $nextSlug     = 'configipv6';
+                $nextPage     = 'yesnopage';
                 $previousSlug = 'ipv4netmask';
+                $previousPage = 'textboxpage';
+            break;
+             case "ipv6address":
+                $options = array(
+                    'varLabel'    => 'Please enter a valid IPv6 address',
+                    'varProperty' => 'IPv6address'
+                );
+                $varTitle     = 'IPv6 Address';
+                $nextSlug     = 'ipv6mask';
+                $nextPage     = 'textboxpage';
+                $previousSlug = 'configipv6';
+                $previousPage = 'yesnopage';
+            break;
+            case "ipv6mask":
+                $options = array(
+                    'varLabel'    => 'Please enter a valid IPv6 mask',
+                    'varProperty' => 'IPv6mask'
+                );
+                $varTitle     = 'IPv6 Mask';
+                $nextSlug     = 'ipv6gateway';
+                $nextPage     = 'textboxpage';
+                $previousSlug = 'ipv6address';
+                $previousPage = 'textboxpage';
+            break;
+            case "ipv6gateway":
+                $options = array(
+                    'varLabel'    => 'Please enter a valid IPv6 gateway',
+                    'varProperty' => 'IPv6gateway'
+                );
+                $varTitle     = 'IPv6 Gateway';
+                $nextSlug     = 'configipv6';
+                $nextPage     = 'yesnopage';
+                $previousSlug = 'ipv6mask';
+                $previousPage = 'textboxpage';
             break;
  
         }
@@ -159,16 +204,12 @@ class eFaInitController extends AbstractController
             $session->set($slug, $task->$getMethod());
 
             $action = $form->get('Next')->isClicked() ? $nextSlug : $previousSlug;
+            $page   = $form->get('Next')->isClicked() ? $nextPage : $previousPage;
 
-            if ($action === 'language') {
-                return $this->redirectToRoute('languagepage', array('_locale' => $request->getLocale()));
-            } elseif ($action === 'configipv4') {
-                return $this->redirectToRoute('configipv4page', array('_locale' => $request->getLocale()));
-            } else {
-                return $this->redirectToRoute('textboxpage', array('_locale' => $request->getLocale(), 'slug' => $action));
-            }
+            return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
         }
 
+        
         return $this->render('textbox/index.html.twig', array(
             'form' => $form->createView(),
             'title' => $varTitle
@@ -176,32 +217,56 @@ class eFaInitController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/configipv4",
-     *     name="configipv4page",
+     * @Route("/{_locale}/{slug}",
+     *     name="yesnopage",
+     *     requirements={"slug"="configipv4|configipv6"},
      *     defaults={"_locale": "en"}
      * )
      */
-    public function configipv4Action(Request $request, SessionInterface $session)
+    public function yesnoAction(Request $request, $slug, SessionInterface $session)
     {
 
         $form = $this->createForm(YesNoTaskType::class);
+
+        switch($slug) 
+        {
+            case "configipv4":
+                $varTitle     = 'Configure IPv4';
+                $varQuestion  = 'Do you want to set a static IPv4 address?';
+                $yesSlug      = 'ipv4address';
+                $yesPage      = 'textboxpage';
+                $noSlug       = 'configipv6';
+                $noPage       = 'yesnopage';
+                $previousPage = 'textboxpage';
+                $previousSlug = 'email';
+            break;
+            case "configipv6":
+                $varTitle     = 'Configure IPv6';
+                $varQuestion  = 'Do you want to set a static IPv6 address?';
+                $yesSlug      = 'ipv6address';
+                $yesPage      = 'textboxpage';
+                $noSlug       = 'nextitem';
+                $noPage       = 'nextpage';
+                $previousPage = 'yesnopage';
+                $previousSlug = 'configipv4';
+            break;
+        }
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             if ($form->get('Back')->isClicked()) {
-                $action='textboxpage';
-                $slug='email';
+                $action = $previousPage;
+                $slug   = $previousSlug;
             } elseif ($form->get('Yes')->isClicked()) {
-                $action='textboxpage';
-                $slug='ipv4address';
-                // Store ipv4 config in session
-                $session->set('configipv4', '1');
+                $session->set($slug, '1');
+                $action = $yesPage;
+                $slug   = $yesSlug;
             } else {
-                $action='nextitem';
-                // Store ipv4 config in session
-                $session->set('configipv4', '0');
+                $session->set($slug, '0');
+                $action = $noPage;
+                $slug   = $noSlug;
             }
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale(), 'slug' => $slug));
@@ -209,8 +274,8 @@ class eFaInitController extends AbstractController
 
         return $this->render('yesno/index.html.twig', array(
             'form' => $form->createView(),
-            'title' => 'Configure IPv4',
-            'question' => 'Do you want to set a static IPv4 address?'
+            'title' => $varTitle,
+            'question' => $varQuestion
         ));
     }
 }
