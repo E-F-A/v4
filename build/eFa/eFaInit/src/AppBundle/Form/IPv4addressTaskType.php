@@ -15,7 +15,7 @@ class IPv4addressTaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('IPv4address', TextType::class, array(
+            ->add('Textbox', TextType::class, array(
                 'label'           => 'Please enter a valid IPv4 address',
                 'required'        => false,
                 'trim'            => true,

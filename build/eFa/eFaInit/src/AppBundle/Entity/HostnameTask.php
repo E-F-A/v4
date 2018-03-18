@@ -20,14 +20,14 @@ class HostnameTask
     protected $hostname;
 
 
-    public function getHostname()
+    public function getTextbox()
     {
         return $this->hostname;
     }
 
-    public function setHostname($hostname)
+    public function setTextbox($var)
     {
-        $this->hostname = $hostname;
+        $this->hostname = $var;
     }
 }
 ?>

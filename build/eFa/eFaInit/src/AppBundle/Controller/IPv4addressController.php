@@ -30,15 +30,16 @@ class IPv4addressController extends Controller
             $ipv4addressTask = $form->getData();
             
             // Store ipv4 address in session
-            $session->set('ipv4address', $ipv4addressTask->getIPv4address());
+            $session->set('ipv4address', $ipv4addressTask->getTextbox());
 
-            $action = $form->get('Back')->isClicked() ? 'configipv4page' : 'nextitem';
+            $action = $form->get('Back')->isClicked() ? 'configipv4page' : 'ipv4netmaskpage';
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }
     
-        return $this->render('ipv4address/index.html.twig', array(
+        return $this->render('textbox/index.html.twig', array(
             'form' => $form->createView(),
+            'title' => 'IPv4 Address'
         ));
     }
 }

@@ -30,15 +30,16 @@ class DomainnameController extends Controller
             $domainnameTask = $form->getData();
             
             // Store domainname in session
-            $session->set('domainname', $domainnameTask->getDomainname());
+            $session->set('domainname', $domainnameTask->getTextbox());
 
             $action = $form->get('Back')->isClicked() ? 'hostnamepage' : 'emailpage';
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }
     
-        return $this->render('domainname/index.html.twig', array(
+        return $this->render('textbox/index.html.twig', array(
             'form' => $form->createView(),
+            'title' => "Domain Name"
         ));
     }
 }

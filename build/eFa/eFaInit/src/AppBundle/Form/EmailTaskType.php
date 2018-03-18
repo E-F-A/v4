@@ -15,7 +15,7 @@ class EmailTaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Email', TextType::class, array(
+            ->add('Textbox', TextType::class, array(
                 'label'           => 'Please enter an email address for important notifications',
                 'required'        => false,
                 'trim'            => true,

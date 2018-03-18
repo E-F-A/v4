@@ -20,14 +20,14 @@ class IPv4addressTask
     protected $ipv4address;
 
 
-    public function getIPv4address()
+    public function getTextbox()
     {
         return $this->ipv4address;
     }
 
-    public function setIPv4address($ipv4address)
+    public function setTextbox($var)
     {
-        $this->ipv4address = $ipv4address;
+        $this->ipv4address = $var;
     }
 }
 ?>

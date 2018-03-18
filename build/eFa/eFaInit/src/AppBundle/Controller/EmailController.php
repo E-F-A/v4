@@ -30,15 +30,16 @@ class EmailController extends Controller
             $emailTask = $form->getData();
             
             // Store domainname in session
-            $session->set('email', $emailTask->getEmail());
+            $session->set('email', $emailTask->getTextbox());
 
             $action = $form->get('Back')->isClicked() ? 'domainnamepage' : 'configipv4page';
 
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }
     
-        return $this->render('email/index.html.twig', array(
+        return $this->render('textbox/index.html.twig', array(
             'form' => $form->createView(),
+            'title' => 'Email'
         ));
     }
 }

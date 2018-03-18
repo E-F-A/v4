@@ -15,7 +15,7 @@ class DomainnameTaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Domainname', TextType::class, array(
+            ->add('Textbox', TextType::class, array(
                 'label'           => 'Please enter a domain name',
                 'required'        => false,
                 'trim'            => true,

@@ -1,25 +1,25 @@
 <?php
-// src/AppBundle/Form/HostnameTaskType.php
+// src/AppBundle/Form/IPv4netmaskTaskType.php
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\HostnameTask;
+use AppBundle\Entity\IPv4netmaskTask;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class HostnameTaskType extends AbstractType
+class IPv4netmaskTaskType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('Textbox', TextType::class, array(
-                'label'           => 'Please enter a hostname',
+                'label'           => 'Please enter a valid IPv4 netmask',
                 'required'        => false,
                 'trim'            => true,
-                'data'         => $options['hostname']
+                'data'         => $options['ipv4netmask']
             ))
             ->add('Back', SubmitType::class, array(
                 'validation_groups' => false
@@ -30,10 +30,10 @@ class HostnameTaskType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'    => HostnameTask::class,
-            'csrf_token_id' => 'hostname_task'
+            'data_class'    => IPv4netmaskTask::class,
+            'csrf_token_id' => 'ipv4netmask_task'
         ));
-        $resolver->setRequired('hostname');
+        $resolver->setRequired('ipv4netmask');
     }
 }
 ?>

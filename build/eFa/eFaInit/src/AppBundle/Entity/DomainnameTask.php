@@ -20,14 +20,14 @@ class DomainnameTask
     protected $domainname;
 
 
-    public function getDomainname()
+    public function getTextbox()
     {
         return $this->domainname;
     }
 
-    public function setDomainname($domainname)
+    public function setTextbox($var)
     {
-        $this->domainname = $domainname;
+        $this->domainname = $var;
     }
 }
 ?>

@@ -40,8 +40,10 @@ class ConfigIPv4Controller extends Controller
             return $this->redirectToRoute($action, array('_locale' => $request->getLocale()));
         }
     
-        return $this->render('configipv4/index.html.twig', array(
+        return $this->render('yesno/index.html.twig', array(
             'form' => $form->createView(),
+            'title' => 'Configure IPv4',
+            'question' => 'Do you want to set a static IPv4 address?'
         ));
     }
 }
