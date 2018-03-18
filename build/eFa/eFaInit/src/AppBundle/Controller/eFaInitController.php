@@ -6,6 +6,7 @@ use AppBundle\Entity\eFaInitTask;
 use AppBundle\Form\LanguageTaskType;
 use AppBundle\Form\YesNoTaskType;
 use AppBundle\Form\TextboxTaskType;
+use AppBundle\Form\PasswordTaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -79,7 +80,7 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}/{slug}",
      *     name="textboxpage",
-     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway"},
+     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -183,12 +184,44 @@ class eFaInitController extends AbstractController
                     'varProperty' => 'IPv6gateway'
                 );
                 $varTitle     = 'IPv6 Gateway';
-                $nextSlug     = 'configipv6';
+                $nextSlug     = 'configrecursion';
                 $nextPage     = 'yesnopage';
                 $previousSlug = 'ipv6mask';
                 $previousPage = 'textboxpage';
             break;
- 
+            case "dns1":
+                $options = array(
+                    'varLabel'    => 'Please enter the primary DNS address',
+                    'varProperty' => 'DNS1'
+                );
+                $varTitle     = 'Primary DNS';
+                $nextSlug     = 'dns2';
+                $nextPage     = 'textboxpage';
+                $previousSlug = 'configrecursion';
+                $previousPage = 'yesnopage';
+            break;
+            case "dns2":
+                $options = array(
+                    'varLabel'    => 'Please enter the secondary DNS address',
+                    'varProperty' => 'DNS2'
+                );
+                $varTitle     = 'Secondary DNS';
+                $nextSlug     = 'webusername';
+                $nextPage     = 'textboxpage';
+                $previousSlug = 'dns1';
+                $previousPage = 'textboxpage';
+            break;
+            case "webusername":
+                $options = array(
+                    'varLabel'    => 'Please enter the username for the admin web interface',
+                    'varProperty' => 'Webusername'
+                );
+                $varTitle     = 'Web Admin Username';
+                $nextSlug     = 'webpassword';
+                $nextPage     = 'passwordpage';
+                $previousSlug = 'configrecursion';
+                $previousPage = 'yesnopage';
+            break;
         }
         $options['varData'] = $session->get($slug);
 
@@ -199,7 +232,6 @@ class eFaInitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $task = $form->getData();
 
-            // Store hostname in session
             $getMethod = "get" . $slug;
             $session->set($slug, $task->$getMethod());
 
@@ -209,7 +241,6 @@ class eFaInitController extends AbstractController
             return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
         }
 
-        
         return $this->render('textbox/index.html.twig', array(
             'form' => $form->createView(),
             'title' => $varTitle
@@ -219,7 +250,7 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}/{slug}",
      *     name="yesnopage",
-     *     requirements={"slug"="configipv4|configipv6"},
+     *     requirements={"slug"="configipv4|configipv6|configrecursion"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -245,11 +276,22 @@ class eFaInitController extends AbstractController
                 $varQuestion  = 'Do you want to set a static IPv6 address?';
                 $yesSlug      = 'ipv6address';
                 $yesPage      = 'textboxpage';
-                $noSlug       = 'nextitem';
-                $noPage       = 'nextpage';
+                $noSlug       = 'configrecursion';
+                $noPage       = 'yesnopage';
                 $previousPage = 'yesnopage';
                 $previousSlug = 'configipv4';
             break;
+            case "configrecursion":
+                $varTitle     = 'Configure DNS Recursion';
+                $varQuestion  = 'Do you want to enable full DNS Recursion?';
+                $yesSlug      = 'webusername';
+                $yesPage      = 'textboxpage';
+                $noSlug       = 'dns1';
+                $noPage       = 'textboxpage';
+                $previousPage = 'yesnopage';
+                $previousSlug = 'configipv6';
+            break;
+
         }
 
         $form->handleRequest($request);
@@ -278,5 +320,58 @@ class eFaInitController extends AbstractController
             'question' => $varQuestion
         ));
     }
+
+    /**
+     * @Route("/{_locale}/{slug}",
+     *     name="passwordpage",
+     *     requirements={"slug"="webpassword"},
+     *     defaults={"_locale": "en"}
+     * )
+     */
+    public function passwordAction(Request $request, $slug, SessionInterface $session)
+    {
+        $task = new eFaInitTask();
+
+        switch ($slug) 
+        {
+            case "webpassword":
+                $options = array(
+                    'varLabel1'    => 'Please enter the web admin password',
+                    'varLabel2'    => 'Please re-enter the web admin password',
+                    'varProperty1'  => 'Webpassword1',
+                    'varProperty2' => 'Webpassword2'
+                );
+                $varTitle     = 'Web Admin Password';
+                $nextSlug     = '';
+                $nextPage     = '';
+                $previousSlug = 'webusername';
+                $previousPage = 'textboxpage';
+            break;
+        }
+
+        $form = $this->createForm(PasswordTaskType::class, $task, $options);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+
+            $getMethod = "get" . $options['varProperty1'];
+            $session->set($slug, $task->$getMethod());
+
+            $action = $form->get('Next')->isClicked() ? $nextSlug : $previousSlug;
+            $page   = $form->get('Next')->isClicked() ? $nextPage : $previousPage;
+
+            return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
+        }
+
+        return $this->render('passwordbox/index.html.twig', array(
+            'form' => $form->createView(),
+            'title' => $varTitle,
+        ));
+    }
+
+
+
 }
 ?>

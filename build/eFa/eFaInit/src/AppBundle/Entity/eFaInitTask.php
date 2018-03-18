@@ -5,6 +5,9 @@ namespace AppBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @Assert\GroupSequence({"eFaInitTask", "Webpassword1", "Webpassword2"})
+ */
 class eFaInitTask
 {
 
@@ -264,6 +267,117 @@ class eFaInitTask
     public function setIPv6gateway($var)
     {
         $this->ipv6gateway = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"DNS1"}
+     *)
+     * @Assert\Ip(
+     *    groups={"DNS1"}
+     * )
+     */
+    protected $dns1;
+
+
+    public function getDNS1()
+    {
+        return $this->dns1;
+    }
+
+    public function setDNS1($var)
+    {
+        $this->dns1 = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"DNS2"}
+     * )
+     * @Assert\Ip(
+     *    groups={"DNS2"}
+     * )
+     */
+    protected $dns2;
+
+
+    public function getDNS2()
+    {
+        return $this->dns2;
+    }
+
+    public function setDNS2($var)
+    {
+        $this->dns2 = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"Webusername"}
+     * )
+     * @Assert\Regex(
+     *    "/^[a-z_][a-z0-9_-]{1,30}+$/",
+     *    groups={"Webusername"}
+     * )
+     */
+    protected $webusername;
+
+
+    public function getWebusername()
+    {
+        return $this->webusername;
+    }
+
+    public function setWebusername($var)
+    {
+        $this->webusername = $var;
+    }
+
+    /**
+     * @Assert\NotBlank(
+     *    groups={"Webpassword1"}
+     * )
+     * @Assert\Length(
+     *    min=1,
+     *    max=256,
+     *    groups={"Webpassword1"}
+     * )
+     */
+    protected $webpassword1;
+    protected $webpassword2;
+
+
+    public function getWebpassword2()
+    {
+        return $this->webpassword2;
+    }
+
+    public function setWebpassword2($var)
+    {
+        $this->webpassword2 = $var;
+    }
+    
+    public function getWebpassword1()
+    {
+        return $this->webpassword1;
+    }
+
+    public function setWebpassword1($var)
+    {
+        $this->webpassword1 = $var;
+    }
+
+
+    /**
+     * @Assert\IsTrue(
+     *     message="Passwords do not match",
+     *     groups={"Webpassword2"}
+     * )
+     *        
+     */
+    public function isPasswordSame()
+    {
+         return $this->webpassword1 === $this->webpassword2;
     }
 }
 ?>
