@@ -33,7 +33,7 @@ class LanguageEditTaskType extends AbstractType
                 'attr' => array('onchange' => "window.location.replace('/' + this.value + '/edit')"),
                 'choice_translation_domain' => true
                 ))
-            ->add('Return', SubmitType::class)
+            ->add('Save', SubmitType::class)
         ;
     }
     public function configureOptions(OptionsResolver $resolver)

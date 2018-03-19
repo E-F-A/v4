@@ -22,7 +22,7 @@ class TextboxEditTaskType extends AbstractType
                 'property_path'     => $options['varProperty'],
                 'data'              => $options['varData'],
             ))
-            ->add('Return', SubmitType::class, array(
+            ->add('Save', SubmitType::class, array(
                 'validation_groups' => array($options['varProperty']),
             ))
             ;

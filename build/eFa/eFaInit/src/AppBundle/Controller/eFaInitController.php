@@ -24,7 +24,7 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}",
      *     name="languagepage",
-           defaults={"edit"=null}
+     *     defaults={"edit"=null}
      * )
      * @Route("/{_locale}/{edit}",
      *     name="languageeditpage",
