@@ -613,44 +613,98 @@ class eFaInitController extends AbstractController
     
         $form->handleRequest($request);
     
+        $ipv4addressflag=false;
+        $ipv4netmaskflag=false;
+        $ipv4gatewayflag=false;
+        $ipv6addressflag=false;
+        $ipv6maskflag=false;
+        $ipv6gatewayflag=false;
+        $dns1flag=false;
+        $dns2flag=false;
+        $errormessage='';
+
         if ($form->isSubmitted() && $form->isValid()) {
             $task = $form->getData();
-
-            $action = '';
-            $page   = '';
-
-            return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
+            
+            $isValid=true;
+            
+            // Verify setting groups for sanity and completeness, highlight in red any that need attention
+            if ($session->get('configipv4') === '1') {
+                if ($session->get('ipv4address') == '') {
+                    $isValid=false;
+                    $ipv4addressflag=true;
+                }
+                if ($session->get('ipv4netmask') == '') {
+                    $isValid=false;
+                    $ipv4netmaskflag=true;
+                }
+                if ($session->get('ipv4gateway') == '') {
+                    $isValid=false;
+                    $ipv4gatewayflag=true;
+                }
+            } 
+            if ($session->get('configipv6') === '1') {
+                if ($session->get('ipv6address') == '') {
+                    $isValid=false;
+                    $ipv6addressflag=true;
+                }
+                if ($session->get('ipv6mask') == '') {
+                    $isValid=false;
+                    $ipv6maskflag=true;
+                }
+                if ($session->get('ipv6gateway') == '') {
+                    $isValid=false;
+                    $ipv6gatewayflag=true;
+                }
+            } 
+            
+            if ($session->get('configrecursion') === '0') {
+                if ($session->get('dns1') == '') {
+                    $isValid=false;
+                    $dns1flag=true;
+                }
+                if ($session->get('dns2') == '') {
+                    $isValid=false;
+                    $dns2flag=true;
+                }
+            } 
+            
+            if ($isValid === true) {
+                // Configure eFa
+            } else {
+               $errormessage = 'Please fix the items above before continuing.';
+            }
         }
     
         return $this->render('verifysettings/index.html.twig', array(
-            'form' => $form->createView(),
-            'title' => 'Verify Settings',
-            'language' => $session->get('locale'),
-            'hostname' => $session->get('hostname'),
-            'domainname' => $session->get('domainname'),
-            'email' => $session->get('email'),
-            'configipv4' => $session->get('configipv4'),
-            'ipv4address' => $session->get('ipv4address'),
-            'ipv4netmask' => $session->get('ipv4netmask'),
-            'ipv4gateway' => $session->get('ipv4gateway'),
-            'configipv6' => $session->get('configipv6'),
-            'ipv6address' => $session->get('ipv6address'),
-            'ipv6mask' => $session->get('ipv6mask'),
-            'ipv6gateway' => $session->get('ipv6gateway'),
+            'form'            => $form->createView(),
+            'title'           => 'Verify Settings',
+            'language'        => $session->get('locale'),
+            'hostname'        => $session->get('hostname'),
+            'domainname'      => $session->get('domainname'),
+            'email'           => $session->get('email'),
+            'configipv4'      => $session->get('configipv4'),
+            'ipv4address'     => $session->get('ipv4address'), 'ipv4addressflag' => $ipv4addressflag,
+            'ipv4netmask'     => $session->get('ipv4netmask'), 'ipv4netmaskflag' => $ipv4netmaskflag,
+            'ipv4gateway'     => $session->get('ipv4gateway'), 'ipv4gatewayflag' => $ipv4gatewayflag,
+            'configipv6'      => $session->get('configipv6'),
+            'ipv6address'     => $session->get('ipv6address'), 'ipv6addressflag' => $ipv6addressflag,
+            'ipv6mask'        => $session->get('ipv6mask'),    'ipv6maskflag'    => $ipv6maskflag,
+            'ipv6gateway'     => $session->get('ipv6gateway'), 'ipv6gatewayflag' => $ipv6gatewayflag,
             'configrecursion' => $session->get('configrecursion'),
-            'dns1' => $session->get('dns1'),
-            'dns2' => $session->get('dns2'),
-            'webusername' => $session->get('webusername'),
-            'cliusername' => $session->get('cliusername'),
-            'configvirtual' => $session->get('configvirtual'),
-            'configutc' => $session->get('configutc'),
-            'timezone' => $session->get('timezone'),
-            'mailserver' => $session->get('mailserver'),
-            'ianacode' => $session->get('ianacode'),
-            'orgname' => $session->get('orgname'),
+            'dns1'            => $session->get('dns1'), 'dns1flag' => $dns1flag,
+            'dns2'            => $session->get('dns2'), 'dns2flag' => $dns2flag,
+            'webusername'     => $session->get('webusername'),
+            'cliusername'     => $session->get('cliusername'),
+            'configvirtual'   => $session->get('configvirtual'),
+            'configutc'       => $session->get('configutc'),
+            'timezone'        => $session->get('timezone'),
+            'mailserver'      => $session->get('mailserver'),
+            'ianacode'        => $session->get('ianacode'),
+            'orgname'         => $session->get('orgname'),
+            'errormessage'    => $errormessage,
         ));
     }
- 
 
 }
 ?>

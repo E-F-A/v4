@@ -55,7 +55,7 @@
                              </h2>
                          </td>
                          <td>
-                            <h2>
+                            <h2 {% if dns1flag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}DNS Primary Address{% endtrans %}:
                             </h2>
                         </td>
@@ -87,7 +87,7 @@
                              </h2>
                          </td>
                          <td>
-                            <h2>
+                            <h2 {% if dns2flag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}DNS Secondary Address{% endtrans %}:
                             </h2>
                         </td>
@@ -95,7 +95,7 @@
                             <h2>
                                 {% if configrecursion == '0' %}
                                     <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'dns2', '_locale': language}) }}">
-                                       {% if dns1 == '' %} 
+                                       {% if dns2 == '' %} 
                                            {% trans %}Set DNS{% endtrans %}
                                        {% else %} 
                                            {{ dns2 }}
@@ -163,7 +163,7 @@
                      </tr>
                      <tr class="greyhighlight">
                         <td>
-                            <h2>
+                            <h2 {% if ipv4addressflag == true %}style="color: #F00"{% endif %}>
                                  {% trans %}IPv4 Address{% endtrans %}:
                             </h2>
                          </td>
@@ -195,7 +195,7 @@
                      </tr>
                      <tr>
                         <td>
-                            <h2>
+                            <h2 {% if ipv4netmaskflag == true %}style="color: #F00"{% endif %}> 
                                 {% trans %}IPv4 Netmask{% endtrans %}:
                             </h2>
                          </td>
@@ -227,7 +227,7 @@
                      </tr>
                      <tr class="greyhighlight">
                         <td>
-                            <h2>
+                            <h2 {% if ipv4gatewayflag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}IPv4 Gateway{% endtrans %}:
                             </h2>
                          </td>
@@ -297,7 +297,7 @@
                      </tr>
                      <tr class="greyhighlight">
                         <td>
-                            <h2>
+                            <h2 {% if ipv6addressflag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}IPv6 Address{% endtrans %}:
                             </h2>
                          </td>
@@ -329,7 +329,7 @@
                      </tr>
                      <tr>
                         <td>
-                            <h2>
+                            <h2 {% if ipv6maskflag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}IPv6 Mask{% endtrans %}:
                             </h2>
                          </td>
@@ -361,7 +361,7 @@
                      </tr>
                      <tr class="greyhighlight">
                         <td>
-                            <h2>
+                            <h2 {% if ipv6gatewayflag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}IPv6 Gateway{% endtrans %}:
                             </h2>
                          </td>
@@ -412,6 +412,13 @@
             {{ form_end(form) }}
             <div class="error-container">
                 {{ form_errors(form) }}
+                {% if errormessage != '' %}
+                    <ul>
+                        <li>
+                             {{ errormessage }}
+                        </li>
+                    </ul>
+                {% endif %}
             </div>
         </div>
     </div>
