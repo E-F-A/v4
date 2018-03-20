@@ -1,0 +1,8 @@
+*\.swp
+*~
+!/rpmbuild/BUILD
+/rpmbuild/BUILD/*
+!/rpmbuild/RPMS
+/rpmbuild/RPMS/*
+!/rpmbuild/SRPMS
+/rpmbuild/SRPMS/*
