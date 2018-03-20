@@ -25,7 +25,8 @@ class LanguageTaskType extends AbstractType
                     'French' => 'fr',
                     'German' => 'de',
                     'Portuguese' => 'pt_PT',
-                    'Turkish' => 'tr'
+                    'Turkish' => 'tr',
+                    'Italian' => 'it',
                     ),
                 'preferred_choices' => array($options['locale']),
                 'expanded' => false,
