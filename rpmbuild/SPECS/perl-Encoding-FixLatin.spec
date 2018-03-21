@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,53 +20,59 @@
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
-# yum -y install 
+# yum -y install
 #-----------------------------------------------------------------------------#
-Name:           perl-Geography-Countries
-Version:        2009041301
+%define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
+%define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
+
+Name:           perl-Encoding-FixLatin
+Version:        1.04
 Release:        1.eFa%{?dist}
-Summary:        fast lookup of country codes from IP addresses
-License:        MIT
+Summary:        takes mixed encoding input and produces UTF-8 output
+License:        perl_5
 Group:          Development/Libraries
-URL:            https://metacpan.org/pod/Geography::Countries
-Source0:        https://cpan.metacpan.org/authors/id/A/AB/ABIGAIL/Geography-Countries-%{version}.tar.gz
+URL:            https://metacpan.org/pod/Encoding::FixLatin
+Source0:        https://cpan.metacpan.org/authors/id/G/GR/GRANTM/Encoding-FixLatin-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
-This module maps country names, and their 2-letter, 3-letter and numerical codes,
-as defined by the ISO-3166 maintenance agency [1], and defined by the UNSD.
+Most encoding conversion tools take input in one encoding and produce output in another encoding. This module takes input which may contain characters in more than one encoding and makes a best effort to convert them all to UTF-8 output.
 
 %prep
-%setup -q -n Geography-Countries-%{version}
+%setup -q -n Encoding-FixLatin-%{version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
-%{__make} %{?_smp_mflags}
+%{__perl} Makefile.PL INSTALLDIRS=vendor
+make %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
-%{__make} install
+rm -rf $RPM_BUILD_ROOT
 
-### Clean up buildroot
-find %{buildroot} -name .packlist -exec %{__rm} {} \;
-find %{buildroot} -name perllocal.pod -exec %{__rm} {} \;
-find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
+make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
 
-%{_fixperms} %{buildroot}/*
+find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
+find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
+
+%{_fixperms} $RPM_BUILD_ROOT/*
+
+# Remove man conflict with perl package
+%{__rm} -rf %{buildroot}/%{_mandir}/man3
 
 %check
-%{__make} test
+make test
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc Changes MANIFEST TODO README
+%doc Changes LICENSE README MANIFEST
 %{perl_vendorlib}/*
-%{_mandir}/man3/*
+%{_bindir}/*
+%{_mandir}/man1/*
 
 %changelog
-* Sun Jan 15 2017 Shawn Iverson <shawniverson@gmail.com> - 2009041301-1
-- Built for eFa https://efa-project.org
+* Wed Mar 21 2018 Shawn Iverson <shawniverson@efa-project.org> 1.04-1
+- Updated for eFa https://efa-project.org
+
