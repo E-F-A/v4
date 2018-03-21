@@ -26,7 +26,7 @@
 
 Summary:       Collection of Perl modules which provide Internet protocols
 Name:          perl-libnet
-Version:       3.10
+Version:       3.11
 Epoch:         1
 Release:       1.eFa%{?dist}
 License:       Artistic/GPL
@@ -72,6 +72,9 @@ find %{buildroot} -name .packlist -exec %{__rm} {} \;
 %{perl_vendorlib}/Net/
 
 %changelog
+* Sun Mar 20 2018 Shawn Iverson <shawniverson@gmail.com> - 3.11-1
+- Updated for eFa https://efa-project.org
+
 * Sun Jan 15 2017 Shawn Iverson <shawniverson@gmail.com> - 3.10-1
 - Updated for eFa https://efa-project.org
 

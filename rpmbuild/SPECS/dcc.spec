@@ -24,7 +24,7 @@
 #-----------------------------------------------------------------------------#
 Name:      dcc
 Summary:   DCC Distributed Checksum Clearinghouse
-Version:   1.3.159
+Version:   1.3.163
 Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     System Environment/Daemons
@@ -76,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Mar 20 2018 shawniverson <shawniverson@efa-project.org> - 1.3.163-1
+- Updated for eFa https://efa-project.org
+
 * Sat Nov 11 2017 darky83 <darky83@efa-project.org> - 1.3.159-1
 - Updated for eFa https://efa-project.org
 
