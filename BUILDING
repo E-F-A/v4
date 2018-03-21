@@ -52,6 +52,6 @@ CentOS 7
 
 yum install git-core
 git clone https://github.com/E-F-A/v4
-cd v4/builds
+cd v4/build
 chmod +x devbuild.sh
 ./devbuild.sh
