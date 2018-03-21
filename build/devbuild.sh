@@ -128,11 +128,11 @@ tar xzvf MailScanner-5.0.7-2.rhel.tar.gz
 [ $? != 0 ] && exit 1
 yum -y install MailScanner-5.0.7-2/MailScanner-5.0.7-2.noarch.rpm
 [ $? != 0 ] && exit 1
+cd ../SPECS
+[ $? != 0 ] && exit 1
 rpmbuild -ba dcc.spec
 [ $? != 0 ] && exit 1
 yum -y install ../RPMS/x86_64/dcc-1.3.163-1.eFa.el7.centos.x86_64.rpm
-[ $? != 0 ] && exit 1
-cd ../SPECS
 [ $? != 0 ] && exit 1
 rpmbuild -ba eFa4.spec
 [ $? != 0 ] && exit 1
