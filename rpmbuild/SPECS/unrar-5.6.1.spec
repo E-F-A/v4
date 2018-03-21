@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #-----------------------------------------------------------------------------#
 Summary:    Utility for extracting RAR archives
 Name:       unrar
-Version:    5.4.5
+Version:    5.6.1
 Release:    1.eFa%{?dist}
 
 License:    Proprietary
@@ -62,6 +62,9 @@ install -pm 644 readme.txt %{buildroot}%{_defaultdocdir}/%{name}-%{version}/read
 %{_defaultdocdir}/%{name}-%{version}/*
 
 %changelog
+* Tue Mar 20 2018 Shawn Iverson <shawniverson@efa-project.org> - 5.6.1-1
+- Updated build for eFa4 https://efa-project.org (CentOS 7)
+
 * Sun Jan 15 2017 eFa Project - 5.4.5-1
 - Updated build for eFa4 (CentOS 7)
 
