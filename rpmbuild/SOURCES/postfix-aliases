@@ -1,0 +1,87 @@
+# Default aliases file for postfix
+#
+# this file should be in /etc or in /etc/postfix but if you want it in
+# /etc/postfix you'll have to adjust your /etc/postfix/main.cf file accordingly
+#
+# Aliases in this file will NOT be expanded in the header from
+# mail, but WILL be visible over networks or from /bin/mail.
+#
+# Following alias is required by the mail protocol, RFC 822 (and by RFC2142)
+# Set it to the address of a HUMAN who deals with this system's mail problems.
+#
+# For various security reasons, postfix WILL NOT deliver mail as root, so
+# ensure that the root alias is aliased to a HUMAN user, as otherwise
+# mail may get delivered to the $default_privs user (nobody).
+postmaster: root
+
+# Many mailers use this address to represent the empty SMTP return
+# path
+MAILER-DAEMON:	postmaster
+
+
+# Common aliases for system accounts.
+bin:		root
+daemon:		root
+games:		root
+ingres:		root
+nobody:		root
+system:		root
+toor:		root
+foo:		root
+falken:		root
+
+# Well-known aliases.
+admin:		root
+manager:	root
+dumper:		root
+operator:	root
+
+# traps to catch security attacks
+decode:		root
+moof:		root
+moog:		root
+
+# The following aliases are required by RFC 2142
+info:		staff
+marketing:	staff
+sales:		staff
+support:	staff
+
+# Standard aliases also defined by RFC 2142
+abuse:		postmaster
+# reports of network infrastructure difficulties
+noc:		root
+# address to report secuirty problems
+security:	root
+# DNS administrator (DNS soa records should use this)
+hostmaster:	root
+# Usenet news service administrator
+news:		usenet
+usenet:		root
+# http/web service administrator
+www:		webmaster
+webmaster:	root
+# UUCP service administrator
+uucp:		root
+# FTP administrator (especially anonymouse FTP)
+ftp:		root
+
+# Commonly used group aliases:
+#
+staff:		postmaster
+office:		postmaster
+all:		postmaster
+tech:		postmaster
+ops:		postmaster
+
+# Person who should get root's mail.  This alias
+# must exist.
+# CHANGE THIS LINE to an account of a HUMAN
+root:		postfix
+
+# Note to the user: You must create the alias above!
+# The root alias *must* exist under postfix because
+# postfix runs as a non-privileged user and cannot
+# touch a spool file which is UID/GID root
+# The mapping to the postfix user is to ensure that root's mail
+# doesn't get lost on a system installed out of the box.

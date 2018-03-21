@@ -1,0 +1,109 @@
+--- postfix-3.2.4/conf/main.cf	2017-02-19 01:58:20.000000000 +0000
++++ postfix-3.2.4/conf/main.cf2	2018-01-13 20:03:11.475104420 +0000
+@@ -132,6 +132,10 @@
+ #inet_interfaces = all
+ #inet_interfaces = $myhostname
+ #inet_interfaces = $myhostname, localhost
++inet_interfaces = localhost
++
++# Enable IPv4, and IPv6 if supported
++inet_protocols = all
+ 
+ # The proxy_interfaces parameter specifies the network interface
+ # addresses that this mail system receives mail on by way of a
+@@ -180,6 +184,7 @@
+ #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+ #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
+ #	mail.$mydomain, www.$mydomain, ftp.$mydomain
++mydestination = $myhostname, localhost.$mydomain, localhost
+ 
+ # REJECTING MAIL FOR UNKNOWN LOCAL USERS
+ #
+@@ -401,6 +406,7 @@
+ #alias_maps = hash:/etc/aliases
+ #alias_maps = hash:/etc/aliases, nis:mail.aliases
+ #alias_maps = netinfo:/aliases
++alias_maps = hash:/etc/aliases
+ 
+ # The alias_database parameter specifies the alias database(s) that
+ # are built with "newaliases" or "sendmail -bi".  This is a separate
+@@ -411,6 +417,7 @@
+ #alias_database = dbm:/etc/mail/aliases
+ #alias_database = hash:/etc/aliases
+ #alias_database = hash:/etc/aliases, hash:/opt/majordomo/aliases
++alias_database = hash:/etc/aliases
+ 
+ # ADDRESS EXTENSIONS (e.g., user+foo)
+ #
+@@ -479,7 +486,27 @@
+ #
+ # Cyrus IMAP over LMTP. Specify ``lmtpunix      cmd="lmtpd"
+ # listen="/var/imap/socket/lmtp" prefork=0'' in cyrus.conf.
+-#mailbox_transport = lmtp:unix:/var/imap/socket/lmtp
++#mailbox_transport = lmtp:unix:/var/lib/imap/socket/lmtp
++
++# If using the cyrus-imapd IMAP server deliver local mail to the IMAP
++# server using LMTP (Local Mail Transport Protocol), this is prefered
++# over the older cyrus deliver program by setting the
++# mailbox_transport as below:
++#
++# mailbox_transport = lmtp:unix:/var/lib/imap/socket/lmtp
++#
++# The efficiency of LMTP delivery for cyrus-imapd can be enhanced via
++# these settings.
++#
++# local_destination_recipient_limit = 300
++# local_destination_concurrency_limit = 5
++#
++# Of course you should adjust these settings as appropriate for the
++# capacity of the hardware you are using. The recipient limit setting
++# can be used to take advantage of the single instance message store
++# capability of Cyrus. The concurrency limit can be used to control
++# how many simultaneous LMTP sessions will be permitted to the Cyrus
++# message store.
+ #
+ # Cyrus IMAP via command line. Uncomment the "cyrus...pipe" and
+ # subsequent line in master.cf.
+@@ -499,7 +526,7 @@
+ # the main.cf file, otherwise the SMTP server will reject mail for    
+ # non-UNIX accounts with "User unknown in local recipient table".
+ #
+-#fallback_transport = lmtp:unix:/file/name
++#fallback_transport = lmtp:unix:/var/lib/imap/socket/lmtp
+ #fallback_transport = cyrus
+ #fallback_transport =
+ 
+@@ -673,4 +700,3 @@
+ # readme_directory: The location of the Postfix README files.
+ #
+ readme_directory =
+-inet_protocols = ipv4
+ 
+--- postfix-3.2.4/conf/master.cf	2016-12-03 15:49:54.000000000 +0000
++++ postfix-3.2.4/conf/master.cf2	2018-01-13 19:19:45.243008172 +0000
+@@ -40,7 +40,7 @@
+ #628       inet  n       -       n       -       -       qmqpd
+ pickup    unix  n       -       n       60      1       pickup
+ cleanup   unix  n       -       n       -       0       cleanup
+-qmgr      unix  n       -       n       300     1       qmgr
++qmgr      fifo  n       -       n       300     1       qmgr
+ #qmgr     unix  n       -       n       300     1       oqmgr
+ tlsmgr    unix  -       -       n       1000?   1       tlsmgr
+ rewrite   unix  -       -       n       -       -       trivial-rewrite
+@@ -96,14 +96,14 @@
+ # Also specify in main.cf: cyrus_destination_recipient_limit=1
+ #
+ #cyrus     unix  -       n       n       -       -       pipe
+-#  user=cyrus argv=/cyrus/bin/deliver -e -r ${sender} -m ${extension} ${user}
++#  user=cyrus argv=/usr/lib/cyrus-imapd/deliver -e -r ${sender} -m ${extension} ${user}
+ #
+ # ====================================================================
+ #
+ # Old example of delivery via Cyrus.
+ #
+ #old-cyrus unix  -       n       n       -       -       pipe
+-#  flags=R user=cyrus argv=/cyrus/bin/deliver -e -m ${extension} ${user}
++#  flags=R user=cyrus argv=/usr/lib/cyrus-imapd/deliver -e -m ${extension} ${user}
+ #
+ # ====================================================================
+ #
