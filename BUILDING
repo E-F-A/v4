@@ -1,0 +1,57 @@
+######################################################################
+# eFa 4.0.0 BUILDING
+######################################################################
+# Copyright (C) 2018  https://efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#######################################################################
+
+Welcome to eFa Version 4.0.0!
+
+Many thanks goes to the developers of eFa and maintainers of all
+3rd party packages!
+
+!!!!!!!!!!!!!!!!!!DO NOT BUILD ON EXISTING SYSTEMS!!!!!!!!!!!!!!!!!!!!!
+
+#######################################################################
+# Building using kickstart and official repositories for testing
+#######################################################################
+
+The recommended way to build eFa for testing is by using kickstart
+and the official repositories
+
+Download CentOS 7 Minimal and add the following line to the boot kernel
+options:
+
+inst.ks=http://dl.efa-project.org/build/4/ksnobuild.sh
+
+This will set up the machine with the recommended partitioning
+
+Next, run the build.sh script in the builds directory:
+chmod +x build.sh
+logsave build.log ./build.sh testing
+
+#######################################################################
+# Building using github clone
+#######################################################################
+
+For development purposes, you can clone the repo and
+use devbuild.sh to build all rpm ackages and install on a fresh
+CentOS 7 
+
+yum install git-core
+git clone https://github.com/E-F-A/v4
+cd v4/builds
+chmod +x devbuild.sh
+./devbuild.sh
