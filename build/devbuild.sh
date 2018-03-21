@@ -136,7 +136,7 @@ yum -y install ../RPMS/x86_64/dcc-1.3.163-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba eFa4.spec
 [ $? != 0 ] && exit 1
-yum install ../RPMS/x86_64/eFa-4.0.0-1.eFa.el7.centos.x86_64.rpm
+yum -y install ../RPMS/x86_64/eFa-4.0.0-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 
 
