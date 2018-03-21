@@ -65,7 +65,7 @@
 
 Name: postfix
 Summary: Postfix Mail Transport Agent
-Version: 3.2.4
+Version: 3.3.0
 Release: 1.eFa%{?dist}
 Epoch: 2
 Group: System Environment/Daemons
@@ -84,7 +84,7 @@ Provides: MTA smtpd smtpdaemon server(smtp)
 # included in this package
 Conflicts: postfix-pflogsumm postfix-perl-scripts
 
-Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-3.2.4.tar.gz
+Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-3.3.0.tar.gz
 Source1: postfix-etc-init.d-postfix
 Source2: postfix.service
 Source3: README-Postfix-SASL-RedHat.txt
@@ -107,10 +107,10 @@ Source101: postfix-pam.conf
 
 # Patches
 
-Patch1: postfix-3.2.4-config.patch
-Patch2: postfix-3.2.4-files.patch
-Patch3: postfix-3.2.4-alternatives.patch
-Patch4: postfix-3.2.4-large-fs.patch
+Patch1: postfix-3.3.0-config.patch
+Patch2: postfix-3.3.0-files.patch
+Patch3: postfix-3.3.0-alternatives.patch
+Patch4: postfix-3.3.0-large-fs.patch
 Patch9: pflogsumm-1.1.5-datecalc.patch
 
 # Optional patches - set the appropriate environment variables to include
@@ -628,6 +628,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Mar 20 2018 Shawn Iverson <shawniverson@efa-project.org> - 2:3.3.0-1
+- Update for eFa https://efa-project.org
+
 * Sat Jan 13 2018 Shawn Iverson <shawniverson@efa-project.org> - 2:3.2.4-1
 - Port fedora 26 postfix 3.2.4 to EFA v4 on CentOS 7
 
