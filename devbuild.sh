@@ -36,18 +36,6 @@ else
   exit 1
 fi
 
-# Check network connectivity
-echo "- Checking network connectivity"
-wget -q --tries=3 --timeout=20 --spider $mirror
-if [[ $? -eq 0 ]]; then
-  echo "-- OK $mirror is reachable"
-else
-  echo "ERROR: No network connectivity"
-  echo "ERROR: unable to reach $mirror"
-  echo "ERROR: Aborting script"
-  exit 1
-fi
-
 yum -y install epel-release
 [ $? != 0 ] && exit 1
 
@@ -81,7 +69,7 @@ yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP op
 mkdir -p rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 [ $? != 0 ] && exit 1
 
-echo '%_topdir $(pwd)/rpmbuild' > ~/.rpmmacros
+echo "%_topdir $(pwd)/rpmbuild" > ~/.rpmmacros
 [ $? != 0 ] && exit 1
 cd rpmbuild/SPECS
 [ $? != 0 ] && exit 1
