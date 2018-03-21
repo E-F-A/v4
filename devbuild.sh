@@ -107,7 +107,7 @@ rpmbuild -ba Spamassassin.spec
 [ $? != 0 ] && exit 1
 yum -y install ../RPMS/x86_64/spamassassin-3.4.1-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
-rpmbuild -ba perl-Encoding-FixLatin.sped
+rpmbuild -ba perl-Encoding-FixLatin.spec
 [ $? != 0 ] && exit 1
 yum -y install ../RPMS/x86_64/perl-Encoding-FixLatin-1.04-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
