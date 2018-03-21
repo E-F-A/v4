@@ -6,3 +6,5 @@
 !/rpmbuild/RPMS
 /rpmbuild/SRPMS/*
 !/rpmbuild/SRPMS
+/rpmbuild/SOURCES/MailScanner-5.0.7-2
+
