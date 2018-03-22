@@ -53,7 +53,7 @@ Alias /eFaInit /var/www/eFaInit/web
 EOF
 
 # Set up a redirect in web root to eFaInit
-cat > /var/www/html/index.html < 'EOF'
+cat > /var/www/html/index.html << 'EOF'
 <!DOCTYPE html>
 <html>
     <head>
