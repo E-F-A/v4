@@ -334,6 +334,8 @@ Requires: php-fpm >= 7.2.1-1
     # php-fpm                                    # remi    # mailwatch, frontend
 Requires: system-config-keyboard >= 1.4.0-4
     # system-config-keyboard                     # base    # eFa
+Requires: php-process >= 7.2.3-2
+    # php-process                                # remi    # eFaInit
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
