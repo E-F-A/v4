@@ -376,6 +376,7 @@ if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; then
     exit 1
 fi
 
+mkdir -p $RPM_BUILD_ROOT%{_bindir}
 php composer-setup.php --quiet --install-dir=$RPM_BUILD_ROOT%{_bindir} --filename=composer
 rm composer-setup.php
 
@@ -435,6 +436,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %{_usrsrc}/eFa
 %{_localstatedir}/www
+%{_bindir}
 
 %changelog
 * Sun Jan 22 2017 eFa Project <somebody@efa-project.org> - 4.0.0-1
