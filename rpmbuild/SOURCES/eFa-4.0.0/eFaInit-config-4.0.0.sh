@@ -34,4 +34,35 @@ echo "Configuring eFaInit..."
 cd /var/www/eFaInit
 composer install --quiet
 
+# Grant apache permissions to cache/logs/sessions
+chown apache /var/www/eFaInit/var/{cache,logs,sessions}
+
+cat > /etc/httpd/conf.d/eFaInit.conf << 'EOF'
+Alias /eFaInit /var/www/eFaInit/web
+<Directory /var/www/eFaInit/web>
+   AllowOverride None
+   Require all granted
+   
+    <IfModule mod_rewrite.c>
+        Options -MultiViews
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^(.*)$ app.php [QSA,L]
+    </IfModule>
+</Directory>
+EOF
+
+# Set up a redirect in web root to eFaInit
+cat > /var/www/html/index.html < 'EOF'
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>eFaInit</title>
+    <meta http-equiv="refresh" content="0; url=/eFaInit/" />
+    </head>
+    <body>
+    </body>
+</html>
+EOF
+
 echo "Configuring eFaInit...done"
