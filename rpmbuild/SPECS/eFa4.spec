@@ -380,9 +380,6 @@ mkdir -p $RPM_BUILD_ROOT%{_bindir}
 php composer-setup.php --quiet --install-dir=$RPM_BUILD_ROOT%{_bindir} --filename=composer
 rm composer-setup.php
 
-cd $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit
-$RPM_BUILD_ROOT%{_bindir}/composer install
-
 %pre
 
 %preun
@@ -435,9 +432,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root, -)
 %{_usrsrc}/eFa
-%{_localstatedir}/www
+%{_localstatedir}/www/eFaInit
 %{_bindir}/composer
 
 %changelog
-* Sun Jan 22 2017 eFa Project <somebody@efa-project.org> - 4.0.0-1
+* Thu Mar 22 2017 eFa Project <somebody@efa-project.org> - 4.0.0-1
 - Initial Build for eFa v4 on CentOS7 <https://efa-project.org>
