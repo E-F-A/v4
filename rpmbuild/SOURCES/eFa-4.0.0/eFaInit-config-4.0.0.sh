@@ -31,8 +31,7 @@ source /usr/src/eFa/eFa-settings.inc
 # Copy eFa-Init into apache
 echo "Configuring eFaInit..."
 
-cd $srcdir
-
-
+cd /var/www/eFaInit
+composer install --quiet
 
 echo "Configuring eFaInit...done"
