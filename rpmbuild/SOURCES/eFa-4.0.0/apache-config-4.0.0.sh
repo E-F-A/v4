@@ -112,7 +112,10 @@ sed -i '/disable_functions =/ c\disable_functions = apache_child_terminate,apach
 # Configure php-fpm
 cat > /etc/httpd/conf.d/fpm.conf << 'EOF'
 # PHP scripts setup
-ProxyPassMatch ^/(.*.php)$ fcgi://127.0.0.1:9000/var/www/html
+<FilesMatch \.php$>
+    SetHandler "proxy:fcgi://127.0.0.1:9000"
+</FilesMatch>
+
 
 Alias / /var/www/html/
 EOF
