@@ -357,9 +357,30 @@ possible but are all updated to the latest version.
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 
-# move contents of source straight into rpm
+# Move eFaInit into position
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www
+mv eFaInit $RPM_BUILD_ROOT%{_localstatedir}/www
+
+# move remaining contents of source straight into rpm
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
 mv * $RPM_BUILD_ROOT%{_usrsrc}/eFa
+
+# Install composer for building symfony apps
+EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
+
+if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; then
+    >&2 echo 'ERROR: Invalid installer signature'
+    rm composer-setup.php
+    exit 1
+fi
+
+php composer-setup.php --quiet --install-dir=$RPM_BUILD_ROOT%{_bindir} --filename=composer
+rm composer-setup.php
+
+cd $RPM_BUILD_ROOT%{_usrsrc}/eFa/eFaInit
+$RPM_BUILD_ROOT%{_bindir}/composer install
 
 %pre
 
@@ -396,6 +417,7 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/eFaInit-config-4.0.0.sh
 
         echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
         echo "Build completed!"
@@ -412,6 +434,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root, -)
 %{_usrsrc}/eFa
+%{_localstatedir}/www
 
 %changelog
 * Sun Jan 22 2017 eFa Project <somebody@efa-project.org> - 4.0.0-1
