@@ -436,7 +436,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %{_usrsrc}/eFa
 %{_localstatedir}/www
-%{_bindir}
+%{_bindir}/composer
 
 %changelog
 * Sun Jan 22 2017 eFa Project <somebody@efa-project.org> - 4.0.0-1
