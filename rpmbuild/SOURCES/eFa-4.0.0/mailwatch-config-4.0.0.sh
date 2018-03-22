@@ -55,19 +55,6 @@ sed -i "/^define('HIDE_UNKNOWN',/ c\define('HIDE_UNKNOWN', true);" /var/www/html
 sed -i "/^define('SA_PREFS', MS_CONFIG_DIR . 'spam.assassin.prefs.conf');/ c\define('SA_PREFS', MS_CONFIG_DIR . 'spamassassin.conf');" /var/www/html/mailscanner/conf.php
 sed -i "/^define('MAILWATCH_HOME',/ c\define('MAILWATCH_HOME', '/var/www/html/mailscanner');" /var/www/html/mailscanner/conf.php
 
-# Set up a redirect in web root to MailWatch
-cat > /var/www/html/index.html << 'EOF'
-<!DOCTYPE html>
-<html>
-    <head>
-    <title>MailWatch</title>
-    <meta http-equiv="refresh" content="0; url=/mailscanner/" />
-    </head>
-    <body>
-    </body>
-</html>
-EOF
-
 # Grabbing an favicon to complete the look
 cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
 /bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/
