@@ -31,7 +31,7 @@ class LanguageEditTaskType extends AbstractType
                 'preferred_choices' => array($options['locale']),
                 'expanded' => false,
                 'multiple' => false,
-                'attr' => array('onchange' => "window.location.replace('/' + this.value + '/edit')"),
+                'attr' => array('onchange' => "window.location.replace('../' + this.value + '/edit')"),
                 'choice_translation_domain' => true
                 ))
             ->add('Save', SubmitType::class)
