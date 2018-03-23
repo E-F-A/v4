@@ -34,7 +34,7 @@ echo "Configuring services..."
 # make sure we don't forget them at eFa-Init.
 systemctl disable mailscanner
 systemctl disable postfix
-systemctl disable httpd
+#systemctl disable httpd
 systemctl disable mariadb
 #chkconfig saslauthd off
 systemctl disable crond
@@ -49,7 +49,7 @@ systemctl disable unbound
 systemctl disable chronyd
 systemctl disable yum-cron
 systemctl disable sshd
-systemctl disable php-fpm
+#systemctl disable php-fpm
 systemctl disable hypervkvpd >/dev/null 2>&1
 systemctl disable hypervvssd >/dev/null 2>&1
 
