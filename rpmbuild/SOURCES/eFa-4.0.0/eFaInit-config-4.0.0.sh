@@ -40,15 +40,9 @@ chown apache /var/www/eFaInit/var/{cache,logs,sessions}
 cat > /etc/httpd/conf.d/eFaInit.conf << 'EOF'
 Alias /eFaInit /var/www/eFaInit/web
 <Directory /var/www/eFaInit/web>
-   AllowOverride None
+   AllowOverride All
    Require all granted
-   
-    <IfModule mod_rewrite.c>
-        Options -MultiViews
-        RewriteEngine On
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteRule ^(.*)$ app.php [QSA,L]
-    </IfModule>
+
 </Directory>
 EOF
 
