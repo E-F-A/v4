@@ -29,12 +29,15 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 echo "Configuring services..."
 
+# Enable these for eFaInit
+systemctl enable httpd
+systemctl enable php-fpm
+
 # These services we disable for now and enable them after eFa-Init.
 # Most of these are not enabled by default but add them here just to
 # make sure we don't forget them at eFa-Init.
 systemctl disable mailscanner
 systemctl disable postfix
-#systemctl disable httpd
 systemctl disable mariadb
 #chkconfig saslauthd off
 systemctl disable crond
@@ -49,7 +52,7 @@ systemctl disable unbound
 systemctl disable chronyd
 systemctl disable yum-cron
 systemctl disable sshd
-#systemctl disable php-fpm
+
 systemctl disable hypervkvpd >/dev/null 2>&1
 systemctl disable hypervvssd >/dev/null 2>&1
 
