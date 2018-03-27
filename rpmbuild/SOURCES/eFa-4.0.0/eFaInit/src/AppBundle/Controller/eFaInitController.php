@@ -42,7 +42,7 @@ class eFaInitController extends AbstractController
         }
 
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             $task = $form->getData();
 
@@ -64,7 +64,7 @@ class eFaInitController extends AbstractController
             ));
         }
     }
-    
+
     /**
      * @Route("/")
      */
@@ -95,6 +95,9 @@ class eFaInitController extends AbstractController
         break;
         case 'tr':
             return $this->redirectToRoute('languagepage', array('_locale' => 'tr'));
+        break;
+        case 'sv':
+            return $this->redirectToRoute('languagepage', array('_locale' => 'sv'));
         break;
         default:
             return $this->redirectToRoute('languagepage', array('_locale' => 'en'));
@@ -610,9 +613,9 @@ class eFaInitController extends AbstractController
         $task = new eFaInitTask();
 
         $form = $this->createForm(VerifySettingsTaskType::class, $task);
-    
+
         $form->handleRequest($request);
-    
+
         $ipv4addressflag=false;
         $ipv4netmaskflag=false;
         $ipv4gatewayflag=false;
@@ -625,9 +628,9 @@ class eFaInitController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $task = $form->getData();
-            
+
             $isValid=true;
-            
+
             // Verify setting groups for sanity and completeness, highlight in red any that need attention
             if ($session->get('configipv4') === '1') {
                 if ($session->get('ipv4address') == '') {
@@ -657,7 +660,7 @@ class eFaInitController extends AbstractController
                     $ipv6gatewayflag=true;
                 }
             } 
-            
+
             if ($session->get('configrecursion') === '0') {
                 if ($session->get('dns1') == '') {
                     $isValid=false;
@@ -668,14 +671,14 @@ class eFaInitController extends AbstractController
                     $dns2flag=true;
                 }
             } 
-            
+
             if ($isValid === true) {
                 // Configure eFa
             } else {
                $errormessage = 'Please fix the items above before continuing.';
             }
         }
-    
+
         return $this->render('verifysettings/index.html.twig', array(
             'form'            => $form->createView(),
             'title'           => 'Verify Settings',
