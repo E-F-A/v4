@@ -17,16 +17,17 @@ class LanguageEditTaskType extends AbstractType
         $builder
             ->add('Language', ChoiceType::class, array(
                 'choices' => array(
-                    'Simplified Chinese' => 'zh_CN',
-                    'Traditional Chinese' => 'zh_TW',
                     'Danish' => 'da',
                     'Dutch' => 'nl',
                     'English' => 'en',
                     'French' => 'fr',
                     'German' => 'de',
-                    'Portuguese' => 'pt_PT',
-                    'Turkish' => 'tr',
                     'Italian' => 'it',
+                    'Portuguese' => 'pt_PT',
+                    'Simplified Chinese' => 'zh_CN',
+                    'Swedish' => 'sv',
+                    'Traditional Chinese' => 'zh_TW',
+                    'Turkish' => 'tr',
                     ),
                 'preferred_choices' => array($options['locale']),
                 'expanded' => false,
