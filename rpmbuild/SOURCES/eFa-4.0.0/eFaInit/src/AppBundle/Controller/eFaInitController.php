@@ -34,7 +34,7 @@ class eFaInitController extends AbstractController
     public function indexAction(Request $request, $edit, SessionInterface $session)
     {
         $task = new eFaInitTask();
-    
+
         if ($edit === "edit") { 
             $form = $this->createForm(LanguageEditTaskType::class, $task, array('locale' => $request->getLocale()));
         } else {
@@ -299,7 +299,7 @@ class eFaInitController extends AbstractController
                 $previousSlug = 'ianacode';
                 $previousPage = 'textboxpage';
             break;
- 
+
         }
         $options['varData'] = $session->get($slug);
 
