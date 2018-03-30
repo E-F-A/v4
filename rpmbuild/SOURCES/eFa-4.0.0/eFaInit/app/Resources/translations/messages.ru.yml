@@ -1,0 +1,76 @@
+'Welcome to': 'Добро пожаловать в'
+Language: Язык
+Next: Следующий
+Hostname: Имя хоста
+'Please enter a hostname': 'Введите имя хоста'
+Back: Назад
+English: English
+Danish: Danish
+Dutch: Nederlands
+French: Français
+Portuguese: Portugues
+German: Deutsche
+Turkish: Turkish
+Italian: Italiano
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
+'Domain Name': 'Доменное имя'
+'Please enter a domain name': 'Введите доменное имя'
+Email: Email
+'Please enter an email address for important notifications': 'Введите адрес электронной почты для важных уведомлений'
+'IPv4 Address': 'Адрес IPv4'
+'Please enter a valid IPv4 address': 'Введите верный адрес IPv4'
+'IPv4 Netmask': 'Маска подсети IPv4'
+'Please enter a valid IPv4 netmask': 'Введите верную маску подсети IPv4'
+'Please enter a valid IPv4 gateway': 'Введите верный шлюз IPv4'
+'IPv4 Gateway': 'Шлюз IPv4'
+'Do you want to set a static IPv4 address?': 'Вы хотите установить статический адрес IPv4?'
+'Yes': 'Да'
+'No': 'Нет'
+'Do you want to set a static IPv6 address?': 'Do you want to set a static IPv6 address?'
+'Configure IPv6': 'Configure IPv6'
+'Please enter a valid IPv6 address': 'Please enter a valid IPv6 address'
+'IPv6 Address': 'IPv6 Address'
+'Please enter a valid IPv6 mask': 'Please enter a valid IPv6 mask'
+'IPv6 Mask': 'IPv6 Mask'
+'Please enter a valid IPv6 gateway': 'Please enter a valid IPv6 gateway'
+'IPv6 Gateway': 'IPv6 Gateway'
+'Do you want to enable full DNS Recursion?': 'Do you want to enable full DNS Recursion?'
+'Configure DNS Recursion': 'Configure DNS Recursion'
+'Please enter the primary DNS address': 'Please enter the primary DNS address'
+'Primary DNS': 'Primary DNS'
+'Please enter the secondary DNS address': 'Please enter the secondary DNS address'
+'Secondary DNS': 'Secondary DNS'
+'Please enter the username for the admin web interface': 'Please enter the username for the admin web interface'
+'Web Admin Username': 'Web Admin Username'
+'Please enter the web admin password': 'Please enter the web admin password'
+'Please re-enter the web admin password': 'Please re-enter the web admin password'
+'Web Admin Password': 'Web Admin Password'
+'Please enter the username for the admin console interface': 'Please enter the username for the admin console interface'
+'Console Admin Username': 'Console Admin Username'
+'Please enter the console admin password': 'Please enter the console admin password'
+'Please re-enter the console admin password': 'Please re-enter the console admin password'
+'Console Admin Password': 'Console Admin Password'
+'Do you want to install hypervisor tools for your hypervisor?': 'Do you want to install hypervisor tools for your hypervisor?'
+'Configure Hypervisor Tools': 'Configure Hypervisor Tools'
+'Is the host set to UTC time?': 'Is the host set to UTC time?'
+'Configure UTC Time': 'Configure UTC Time'
+Timezone: Timezone
+'Timezone Selection': 'Timezone Selection'
+'Please enter the IP or hostname of the local mail server': 'Please enter the IP or hostname of the local mail server'
+'Local Mail Server': 'Local Mail Server'
+'Please enter your IANA country code': 'Please enter your IANA country code'
+'IANA Code': 'IANA Code'
+'Please enter your organization name (No spaces, dots, or underscores)': 'Please enter your organization name (No spaces, dots, or underscores)'
+'Organization Name': 'Organization Name'
+'Enable Recursion': 'Enable Recursion'
+'DNS Primary Address': 'DNS Primary Address'
+'Set DNS': 'Set DNS'
+'DNS Secondary Address': 'DNS Secondary Address'
+'Configure IPv4': 'Configure IPv4'
+'Set IP Address': 'Set IP Address'
+'Set IP Netmask': 'Set IP Netmask'
+'Set IP Gateway': 'Set IP Gateway'
+'Host is UTC': 'Host is UTC'
+'Set IP Mask': 'Set IP Mask'
+'IANA Country Code': 'IANA Country Code'
