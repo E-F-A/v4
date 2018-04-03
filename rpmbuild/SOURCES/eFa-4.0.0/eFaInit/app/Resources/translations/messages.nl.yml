@@ -4,19 +4,19 @@ Next: Volgende
 Hostname: Hostnaam
 'Please enter a hostname': 'Voer een hostnaam in'
 Back: Terug
-English: English
-Danish: __Danish
+English: Engels
+Danish: Deens
 Dutch: Nederlands
-French: Français
-Portuguese: Portugues
-German: Deutsche
-Turkish: __Turkish
-Italian: Italiano
+French: Frans
+Portuguese: Portugees
+German: Duits
+Turkish: Turks
+Italian: Italiaans
 'Simplified Chinese': 簡體中文
 'Traditional Chinese': 繁體中文
 'Domain Name': 'Domeinnaam'
 'Please enter a domain name': 'Voer een domeinnaam in'
-Email: E-mail
+'Email': 'E-mail'
 'Please enter an email address for important notifications': 'Voer een e-mailadres in voor belangrijke notificaties'
 'IPv4 Address': 'IPv4-adres'
 'Please enter a valid IPv4 address': 'Voer een geldig IPv4-adres in'
@@ -83,4 +83,4 @@ Timezone: Tijdzone
 'Web Admin Password:': 'Beheerdersinterface wachtwoord:'
 'Console Admin Username:': 'Admin Console gebruikersnaam:'
 'Console Admin Password:': 'Admin Console wachtwoord:'
-'Server Mail Locale:' 'Server landinstelling:'
+'Server Mail Locale:' 'Mail-server landinstelling:'
