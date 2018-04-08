@@ -330,7 +330,7 @@
                      <tr>
                         <td>
                             <h2 {% if ipv6prefixflag == true %}style="color: #F00"{% endif %}>
-                                {% trans %}IPv6 Mask{% endtrans %}:
+                                {% trans %}IPv6 Prefix{% endtrans %}:
                             </h2>
                          </td>
                          <td>
@@ -338,7 +338,7 @@
                                   {% if configipv6 == '1' %}
                                       <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'ipv6prefix', '_locale': language}) }}">
                                            {% if ipv6prefix == '' %} 
-                                               {% trans %}Set IP Mask{% endtrans %}
+                                               {% trans %}Set IP Prefix{% endtrans %}
                                            {% else %} 
                                                {{ ipv6prefix }}
                                            {% endif %}
