@@ -49,7 +49,6 @@ Timezone: Tidzon
 'Please enter the IP or hostname of the local mail server': 'Vänligen ange IP adress eller värdnamn för in lokala mailserver'
 'Local Mail Server': 'Lokal mailserver'
 'Please enter your IANA country code': 'Vänligen ange din IANA Lands kod'
-'IANA Code': 'IANA Kod'
 'Please enter your organization name (No spaces, dots, or underscores)': 'Vänligen ange ditt organisationsnamn (Inga mellanslag, punkter, eller understreck)'
 'Organization Name': 'Organisationsnamn'
 'Enable Recursion': 'Aktivera rekursion'
