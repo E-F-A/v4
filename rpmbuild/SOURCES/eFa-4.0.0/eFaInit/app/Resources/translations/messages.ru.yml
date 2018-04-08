@@ -60,7 +60,6 @@ Timezone: Часовой пояс
 'Please enter the IP or hostname of the local mail server': 'Введите IP-адрес или имя хоста локального почтового сервера'
 'Local Mail Server': 'Локальный почтовый сервер'
 'Please enter your IANA country code': 'Введите IANA код страны (например ru)'
-'IANA Code': 'IANA код'
 'Please enter your organization name (No spaces, dots, or underscores)': 'Введите название своей организации (без пробелов, точек или символов подчеркивания)'
 'Organization Name': 'Название организации'
 'Enable Recursion': 'Включить рекурсию'
