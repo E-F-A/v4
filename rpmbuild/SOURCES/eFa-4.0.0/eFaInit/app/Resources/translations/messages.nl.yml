@@ -1,19 +1,19 @@
 'Welcome to': 'Welkom bij'
-Language: Taal
-Next: Volgende
-Hostname: Hostnaam
+'Language': 'Taal'
+'Next': 'Volgende'
+'Hostname': 'Hostnaam'
 'Please enter a hostname': 'Voer een hostnaam in'
-Back: Terug
-English: Engels
-Danish: Deens
-Dutch: Nederlands
-French: Frans
-Portuguese: Portugees
-German: Duits
-Turkish: Turks
-Italian: Italiaans
-'Simplified Chinese': 簡體中文
-'Traditional Chinese': 繁體中文
+'Back': 'Terug'
+'English': 'English'
+'Danish': 'Danish'
+'Dutch': 'Nederlands'
+'French': 'Français'
+'Portuguese': 'Portugues'
+'German': 'Deutsche'
+'Turkish': 'Turkish'
+'Italian': 'Italiano'
+'Simplified Chinese': '簡體中文'
+'Traditional Chinese': '繁體中文'
 'Domain Name': 'Domeinnaam'
 'Please enter a domain name': 'Voer een domeinnaam in'
 'Email': 'E-mail'
@@ -55,31 +55,31 @@ Italian: Italiaans
 'Configure Hypervisor Tools': 'Configureer Hypervisor Tools'
 'Is the host set to UTC time?': 'Is de host ingesteld op UTC tijd?'
 'Configure UTC Time': 'Configureer UTC tijd'
-Timezone: Tijdzone
+'Timezone': 'Tijdzone'
 'Timezone Selection': 'Tijdzone selectie'
 'Please enter the IP or hostname of the local mail server': 'Voer IP-adres of hostnaam in van de lokale mailserver'
 'Local Mail Server': 'Lokale mailserver'
 'Please enter your IANA country code': 'Voer uw IANA landcode in'
 'Please enter your organization name (No spaces, dots, or underscores)': 'Voer uw organisatienaam in (geen spaties, punten of laaglingende streep)'
 'Organization Name': 'Organisatienaam'
-'Passwords do not match': 'Wachtwoorden komen niet overeen"
+'Passwords do not match': 'Wachtwoorden komen niet overeen'
 'Enable Recursion': 'Schakel recursie in'
-'DNS Primary Address': Primair DNS adres'
+'DNS Primary Address': 'Primair DNS adres'
 'Set DNS': 'Stel DNS in'
-'DNS Secondary Address': Secundair DNS adres'
+'DNS Secondary Address': 'Secundair DNS adres'
 'Configure IPv4': 'Configureer IPv4'
 'Set IP Address': 'Stel IP-adres in'
-'Set IP Netmask': Stel IP-subnetmasker in'
-'Set IP Gateway': Stel IP-standaard gateway in'
+'Set IP Netmask': 'Stel IP-subnetmasker in'
+'Set IP Gateway': 'Stel IP-standaard gateway in'
 'Host is UTC': 'Host is UTC'
 'Set IP Mask': 'Stel IP-subnetmasker in'
 'IANA Country Code': 'IANA landcode'
-'IPv4 Netmask:' : 'IPv4-subnetmasker:'
-'IPv4 Gateway:' : 'IPv4-standaard gateway:'
+'IPv4 Netmask:': 'IPv4-subnetmasker:'
+'IPv4 Gateway:': 'IPv4-standaard gateway:'
 'IPv6 Mask': 'IPv6-subnetmasker:'
-'IPv6 Gateway:' : 'IPv6-standaard gateway:'
+'IPv6 Gateway:': 'IPv6-standaard gateway:'
 'Web Admin Username:': 'Beheerdersinterface gebruikersnaam:'
 'Web Admin Password:': 'Beheerdersinterface wachtwoord:'
 'Console Admin Username:': 'Admin Console gebruikersnaam:'
 'Console Admin Password:': 'Admin Console wachtwoord:'
-'Server Mail Locale:' 'Mail-server landinstelling:'
+'Server Mail Locale:': 'Mail-server landinstelling:'
