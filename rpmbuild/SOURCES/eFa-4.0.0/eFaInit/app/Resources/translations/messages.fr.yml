@@ -41,7 +41,7 @@
 'Primary DNS': 'Serveur DNS primaire'
 'Please enter the secondary DNS address': 'Merci de saisir l''adresse du serveur DNS secondaire'
 'Secondary DNS': 'Serveur DNS secondaire'
-'Web Admin Username': 'Nom d'utilisateur administrateur pour l''interface d''administration web'
+'Web Admin Username': 'Nom d''utilisateur administrateur pour l''interface d''administration web'
 'Please enter the web admin password': 'Merci de saisir le mot de passe pour l''accès à l''interface d''administration web'
 'Please re-enter the web admin password': 'Merci de saisir une nouvelle fois le mot de passe pour l''accès à l''interface d''administration web'
 'Web Admin Password': 'Mot de passe administrateur pour l''interface d''administration web'
