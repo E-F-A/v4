@@ -60,7 +60,6 @@
 'Please enter the IP or hostname of the local mail server': '请输入本地邮件服务器的IP地址或者主机名'
 'Local Mail Server': '本地邮件服务器'
 'Please enter your IANA country code': '请输入您的国家顶级域名'
-'IANA Code': '国家顶级域名'
 'Please enter your organization name (No spaces, dots, or underscores)': '请输入您的组织名称（只可以是汉字、数字或英文字母）'
 'Organization Name': '组织名称'
 'Enable Recursion': '启用递归'

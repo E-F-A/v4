@@ -60,7 +60,6 @@ Timezone: Timezone
 'Please enter the IP or hostname of the local mail server': 'Please enter the IP or hostname of the local mail server'
 'Local Mail Server': 'Local Mail Server'
 'Please enter your IANA country code': 'Please enter your IANA country code'
-'IANA Code': 'IANA Code'
 'Please enter your organization name (No spaces, dots, or underscores)': 'Please enter your organization name (No spaces, dots, or underscores)'
 'Organization Name': 'Organization Name'
 'Enable Recursion': 'Enable Recursion'
