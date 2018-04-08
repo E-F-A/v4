@@ -217,25 +217,25 @@ class eFaInitTask
 
     /**
      * @Assert\NotBlank(
-     *    groups={"IPv6mask"}
+     *    groups={"IPv6prefix"}
      * )
      * @Assert\Range(
      *    min = 8,
      *    max = 127,
-     *    groups={"IPv6mask"}
+     *    groups={"IPv6prefix"}
      * )
      */
-    protected $ipv6mask;
+    protected $ipv6prefix;
 
 
-    public function getIPv6mask()
+    public function getIPv6prefix()
     {
-        return $this->ipv6mask;
+        return $this->ipv6prefix;
     }
 
-    public function setIPv6mask($var)
+    public function setIPv6prefix($var)
     {
-        $this->ipv6mask = $var;
+        $this->ipv6prefix = $var;
     }
 
 

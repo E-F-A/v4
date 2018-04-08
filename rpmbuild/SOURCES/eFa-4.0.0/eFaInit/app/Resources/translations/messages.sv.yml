@@ -22,7 +22,7 @@ Email: Email
 'Please enter a valid IPv6 address': 'Vänligen ange en IPv6 adress'
 'IPv6 Address': 'IPv6 Adress'
 'Please enter a valid IPv6 mask': 'Vänligen ange en IPv6 nätmask'
-'IPv6 Mask': 'IPv6 Mask'
+'IPv6 Prefix': 'IPv6 Prefix'
 'Please enter a valid IPv6 gateway': 'Vänligen ange en IPv6 gateway'
 'Do you want to enable full DNS Recursion?': 'Vill du aktivera DNS rekursion?'
 'Configure DNS Recursion': 'Konfigurera DNS Rekursion'
