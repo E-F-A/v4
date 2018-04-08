@@ -329,18 +329,18 @@
                      </tr>
                      <tr>
                         <td>
-                            <h2 {% if ipv6maskflag == true %}style="color: #F00"{% endif %}>
+                            <h2 {% if ipv6prefixflag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}IPv6 Mask{% endtrans %}:
                             </h2>
                          </td>
                          <td>
                               <h2>
                                   {% if configipv6 == '1' %}
-                                      <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'ipv6mask', '_locale': language}) }}">
-                                           {% if ipv6mask == '' %} 
+                                      <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'ipv6prefix', '_locale': language}) }}">
+                                           {% if ipv6prefix == '' %} 
                                                {% trans %}Set IP Mask{% endtrans %}
                                            {% else %} 
-                                               {{ ipv6mask }}
+                                               {{ ipv6prefix }}
                                            {% endif %}
                                       </a>
                                   {% endif %}
