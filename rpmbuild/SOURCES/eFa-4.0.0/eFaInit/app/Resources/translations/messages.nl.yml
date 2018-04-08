@@ -60,7 +60,6 @@ Timezone: Tijdzone
 'Please enter the IP or hostname of the local mail server': 'Voer IP-adres of hostnaam in van de lokale mailserver'
 'Local Mail Server': 'Lokale mailserver'
 'Please enter your IANA country code': 'Voer uw IANA landcode in'
-'IANA Code': 'IANA code'
 'Please enter your organization name (No spaces, dots, or underscores)': 'Voer uw organisatienaam in (geen spaties, punten of laaglingende streep)'
 'Organization Name': 'Organisatienaam'
 'Passwords do not match': 'Wachtwoorden komen niet overeen"
