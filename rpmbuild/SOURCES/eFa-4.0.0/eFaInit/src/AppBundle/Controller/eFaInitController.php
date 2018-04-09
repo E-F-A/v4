@@ -108,12 +108,12 @@ class eFaInitController extends AbstractController
     /**
      * @Route("/{_locale}/{slug}",
      *     name="textboxpage",
-     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname"},
+     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6prefix|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname"},
      *     defaults={"_locale": "en", "edit" = null}
      * )
      * @Route("/{_locale}/{slug}/{edit}",
      *     name="textboxeditpage",
-     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6mask|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname", "edit"="edit"},
+     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6prefix|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname", "edit"="edit"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -195,17 +195,17 @@ class eFaInitController extends AbstractController
                     'varProperty' => 'IPv6address'
                 );
                 $varTitle     = 'IPv6 Address';
-                $nextSlug     = 'ipv6mask';
+                $nextSlug     = 'ipv6prefix';
                 $nextPage     = 'textboxpage';
                 $previousSlug = 'configipv6';
                 $previousPage = 'yesnopage';
             break;
-            case "ipv6mask":
+            case "ipv6prefix":
                 $options = array(
-                    'varLabel'    => 'Please enter a valid IPv6 mask',
-                    'varProperty' => 'IPv6mask'
+                    'varLabel'    => 'Please enter a valid IPv6 prefix',
+                    'varProperty' => 'IPv6prefix'
                 );
-                $varTitle     = 'IPv6 Mask';
+                $varTitle     = 'IPv6 Prefix';
                 $nextSlug     = 'ipv6gateway';
                 $nextPage     = 'textboxpage';
                 $previousSlug = 'ipv6address';
@@ -219,7 +219,7 @@ class eFaInitController extends AbstractController
                 $varTitle     = 'IPv6 Gateway';
                 $nextSlug     = 'configrecursion';
                 $nextPage     = 'yesnopage';
-                $previousSlug = 'ipv6mask';
+                $previousSlug = 'ipv6prefix';
                 $previousPage = 'textboxpage';
             break;
             case "dns1":
@@ -620,7 +620,7 @@ class eFaInitController extends AbstractController
         $ipv4netmaskflag=false;
         $ipv4gatewayflag=false;
         $ipv6addressflag=false;
-        $ipv6maskflag=false;
+        $ipv6prefixflag=false;
         $ipv6gatewayflag=false;
         $dns1flag=false;
         $dns2flag=false;
@@ -651,9 +651,9 @@ class eFaInitController extends AbstractController
                     $isValid=false;
                     $ipv6addressflag=true;
                 }
-                if ($session->get('ipv6mask') == '') {
+                if ($session->get('ipv6prefix') == '') {
                     $isValid=false;
-                    $ipv6maskflag=true;
+                    $ipv6prefixflag=true;
                 }
                 if ($session->get('ipv6gateway') == '') {
                     $isValid=false;
@@ -692,7 +692,7 @@ class eFaInitController extends AbstractController
             'ipv4gateway'     => $session->get('ipv4gateway'), 'ipv4gatewayflag' => $ipv4gatewayflag,
             'configipv6'      => $session->get('configipv6'),
             'ipv6address'     => $session->get('ipv6address'), 'ipv6addressflag' => $ipv6addressflag,
-            'ipv6mask'        => $session->get('ipv6mask'),    'ipv6maskflag'    => $ipv6maskflag,
+            'ipv6prefix'        => $session->get('ipv6prefix'),    'ipv6prefixflag'    => $ipv6prefixflag,
             'ipv6gateway'     => $session->get('ipv6gateway'), 'ipv6gatewayflag' => $ipv6gatewayflag,
             'configrecursion' => $session->get('configrecursion'),
             'dns1'            => $session->get('dns1'), 'dns1flag' => $dns1flag,
