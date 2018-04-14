@@ -16,8 +16,11 @@ use AppBundle\Form\TimezoneEditTaskType;
 use AppBundle\Form\VerifySettingsTaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class eFaInitController extends AbstractController
 {
@@ -98,6 +101,9 @@ class eFaInitController extends AbstractController
         break;
         case 'sv':
             return $this->redirectToRoute('languagepage', array('_locale' => 'sv'));
+        break;
+        case 'ru':
+            return $this->redirectToRoute('languagepage', array('_locale' => 'ru'));
         break;
         default:
             return $this->redirectToRoute('languagepage', array('_locale' => 'en'));
@@ -673,7 +679,11 @@ class eFaInitController extends AbstractController
             } 
 
             if ($isValid === true) {
-                // Configure eFa
+                // Do it!
+                eFaInitController::eFaConfigure($session);
+
+                return new Response('');
+         
             } else {
                $errormessage = 'Please fix the items above before continuing.';
             }
@@ -692,7 +702,7 @@ class eFaInitController extends AbstractController
             'ipv4gateway'     => $session->get('ipv4gateway'), 'ipv4gatewayflag' => $ipv4gatewayflag,
             'configipv6'      => $session->get('configipv6'),
             'ipv6address'     => $session->get('ipv6address'), 'ipv6addressflag' => $ipv6addressflag,
-            'ipv6prefix'        => $session->get('ipv6prefix'),    'ipv6prefixflag'    => $ipv6prefixflag,
+            'ipv6prefix'      => $session->get('ipv6prefix'),  'ipv6prefixflag'    => $ipv6prefixflag,
             'ipv6gateway'     => $session->get('ipv6gateway'), 'ipv6gatewayflag' => $ipv6gatewayflag,
             'configrecursion' => $session->get('configrecursion'),
             'dns1'            => $session->get('dns1'), 'dns1flag' => $dns1flag,
@@ -708,6 +718,244 @@ class eFaInitController extends AbstractController
             'errormessage'    => $errormessage,
         ));
     }
+    
+    private function eFaConfigure(SessionInterface $session) 
+    {
+        eFaInitController::progressBar(0, 0);
 
+        $output = 'eFa -- Starting MariaDB...<br/>';
+
+        // Start MariaDB
+        $process = new Process('systemctl restart mariadb');
+
+        try {
+            $process->mustRun();
+
+            $output .= $process->getOutput() . '<br/> eFa -- Started MariaDB<br/>';
+            
+            eFaInitController::progressBar(0, 5, $output);
+
+        } catch (ProcessFailedException $exception) {
+             eFaInitController::progressBar(0, 5, $output, "Error starting MariaDB");
+             return;
+        }
+        
+        $process = new Process('echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts');
+
+        $output .= 'eFa -- Adding ipv4 localhost entry...<br/>';
+ 
+        try {
+            $process->mustRun();
+
+            $output .= $process->getOutput() . '<br/> eFa -- ipv4 locahost entry added<br/>';
+            
+            eFaInitController::progressBar(5, 10, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(5, 10, $output, "Error setting ipv4 localhost");
+            return;
+        }
+        
+        $process = new Process('echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts');
+
+        $output .= 'eFa -- Adding ipv6 localhost entry...<br/>';
+
+        try {
+            $process->mustRun();
+            
+            $output .= $process->getOutput() . '<br/> eFa -- ipv6 locahost entry added<br/>';
+            
+            eFaInitController::progressBar(10, 15, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(10, 15, $output, "Error setting ipv6 localhost");
+            return;
+        }
+
+        if ($session->get('configipv4') === '1')
+        {
+            $process = new Process('echo "' . $session->get('ipv4address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" >> /etc/hosts');
+        
+            $output .= 'eFa -- Adding ipv4 host entry...<br/>';
+ 
+            try {
+                $process->mustRun();
+            
+                $output .= $process->getOutput() . '<br/> eFa -- ipv4 host entry added<br/>';
+
+                eFaInitController::progressBar(15, 20, $output);
+            } catch (ProcessFailedException $exception) {
+                eFaInitController::progressBar(15, 20, $output, "Error setting ipv4 address hostname");
+                return;
+            }
+        }
+        
+        if ($session->get('configipv6') === '1')
+        {
+            $process = new Process('echo "' . $session->get('ipv6address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" >> /etc/hosts');
+ 
+            $output .= 'eFa -- Adding ipv6 host entry...<br/>';
+
+            try {
+                $process->mustRun();
+                
+                $output .= $process->getOutput() . '<br/> eFa -- ipv6 host entry added<br/>';
+
+                eFaInitController::progressBar(20, 25, $output);
+
+            } catch (ProcessFailedException $exception) {
+                eFaInitController::progressBar(20, 25, $output, "Error setting ipv6 address");
+                return;
+            }
+        }
+        
+        $process = new Process('echo "' . $session->get('hostname') . '.' . $session->get('domainname') . '" > /etc/hostname');
+
+        $output .= 'eFa -- Adding hostname to /etc/hosts...<br/>';
+
+        try {
+            $process->mustRun();
+                
+            $output .= $process->getOutput() . '<br/> eFa -- hostname entry added to /etc/hosts<br/>';
+
+            eFaInitController::progressBar(25, 30, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(25, 30, $output, "Error setting /etc/hostname");
+            return;
+        }
+
+        $process = new Process('hostname ' . $session->get('hostname') . '.' . $session->get('domainname'));
+
+        $output .= 'eFa -- Setting hostname...<br/>';
+
+        try {
+            $process->mustRun();
+            
+            $output .= $process->getOutput() . '<br/> eFa -- hostname set<br/>';
+
+            eFaInitController::progressBar(30, 35, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(30, 35, $output, "Error setting /etc/hostname");
+            return;
+        }
+        
+        $process = new Process('echo -e "forward-zone:\n  name: \".\"" > /etc/unbound/conf.d/forwarders.conf');
+
+        $output .= 'eFa -- Setting root fowarder for unbound...<br/>';
+
+        try {
+            $process->mustRun();
+            
+            $output .= $process->getOutput() . '<br/> eFa -- root forwarder set for unbound<br/>';
+
+            eFaInitController::progressBar(30, 35, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(30, 35, $output, "Error setting root forwarder for unbound");
+            return;
+        }
+
+        if ($session->get('configrecursion') === '1')
+        {
+            $process = new Process('echo -e "  forward-first: yes\n" >> /etc/unbound/conf.d/forwarders.conf');
+
+            $output .= 'eFa -- Setting recursion for unbound...<br/>';
+
+            try {
+                $process->mustRun();
+             
+                $output .= $process->getOutput() . '<br/> eFa -- recursion set for unbound<br/>';
+
+                eFaInitController::progressBar(35, 40, $output);
+
+             } catch (ProcessFailedException $exception) {
+                 eFaInitController::progressBar(35, 40, $output, "Error setting recursion for unbound");
+                 return;
+             }
+         } else {
+
+            $process = new Process('echo -e "  forward-addr: ' . $session->get('dns1') . '"\n  forward-addr: ' . $session->get('dns2') . '\n" >> /etc/unbound/conf.d/forwarders.conf');
+
+            $output .= 'eFa -- Setting dns forwarders for unbound...<br/>';
+
+            try {
+                $process->mustRun();
+
+                $output .= $process->getOutput() . '<br/> eFa -- dns forwarders set for unbound<br/>';
+
+                eFaInitController::progressBar(35, 40, $output);
+
+             } catch (ProcessFailedException $exception) {
+                 eFaInitController::progressBar(35, 40, $output, "Error setting forwarders for unbound");
+                 return;
+             }
+         }
+
+        return;
+    }
+    
+    private function progressBar($oldVal, $val, $output='', $error='')
+    {
+        for($i=$oldVal; $i<=$val; $i++)
+        {
+            echo '
+                <div style="margin:0;color: #000;font-family: Arial, Helvetica, sans-serif;font-size: 16px;line-height: 1.5em;">
+                    <div style="text-align: center; width:1100px; margin: 0 auto;">
+                        <div style="position: absolute; width:1100px;">
+                            <div style="background-color: #999999; -webkit-border-radius: 15px 15px 0 0; -moz-border-radius: 15px 15px 0 0;border-radius: 15px 15px 0 0;color: #222; font-size: 28px; padding: 15px 15px; margin: 0;text-align: center; border: 2px solid #000000;border-bottom: 0;">
+                                <h1>Configuring System...</h1>
+                            </div>
+                            <div style="padding: 15px 15px; border: solid 2px #000;border-top: 0;-webkit-border-radius: 0 0 15px 15px;-moz-border-radius: 0 0 15px 15px; border-radius: 0 0 15px 15px;">
+                               <div style="color: #000; list-style: none; background-color: #009; border: solid 2px #000; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;">
+                                    <div style="-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;width:'.$i.'%;background:linear-gradient(to bottom, rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); ;height:35px;">&nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+             ';
+
+             ob_flush(); 
+             flush();
+             usleep(10000);
+         }
+
+         if ($output !== '')
+         {
+             echo '
+                 <div style="margin: 0; color: #000;font-family: Arial, Helvetica, sans-serif;font-size: 16px;line-height: 1.5em; text-align: center;">
+                      <div style="width: 1100px; margin: 0px auto; text-align: center;">
+                          <div style="position: absolute; width:1100px; height: 600px; margin: 250px auto; font-size: 24px; color: #000; list-style: none; background-color: #FFF; border: solid 2px #000; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px; text-align: left">
+                              <div style="height: 580px; margin: 15px; overflow: scroll">
+                                  <h3>'.$output.'</h3>
+                              </div>
+                          </div>
+                      </div>
+                 </div>
+             ';
+             ob_flush();
+             flush();
+         }
+
+         if ($error !== '') 
+         {
+             echo '
+                 <div style="margin: 0; color: #000;font-family: Arial, Helvetica, sans-serif;font-size: 16px;line-height: 1.5em; text-align: center;">
+                      <div style="width: 1100px; margin: 0px auto; text-align: center;">
+                          <div style="position: absolute; width:1100px; margin: 900px auto 0px auto; font-size: 24px; color: #FFF; list-style: none; background-color: #900; border: solid 2px #000; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px; text-align: center">
+                              <h2>'.$error.'</h2>
+                          </div>
+                      </div>
+                 </div>
+             ';
+             ob_flush();
+             flush();
+         }
+
+         return;
+    }
 }
 ?>
