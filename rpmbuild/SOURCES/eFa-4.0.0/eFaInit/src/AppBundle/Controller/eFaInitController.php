@@ -723,7 +723,7 @@ class eFaInitController extends AbstractController
     {
         eFaInitController::progressBar(0, 0);
 
-        $output = 'eFa -- Starting MariaDB...<br/>';
+        $output = '<br/>eFa -- Starting MariaDB...<br/>';
 
         // Start MariaDB
         $process = new Process('systemctl restart mariadb');
@@ -731,7 +731,7 @@ class eFaInitController extends AbstractController
         try {
             $process->mustRun();
 
-            $output .= $process->getOutput() . '<br/> eFa -- Started MariaDB<br/>';
+            $output = $process->getOutput() . '<br/> eFa -- Started MariaDB<br/>' . $output;
             
             eFaInitController::progressBar(0, 5, $output);
 
@@ -742,12 +742,12 @@ class eFaInitController extends AbstractController
         
         $process = new Process('echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts');
 
-        $output .= 'eFa -- Adding ipv4 localhost entry...<br/>';
+        $output = '<br/>eFa -- Adding ipv4 localhost entry...<br/>' . $output;
  
         try {
             $process->mustRun();
 
-            $output .= $process->getOutput() . '<br/> eFa -- ipv4 locahost entry added<br/>';
+            $output = $process->getOutput() . '<br/> eFa -- ipv4 locahost entry added<br/>' . $output;
             
             eFaInitController::progressBar(5, 10, $output);
 
@@ -758,12 +758,12 @@ class eFaInitController extends AbstractController
         
         $process = new Process('echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts');
 
-        $output .= 'eFa -- Adding ipv6 localhost entry...<br/>';
+        $output = '<br/>eFa -- Adding ipv6 localhost entry...<br/>' . $output;
 
         try {
             $process->mustRun();
             
-            $output .= $process->getOutput() . '<br/> eFa -- ipv6 locahost entry added<br/>';
+            $output = $process->getOutput() . '<br/> eFa -- ipv6 locahost entry added<br/>' . $output;
             
             eFaInitController::progressBar(10, 15, $output);
 
@@ -776,12 +776,12 @@ class eFaInitController extends AbstractController
         {
             $process = new Process('echo "' . $session->get('ipv4address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" >> /etc/hosts');
         
-            $output .= 'eFa -- Adding ipv4 host entry...<br/>';
+            $output = '<br/>eFa -- Adding ipv4 host entry...<br/>' . $output;
  
             try {
                 $process->mustRun();
             
-                $output .= $process->getOutput() . '<br/> eFa -- ipv4 host entry added<br/>';
+                $output = $process->getOutput() . '<br/> eFa -- ipv4 host entry added<br/>' . $output;
 
                 eFaInitController::progressBar(15, 20, $output);
             } catch (ProcessFailedException $exception) {
@@ -794,12 +794,12 @@ class eFaInitController extends AbstractController
         {
             $process = new Process('echo "' . $session->get('ipv6address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" >> /etc/hosts');
  
-            $output .= 'eFa -- Adding ipv6 host entry...<br/>';
+            $output = '<br/>eFa -- Adding ipv6 host entry...<br/>' . $output;
 
             try {
                 $process->mustRun();
                 
-                $output .= $process->getOutput() . '<br/> eFa -- ipv6 host entry added<br/>';
+                $output = $process->getOutput() . '<br/> eFa -- ipv6 host entry added<br/>' . $output;
 
                 eFaInitController::progressBar(20, 25, $output);
 
@@ -811,12 +811,12 @@ class eFaInitController extends AbstractController
         
         $process = new Process('echo "' . $session->get('hostname') . '.' . $session->get('domainname') . '" > /etc/hostname');
 
-        $output .= 'eFa -- Adding hostname to /etc/hosts...<br/>';
+        $output = '<br/>eFa -- Adding hostname to /etc/hosts...<br/>' . $output;
 
         try {
             $process->mustRun();
                 
-            $output .= $process->getOutput() . '<br/> eFa -- hostname entry added to /etc/hosts<br/>';
+            $output = $process->getOutput() . '<br/> eFa -- hostname entry added to /etc/hosts<br/>' . $output;
 
             eFaInitController::progressBar(25, 30, $output);
 
@@ -827,12 +827,12 @@ class eFaInitController extends AbstractController
 
         $process = new Process('hostname ' . $session->get('hostname') . '.' . $session->get('domainname'));
 
-        $output .= 'eFa -- Setting hostname...<br/>';
+        $output = '<br/>eFa -- Setting hostname...<br/>' . $output;
 
         try {
             $process->mustRun();
             
-            $output .= $process->getOutput() . '<br/> eFa -- hostname set<br/>';
+            $output = $process->getOutput() . '<br/> eFa -- hostname set<br/>' . $output;
 
             eFaInitController::progressBar(30, 35, $output);
 
@@ -843,12 +843,12 @@ class eFaInitController extends AbstractController
         
         $process = new Process('echo -e "forward-zone:\n  name: \".\"" > /etc/unbound/conf.d/forwarders.conf');
 
-        $output .= 'eFa -- Setting root fowarder for unbound...<br/>';
+        $output = '<br/>eFa -- Setting root fowarder for unbound...<br/>' . $output;
 
         try {
             $process->mustRun();
             
-            $output .= $process->getOutput() . '<br/> eFa -- root forwarder set for unbound<br/>';
+            $output = $process->getOutput() . '<br/> eFa -- root forwarder set for unbound<br/>' . $output;
 
             eFaInitController::progressBar(30, 35, $output);
 
@@ -861,12 +861,12 @@ class eFaInitController extends AbstractController
         {
             $process = new Process('echo -e "  forward-first: yes\n" >> /etc/unbound/conf.d/forwarders.conf');
 
-            $output .= 'eFa -- Setting recursion for unbound...<br/>';
+            $output = '<br/>eFa -- Setting recursion for unbound...<br/>' . $output;
 
             try {
                 $process->mustRun();
              
-                $output .= $process->getOutput() . '<br/> eFa -- recursion set for unbound<br/>';
+                $output = $process->getOutput() . '<br/> eFa -- recursion set for unbound<br/>' . $output;
 
                 eFaInitController::progressBar(35, 40, $output);
 
@@ -878,12 +878,12 @@ class eFaInitController extends AbstractController
 
             $process = new Process('echo -e "  forward-addr: ' . $session->get('dns1') . '"\n  forward-addr: ' . $session->get('dns2') . '\n" >> /etc/unbound/conf.d/forwarders.conf');
 
-            $output .= 'eFa -- Setting dns forwarders for unbound...<br/>';
+            $output = '<br/>eFa -- Setting dns forwarders for unbound...<br/>' . $output;
 
             try {
                 $process->mustRun();
 
-                $output .= $process->getOutput() . '<br/> eFa -- dns forwarders set for unbound<br/>';
+                $output = $process->getOutput() . '<br/> eFa -- dns forwarders set for unbound<br/>' . $output;
 
                 eFaInitController::progressBar(35, 40, $output);
 
@@ -891,8 +891,199 @@ class eFaInitController extends AbstractController
                  eFaInitController::progressBar(35, 40, $output, "Error setting forwarders for unbound");
                  return;
              }
-         }
+        }
+        // Todo: Interface selection in GUI
+        $interface = 'eth0';
 
+        if (file_exists('/etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak'))
+        {
+            $process = new Process('cp /etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+
+            $output = '<br/>eFa -- Restoring interface config...<br/>' . $output;
+
+            try {
+                $process->mustRun();
+
+                $output = $process->getOutput() . '<br/> eFa -- Interface config restored<br/>' . $output;
+
+                eFaInitController::progressBar(40, 45, $output);
+
+            } catch (ProcessFailedException $exception) {
+                 eFaInitController::progressBar(40, 45, $output, "Error restoring interface config");
+                return;
+            }
+        } else {
+            $process = new Process('cp /etc/sysconfig/network-scripts/ifcfg-' . $interface . ' /etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak');
+
+            $output = '<br/>eFa -- Backing up interface config...<br/>' . $output;
+
+            try {
+                $process->mustRun();
+
+                $output = $process->getOutput() . '<br/>eFa -- Interface config backed up<br/>' . $output;
+
+                eFaInitController::progressBar(40, 45, $output);
+
+            } catch (ProcessFailedException $exception) {
+                 eFaInitController::progressBar(40, 45, $output, "Error backing up interface config");
+                return;
+            }
+       }
+
+        $process = new Process('sed -i "/^BOOTPROTO=/ c\BOOTPROTO=\"none\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+
+        $output = '<br/>eFa -- Setting BOOTPROTO for interface...<br/>' . $output;
+
+        try {
+            $process->mustRun();
+
+            $output = $process->getOutput() . '<br/> eFa -- BOOTPROTO set for interface<br/>' . $output;
+
+            eFaInitController::progressBar(45, 50, $output);
+
+        } catch (ProcessFailedException $exception) {
+             eFaInitController::progressBar(45, 50, $output, "Error BOOTPROTO for interface");
+            return;
+        }
+        
+        if ($session->get('configipv4') === 1)
+        {
+            $process = new Process('echo -e "IPADDR=\"' . $session->get('ipv4address') . '\"\nNETMASK=\"' . $session->get('ipv4netmask') . '\"\nGATEWAY=\"' . $session->get('ipv4gateway') . '\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+
+            $output = '<br/>eFa -- Setting static ipv4 address, netmask, and gateway for interface...<br/>' . $output;
+
+            try {
+                $process->mustRun();
+
+                $output = $process->getOutput() . '<br/> eFa -- ipv4 address, netmask, and gateway set for interface<br/>' . $output;
+
+                eFaInitController::progressBar(50, 55, $output);
+
+            } catch (ProcessFailedException $exception) {
+                eFaInitController::progressBar(50, 55, $output, "Error setting ipv4 address, netmask, and gateway");
+                return;
+            }
+        }   
+
+        if ($session->get('configipv6') === 1)
+        {
+            $process = new Process('sed -i "/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF=\"no\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+
+            $output = '<br/>eFa -- Setting setting ipv6 auto config off...<br/>' . $output;
+
+            try {
+                $process->mustRun();
+
+                $output = $process->getOutput() . '<br/> eFa -- set ipv6 auto config off<br/>' . $output;
+
+                eFaInitController::progressBar(55, 60, $output);
+
+            } catch (ProcessFailedException $exception) {
+                eFaInitController::progressBar(55, 60, $output, "Error setting ipv6 auto config off");
+                return;
+            }
+
+            $process = new Process('echo -e "IPV6ADDR=\"' . $session->get('ipv6address') . '/' . $session->get('ipv6prefix') . '\"\nIPV6_DEFAULTGW=\"' . $session->get('ipv6gatway'). '\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+
+            $output = '<br/>eFa -- Setting setting ipv6 address and gateway...<br/>' . $output;
+
+            try {
+                $process->mustRun();
+
+                $output = $process->getOutput() . '<br/> eFa -- set ipv6 address and gateway<br/>' . $output;
+
+                eFaInitController::progressBar(60, 65, $output);
+
+            } catch (ProcessFailedException $exception) {
+                eFaInitController::progressBar(60, 65, $output, "Error setting ipv6 address and gateway");
+                return;
+            }
+        }
+
+        $process = new Process('echo -e "DNS1=\"127.0.0.1\"\nDNS2=\"::1\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+
+        $output = '<br/>eFa -- Directing interface DNS to unbound...<br/>' . $output;
+
+        try {
+            $process->mustRun();
+
+            $output = $process->getOutput() . '<br/> eFa -- Directed interface DNS to unbound<br/>' . $output;
+
+            eFaInitController::progressBar(65, 70, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(65, 70, $output, "Error directing interface to unbound");
+            return;
+        }
+
+        $output = '<br/>eFa -- Generating host keys...<br/>' . $output;
+
+        try {
+            $process = new Process('rm -f /etc/ssh/ssh_host_rsa_key && rm -f /etc/ssh/ssh_host_dsa_key && rm -f /etc/ssh/ssh_host_ecdsa_key && rm -f /etc/ssh/ssh_host_ed25519_key');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process('ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N \'\' -t rsa');
+            
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process('ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N \'\' -t dsa');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process('ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N \'\' -t ecdsa');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process('ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N \'\' -t ed25519');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/>eFa -- Generated existing host keys<br/>' . $output;
+
+            eFaInitController::progressBar(70, 75, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(70, 75, $output, "Error generating host keys");
+            return;
+        }
+
+            $output = '<br/>eFa -- Generating dhparam...this may take a while...<br/>' . $output;
+
+            eFaInitController::progressBar(75, 75, $output);
+
+            try {
+                $process = new Process('openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048');
+                $process->setTimeout(300);
+                $process->mustRun();
+
+                $output = $process->getOutput() . $output;
+
+                $process = new Process('postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"');
+
+                $process->mustRun();
+                
+                $output = $process->getOutput() . $output;
+
+                $output = '<br/> eFa -- Generated dhparam<br/>' . $output;
+
+                eFaInitController::progressBar(75, 80, $output);
+
+            } catch (ProcessFailedException $exception) {
+                eFaInitController::progressBar(75, 80, $output, "Error generating dhparam");
+                return;
+            }
+ 
         return;
     }
     
