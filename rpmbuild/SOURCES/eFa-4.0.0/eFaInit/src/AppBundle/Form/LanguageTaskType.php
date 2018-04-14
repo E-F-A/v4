@@ -24,6 +24,7 @@ class LanguageTaskType extends AbstractType
                     'German' => 'de',
                     'Italian' => 'it',
                     'Portuguese' => 'pt_PT',
+                    'Russian' => 'ru',
                     'Simplified Chinese' => 'zh_CN',
                     'Swedish' => 'sv',
                     'Traditional Chinese' => 'zh_TW',
