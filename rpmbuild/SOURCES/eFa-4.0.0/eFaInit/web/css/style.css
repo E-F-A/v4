@@ -143,3 +143,16 @@ button[type="submit"]:hover {
 .center {
     text-align: center;
 }
+
+.progress-bar {
+   font-size: 24px;
+   padding: 3px;
+   color: #00D;
+   list-style: none;
+   background-color: #009;
+   border: solid 2px #000;
+   -webkit-border-radius: 15px;
+   -moz-border-radius: 15px;
+   border-radius: 15px;
+   text-align: center;
+}
