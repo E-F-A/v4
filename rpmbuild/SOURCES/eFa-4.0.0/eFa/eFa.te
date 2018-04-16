@@ -89,6 +89,8 @@ require {
     type sysfs_t;
     type ifconfig_t;
     type var_run_t;
+    type rpm_exec_t;
+    type ldconfig_exec_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -327,6 +329,8 @@ allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
 allow mscan_t spamd_compiled_t:dir { search };
 allow mscan_t spamd_compiled_t:file { open read getattr ioctl };
 allow mscan_t sysfs_t:dir { read };
+allow mscan_t rpm_exec_t:file { getattr };
+allow mscan_t ldconfig_exec_t:file { getattr execute };
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
