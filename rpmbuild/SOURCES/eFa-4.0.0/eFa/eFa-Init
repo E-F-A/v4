@@ -1024,8 +1024,12 @@ function func_configure-system() {
   echo -e "$green[eFa]$clean - Generating SSH Host keys"
   rm -f /etc/ssh/ssh_host_rsa_key
   rm -f /etc/ssh/ssh_host_dsa_key
+  rm -f /etc/ssh/ssh_host_ecdsa_key
+  rm -f /etc/ssh/ssh_host_ed25519_key
   ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
   ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
+  ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa
+  ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519
   
   echo -e "$green[eFa]$clean - Generating dh key for postfix..."
   openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
