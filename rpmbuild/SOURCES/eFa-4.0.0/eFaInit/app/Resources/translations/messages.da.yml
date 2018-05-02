@@ -1,22 +1,75 @@
 'Welcome to': 'Velkommen til'
 Language: Sprog
 Next: Næste
-Hostname: Hostname
-'Please enter a hostname': 'Angiv venligst et hostname'
+Hostname: Værtsnavn
+'Please enter a hostname': 'Indtast værtsnavn'
 Back: Tilbage
-English: English
-Danish: __Danish
+English: Engales
+Danish: Dansk
 Dutch: Nederlands
 French: Français
 Portuguese: Portugues
 German: Deutsche
-Turkish: __Turkish
+Turkish: Turkish
 Italian: Italiano
 'Simplified Chinese': 簡體中文
 'Traditional Chinese': 繁體中文
 'Domain Name': 'Domæne navn'
-'Please enter a domain name': 'Angiv venligst et domæne navn'
-Email: E-Mail
-'Please enter an email address for important notifications': 'Angiv venligst en E-Mail for vigtige beskeder'
+'Please enter a domain name': 'Indtast domæne navn'
+Email: Email
+'Please enter an email address for important notifications': 'Indtast en Email addresse for vigtige beskeder'
 'IPv4 Address': 'IPv4 Adresse'
-'Please enter a valid IPv4 address': 'Angiv en gyldig IPv4 adresse'
+'Please enter a valid IPv4 address': 'Indtast gyldig IPv4 addresse'
+'IPv4 Netmask': 'IPv4 Netmask'
+'Please enter a valid IPv4 netmask': 'Indtast gyldig IPv4 netmask'
+'Please enter a valid IPv4 gateway': 'Indtast gyldig IPv4 gateway'
+'IPv4 Gateway': 'IPv4 Gateway'
+'Do you want to set a static IPv4 address?': 'Vil du sætte en statisk IPv4 addresse?'
+'Yes': 'Ja'
+'No': 'Nej'
+'Do you want to set a static IPv6 address?': 'Vil du sætte en statisk IPv6 addresse?'
+'Configure IPv6': 'Konfigure IPv6'
+'Please enter a valid IPv6 address': 'Indtast gyldig IPv6 addresse'
+'IPv6 Address': 'IPv6 Addresse'
+'Please enter a valid IPv6 prefix': 'Indtast gyldig IPv6 prefix'
+'IPv6 Prefix': 'IPv6 Prefix'
+'Please enter a valid IPv6 gateway': 'Indtast gyldig IPv6 gateway'
+'IPv6 Gateway': 'IPv6 Gateway'
+'Do you want to enable full DNS Recursion?': 'Vil du aktivere fuld DNS Recursion?'
+'Configure DNS Recursion': 'Konfigure DNS Recursion'
+'Please enter the primary DNS address': 'Indtast primær DNS addresse'
+'Primary DNS': 'Primær DNS'
+'Please enter the secondary DNS address': 'Indtast sekundær DNS addresse'
+'Secondary DNS': 'Sekundær DNS'
+'Please enter the username for the admin web interface': 'Indtast admin brugernavn for Web interface'
+'Web Admin Username': 'Web Admin brugernavn'
+'Please enter the web admin password': 'Indtast admin adgangskode for web interface'
+'Please re-enter the web admin password': 'Indtast admin adgangskode for web interface igen'
+'Web Admin Password': 'Web Admin adgangskode'
+'Please enter the username for the admin console interface': 'Indtast admin brugernavn for Konsol interfac'
+'Console Admin Username': 'Konsol Admin brugernavn'
+'Please enter the console admin password': 'Indtast admin adgangskode for konsol interface'
+'Please re-enter the console admin password': 'Indtast admin adgangskode for konsol interface igen'
+'Console Admin Password': 'Konsol Admin adgangskode'
+'Do you want to install hypervisor tools for your hypervisor?': 'Vil du installer hypervisor tools for hypervisor?'
+'Configure Hypervisor Tools': 'Konfigure Hypervisor Tools'
+'Is the host set to UTC time?': 'Er hosten sat til UTC tid?'
+'Configure UTC Time': 'Konfigure UTC Tid'
+Timezone: Tidszone
+'Timezone Selection': 'Vælg tidszone'
+'Please enter the IP or hostname of the local mail server': 'Indtast IP eller værtsnavn for den lokale mail server'
+'Local Mail Server': 'Lokal mail server'
+'Please enter your IANA country code': 'Indtast IANA landekode'
+'Please enter your organization name (No spaces, dots, or underscores)': 'Indtast din organisation navn (ingen mellemrum, pungtum eller underscores)'
+'Organization Name': 'Organisation navn'
+'Enable Recursion': 'Aktivere Recursion'
+'DNS Primary Address': 'DNS primær addresse'
+'Set DNS': 'Sæt DNS'
+'DNS Secondary Address': 'DNS sekundær addresse'
+'Configure IPv4': 'Konfigure IPv4'
+'Set IP Address': 'Sæt IP Addresse'
+'Set IP Netmask': 'Sæt IP Netmask'
+'Set IP Gateway': 'Sæt IP Gateway'
+'Host is UTC': 'Host er UTC'
+'Set IP Mask': 'Sæt IP Mask'
+'IANA Country Code': 'IANA landekode'
