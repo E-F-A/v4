@@ -54,7 +54,7 @@ Email: Email
 'Console Admin Password': 'Κωδικός Πρόσβασης Κονσόλας Διαχείρισης'
 'Do you want to install hypervisor tools for your hypervisor?': 'Θέλετε να εγκαταστήσετε εργαλεία hypervisor για τον hypervisor σας;'
 'Configure Hypervisor Tools': 'Ρύθμιση Εργαλείων Hypervisor'
-'Is the host set to UTC time?': 'Είναι ρυθμισμένος ο υπολογιστής σε UTC ώρα?'
+'Is the host set to UTC time?': 'Είναι ρυθμισμένος ο υπολογιστής σε ώρα UTC;'
 'Configure UTC Time': 'Ρύθμιση Ώρας UTC'
 Timezone: 'Ζώνη Ώρας'
 'Timezone Selection': 'Επιλογή Ζώνης Ώρας'
