@@ -91,6 +91,7 @@ require {
     type var_run_t;
     type rpm_exec_t;
     type ldconfig_exec_t;
+    type rngd_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -250,6 +251,8 @@ dontaudit httpd_sys_script_t sysctl_vm_t:file { read open };
 dontaudit httpd_sys_script_t sysctl_vm_t:dir { getattr search };
 dontaudit httpd_sys_script_t sshd_net_t:dir { getattr search };
 dontaudit httpd_sys_script_t sshd_net_t:file { read open };
+dontaudit httpd_sys_script_t rngd_t:dir { getattr search };
+dontaudit httpd_sys_script_t rngd_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -327,7 +330,7 @@ allow mscan_t initrc_t:unix_stream_socket connectto;
 allow mscan_t efasql_etc_t:file { read open ioctl getattr };
 allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
 allow mscan_t spamd_compiled_t:dir { search };
-allow mscan_t spamd_compiled_t:file { open read getattr ioctl };
+allow mscan_t spamd_compiled_t:file { open read getattr ioctl execute };
 allow mscan_t sysfs_t:dir { read };
 allow mscan_t rpm_exec_t:file { getattr };
 allow mscan_t ldconfig_exec_t:file { getattr execute };
