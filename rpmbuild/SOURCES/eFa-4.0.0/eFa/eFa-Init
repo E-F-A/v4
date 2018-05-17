@@ -1170,7 +1170,7 @@ function func_configure-system() {
   echo "IPV6ADDRESS:$IPV6ADDRESS" >> /etc/eFa/eFa-Config
   echo "IPV6MASK:$IPV6MASK" >> /etc/eFa/eFa-Config
   echo "IPV6GATEWAY:$IPV6GATEWAY" >> /etc/eFa/eFa-Config
-  if [[ "$RECUSE" -eq 1 ]]; then
+  if [[ "$enablerecursion" -eq 1 ]]; then
     echo "RECURSION:ENABLED" >> /etc/eFa/eFa-Config
   else
     echo "RECURSION:DISABLED" >> /etc/eFa/eFa-Config
