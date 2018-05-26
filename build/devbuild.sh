@@ -39,17 +39,17 @@ fi
 yum -y install epel-release
 [ $? != 0 ] && exit 1
 
-echo "- Adding mariadb Repo"
-cat > /etc/yum.repos.d/mariadb.repo << 'EOF'
-# MariaDB 10.1 CentOS repository list - created 2017-03-19 11:09 UTC
-# http://downloads.mariadb.org/mariadb/repositories/
-[mariadb]
-name = MariaDB
-baseurl = http://yum.mariadb.org/10.1/centos7-amd64
-gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-gpgcheck=1
-enabled=1
-EOF
+# echo "- Adding mariadb Repo"
+# cat > /etc/yum.repos.d/mariadb.repo << 'EOF'
+# # MariaDB 10.1 CentOS repository list - created 2017-03-19 11:09 UTC
+# # http://downloads.mariadb.org/mariadb/repositories/
+# [mariadb]
+# name = MariaDB
+# baseurl = http://yum.mariadb.org/10.1/centos7-amd64
+# gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+# gpgcheck=1
+# enabled=1
+# EOF
 
 echo "- Adding IUS Repo"
 yum -y install https://centos7.iuscommunity.org/ius-release.rpm
