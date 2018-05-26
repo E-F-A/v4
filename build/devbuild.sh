@@ -116,7 +116,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Encoding-FixLatin-1.04-1.eFa.e
 [ $? != 0 ] && exit 1
 rpmbuild -ba mailwatch-1.2.7.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/mailwatch-1.2.7-6.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/mailwatch-1.2.7-7.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 cd $GITPATH/rpmbuild/SOURCES
 [ $? != 0 ] && exit 1
@@ -126,7 +126,7 @@ tar czvf eFa-4.0.0.tar.gz eFa-4.0.0/
 [ $? != 0 ] && exit 1
 tar xzvf MailScanner-5.0.7-2.rhel.tar.gz
 [ $? != 0 ] && exit 1
-yum -y install MailScanner-5.0.7-2/MailScanner-5.0.7-2.noarch.rpm
+yum -y install MailScanner-5.0.7-3/MailScanner-5.0.7-3.noarch.rpm
 [ $? != 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1
