@@ -36,19 +36,19 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # Control dependencies here as updates are released
 # Use version and release numbers required for each update
 # to maintain strict version control and dependency resolution
-Requires:  clamav >= 0.99.2-13
+Requires:  clamav >= 0.99.4-1
     # clamav                                     # epel    # MailScanner
     # #     clamav-data                          #         #
     # #     clamav-filesystem                    #         #
     # #     clamav-lib                           #         #
-Requires:  clamav-update >= 0.99.2-13
+Requires:  clamav-update >= 0.99.4-1
     # clamav-update                              # epel    # MailScanner
-Requires:  clamav-server >= 0.99.2-13
+Requires:  clamav-server >= 0.99.4-1
     # clamav-server                              # epel    # MailScanner
     # #     nmap-ncat                            # base    #
-Requires:  mariadb-server >= 10.1.30-1
-    # mariadb-server                             # base    # postfix, mailwatch
-    # #     mariadb-common                       #         #
+Requires:  mariadb101u-server >= 1:10.1.32-1
+    # mariadb101u-server                         # IUS     # postfix, mailwatch
+    # #     mariadb101u-common                   #         #
     # #     perl-Compress-Raw-Bzip2              #         #
     # #     perl-Compress-Raw-Zlib               #         #
     # #     perl-DBI                             #         #
@@ -56,32 +56,32 @@ Requires:  mariadb-server >= 10.1.30-1
     # #     perl-IO-Compress                     #         #
     # #     perl-Net-Daemon                      #         #
     # #     perl-PlRPC                           #         #
-    # #     mariadb-client                       #         #
-    # #     mariadb-shared                       #         #
+    # #     mariadb101u-client                   #         #
+    # #     mariadb101u-shared                   #         #
     # #     galera                               #         #
     # #     jemalloc                             #         #
 Requires:  perl-DBD-MySQL >= 4.023-5
     # perl-DBD-mysql                             # base    # spamassassin
-Requires:  php >= 7.2.1-1
-    # php                                        # remi    # mailwatch, frontend
+Requires:  php72u >= 7.2.1-1
+    # php72u                                     # IUS     # mailwatch, frontend
     # #     libzip                               #         #
-    # #     php-cli                              #         #
-    # #     php-common                           #         #
+    # #     php72u-cli                           #         #
+    # #     php72u-common                        #         #
 Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
 Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # screen                                     # base    # basic system tools
-Requires:  php-gd >= 7.2.1-1
-    # php-gd                                     # remi    # mailwatch, frontend
+Requires:  php72u-gd >= 7.2.1-1
+    # php72u-gd                                  # IUS     # mailwatch, frontend
     # #     libXpm                               #         #
     # #     t11ib                                #         #
-Requires:  php-mbstring >= 7.2.1-1
-    # php-mbstring                               # remi    # mailwatch, frontend
-Requires:  php-mysqlnd >= 7.2.1-1
-    # php-mysqlnd                                # remi    # mailwatch, frontend
-    # #     php-pdo                              #         #
-Requires:  php-ldap >= 7.2.1-1
-    # php-ldap                                   # remi    # mailwatch, frontend
+Requires:  php72u-mbstring >= 7.2.1-1
+    # php72u-mbstring                            # IUS     # mailwatch, frontend
+Requires:  php72u-mysqlnd >= 7.2.1-1
+    # php72u-mysqlnd                             # IUS     # mailwatch, frontend
+    # #     php72u-pdo                           #         #
+Requires:  php72u-ldap >= 7.2.1-1
+    # php72u-ldap                                # IUS     # mailwatch, frontend
 Requires:  httpd >= 2.4.6-67
     # httpd                                      # base    # mailwatch, frontend
     # #     apr                                  #         #
@@ -330,12 +330,12 @@ Requires:  p7zip-plugins >= 16.02-2
 Requires:  tmpwatch >= 2.11-5
     # tmpwatch                                   # base    # Spamassassin
     #   psmisc                                   #         #
-Requires: php-fpm >= 7.2.1-1
-    # php-fpm                                    # remi    # mailwatch, frontend
+Requires: php72u-fpm >= 7.2.1-1
+    # php72u-fpm                                 # IUS     # mailwatch, frontend
 Requires: system-config-keyboard >= 1.4.0-4
     # system-config-keyboard                     # base    # eFa
-Requires: php-process >= 7.2.3-2
-    # php-process                                # remi    # eFaInit
+Requires: php72u-process >= 7.2.3-2
+    # php72u-process                             # IUS     # eFaInit
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
