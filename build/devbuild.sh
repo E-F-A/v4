@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################
 
-# Buildpath
+# Git path
 GITPATH="/root/v4"
 
 # check if user is root
@@ -72,7 +72,7 @@ yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP op
 mkdir -p $GITPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 [ $? != 0 ] && exit 1
 
-echo "%_topdir $(pwd)/rpmbuild" > ~/.rpmmacros
+echo "%_topdir $GITPATH/rpmbuild" > ~/.rpmmacros
 [ $? != 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1
