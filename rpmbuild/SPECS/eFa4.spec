@@ -336,6 +336,8 @@ Requires: system-config-keyboard >= 1.4.0-4
     # system-config-keyboard                     # base    # eFa
 Requires: php72u-process >= 7.2.5-2
     # php72u-process                             # IUS     # eFaInit
+Requires: php72u-json >= 7.2.5-2
+    # php72u-json                                # IUS     # eFaInit
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
