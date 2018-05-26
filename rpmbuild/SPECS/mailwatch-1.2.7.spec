@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          mailwatch
 Version:       1.2.7
 Epoch:         1
-Release:       6.eFa%{?dist}
+Release:       7.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
