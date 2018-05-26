@@ -51,13 +51,10 @@ gpgcheck=1
 enabled=1
 EOF
 
-echo "- Adding Remi Repo"
-yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+echo "- Adding IUS Repo"
+yum -y install https://centos7.iuscommunity.org/ius-release.rpm
 [ $? != 0 ] && exit 1
-
-yum -y install yum-utils
-[ $? != 0 ] && exit 1
-yum-config-manager --enable remi-php72
+rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
 [ $? != 0 ] && exit 1
 
 yum -y update
