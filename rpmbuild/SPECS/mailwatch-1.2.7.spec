@@ -33,13 +33,13 @@ URL:           https://github.com/mailwatch/MailWatch
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:      httpd >= 2.4.6
-Requires:      php72u >= 7.2.1
-Requires:      php72u-gd >= 7.2.1
-Requires:      php72u-mbstring >= 7.2.1
-Requires:      MariaDB-server >= 10.1.30
-Requires:      php72u-mysqlnd >= 7.2.1
-Requires:      php72u-ldap >= 7.2.1
-Requires:      php72u-xml >= 7.2.1
+Requires:      php72u >= 7.2.5-2
+Requires:      php72u-gd >= 7.2.5-2
+Requires:      php72u-mbstring >= 7.2.5-2
+Requires:      Mariadb101u-server >= 10.1.32-1
+Requires:      php72u-mysqlnd >= 7.2.5-2
+Requires:      php72u-ldap >= 7.2.5-2
+Requires:      php72u-xml >= 7.2.5-2
 Requires:      perl(Encoding::FixLatin) >= 1.04-1
 
 %description
@@ -216,6 +216,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sat May 26 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-7
+- Updated to use IUS repository for dependencies
+
 * Sat Jan 27 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-6
 - Repackage to include mailwatch_update_sarules.php and forked ps fix
 
