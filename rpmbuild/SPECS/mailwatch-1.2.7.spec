@@ -33,13 +33,13 @@ URL:           https://github.com/mailwatch/MailWatch
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:      httpd >= 2.4.6
-Requires:      php >= 7.2.1
-Requires:      php-gd >= 7.2.1
-Requires:      php-mbstring >= 7.2.1
+Requires:      php72u >= 7.2.1
+Requires:      php72u-gd >= 7.2.1
+Requires:      php72u-mbstring >= 7.2.1
 Requires:      MariaDB-server >= 10.1.30
-Requires:      php-mysqlnd >= 7.2.1
-Requires:      php-ldap >= 7.2.1
-Requires:      php-xml >= 7.2.1
+Requires:      php72u-mysqlnd >= 7.2.1
+Requires:      php72u-ldap >= 7.2.1
+Requires:      php72u-xml >= 7.2.1
 Requires:      perl(Encoding::FixLatin) >= 1.04-1
 
 %description
