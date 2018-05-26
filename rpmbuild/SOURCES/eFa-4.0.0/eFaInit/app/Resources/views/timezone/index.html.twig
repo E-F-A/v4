@@ -18,8 +18,11 @@
                 <div class="timezone-container">
                     {{ form_widget(form.Timezone) }}
                 </div>
-                {{ form_widget(form.Next) }}
+                <div style="display:none">
+                  {{ form_widget(form.NextHidden) }}
+                </div>
                 {{ form_widget(form.Back) }} 
+                {{ form_widget(form.Next) }}
             </div>
             {{ form_end(form) }}
             <div class="error-container">

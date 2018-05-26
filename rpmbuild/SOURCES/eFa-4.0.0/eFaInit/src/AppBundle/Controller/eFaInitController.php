@@ -326,8 +326,8 @@ class eFaInitController extends AbstractController
                 $action = 'verify';
                 $page   = 'verifysettingspage';
             } else {
-                $action = $form->get('Next')->isClicked() ? $nextSlug : $previousSlug;
-                $page   = $form->get('Next')->isClicked() ? $nextPage : $previousPage;
+                $action = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextSlug : $previousSlug;
+                $page   = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextPage : $previousPage;
             }
 
             return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
@@ -532,8 +532,8 @@ class eFaInitController extends AbstractController
                 $action = 'verify';
                 $page   = 'verifysettingspage';
             } else {
-                $action = $form->get('Next')->isClicked() ? $nextSlug : $previousSlug;
-                $page   = $form->get('Next')->isClicked() ? $nextPage : $previousPage;
+                $action = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextSlug : $previousSlug;
+                $page   = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextPage : $previousPage;
             }
 
             return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
@@ -587,8 +587,8 @@ class eFaInitController extends AbstractController
                 $action = 'verify';
                 $page   = 'verifysettingspage';
             } else {
-                $action = $form->get('Next')->isClicked() ? 'mailserver' : 'configutc';
-                $page   = $form->get('Next')->isClicked() ? 'textboxpage' : 'yesnopage';
+                $action = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? 'mailserver' : 'configutc';
+                $page   = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? 'textboxpage' : 'yesnopage';
             }
 
             return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
