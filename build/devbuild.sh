@@ -78,45 +78,45 @@ cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1
 rpmbuild -ba clamav-unofficial-sigs.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/clamav-unofficial-sigs-5.6.2-3.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/clamav-unofficial-sigs-5.6.2-3.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 echo "n" | rpmbuild -ba perl-libnet.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-libnet-3.11-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-libnet-3.11-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba perl-IP-Country.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-IP-Country-2.28-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-IP-Country-2.28-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba perl-Text-Balanced.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Text-Balanced-2.03-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Text-Balanced-2.03-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba perl-Mail-SPF-Query.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Mail-SPF-Query-1.999.1-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Mail-SPF-Query-1.999.1-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba unrar-5.6.1.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-5.6.1-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-5.6.1-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba postfix-3.3.0.spec
 [ $? != 0 ] && exit 1
 yum -y remove postfix
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix-3.3.0-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix-3.3.0-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-3.4.1-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-3.4.1-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba perl-Encoding-FixLatin.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Encoding-FixLatin-1.04-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Encoding-FixLatin-1.04-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba mailwatch-1.2.7.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/mailwatch-1.2.7-6.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/mailwatch-1.2.7-6.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 cd $GITPATH/rpmbuild/SOURCES
 [ $? != 0 ] && exit 1
@@ -132,11 +132,11 @@ cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1
 rpmbuild -ba dcc.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-1.3.163-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-1.3.163-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba eFa4.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 
 
