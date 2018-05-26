@@ -62,7 +62,7 @@ Requires:  mariadb101u-server >= 1:10.1.32-1
     # #     jemalloc                             #         #
 Requires:  perl-DBD-MySQL >= 4.023-5
     # perl-DBD-mysql                             # base    # spamassassin
-Requires:  php72u >= 7.2.1-1
+Requires:  php72u >= 7.2.5-2
     # php72u                                     # IUS     # mailwatch, frontend
     # #     libzip                               #         #
     # #     php72u-cli                           #         #
@@ -71,16 +71,16 @@ Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
 Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # screen                                     # base    # basic system tools
-Requires:  php72u-gd >= 7.2.1-1
+Requires:  php72u-gd >= 7.2.5-2
     # php72u-gd                                  # IUS     # mailwatch, frontend
     # #     libXpm                               #         #
     # #     t11ib                                #         #
-Requires:  php72u-mbstring >= 7.2.1-1
+Requires:  php72u-mbstring >= 7.2.5-2
     # php72u-mbstring                            # IUS     # mailwatch, frontend
-Requires:  php72u-mysqlnd >= 7.2.1-1
+Requires:  php72u-mysqlnd >= 7.2.5-2
     # php72u-mysqlnd                             # IUS     # mailwatch, frontend
     # #     php72u-pdo                           #         #
-Requires:  php72u-ldap >= 7.2.1-1
+Requires:  php72u-ldap >= 7.2.5-2
     # php72u-ldap                                # IUS     # mailwatch, frontend
 Requires:  httpd >= 2.4.6-67
     # httpd                                      # base    # mailwatch, frontend
@@ -269,7 +269,7 @@ Requires:  perl-YAML >= 0.84-5
 Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 5.4.5-1
-    # PKG='  unrar                               # eFa     # MailScanner
+    # unrar                                      # eFa     # MailScanner
 Requires:  postfix >= 3.2.4-1
     # postfix                                    # eFa     # MTA
     # #    libicu                                # base    #
@@ -303,7 +303,7 @@ Requires:  perl-libnet >= 3.10-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  mailwatch >= 1:1.2.7-6
+Requires:  mailwatch >= 1:1.2.7-7
     # mailwatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 1.3.159-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -330,11 +330,11 @@ Requires:  p7zip-plugins >= 16.02-2
 Requires:  tmpwatch >= 2.11-5
     # tmpwatch                                   # base    # Spamassassin
     #   psmisc                                   #         #
-Requires: php72u-fpm >= 7.2.1-1
+Requires: php72u-fpm >= 7.2.5-2
     # php72u-fpm                                 # IUS     # mailwatch, frontend
 Requires: system-config-keyboard >= 1.4.0-4
     # system-config-keyboard                     # base    # eFa
-Requires: php72u-process >= 7.2.3-2
+Requires: php72u-process >= 7.2.5-2
     # php72u-process                             # IUS     # eFaInit
 
 %description
