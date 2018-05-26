@@ -81,10 +81,11 @@ EOF
 echo "- Adding epel Repo"
 yum -y install epel-release
 
-echo "- Adding Remi Repo"
-yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-yum -y install yum-utils
-yum-config-manager --enable remi-php72
+echo "- Adding IUS Repo"
+yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+[ $? != 0 ] && exit 1
+rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
+[ $? != 0 ] && exit 1
 
 echo "- Updating the OS"
 yum -y update
