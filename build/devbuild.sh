@@ -18,6 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################
 
+# Buildpath
+GITPATH="~/v4"
+
 # check if user is root
 if [ `whoami` == root ]; then
   echo "Good you are root."
@@ -66,59 +69,56 @@ yum -y remove mariadb-libs
 yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod perl-HTML-Parser perl-Archive-Tar perl-devel perl-libwww-perl perl-DB_File perl-Mail-SPF perl-Encode-Detect perl-IO-Socket-INET6 perl-Mail-DKIM perl-Net-DNS-Resolver-Programmable perl-Parse-RecDescent perl-Inline perl-Test-Manifest perl-YAML perl-ExtUtils-CBuilder perl-Module-Build perl-IO-String perl-Geo-IP perl-Net-CIDR-Lite perl-Sys-Hostname-Long perl-Net-IP perl-Net-Patricia perl-Data-Dump perl-generators libicu-devel openldap-devel mysql-devel postgresql-devel sqlite-devel tinycdb-devel perl-Date-Calc perl-Sys-Syslog clamav perl-Geography-Countries php mariadb101u-server perl-Digest-SHA1 php-gd php-ldap php-mbstring php-mysqlnd php-xml perl-Archive-Zip perl-Env perl-Filesys-Df perl-IO-stringy perl-Net-CIDR perl-OLE-Storage_Lite perl-Sys-SigAction perl-MIME-tools wget
 [ $? != 0 ] && exit 1
 
-cd ..
-[ $? != 0 ] && exit 1
-
-mkdir -p rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+mkdir -p $GITPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 [ $? != 0 ] && exit 1
 
 echo "%_topdir $(pwd)/rpmbuild" > ~/.rpmmacros
 [ $? != 0 ] && exit 1
-cd rpmbuild/SPECS
+cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1
 rpmbuild -ba clamav-unofficial-sigs.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/clamav-unofficial-sigs-5.6.2-3.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/clamav-unofficial-sigs-5.6.2-3.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 echo "n" | rpmbuild -ba perl-libnet.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/perl-libnet-3.11-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-libnet-3.11-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba perl-IP-Country.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/perl-IP-Country-2.28-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-IP-Country-2.28-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba perl-Text-Balanced.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/perl-Text-Balanced-2.03-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Text-Balanced-2.03-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba perl-Mail-SPF-Query.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/perl-Mail-SPF-Query-1.999.1-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Mail-SPF-Query-1.999.1-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba unrar-5.6.1.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/unrar-5.6.1-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-5.6.1-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba postfix-3.3.0.spec
 [ $? != 0 ] && exit 1
 yum -y remove postfix
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/postfix-3.3.0-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix-3.3.0-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/spamassassin-3.4.1-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-3.4.1-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba perl-Encoding-FixLatin.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/perl-Encoding-FixLatin-1.04-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Encoding-FixLatin-1.04-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba mailwatch-1.2.7.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/mailwatch-1.2.7-6.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/mailwatch-1.2.7-6.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
-cd ../SOURCES
+cd $GITPATH/rpmbuild/SOURCES
 [ $? != 0 ] && exit 1
 rm -f eFa-4.0.0.tar.gz
 [ $? != 0 ] && exit 1
@@ -128,15 +128,15 @@ tar xzvf MailScanner-5.0.7-2.rhel.tar.gz
 [ $? != 0 ] && exit 1
 yum -y install MailScanner-5.0.7-2/MailScanner-5.0.7-2.noarch.rpm
 [ $? != 0 ] && exit 1
-cd ../SPECS
+cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1
 rpmbuild -ba dcc.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/dcc-1.3.163-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-1.3.163-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba eFa4.spec
 [ $? != 0 ] && exit 1
-yum -y install ../RPMS/x86_64/eFa-4.0.0-1.eFa.el7.centos.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-1.eFa.el7.centos.x86_64.rpm
 [ $? != 0 ] && exit 1
 
 
