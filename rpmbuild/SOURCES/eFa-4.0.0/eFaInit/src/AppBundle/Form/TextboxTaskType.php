@@ -22,6 +22,9 @@ class TextboxTaskType extends AbstractType
                 'property_path'     => $options['varProperty'],
                 'data'              => $options['varData'],
             ))
+            ->add('NextHidden', SubmitType::class, array(
+                'validation_groups' => array($options['varProperty']),
+            ))
             ->add('Next', SubmitType::class, array(
                 'validation_groups' => array($options['varProperty']),
             ))

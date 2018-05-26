@@ -25,6 +25,9 @@ class PasswordTaskType extends AbstractType
                 'required'          => false,
                 'property_path'     => $options['varProperty2']
             ))
+            ->add('NextHidden', SubmitType::class, array(
+                'validation_groups' => array($options['varProperty1'], $options['varProperty2'])
+            ))
             ->add('Next', SubmitType::class, array(
                 'validation_groups' => array($options['varProperty1'], $options['varProperty2'])
             ))
