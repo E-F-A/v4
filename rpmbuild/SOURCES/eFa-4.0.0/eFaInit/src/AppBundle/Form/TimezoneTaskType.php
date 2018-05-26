@@ -24,6 +24,7 @@ class TimezoneTaskType extends AbstractType
                 'validation_groups' => false
                 ))
             ->add('Next', SubmitType::class)
+            ->add('NextHidden', SubmitType::class)
         ;
     }
     public function configureOptions(OptionsResolver $resolver)
