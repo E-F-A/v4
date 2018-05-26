@@ -19,7 +19,7 @@
 #######################################################################
 
 # Buildpath
-GITPATH="~/v4"
+GITPATH="/root/v4"
 
 # check if user is root
 if [ `whoami` == root ]; then
