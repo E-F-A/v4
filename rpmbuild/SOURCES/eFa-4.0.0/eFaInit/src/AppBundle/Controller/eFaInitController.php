@@ -133,6 +133,7 @@ class eFaInitController extends AbstractController
                 $options = array(
                     'varLabel'    => 'Please enter a hostname',
                     'varProperty' => 'Hostname',
+                    'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Hostname';
                 $nextSlug     = 'domainname';
@@ -143,7 +144,8 @@ class eFaInitController extends AbstractController
             case "domainname":
                 $options = array(
                     'varLabel'    => 'Please enter a domain name',
-                    'varProperty' => 'Domainname'
+                    'varProperty' => 'Domainname',
+                    'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Domain Name';
                 $nextSlug     = 'email';
@@ -154,7 +156,8 @@ class eFaInitController extends AbstractController
             case "email":
                 $options = array(
                     'varLabel'    => 'Please enter an email address for important notifications',
-                    'varProperty' => 'Email'
+                    'varProperty' => 'Email',
+                    'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Email';
                 $nextSlug     = 'configipv4';
@@ -165,8 +168,18 @@ class eFaInitController extends AbstractController
             case "ipv4address":
                 $options = array(
                     'varLabel'    => 'Please enter a valid IPv4 address',
-                    'varProperty' => 'IPv4address'
+                    'varProperty' => 'IPv4address',
+                    'varData'     => $session->get($slug),
                 );
+                if ($options['varData'] === '') {
+                    try {
+                        $process = new Process("ifconfig eth0 | grep inet\ | awk '{print $2}'");
+                        $process->mustRun();
+                        $options['varData'] = $process->getOutput();
+                    } catch (ProcessFailedException $exception) {
+                        $options['varData'] = '';
+                    } 
+                }
                 $varTitle     = 'IPv4 Address';
                 $nextSlug     = 'ipv4netmask';
                 $nextPage     = 'textboxpage';
@@ -176,8 +189,20 @@ class eFaInitController extends AbstractController
             case "ipv4netmask":
                 $options = array(
                     'varLabel'    => 'Please enter a valid IPv4 netmask',
-                    'varProperty' => 'IPv4netmask'
+                    'varProperty' => 'IPv4netmask',
+                    'varData'     => $session->get($slug),
                 );
+
+                if ($options['varData'] === '') {
+                    try {
+                        $process = new Process("ifconfig eth0 | grep inet\ | awk '{print $4}'");
+                        $process->mustRun();
+                        $options['varData'] = $process->getOutput();
+                    } catch (ProcessFailedException $exception) {
+                        $options['varData'] = '';
+                    } 
+                }
+
                 $varTitle     = 'IPv4 Netmask';
                 $nextSlug     = 'ipv4gateway';
                 $nextPage     = 'textboxpage';
@@ -187,8 +212,20 @@ class eFaInitController extends AbstractController
             case "ipv4gateway":
                 $options = array(
                     'varLabel'    => 'Please enter a valid IPv4 gateway',
-                    'varProperty' => 'IPv4gateway'
+                    'varProperty' => 'IPv4gateway',
+                    'varData'     => $session->get($slug),
                 );
+
+                if ($options['varData'] === '') {
+                    try {
+                        $process = new Process("route -n | grep 0.0.0.0 | awk '{print $2}' | grep -v 0.0.0.0");
+                        $process->mustRun();
+                        $options['varData'] = $process->getOutput();
+                    } catch (ProcessFailedException $exception) {
+                        $options['varData'] = '';
+                    } 
+                }
+
                 $varTitle     = 'IPv4 Gateway';
                 $nextSlug     = 'configipv6';
                 $nextPage     = 'yesnopage';
@@ -198,8 +235,20 @@ class eFaInitController extends AbstractController
              case "ipv6address":
                 $options = array(
                     'varLabel'    => 'Please enter a valid IPv6 address',
-                    'varProperty' => 'IPv6address'
+                    'varProperty' => 'IPv6address',
+                    'varData'     => $session->get($slug),
                 );
+
+                if ($options['varData'] === '') {
+                    try {
+                        $process = new Process("ifconfig eth0 | grep inet6\ | grep global | awk '{print $2}'");
+                        $process->mustRun();
+                        $options['varData'] = $process->getOutput();
+                    } catch (ProcessFailedException $exception) {
+                        $options['varData'] = '';
+                    } 
+                }
+
                 $varTitle     = 'IPv6 Address';
                 $nextSlug     = 'ipv6prefix';
                 $nextPage     = 'textboxpage';
@@ -209,8 +258,20 @@ class eFaInitController extends AbstractController
             case "ipv6prefix":
                 $options = array(
                     'varLabel'    => 'Please enter a valid IPv6 prefix',
-                    'varProperty' => 'IPv6prefix'
+                    'varProperty' => 'IPv6prefix',
+                    'varData'     => $session->get($slug),
                 );
+
+                if ($options['varData'] === '') {
+                    try {
+                        $process = new Process("ip add show eth0 | grep inet6\ | grep global | awk '{print $2}' | awk -F'/' '{print $2}'");
+                        $process->mustRun();
+                        $options['varData'] = $process->getOutput();
+                    } catch (ProcessFailedException $exception) {
+                        $options['varData'] = '';
+                    } 
+                }
+
                 $varTitle     = 'IPv6 Prefix';
                 $nextSlug     = 'ipv6gateway';
                 $nextPage     = 'textboxpage';
@@ -220,8 +281,20 @@ class eFaInitController extends AbstractController
             case "ipv6gateway":
                 $options = array(
                     'varLabel'    => 'Please enter a valid IPv6 gateway',
-                    'varProperty' => 'IPv6gateway'
+                    'varProperty' => 'IPv6gateway',
+                    'varData'     => $session->get($slug),
                 );
+
+                if ($options['varData'] === '') {
+                    try {
+                        $process = new Process("route -n -6 | grep UG | grep ::/0 | awk '{print $2}'");
+                        $process->mustRun();
+                        $options['varData'] = $process->getOutput();
+                    } catch (ProcessFailedException $exception) {
+                        $options['varData'] = '';
+                    } 
+                }
+
                 $varTitle     = 'IPv6 Gateway';
                 $nextSlug     = 'configrecursion';
                 $nextPage     = 'yesnopage';
@@ -231,8 +304,20 @@ class eFaInitController extends AbstractController
             case "dns1":
                 $options = array(
                     'varLabel'    => 'Please enter the primary DNS address',
-                    'varProperty' => 'DNS1'
+                    'varProperty' => 'DNS1',
+                    'varData'     => $session->get($slug),
                 );
+
+                if ($options['varData'] === '') {
+                    try {
+                        $process = new Process("grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -n 1p");
+                        $process->mustRun();
+                        $options['varData'] = $process->getOutput();
+                    } catch (ProcessFailedException $exception) {
+                        $options['varData'] = '';
+                    } 
+                }
+
                 $varTitle     = 'Primary DNS';
                 $nextSlug     = 'dns2';
                 $nextPage     = 'textboxpage';
@@ -242,8 +327,20 @@ class eFaInitController extends AbstractController
             case "dns2":
                 $options = array(
                     'varLabel'    => 'Please enter the secondary DNS address',
-                    'varProperty' => 'DNS2'
+                    'varProperty' => 'DNS2',
+                    'varData'     => $session->get($slug),
                 );
+
+                if ($options['varData'] === '') {
+                    try {
+                        $process = new Process("grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -n 2p");
+                        $process->mustRun();
+                        $options['varData'] = $process->getOutput();
+                    } catch (ProcessFailedException $exception) {
+                        $options['varData'] = '';
+                    } 
+                }
+
                 $varTitle     = 'Secondary DNS';
                 $nextSlug     = 'webusername';
                 $nextPage     = 'textboxpage';
@@ -253,7 +350,8 @@ class eFaInitController extends AbstractController
             case "webusername":
                 $options = array(
                     'varLabel'    => 'Please enter the username for the admin web interface',
-                    'varProperty' => 'Webusername'
+                    'varProperty' => 'Webusername',
+                    'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Web Admin Username';
                 $nextSlug     = 'webpassword';
@@ -264,7 +362,8 @@ class eFaInitController extends AbstractController
             case "cliusername":
                 $options = array(
                     'varLabel'    => 'Please enter the username for the admin console interface',
-                    'varProperty' => 'CLIusername'
+                    'varProperty' => 'CLIusername',
+                    'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Console Admin Username';
                 $nextSlug     = 'clipassword';
@@ -275,7 +374,8 @@ class eFaInitController extends AbstractController
             case "mailserver":
                 $options = array(
                     'varLabel'    => 'Please enter the IP or hostname of the local mail server',
-                    'varProperty' => 'Mailserver'
+                    'varProperty' => 'Mailserver',
+                    'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Local Mail Server';
                 $nextSlug     = 'ianacode';
@@ -286,7 +386,8 @@ class eFaInitController extends AbstractController
             case "ianacode":
                 $options = array(
                     'varLabel'    => 'Please enter your IANA country code',
-                    'varProperty' => 'IANAcode'
+                    'varProperty' => 'IANAcode',
+                    'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'IANA Code';
                 $nextSlug     = 'orgname';
@@ -297,7 +398,8 @@ class eFaInitController extends AbstractController
             case "orgname":
                 $options = array(
                     'varLabel'    => 'Please enter your organization name (No spaces, dots, or underscores)',
-                    'varProperty' => 'Orgname'
+                    'varProperty' => 'Orgname',
+                    'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Organization Name';
                 $nextSlug     = 'verify';
@@ -307,7 +409,6 @@ class eFaInitController extends AbstractController
             break;
 
         }
-        $options['varData'] = $session->get($slug);
 
         if ($edit === 'edit') {
             $form = $this->createForm(TextboxEditTaskType::class, $task, $options);
@@ -490,8 +591,11 @@ class eFaInitController extends AbstractController
                 $options = array(
                     'varLabel1'    => 'Please enter the web admin password',
                     'varLabel2'    => 'Please re-enter the web admin password',
-                    'varProperty1'  => 'Webpassword1',
-                    'varProperty2' => 'Webpassword2'
+                    'varLabel3'    => 'hidden',
+                    'varProperty1' => 'Webpassword1',
+                    'varProperty2' => 'Webpassword2',
+                    'varProperty3' => 'CLIpasswordcompare',
+                    'varData3'     => $session->get('clipassword'),
                 );
                 $varTitle     = 'Web Admin Password';
                 $nextSlug     = 'cliusername';
@@ -503,8 +607,11 @@ class eFaInitController extends AbstractController
                 $options = array(
                     'varLabel1'    => 'Please enter the console admin password',
                     'varLabel2'    => 'Please re-enter the console admin password',
-                    'varProperty1'  => 'CLIpassword1',
-                    'varProperty2' => 'CLIpassword2'
+                    'varLabel3'    => 'hidden',
+                    'varProperty1' => 'CLIpassword1',
+                    'varProperty2' => 'CLIpassword2',
+                    'varProperty3' => 'Webpasswordcompare',
+                    'varData3'     => $session->get('webpassword'),
                 );
                 $varTitle     = 'Console Admin Password';
                 $nextSlug     = 'configvirtual';

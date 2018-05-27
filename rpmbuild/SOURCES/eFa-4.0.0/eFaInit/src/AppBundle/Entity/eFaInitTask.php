@@ -386,7 +386,6 @@ class eFaInitTask
         $this->webpassword1 = $var;
     }
 
-
     /**
      * @Assert\IsTrue(
      *     message="Passwords do not match",
@@ -397,6 +396,30 @@ class eFaInitTask
     public function isWebPasswordSame()
     {
          return $this->webpassword1 === $this->webpassword2;
+    }
+
+    protected $clipasswordcompare;
+ 
+    public function getCLIpasswordcompare()
+    {
+        return $this->clipasswordcompare;
+    }
+
+    public function setCLIpasswordcompare($var)
+    {
+        $this->clipasswordcompare = $var;
+    }
+
+    /**
+     * @Assert\IsFalse(
+     *     message="Web and CLI Passwords cannot match",
+     *     groups={"CLIpasswordcompare"}
+     * )
+     *        
+     */
+    public function isCLIWebPasswordSame()
+    {
+         return $this->webpassword2 === $this->clipasswordcompare;
     }
 
     /**
@@ -411,7 +434,6 @@ class eFaInitTask
      */
     protected $clipassword1;
     protected $clipassword2;
-
 
     public function getCLIpassword2()
     {
@@ -433,7 +455,6 @@ class eFaInitTask
         $this->clipassword1 = $var;
     }
 
-
     /**
      * @Assert\IsTrue(
      *     message="Passwords do not match",
@@ -444,6 +465,30 @@ class eFaInitTask
     public function isCLIPasswordSame()
     {
          return $this->clipassword1 === $this->clipassword2;
+    }
+
+    protected $webpasswordcompare;
+ 
+    public function getWebpasswordcompare()
+    {
+        return $this->webpasswordcompare;
+    }
+
+    public function setWebpasswordcompare($var)
+    {
+        $this->webpasswordcompare = $var;
+    }
+
+    /**
+     * @Assert\IsFalse(
+     *     message="Web and CLI Passwords cannot match",
+     *     groups={"Webpasswordcompare"}
+     * )
+     *        
+     */
+    public function isWebCLIPasswordSame()
+    {
+         return $this->webpasswordcompare === $this->clipassword2;
     }
 
     /**
