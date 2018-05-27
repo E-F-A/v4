@@ -26,14 +26,8 @@ class PasswordEditTaskType extends AbstractType
                 'required'          => false,
                 'property_path'     => $options['varProperty2']
             ))
-            ->add('Passwordboxhidden', TextType::class, array(
-                'label'             => $options['varLabel3'],
-                'required'          => false,
-                'property_path'     => $options['varProperty3'],
-                'data'              => $options['varData3'],
-            ))
             ->add('Save', SubmitType::class, array(
-                'validation_groups' => array($options['varProperty1'], $options['varProperty2'], $options['varProperty3'])
+                'validation_groups' => array($options['varProperty1'], $options['varProperty2'])
             ))
             ;
     }
@@ -45,11 +39,8 @@ class PasswordEditTaskType extends AbstractType
         ));
         $resolver->setRequired('varLabel1');
         $resolver->setRequired('varLabel2');
-        $resolver->setRequired('varLabel3');
         $resolver->setRequired('varProperty1');
         $resolver->setRequired('varProperty2');
-        $resolver->setRequired('varProperty3');
-        $resolver->setRequired('varData3');
     }
 }
 ?>

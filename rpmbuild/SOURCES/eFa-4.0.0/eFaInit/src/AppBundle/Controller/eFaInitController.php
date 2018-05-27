@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\eFaInitTask;
+use AppBundle\Entity\passwordCompareTask;
 use AppBundle\Form\LanguageTaskType;
 use AppBundle\Form\LanguageEditTaskType;
 use AppBundle\Form\YesNoTaskType;
@@ -14,15 +15,16 @@ use AppBundle\Form\PasswordEditTaskType;
 use AppBundle\Form\TimezoneTaskType;
 use AppBundle\Form\TimezoneEditTaskType;
 use AppBundle\Form\VerifySettingsTaskType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Validator\Validation;
 
-class eFaInitController extends AbstractController
+class eFaInitController extends Controller
 {
     /**
      * @Route("/{_locale}",
@@ -591,11 +593,8 @@ class eFaInitController extends AbstractController
                 $options = array(
                     'varLabel1'    => 'Please enter the web admin password',
                     'varLabel2'    => 'Please re-enter the web admin password',
-                    'varLabel3'    => 'hidden',
                     'varProperty1' => 'Webpassword1',
                     'varProperty2' => 'Webpassword2',
-                    'varProperty3' => 'CLIpasswordcompare',
-                    'varData3'     => $session->get('clipassword'),
                 );
                 $varTitle     = 'Web Admin Password';
                 $nextSlug     = 'cliusername';
@@ -607,11 +606,8 @@ class eFaInitController extends AbstractController
                 $options = array(
                     'varLabel1'    => 'Please enter the console admin password',
                     'varLabel2'    => 'Please re-enter the console admin password',
-                    'varLabel3'    => 'hidden',
                     'varProperty1' => 'CLIpassword1',
                     'varProperty2' => 'CLIpassword2',
-                    'varProperty3' => 'Webpasswordcompare',
-                    'varData3'     => $session->get('webpassword'),
                 );
                 $varTitle     = 'Console Admin Password';
                 $nextSlug     = 'configvirtual';
@@ -635,25 +631,51 @@ class eFaInitController extends AbstractController
             $getMethod = "get" . $options['varProperty1'];
             $session->set($slug, $task->$getMethod());
             
-            if ($edit === 'edit') {
-                $action = 'verify';
-                $page   = 'verifysettingspage';
-            } else {
-                $action = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextSlug : $previousSlug;
-                $page   = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextPage : $previousPage;
-            }
+            $passwordcompare = new passwordCompareTask();
+            $passwordcompare->setPassword1($session->get('webpassword'));
+            $passwordcompare->setPassword2($session->get('clipassword'));
+            
+            //$validator = Validation::createValidator();
+            $validator = $this->get('validator');
+            $errors = $validator->validate($passwordcompare);
 
-            return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
+            if (count($errors) === 0) {
+                if ($edit === 'edit') {
+                    $action = 'verify';
+                   $page   = 'verifysettingspage';
+                } else {
+                    $action = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextSlug : $previousSlug;
+                    $page   = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextPage : $previousPage;
+                }
+
+                return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
+            } else {
+                if ($edit === 'edit') {
+                    return $this->render('passwordeditbox/index.html.twig', array(
+                        'form' => $form->createView(),
+                        'error' => 'Web and ClI Passwords cannot match',
+                        'title' => $varTitle,
+                    ));
+                } else {
+                    return $this->render('passwordbox/index.html.twig', array(
+                        'form' => $form->createView(),
+                        'error' => 'Web and CLI Passwords cannot match',
+                        'title' => $varTitle,
+                    ));
+                }
+            }
         }
         
         if ($edit === 'edit') {
             return $this->render('passwordeditbox/index.html.twig', array(
                 'form' => $form->createView(),
+                'error' => null,
                 'title' => $varTitle,
             ));
         } else {
             return $this->render('passwordbox/index.html.twig', array(
                 'form' => $form->createView(),
+                'error' => null,
                 'title' => $varTitle,
             ));
         }

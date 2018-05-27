@@ -5,6 +5,45 @@ namespace AppBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+class passwordCompareTask
+{
+    protected $password1;
+    protected $password2;
+
+    public function getPassword1()
+    {
+        return $this->password1;
+    }
+
+    public function setPassword1($var)
+    {
+        $this->password1 = $var;
+    }
+
+    public function getPassword2()
+    {
+        return $this->password2;
+    }
+
+    public function setPassword2($var)
+    {
+        $this->password2 = $var;
+    }
+
+    /**
+     * @Assert\IsFalse(
+     *     message="Web and CLI Passwords cannot match",
+     * )
+     *        
+     */
+    public function isPasswordsSame()
+    {
+         return $this->password1 === $this->password2;
+    }
+
+}
+
+
 class eFaInitTask
 {
 
@@ -398,30 +437,6 @@ class eFaInitTask
          return $this->webpassword1 === $this->webpassword2;
     }
 
-    protected $clipasswordcompare;
- 
-    public function getCLIpasswordcompare()
-    {
-        return $this->clipasswordcompare;
-    }
-
-    public function setCLIpasswordcompare($var)
-    {
-        $this->clipasswordcompare = $var;
-    }
-
-    /**
-     * @Assert\IsFalse(
-     *     message="Web and CLI Passwords cannot match",
-     *     groups={"CLIpasswordcompare"}
-     * )
-     *        
-     */
-    public function isCLIWebPasswordSame()
-    {
-         return $this->webpassword2 === $this->clipasswordcompare;
-    }
-
     /**
      * @Assert\NotBlank(
      *    groups={"CLIpassword1"}
@@ -465,30 +480,6 @@ class eFaInitTask
     public function isCLIPasswordSame()
     {
          return $this->clipassword1 === $this->clipassword2;
-    }
-
-    protected $webpasswordcompare;
- 
-    public function getWebpasswordcompare()
-    {
-        return $this->webpasswordcompare;
-    }
-
-    public function setWebpasswordcompare($var)
-    {
-        $this->webpasswordcompare = $var;
-    }
-
-    /**
-     * @Assert\IsFalse(
-     *     message="Web and CLI Passwords cannot match",
-     *     groups={"Webpasswordcompare"}
-     * )
-     *        
-     */
-    public function isWebCLIPasswordSame()
-    {
-         return $this->webpasswordcompare === $this->clipassword2;
     }
 
     /**
