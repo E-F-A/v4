@@ -171,7 +171,7 @@ class eFaInitController extends AbstractController
                     'varProperty' => 'IPv4address',
                     'varData'     => $session->get($slug),
                 );
-                if ($options['varData'] === '') {
+                if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $process = new Process("ifconfig eth0 | grep inet\ | awk '{print $2}'");
                         $process->mustRun();
@@ -193,7 +193,7 @@ class eFaInitController extends AbstractController
                     'varData'     => $session->get($slug),
                 );
 
-                if ($options['varData'] === '') {
+                if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $process = new Process("ifconfig eth0 | grep inet\ | awk '{print $4}'");
                         $process->mustRun();
@@ -216,7 +216,7 @@ class eFaInitController extends AbstractController
                     'varData'     => $session->get($slug),
                 );
 
-                if ($options['varData'] === '') {
+                if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $process = new Process("route -n | grep 0.0.0.0 | awk '{print $2}' | grep -v 0.0.0.0");
                         $process->mustRun();
@@ -239,7 +239,7 @@ class eFaInitController extends AbstractController
                     'varData'     => $session->get($slug),
                 );
 
-                if ($options['varData'] === '') {
+                if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $process = new Process("ifconfig eth0 | grep inet6\ | grep global | awk '{print $2}'");
                         $process->mustRun();
@@ -262,7 +262,7 @@ class eFaInitController extends AbstractController
                     'varData'     => $session->get($slug),
                 );
 
-                if ($options['varData'] === '') {
+                if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $process = new Process("ip add show eth0 | grep inet6\ | grep global | awk '{print $2}' | awk -F'/' '{print $2}'");
                         $process->mustRun();
@@ -285,7 +285,7 @@ class eFaInitController extends AbstractController
                     'varData'     => $session->get($slug),
                 );
 
-                if ($options['varData'] === '') {
+                if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $process = new Process("route -n -6 | grep UG | grep ::/0 | awk '{print $2}'");
                         $process->mustRun();
@@ -308,7 +308,7 @@ class eFaInitController extends AbstractController
                     'varData'     => $session->get($slug),
                 );
 
-                if ($options['varData'] === '') {
+                if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $process = new Process("grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -n 1p");
                         $process->mustRun();
@@ -331,7 +331,7 @@ class eFaInitController extends AbstractController
                     'varData'     => $session->get($slug),
                 );
 
-                if ($options['varData'] === '') {
+                if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $process = new Process("grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -n 2p");
                         $process->mustRun();
