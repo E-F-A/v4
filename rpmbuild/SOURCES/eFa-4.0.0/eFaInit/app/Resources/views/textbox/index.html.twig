@@ -20,10 +20,8 @@
                 <div style="display:none">
                     {{ form_widget(form.NextHidden) }}
                 </div>
-                <div style="display:block">
-                    {{ form_widget(form.Back) }}
-                    {{ form_widget(form.Next) }}
-                </div>
+                {{ form_widget(form.Back) }}
+                {{ form_widget(form.Next) }}
             </div>
             {{ form_end(form) }}
             <div class="error-container">
