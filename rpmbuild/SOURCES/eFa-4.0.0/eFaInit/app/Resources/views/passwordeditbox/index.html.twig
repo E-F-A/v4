@@ -23,14 +23,14 @@
                 <div>
                     {{ form_widget(form.Passwordbox2) }}
                 </div>
-                <div style="display:none">
-                    {{ form_widget(form.Passwordboxhidden) }}
-                </div>
                 {{ form_widget(form.Save) }}
             </div>
             {{ form_end(form) }}
             <div class="error-container">
                 {{ form_errors(form) }}
+                {% if error != '' %}
+                    <ul>{{ error|trans }}</ul>
+                {% endif %}
             </div>
         </div>
     </div>

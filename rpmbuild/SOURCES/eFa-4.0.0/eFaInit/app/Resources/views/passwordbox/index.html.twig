@@ -24,7 +24,6 @@
                     {{ form_widget(form.Passwordbox2) }}
                 </div>
                 <div style="display:none">
-                    {{ form_widget(form.Passwordboxhidden) }}
                     {{ form_widget(form.NextHidden) }}
                 </div>
                 <div style="display:block">
@@ -35,6 +34,9 @@
             {{ form_end(form) }}
             <div class="error-container">
                 {{ form_errors(form) }}
+                {% if error != '' %}
+                    <ul>{{ error|trans }}</ul>
+                {% endif %}
             </div>
         </div>
     </div>
