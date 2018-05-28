@@ -62,7 +62,7 @@ Timezone: Zeitzone
 'Organization Name': 'Organizationsname'
 '"Passwords do not match': "Passwoerter stimmen nicht überein"
 'Enable Recursion': 'DNS Rekursion aktivieren'
-'DNS Primary Address': Primaerer DNS Server'
+'DNS Primary Address': 'Primaerer DNS Server'
 'Set DNS': 'DNS konfigurieren'
 'DNS Secondary Address': 'Sekundaerer DNS Server'
 'Configure IPv4': 'IPv4 konfigurieren'
