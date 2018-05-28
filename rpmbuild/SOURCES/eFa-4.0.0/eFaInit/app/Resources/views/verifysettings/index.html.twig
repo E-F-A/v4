@@ -119,6 +119,32 @@
                              </h2>
                          </td>
                          <td>
+                             <h2>
+                                 {% trans %}Organization Name{% endtrans %}:
+                             </h2>
+                         </td>
+                         <td>
+                            <h2>
+                                <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'orgname', '_locale': language}) }}">
+                                    {{ orgname }}
+                                </a>
+                            </h2>
+                         </td>
+                     </tr>
+                     <tr>
+                        <td>
+                            <h2>
+                                {% trans %}Interface{% endtrans %}:
+                            </h2>
+                        </td>
+                        <td>
+                            <h2>
+                                <a href="{{ path('interfaceeditpage', {'edit': 'edit', 'slug': 'interface', '_locale': language}) }}">
+                                    {{ interface }}
+                                </a>
+                            </h2>
+                        </td>
+                        <td>
                             <h2>
                                 {% trans %}Web Admin Username{% endtrans %}:
                             </h2>
@@ -130,8 +156,8 @@
                                 </a>
                             </h2>
                         </td>
-                     </tr>
-                     <tr>
+                    </tr>
+                    <tr class="greyhighlight">
                         <td>
                             <h2>
                                 {% trans %}Configure IPv4{% endtrans %}:
@@ -160,40 +186,40 @@
                                  </a>
                              </h2>
                          </td>
+                    </tr>
+                    <tr>
+                       <td>
+                           <h2 {% if ipv4addressflag == true %}style="color: #F00"{% endif %}>
+                                {% trans %}IPv4 Address{% endtrans %}:
+                           </h2>
+                        </td>
+                        <td>
+                            <h2>
+                                {% if configipv4 == '1' %}
+                                    <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'ipv4address', '_locale': language}) }}">
+                                      {% if ipv4address == '' %} 
+                                          {% trans %}Set IP Address{% endtrans %}
+                                      {% else %} 
+                                          {{ ipv4address }}
+                                      {% endif %}
+                                    </a>
+                                {% endif %}
+                            </h2>
+                        </td>
+                        <td>
+                            <h2>
+                                {% trans %}Console Admin Username{% endtrans %}:
+                            </h2>
+                        </td>
+                        <td>
+                            <h2>
+                                <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'cliusername', '_locale': language}) }}">
+                                    {{ cliusername }}
+                                </a>
+                            </h2>
+                        </td>
                      </tr>
                      <tr class="greyhighlight">
-                        <td>
-                            <h2 {% if ipv4addressflag == true %}style="color: #F00"{% endif %}>
-                                 {% trans %}IPv4 Address{% endtrans %}:
-                            </h2>
-                         </td>
-                         <td>
-                             <h2>
-                                 {% if configipv4 == '1' %}
-                                     <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'ipv4address', '_locale': language}) }}">
-                                       {% if ipv4address == '' %} 
-                                           {% trans %}Set IP Address{% endtrans %}
-                                       {% else %} 
-                                           {{ ipv4address }}
-                                       {% endif %}
-                                     </a>
-                                 {% endif %}
-                             </h2>
-                         </td>
-                         <td>
-                             <h2>
-                                 {% trans %}Console Admin Username{% endtrans %}:
-                             </h2>
-                         </td>
-                         <td>
-                             <h2>
-                                 <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'cliusername', '_locale': language}) }}">
-                                     {{ cliusername }}
-                                 </a>
-                             </h2>
-                         </td>
-                     </tr>
-                     <tr>
                         <td>
                             <h2 {% if ipv4netmaskflag == true %}style="color: #F00"{% endif %}> 
                                 {% trans %}IPv4 Netmask{% endtrans %}:
@@ -224,44 +250,44 @@
                                  </a>
                              </h2>
                          </td>
-                     </tr>
-                     <tr class="greyhighlight">
+                    </tr>
+                    <tr>
+                       <td>
+                           <h2 {% if ipv4gatewayflag == true %}style="color: #F00"{% endif %}>
+                               {% trans %}IPv4 Gateway{% endtrans %}:
+                           </h2>
+                        </td>
                         <td>
-                            <h2 {% if ipv4gatewayflag == true %}style="color: #F00"{% endif %}>
-                                {% trans %}IPv4 Gateway{% endtrans %}:
+                            <h2>
+                                {% if configipv4 == '1' %}
+                                    <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'ipv4gateway', '_locale': language}) }}">
+                                      {% if ipv4gateway == '' %} 
+                                          {% trans %}Set IP Gateway{% endtrans %}
+                                      {% else %} 
+                                          {{ ipv4gateway }}
+                                      {% endif %}
+                                    </a>
+                                {% endif %}
+                            </h2>
+                        </td>
+                        <td>
+                            <h2>
+                                {% trans %}Configure Hypervisor Tools{% endtrans %}:
+                            </h2>
+                        </td>
+                        <td>
+                            <h2>
+                                <a href="{{ path('yesnoeditpage', {'edit': 'edit', 'slug': 'configvirtual', '_locale': language}) }}">
+                                    {% if configvirtual == '1' %}
+                                        {% trans %}Yes{% endtrans %}
+                                    {% else %}
+                                        {% trans %}No{% endtrans %}
+                                    {% endif %}
+                                </a>
                             </h2>
                          </td>
-                         <td>
-                             <h2>
-                                 {% if configipv4 == '1' %}
-                                     <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'ipv4gateway', '_locale': language}) }}">
-                                       {% if ipv4gateway == '' %} 
-                                           {% trans %}Set IP Gateway{% endtrans %}
-                                       {% else %} 
-                                           {{ ipv4gateway }}
-                                       {% endif %}
-                                     </a>
-                                 {% endif %}
-                             </h2>
-                         </td>
-                         <td>
-                             <h2>
-                                 {% trans %}Configure Hypervisor Tools{% endtrans %}:
-                             </h2>
-                         </td>
-                         <td>
-                             <h2>
-                                 <a href="{{ path('yesnoeditpage', {'edit': 'edit', 'slug': 'configvirtual', '_locale': language}) }}">
-                                     {% if configvirtual == '1' %}
-                                         {% trans %}Yes{% endtrans %}
-                                     {% else %}
-                                         {% trans %}No{% endtrans %}
-                                     {% endif %}
-                                 </a>
-                               </h2>
-                          </td>
                      </tr>
-                     <tr>
+                     <tr class="greyhighlight">
                         <td>
                             <h2>
                                 {% trans %}Configure IPv6{% endtrans %}:
@@ -295,7 +321,7 @@
                              </h2>
                          </td>
                      </tr>
-                     <tr class="greyhighlight">
+                     <tr>
                         <td>
                             <h2 {% if ipv6addressflag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}IPv6 Address{% endtrans %}:
@@ -327,7 +353,7 @@
                              </h2>
                          </td>
                      </tr>
-                     <tr>
+                     <tr class="greyhighlight">
                         <td>
                             <h2 {% if ipv6prefixflag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}IPv6 Prefix{% endtrans %}:
@@ -359,7 +385,7 @@
                              </h2>
                          </td>
                      </tr>
-                     <tr class="greyhighlight">
+                     <tr>
                         <td>
                             <h2 {% if ipv6gatewayflag == true %}style="color: #F00"{% endif %}>
                                 {% trans %}IPv6 Gateway{% endtrans %}:
@@ -389,20 +415,6 @@
                                      {{ ianacode }}
                                  </a>
                              </h2>
-                         </td>
-                     </tr>
-                     <tr>
-                         <td>
-                             <h2>
-                                 {% trans %}Organization Name{% endtrans %}:
-                             </h2>
-                         </td>
-                         <td>
-                            <h2>
-                                <a href="{{ path('textboxeditpage', {'edit': 'edit', 'slug': 'orgname', '_locale': language}) }}">
-                                    {{ orgname }}
-                                </a>
-                            </h2>
                          </td>
                      </tr>
                 </table>
