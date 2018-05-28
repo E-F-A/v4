@@ -15,6 +15,8 @@ use AppBundle\Form\PasswordEditTaskType;
 use AppBundle\Form\TimezoneTaskType;
 use AppBundle\Form\TimezoneEditTaskType;
 use AppBundle\Form\VerifySettingsTaskType;
+use AppBundle\Form\InterfaceTaskType;
+use AppBundle\Form\InterfaceEditTaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -162,8 +164,8 @@ class eFaInitController extends Controller
                     'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Email';
-                $nextSlug     = 'configipv4';
-                $nextPage     = 'yesnopage';
+                $nextSlug     = 'interface';
+                $nextPage     = 'interfacepage';
                 $previousSlug = 'domainname';
                 $previousPage = 'textboxpage';
             break;
@@ -175,7 +177,8 @@ class eFaInitController extends Controller
                 );
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process("ifconfig eth0 | grep inet\ | awk '{print $2}'");
+                        $interface = $session->get('interface');
+                        $process = new Process("ifconfig $interface | grep inet\ | awk '{print $2}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -197,7 +200,8 @@ class eFaInitController extends Controller
 
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process("ifconfig eth0 | grep inet\ | awk '{print $4}'");
+                        $interface = $session->get('interface');
+                        $process = new Process("ifconfig $interface | grep inet\ | awk '{print $4}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -243,7 +247,8 @@ class eFaInitController extends Controller
 
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process("ifconfig eth0 | grep inet6\ | grep global | awk '{print $2}'");
+                        $interface = $session->get('interface');
+                        $process = new Process("ifconfig $interface | grep inet6\ | grep global | awk '{print $2}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -266,7 +271,8 @@ class eFaInitController extends Controller
 
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process("ip add show eth0 | grep inet6\ | grep global | awk '{print $2}' | awk -F'/' '{print $2}'");
+                        $interface = $session->get('interface');
+                        $process = new Process("ip add show $interface | grep inet6\ | grep global | awk '{print $2}' | awk -F'/' '{print $2}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -449,6 +455,79 @@ class eFaInitController extends Controller
         }
     }
 
+
+    /**
+     * @Route("/{_locale}/{slug}",
+     *     name="interfacepage",
+     *     requirements={"slug"="interface"},
+     *     defaults={"_locale": "en", "edit" = null}
+     * )
+     * @Route("/{_locale}/{slug}/{edit}",
+     *     name="interfaceeditpage",
+     *     requirements={"slug"="interface", "edit"="edit"},
+     *     defaults={"_locale": "en"}
+     * )
+     */
+    public function interfaceAction(Request $request, $edit, $slug, SessionInterface $session)
+    {
+        $task = new eFaInitTask();
+
+        $options = array(
+            'varProperty' => 'Interface',
+        );
+        $varLabel     = 'Please choose your interface';
+        $nextSlug     = 'configipv4';
+        $nextPage     = 'yesnopage';
+        $previousSlug = 'email';
+        $previousPage = 'textboxpage';
+        try {
+            $process = new Process("ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' | sort | uniq");
+            $process->mustRun();
+            foreach ( explode('\n',$process->getOutput()) as $var ) 
+            {
+               $options['varChoices'][trim($var)] = trim($var);
+            }
+        } catch (ProcessFailedException $exception) {
+               $options['varChoices']['eth0'] = 'eth0';
+        }
+        if ($edit === 'edit') {
+            $form = $this->createForm(InterfaceEditTaskType::class, $task, $options);
+        } else {
+            $form = $this->createForm(InterfaceTaskType::class, $task, $options);
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+
+            $session->set('interface', $task->getInterface()); 
+
+            if ($edit === 'edit') {
+                $action = 'verify';
+                $page   = 'verifysettingspage';
+            } else {
+                $action = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextSlug : $previousSlug;
+                $page   = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextPage : $previousPage;
+            }
+            
+            return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
+
+       }
+        if ($edit === "edit") {
+            return $this->render('interfaceedit/index.html.twig', array(
+                'form' => $form->createView(),
+                'label' => $varLabel,
+            ));
+        } else { 
+            return $this->render('interface/index.html.twig', array(
+                'form' => $form->createView(),
+                'label' => $varLabel,
+            ));
+        }
+    }
+
+
     /**
      * @Route("/{_locale}/{slug}",
      *     name="yesnopage",
@@ -478,8 +557,8 @@ class eFaInitController extends Controller
                 $yesPage      = 'textboxpage';
                 $noSlug       = 'configipv6';
                 $noPage       = 'yesnopage';
-                $previousPage = 'textboxpage';
-                $previousSlug = 'email';
+                $previousPage = 'interfacepage';
+                $previousSlug = 'interface';
             break;
             case "configipv6":
                 $varTitle     = 'Configure IPv6';
@@ -825,6 +904,7 @@ class eFaInitController extends Controller
             'hostname'        => $session->get('hostname'),
             'domainname'      => $session->get('domainname'),
             'email'           => $session->get('email'),
+            'interface'       => $session->get('interface'),
             'configipv4'      => $session->get('configipv4'),
             'ipv4address'     => $session->get('ipv4address'), 'ipv4addressflag' => $ipv4addressflag,
             'ipv4netmask'     => $session->get('ipv4netmask'), 'ipv4netmaskflag' => $ipv4netmaskflag,
@@ -1021,8 +1101,7 @@ class eFaInitController extends Controller
                  return;
              }
         }
-        // Todo: Interface selection in GUI
-        $interface = 'eth0';
+        $interface = $session->get('interface');
 
         if (file_exists('/etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak'))
         {
@@ -1075,7 +1154,7 @@ class eFaInitController extends Controller
             return;
         }
         
-        if ($session->get('configipv4') === 1)
+        if ($session->get('configipv4') === '1')
         {
             $process = new Process('echo -e "IPADDR=\"' . $session->get('ipv4address') . '\"\nNETMASK=\"' . $session->get('ipv4netmask') . '\"\nGATEWAY=\"' . $session->get('ipv4gateway') . '\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
@@ -1094,7 +1173,7 @@ class eFaInitController extends Controller
             }
         }   
 
-        if ($session->get('configipv6') === 1)
+        if ($session->get('configipv6') === '1')
         {
             $process = new Process('sed -i "/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF=\"no\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
@@ -1112,7 +1191,7 @@ class eFaInitController extends Controller
                 return;
             }
 
-            $process = new Process('echo -e "IPV6ADDR=\"' . $session->get('ipv6address') . '/' . $session->get('ipv6prefix') . '\"\nIPV6_DEFAULTGW=\"' . $session->get('ipv6gatway'). '\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+            $process = new Process('echo -e "IPV6ADDR=\"' . $session->get('ipv6address') . '/' . $session->get('ipv6prefix') . '\"\nIPV6_DEFAULTGW=\"' . $session->get('ipv6gateway'). '\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
             $output = '<br/>eFa -- Setting setting ipv6 address and gateway...<br/>' . $output;
 
@@ -1193,13 +1272,12 @@ class eFaInitController extends Controller
 
             try {
                 $process = new Process('openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048');
-                $process->setTimeout(300);
+                $process->setTimeout(600);
                 $process->mustRun();
 
                 $output = $process->getOutput() . $output;
 
                 $process = new Process('postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"');
-
                 $process->mustRun();
                 
                 $output = $process->getOutput() . $output;

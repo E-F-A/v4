@@ -108,6 +108,23 @@ class eFaInitTask
 
     /**
      * @Assert\NotBlank(
+     *    groups={"Interface"}
+     * )
+     */
+    protected $interface;
+
+    public function getInterface()
+    {
+        return $this->interface;
+    }
+
+    public function setInterface($var)
+    {
+        $this->interface = $var;
+    } 
+
+    /**
+     * @Assert\NotBlank(
      *    groups={"IPv4address"}
      * )
      * @Assert\Length(
