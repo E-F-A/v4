@@ -1266,30 +1266,201 @@ class eFaInitController extends Controller
             return;
         }
 
-            $output = '<br/>eFa -- Generating dhparam...this may take a while...<br/>' . $output;
+        $output = '<br/>eFa -- Generating dhparam...this may take a while...<br/>' . $output;
 
-            eFaInitController::progressBar(75, 75, $output);
+        eFaInitController::progressBar(75, 75, $output);
 
-            try {
-                $process = new Process('openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048');
-                $process->setTimeout(600);
+        try {
+            $process = new Process('openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048');
+            $process->setTimeout(600);
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process('postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"');
+            $process->mustRun();
+            
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Generated dhparam<br/>' . $output;
+
+            eFaInitController::progressBar(75, 80, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(75, 80, $output, "Error generating dhparam");
+            return;
+        }
+
+        $output = '<br/>eFa -- Configuring Timezone<br/>' . $output;
+
+        eFaInitController::progressBar(80, 80, $output);
+
+        try {
+            $process = new Process('rm -f /etc/localtime');
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process('ln -s /usr/share/zoneinfo/' . $session->get('timezone') . ' /etc/localtime');
+            $process->mustRun();
+            
+            $output = $process->getOutput() . $output;
+
+            $process = new Process('');
+            $process->mustRun();
+            
+            $output = $process->getOutput() . $output;
+
+            $process = new Process('timedatectl set-timezone ' . $session->get('timezone'));
+            $process->mustRun();
+            
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Timezone configured<br/>' . $output;
+
+            eFaInitController::progressBar(80, 85, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(80, 85, $output, "Error setting timezone");
+            return;
+        }
+ 
+        $output = '<br/>eFa -- Writing IANA code to freshclam config<br/>' . $output;
+
+        eFaInitController::progressBar(85, 85, $output);
+
+        try {
+            if(file_exists('/etc/freshclam.conf.bak'))
+            {
+                $process = new Process('rm -f /etc/freshclam.conf');
                 $process->mustRun();
 
                 $output = $process->getOutput() . $output;
 
-                $process = new Process('postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"');
+                $process = new Process('cp -f /etc/freshclam.conf.bak /etc/freshclam.conf');
                 $process->mustRun();
-                
+
                 $output = $process->getOutput() . $output;
+            } else {
+                $process = new Process('cp -f /etc/freshclam.conf /etc/freshclam.conf.bak');
+                $process->mustRun();
 
-                $output = '<br/> eFa -- Generated dhparam<br/>' . $output;
-
-                eFaInitController::progressBar(75, 80, $output);
-
-            } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar(75, 80, $output, "Error generating dhparam");
-                return;
+                $output = $process->getOutput() . $output;
             }
+
+            $process = new Process('sed -i "/^#DatabaseMirror / c\DatabaseMirror db.' . $session->get('ianacode') . '.clamav.net" /etc/freshclam.conf');
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Wrote IANA code to freshclam config<br/>' . $output;
+
+            eFaInitController::progressBar(85, 90, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(85, 90, $output, "Error writing IANA code to freshclam config");
+            return;
+        }
+
+        $output = '<br/>eFa -- Configuring razor<br/>' . $output;
+
+        eFaInitController::progressBar(90, 90, $output);
+
+        try {
+            $process = new Process("su postfix -s /bin/bash -c 'razor-admin -create'");
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process("su postfix -s /bin/bash -c 'razor-admin -register'");
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process("sed -i '/^debuglevel/ c\debuglevel             = 0' /var/spool/postfix/.razor/razor-agent.conf");
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process("chown -R postfix:mtagroup /var/spool/postfix/.razor");
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process("chmod ug+s /var/spool/postfix/.razor");
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process("chmod ug+rw /var/spool/postfix/.razor/*");
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Configured razor<br/>' . $output;
+
+            eFaInitController::progressBar(90, 95, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(90, 95, $output, "Error configuring razor");
+            return;
+        }
+
+        $output = '<br/>eFa -- Updating AV and SA rules...this may take a while...<br/>' . $output;
+
+        eFaInitController::progressBar(95, 95, $output);
+
+        try {
+            $process = new Process("systemctl start clam.scan");
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $process = new Process("freshclam");
+            $process->setTimeout(600);
+            $process->start();
+            
+            foreach($process as $type => $data) {
+                $output = $data . $output;
+                eFaInitController::progressBar(95, 95, $output);
+            }
+
+            $process = new Process("/usr/sbin/clamav-unofficial-sigs.sh");
+            $process->setTimeout(600);
+            $process->start();
+            
+            foreach($process as $type => $data) {
+                $output = $data . $output;
+                eFaInitController::progressBar(95, 95, $output);
+            }
+
+            $process = new Process("sa-update");
+            $process->setTimeout(600);
+            $process->start();
+            
+            foreach($process as $type => $data) {
+                $output = $data . $output;
+                eFaInitController::progressBar(95, 95, $output);
+            }
+
+            $process = new Process("sa-compile");
+            $process->setTimeout(600);
+            $process->start();
+            
+            foreach($process as $type => $data) {
+                $output = $data . $output;
+                eFaInitController::progressBar(95, 95, $output);
+            }
+
+            $output = '<br/> eFa -- Updated AV and SA rules<br/>' . $output;
+
+            eFaInitController::progressBar(95, 100, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar(95, 100, $output, "Error updating AV and SA rules");
+            return;
+        }
+ 
  
         return;
     }
