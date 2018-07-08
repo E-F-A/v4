@@ -63,7 +63,7 @@
 %global __provides_exclude ^(%{_privatelibs})$
 %global __requires_exclude ^(%{_privatelibs})$
 
-Name: postfix
+Name: postfix_eFa
 Summary: Postfix Mail Transport Agent
 Version: 3.3.0
 Release: 1.eFa%{?dist}
@@ -82,7 +82,7 @@ Requires(postun): systemd
 Requires: diffutils
 Provides: MTA smtpd smtpdaemon server(smtp)
 # included in this package
-Conflicts: postfix-pflogsumm postfix-perl-scripts
+Conflicts: postfix-pflogsumm postfix-perl-scripts postfix
 
 Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-3.3.0.tar.gz
 Source1: postfix-etc-init.d-postfix
@@ -628,6 +628,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Jul 8 2018 Shawn Iverson <shawniverson@efa-project.org> - 2:3.3.0-1
+- Rename package for conflict resolution
+
 * Tue Mar 20 2018 Shawn Iverson <shawniverson@efa-project.org> - 2:3.3.0-1
 - Update for eFa https://efa-project.org
 
