@@ -23,7 +23,7 @@
 # yum -y install 
 #-----------------------------------------------------------------------------#
 Summary:       MailWatch Web Front-End for MailScanner
-Name:          mailwatch
+Name:          MailWatch
 Version:       1.2.9
 Epoch:         1
 Release:       1.eFa%{?dist}
@@ -217,7 +217,7 @@ EOF
 
 %changelog
 * Sun Jul 8 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.9-1
-- Update to MailWatch 1.2.9
+- Update to MailWatch 1.2.9 and fix case
 
 * Sat May 26 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.7-7
 - Updated to use IUS repository for dependencies
