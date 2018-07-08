@@ -935,7 +935,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Starting MariaDB...<br/>';
 
         // Start MariaDB
-        $process = new Process('systemctl restart mariadb');
+        $process = new Process('sudo systemctl restart mariadb');
 
         try {
             $process->mustRun();
@@ -949,7 +949,7 @@ class eFaInitController extends Controller
              return;
         }
         
-        $process = new Process('echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts');
+        $process = new Process('echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" | sudo tee /etc/hosts');
 
         $output = '<br/>eFa -- Adding ipv4 localhost entry...<br/>' . $output;
  
@@ -965,7 +965,7 @@ class eFaInitController extends Controller
             return;
         }
         
-        $process = new Process('echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts');
+        $process = new Process('echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" | sudo tee -a /etc/hosts');
 
         $output = '<br/>eFa -- Adding ipv6 localhost entry...<br/>' . $output;
 
@@ -983,7 +983,7 @@ class eFaInitController extends Controller
 
         if ($session->get('configipv4') === '1')
         {
-            $process = new Process('echo "' . $session->get('ipv4address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" >> /etc/hosts');
+            $process = new Process('echo "' . $session->get('ipv4address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" | sudo tee -a /etc/hosts');
         
             $output = '<br/>eFa -- Adding ipv4 host entry...<br/>' . $output;
  
@@ -1001,7 +1001,7 @@ class eFaInitController extends Controller
         
         if ($session->get('configipv6') === '1')
         {
-            $process = new Process('echo "' . $session->get('ipv6address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" >> /etc/hosts');
+            $process = new Process('echo "' . $session->get('ipv6address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" | sudo tee -a /etc/hosts');
  
             $output = '<br/>eFa -- Adding ipv6 host entry...<br/>' . $output;
 
@@ -1018,7 +1018,7 @@ class eFaInitController extends Controller
             }
         }
         
-        $process = new Process('echo "' . $session->get('hostname') . '.' . $session->get('domainname') . '" > /etc/hostname');
+        $process = new Process('echo "' . $session->get('hostname') . '.' . $session->get('domainname') . '" | sudo tee /etc/hostname');
 
         $output = '<br/>eFa -- Adding hostname to /etc/hosts...<br/>' . $output;
 
@@ -1034,7 +1034,7 @@ class eFaInitController extends Controller
             return;
         }
 
-        $process = new Process('hostname ' . $session->get('hostname') . '.' . $session->get('domainname'));
+        $process = new Process('sudo hostname ' . $session->get('hostname') . '.' . $session->get('domainname'));
 
         $output = '<br/>eFa -- Setting hostname...<br/>' . $output;
 
@@ -1050,7 +1050,7 @@ class eFaInitController extends Controller
             return;
         }
         
-        $process = new Process('echo -e "forward-zone:\n  name: \".\"" > /etc/unbound/conf.d/forwarders.conf');
+        $process = new Process('echo -e "forward-zone:\n  name: \".\"" | sudo tee /etc/unbound/conf.d/forwarders.conf');
 
         $output = '<br/>eFa -- Setting root fowarder for unbound...<br/>' . $output;
 
@@ -1068,7 +1068,7 @@ class eFaInitController extends Controller
 
         if ($session->get('configrecursion') === '1')
         {
-            $process = new Process('echo -e "  forward-first: yes\n" >> /etc/unbound/conf.d/forwarders.conf');
+            $process = new Process('echo -e "  forward-first: yes\n" | sudo tee -a /etc/unbound/conf.d/forwarders.conf');
 
             $output = '<br/>eFa -- Setting recursion for unbound...<br/>' . $output;
 
@@ -1085,7 +1085,7 @@ class eFaInitController extends Controller
              }
          } else {
 
-            $process = new Process('echo -e "  forward-addr: ' . $session->get('dns1') . '"\n  forward-addr: ' . $session->get('dns2') . '\n" >> /etc/unbound/conf.d/forwarders.conf');
+            $process = new Process('echo -e "  forward-addr: ' . $session->get('dns1') . '"\n  forward-addr: ' . $session->get('dns2') . '\n" | sudo tee -a /etc/unbound/conf.d/forwarders.conf');
 
             $output = '<br/>eFa -- Setting dns forwarders for unbound...<br/>' . $output;
 
@@ -1105,7 +1105,7 @@ class eFaInitController extends Controller
 
         if (file_exists('/etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak'))
         {
-            $process = new Process('cp /etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+            $process = new Process('sudo cp /etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
             $output = '<br/>eFa -- Restoring interface config...<br/>' . $output;
 
@@ -1121,7 +1121,7 @@ class eFaInitController extends Controller
                 return;
             }
         } else {
-            $process = new Process('cp /etc/sysconfig/network-scripts/ifcfg-' . $interface . ' /etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak');
+            $process = new Process('sudo cp /etc/sysconfig/network-scripts/ifcfg-' . $interface . ' /etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak');
 
             $output = '<br/>eFa -- Backing up interface config...<br/>' . $output;
 
@@ -1138,7 +1138,7 @@ class eFaInitController extends Controller
             }
        }
 
-        $process = new Process('sed -i "/^BOOTPROTO=/ c\BOOTPROTO=\"none\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+        $process = new Process('sudo sed -i "/^BOOTPROTO=/ c\BOOTPROTO=\"none\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
         $output = '<br/>eFa -- Setting BOOTPROTO for interface...<br/>' . $output;
 
@@ -1156,7 +1156,7 @@ class eFaInitController extends Controller
         
         if ($session->get('configipv4') === '1')
         {
-            $process = new Process('echo -e "IPADDR=\"' . $session->get('ipv4address') . '\"\nNETMASK=\"' . $session->get('ipv4netmask') . '\"\nGATEWAY=\"' . $session->get('ipv4gateway') . '\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+            $process = new Process('echo -e "IPADDR=\"' . $session->get('ipv4address') . '\"\nNETMASK=\"' . $session->get('ipv4netmask') . '\"\nGATEWAY=\"' . $session->get('ipv4gateway') . '\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
             $output = '<br/>eFa -- Setting static ipv4 address, netmask, and gateway for interface...<br/>' . $output;
 
@@ -1175,7 +1175,7 @@ class eFaInitController extends Controller
 
         if ($session->get('configipv6') === '1')
         {
-            $process = new Process('sed -i "/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF=\"no\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+            $process = new Process('sudo sed -i "/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF=\"no\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
             $output = '<br/>eFa -- Setting setting ipv6 auto config off...<br/>' . $output;
 
@@ -1191,7 +1191,7 @@ class eFaInitController extends Controller
                 return;
             }
 
-            $process = new Process('echo -e "IPV6ADDR=\"' . $session->get('ipv6address') . '/' . $session->get('ipv6prefix') . '\"\nIPV6_DEFAULTGW=\"' . $session->get('ipv6gateway'). '\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+            $process = new Process('echo -e "IPV6ADDR=\"' . $session->get('ipv6address') . '/' . $session->get('ipv6prefix') . '\"\nIPV6_DEFAULTGW=\"' . $session->get('ipv6gateway'). '\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
             $output = '<br/>eFa -- Setting setting ipv6 address and gateway...<br/>' . $output;
 
@@ -1208,7 +1208,7 @@ class eFaInitController extends Controller
             }
         }
 
-        $process = new Process('echo -e "DNS1=\"127.0.0.1\"\nDNS2=\"::1\"" >> /etc/sysconfig/network-scripts/ifcfg-' . $interface);
+        $process = new Process('echo -e "DNS1=\"127.0.0.1\"\nDNS2=\"::1\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
         $output = '<br/>eFa -- Directing interface DNS to unbound...<br/>' . $output;
 
@@ -1227,31 +1227,31 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Generating host keys...<br/>' . $output;
 
         try {
-            $process = new Process('rm -f /etc/ssh/ssh_host_rsa_key && rm -f /etc/ssh/ssh_host_dsa_key && rm -f /etc/ssh/ssh_host_ecdsa_key && rm -f /etc/ssh/ssh_host_ed25519_key');
+            $process = new Process('sudo rm -f /etc/ssh/ssh_host_rsa_key && sudo rm -f /etc/ssh/ssh_host_dsa_key && sudo rm -f /etc/ssh/ssh_host_ecdsa_key && sudo rm -f /etc/ssh/ssh_host_ed25519_key');
 
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process('ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N \'\' -t rsa');
+            $process = new Process('sudo ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N \'\' -t rsa');
             
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process('ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N \'\' -t dsa');
+            $process = new Process('sudo ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N \'\' -t dsa');
 
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process('ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N \'\' -t ecdsa');
+            $process = new Process('sudo ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N \'\' -t ecdsa');
 
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process('ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N \'\' -t ed25519');
+            $process = new Process('sudo ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N \'\' -t ed25519');
 
             $process->mustRun();
 
@@ -1271,13 +1271,13 @@ class eFaInitController extends Controller
         eFaInitController::progressBar(75, 75, $output);
 
         try {
-            $process = new Process('openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048');
+            $process = new Process('sudo openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048');
             $process->setTimeout(600);
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process('postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"');
+            $process = new Process('sudo postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"');
             $process->mustRun();
             
             $output = $process->getOutput() . $output;
@@ -1296,12 +1296,12 @@ class eFaInitController extends Controller
         eFaInitController::progressBar(80, 80, $output);
 
         try {
-            $process = new Process('rm -f /etc/localtime');
+            $process = new Process('sudo rm -f /etc/localtime');
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process('ln -s /usr/share/zoneinfo/' . $session->get('timezone') . ' /etc/localtime');
+            $process = new Process('sudo ln -s /usr/share/zoneinfo/' . $session->get('timezone') . ' /etc/localtime');
             $process->mustRun();
             
             $output = $process->getOutput() . $output;
@@ -1311,7 +1311,7 @@ class eFaInitController extends Controller
             
             $output = $process->getOutput() . $output;
 
-            $process = new Process('timedatectl set-timezone ' . $session->get('timezone'));
+            $process = new Process('sudo timedatectl set-timezone ' . $session->get('timezone'));
             $process->mustRun();
             
             $output = $process->getOutput() . $output;
@@ -1332,23 +1332,23 @@ class eFaInitController extends Controller
         try {
             if(file_exists('/etc/freshclam.conf.bak'))
             {
-                $process = new Process('rm -f /etc/freshclam.conf');
+                $process = new Process('sudo rm -f /etc/freshclam.conf');
                 $process->mustRun();
 
                 $output = $process->getOutput() . $output;
 
-                $process = new Process('cp -f /etc/freshclam.conf.bak /etc/freshclam.conf');
+                $process = new Process('sudo cp -f /etc/freshclam.conf.bak /etc/freshclam.conf');
                 $process->mustRun();
 
                 $output = $process->getOutput() . $output;
             } else {
-                $process = new Process('cp -f /etc/freshclam.conf /etc/freshclam.conf.bak');
+                $process = new Process('sudo cp -f /etc/freshclam.conf /etc/freshclam.conf.bak');
                 $process->mustRun();
 
                 $output = $process->getOutput() . $output;
             }
 
-            $process = new Process('sed -i "/^#DatabaseMirror / c\DatabaseMirror db.' . $session->get('ianacode') . '.clamav.net" /etc/freshclam.conf');
+            $process = new Process('sudo sed -i "/^#DatabaseMirror / c\DatabaseMirror db.' . $session->get('ianacode') . '.clamav.net" /etc/freshclam.conf');
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
@@ -1367,32 +1367,32 @@ class eFaInitController extends Controller
         eFaInitController::progressBar(90, 90, $output);
 
         try {
-            $process = new Process("su postfix -s /bin/bash -c 'razor-admin -create'");
+            $process = new Process("sudo su postfix -s /bin/bash -c 'razor-admin -create'");
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process("su postfix -s /bin/bash -c 'razor-admin -register'");
+            $process = new Process("sudo su postfix -s /bin/bash -c 'razor-admin -register'");
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process("sed -i '/^debuglevel/ c\debuglevel             = 0' /var/spool/postfix/.razor/razor-agent.conf");
+            $process = new Process("sudo sed -i '/^debuglevel/ c\debuglevel             = 0' /var/spool/postfix/.razor/razor-agent.conf");
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process("chown -R postfix:mtagroup /var/spool/postfix/.razor");
+            $process = new Process("sudo chown -R postfix:mtagroup /var/spool/postfix/.razor");
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process("chmod ug+s /var/spool/postfix/.razor");
+            $process = new Process("sudo chmod ug+s /var/spool/postfix/.razor");
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process("chmod ug+rw /var/spool/postfix/.razor/*");
+            $process = new Process("sudo chmod ug+rw /var/spool/postfix/.razor/*");
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
@@ -1411,12 +1411,12 @@ class eFaInitController extends Controller
         eFaInitController::progressBar(95, 95, $output);
 
         try {
-            $process = new Process("systemctl start clam.scan");
+            $process = new Process("sudo systemctl start clamd@scan");
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process("freshclam");
+            $process = new Process("sudo freshclam");
             $process->setTimeout(600);
             $process->start();
             
@@ -1425,7 +1425,7 @@ class eFaInitController extends Controller
                 eFaInitController::progressBar(95, 95, $output);
             }
 
-            $process = new Process("/usr/sbin/clamav-unofficial-sigs.sh");
+            $process = new Process("sudo /usr/sbin/clamav-unofficial-sigs.sh");
             $process->setTimeout(600);
             $process->start();
             
@@ -1443,7 +1443,7 @@ class eFaInitController extends Controller
                 eFaInitController::progressBar(95, 95, $output);
             }
 
-            $process = new Process("sa-compile");
+            $process = new Process("sudo sa-compile");
             $process->setTimeout(600);
             $process->start();
             
