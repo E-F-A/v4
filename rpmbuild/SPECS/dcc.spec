@@ -32,7 +32,7 @@ URL:       https://www.rhyolite.com/dcc
 License:   Copyright (c) 2014 by Rhyolite Software, LLC
 Source0:   dcc-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires: postfix >= 3.1.3
+Requires: postfix_eFa >= 3.1.3
 Requires: spamassassin >= 3.4.1
 Requires: MailScanner >= 5.0.4-3
 
@@ -76,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jul 8 2018 shawniverson <shawniverson@efa-project.org> - 1.3.163-1
+- Update requirements for postfix_eFa
+
 * Tue Mar 20 2018 shawniverson <shawniverson@efa-project.org> - 1.3.163-1
 - Updated for eFa https://efa-project.org
 

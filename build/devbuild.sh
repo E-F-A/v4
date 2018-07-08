@@ -100,11 +100,11 @@ rpmbuild -ba unrar-5.6.1.spec
 [ $? != 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-5.6.1-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
-rpmbuild -ba postfix-3.3.0.spec
+rpmbuild -ba postfix_eFa-3.3.0.spec
 [ $? != 0 ] && exit 1
 yum -y remove postfix
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix-3.3.0-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix_eFa-3.3.0-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? != 0 ] && exit 1
