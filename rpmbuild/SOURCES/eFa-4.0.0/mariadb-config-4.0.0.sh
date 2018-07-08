@@ -69,12 +69,12 @@ echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
 # add the AWL table to sa_bayes
 /usr/bin/mysql -u root -p"$password" sa_bayes < $srcdir/mariadb/awl_mysql.sql
 
-sed -i "/^\[mysqld\]/ a\character-set-server = utf8mb4" /etc/my.cnf.d/server.cnf
-sed -i "/^\[mysqld\]/ a\init-connect = 'SET NAMES utf8mb4'" /etc/my.cnf.d/server.cnf
-sed -i "/^\[mysqld\]/ a\collation-server = utf8mb4_unicode_ci" /etc/my.cnf.d/server.cnf
+sed -i "/^\[mysqld\]/ a\character-set-server = utf8mb4" /etc/my.cnf.d/mariadb-server.cnf
+sed -i "/^\[mysqld\]/ a\init-connect = 'SET NAMES utf8mb4'" /etc/my.cnf.d/mariadb-server.cnf
+sed -i "/^\[mysqld\]/ a\collation-server = utf8mb4_unicode_ci" /etc/my.cnf.d/mariadb-server.cnf
 
 mkdir /var/lib/mysql/temp
 chown mysql:mysql /var/lib/mysql/temp
-sed -i "/^\[mysqld\]/ a\tmpdir = /var/lib/mysql/temp" /etc/my.cnf.d/server.cnf
+sed -i "/^\[mysqld\]/ a\tmpdir = /var/lib/mysql/temp" /etc/my.cnf.d/mariadb-server.cnf
 
 echo "Configuring mariadb...done"

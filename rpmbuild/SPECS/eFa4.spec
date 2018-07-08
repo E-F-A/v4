@@ -36,7 +36,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # Control dependencies here as updates are released
 # Use version and release numbers required for each update
 # to maintain strict version control and dependency resolution
-Requires:  clamav >= 0.99.4-1
+Requires:  clamav >= 0.100.0-2
     # clamav                                     # epel    # MailScanner
     # #     clamav-data                          #         #
     # #     clamav-filesystem                    #         #
