@@ -74,6 +74,12 @@ mkdir -p $GITPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
 echo "%_topdir $GITPATH/rpmbuild" > ~/.rpmmacros
 [ $? != 0 ] && exit 1
+rpmbuild -ba postfix_eFa-3.3.0.spec
+[ $? != 0 ] && exit 1
+yum -y remove postfix postfix32u
+[ $? != 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix_eFa-3.3.0-1.eFa.el7.x86_64.rpm
+[ $? != 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1
 rpmbuild -ba clamav-unofficial-sigs.spec
@@ -99,12 +105,6 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Mail-SPF-Query-1.999.1-1.eFa.e
 rpmbuild -ba unrar-5.6.1.spec
 [ $? != 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-5.6.1-1.eFa.el7.x86_64.rpm
-[ $? != 0 ] && exit 1
-rpmbuild -ba postfix_eFa-3.3.0.spec
-[ $? != 0 ] && exit 1
-yum -y remove postfix
-[ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix_eFa-3.3.0-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? != 0 ] && exit 1
