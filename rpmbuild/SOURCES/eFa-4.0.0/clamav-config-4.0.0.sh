@@ -37,11 +37,11 @@ sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf
 sed -i '/#LocalSocket/ c\LocalSocket /var/run/clamd.scan/clamd.sock' /etc/clamd.d/scan.conf
 sed -i '/#LogFile/ c\LogFile /var/log/clamd.scan' /etc/clamd.d/scan.conf
 
-#chcon -u system_u -r object_r -t antivirus_log_t /var/log/clamd.scan
-#semanage fcontext -a -t antivirus_log_t /var/log/clamd.scan
+touch /var/log/clamd.scan
+chown clamscan:clamscan /var/log/clamd.scan
+chcon -u system_u -r object_r -t antivirus_log_t /var/log/clamd.scan
+semanage fcontext -a -t antivirus_log_t /var/log/clamd.scan
 chown -R clamscan:mtagroup /var/run/clamd.scan
-#chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.scan
-#semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.scan
 echo "d /var/run/clamd.scan 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.conf
 
 echo "Configuring clamav...done"
