@@ -84,7 +84,7 @@ Provides: MTA smtpd smtpdaemon server(smtp)
 # included in this package
 Conflicts: postfix-pflogsumm postfix-perl-scripts postfix
 
-Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-3.3.0.tar.gz
+Source0: postfix_eFa-3.3.0.tar.gz
 Source1: postfix-etc-init.d-postfix
 Source2: postfix.service
 Source3: README-Postfix-SASL-RedHat.txt
