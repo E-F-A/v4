@@ -41,7 +41,7 @@ systemctl disable postfix
 systemctl disable mariadb
 #chkconfig saslauthd off
 systemctl disable crond
-systemctl disable clam.scan
+systemctl disable clamd@scan
 systemctl disable sqlgrey
 #chkconfig mailgraph-init off
 chkconfig adcc off
