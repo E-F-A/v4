@@ -105,9 +105,9 @@ chown -R postfix:mtagroup /var/spool/postfix/incoming
 chmod -R 750 /var/spool/postfix/hold
 chmod -R 750 /var/spool/postfix/incoming
 
-# Allow apache to sudo and run the MailScanner lint test
+# Allow apache to sudo for eFaInit phase
 sed -i '/Defaults    requiretty/ c\#Defaults    requiretty' /etc/sudoers
-echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
+echo "apache ALL=NOPASSWD: ALL" > /etc/sudoers.d/eFa-Services
 
 # EFA MSRE Support
 sed -i "/^define('MSRE'/ c\define('MSRE', true);" /var/www/html/mailscanner/conf.php
