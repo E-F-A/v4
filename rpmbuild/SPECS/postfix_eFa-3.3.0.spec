@@ -82,7 +82,9 @@ Requires(postun): systemd
 Requires: diffutils
 Provides: MTA smtpd smtpdaemon server(smtp)
 # included in this package
-Conflicts: postfix-pflogsumm postfix-perl-scripts postfix
+Provides: postfix = %{epoch}:%{version}-%{release}
+Conflicts: postfix < %{epoch}:%{version}-%{release}
+Conflicts: postfix-pflogsumm postfix-perl-scripts
 
 Source0: postfix_eFa-3.3.0.tar.gz
 Source1: postfix-etc-init.d-postfix
