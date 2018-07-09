@@ -63,7 +63,7 @@ cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
 
 # eFa Branding
 mv /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.png.orig
-wget -O /var/www/html/mailscanner/images/mailwatch-logo.png https://dl.efa-project.org/build/4/eFa4logo-79px.png
+cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.png
 cp /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.gif
 
 sed -i 's/#f7ce4a/#999999/ig' /var/www/html/mailscanner/style.css
