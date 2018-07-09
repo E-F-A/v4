@@ -930,7 +930,9 @@ class eFaInitController extends Controller
     
     private function eFaConfigure(SessionInterface $session) 
     {
-        eFaInitController::progressBar(0, 0);
+        $progress = 0;
+        $progressStep = 2;
+        eFaInitController::progressBar($progress, $progress);
 
         $output = '<br/>eFa -- Starting MariaDB...<br/>';
 
@@ -942,29 +944,33 @@ class eFaInitController extends Controller
 
             $output = $process->getOutput() . '<br/> eFa -- Started MariaDB<br/>' . $output;
             
-            eFaInitController::progressBar(0, 5, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-             eFaInitController::progressBar(0, 5, $output, "Error starting MariaDB");
+             eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error starting MariaDB");
              return;
         }
-        
+
+        $progress += $progressStep;
+
         $process = new Process('echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" | sudo tee /etc/hosts');
 
         $output = '<br/>eFa -- Adding ipv4 localhost entry...<br/>' . $output;
- 
+
         try {
             $process->mustRun();
 
             $output = $process->getOutput() . '<br/> eFa -- ipv4 locahost entry added<br/>' . $output;
             
-            eFaInitController::progressBar(5, 10, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(5, 10, $output, "Error setting ipv4 localhost");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv4 localhost");
             return;
         }
-        
+
+        $progress += $progressStep;
+
         $process = new Process('echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" | sudo tee -a /etc/hosts');
 
         $output = '<br/>eFa -- Adding ipv6 localhost entry...<br/>' . $output;
@@ -974,65 +980,73 @@ class eFaInitController extends Controller
             
             $output = $process->getOutput() . '<br/> eFa -- ipv6 locahost entry added<br/>' . $output;
             
-            eFaInitController::progressBar(10, 15, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(10, 15, $output, "Error setting ipv6 localhost");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv6 localhost");
             return;
         }
+
+        $progress += $progressStep;
 
         if ($session->get('configipv4') === '1')
         {
             $process = new Process('echo "' . $session->get('ipv4address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" | sudo tee -a /etc/hosts');
-        
+
             $output = '<br/>eFa -- Adding ipv4 host entry...<br/>' . $output;
- 
+
             try {
                 $process->mustRun();
             
                 $output = $process->getOutput() . '<br/> eFa -- ipv4 host entry added<br/>' . $output;
 
-                eFaInitController::progressBar(15, 20, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
             } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar(15, 20, $output, "Error setting ipv4 address hostname");
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv4 address hostname");
                 return;
             }
         }
-        
+
+        $progress += $progressStep;
+
         if ($session->get('configipv6') === '1')
         {
             $process = new Process('echo "' . $session->get('ipv6address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" | sudo tee -a /etc/hosts');
- 
+
             $output = '<br/>eFa -- Adding ipv6 host entry...<br/>' . $output;
 
             try {
                 $process->mustRun();
-                
+
                 $output = $process->getOutput() . '<br/> eFa -- ipv6 host entry added<br/>' . $output;
 
-                eFaInitController::progressBar(20, 25, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
             } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar(20, 25, $output, "Error setting ipv6 address");
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv6 address");
                 return;
             }
         }
-        
+
+        $progress += $progressStep;
+
         $process = new Process('echo "' . $session->get('hostname') . '.' . $session->get('domainname') . '" | sudo tee /etc/hostname');
 
         $output = '<br/>eFa -- Adding hostname to /etc/hosts...<br/>' . $output;
 
         try {
             $process->mustRun();
-                
+
             $output = $process->getOutput() . '<br/> eFa -- hostname entry added to /etc/hosts<br/>' . $output;
 
-            eFaInitController::progressBar(25, 30, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(25, 30, $output, "Error setting /etc/hostname");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting /etc/hostname");
             return;
         }
+
+        $progress += $progressStep;
 
         $process = new Process('sudo hostname ' . $session->get('hostname') . '.' . $session->get('domainname'));
 
@@ -1043,13 +1057,15 @@ class eFaInitController extends Controller
             
             $output = $process->getOutput() . '<br/> eFa -- hostname set<br/>' . $output;
 
-            eFaInitController::progressBar(30, 35, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(30, 35, $output, "Error setting /etc/hostname");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting /etc/hostname");
             return;
         }
-        
+
+        $progress += $progressStep;
+
         $process = new Process('echo -e "forward-zone:\n  name: \".\"" | sudo tee /etc/unbound/conf.d/forwarders.conf');
 
         $output = '<br/>eFa -- Setting root fowarder for unbound...<br/>' . $output;
@@ -1059,12 +1075,14 @@ class eFaInitController extends Controller
             
             $output = $process->getOutput() . '<br/> eFa -- root forwarder set for unbound<br/>' . $output;
 
-            eFaInitController::progressBar(30, 35, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(30, 35, $output, "Error setting root forwarder for unbound");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting root forwarder for unbound");
             return;
         }
+
+        $progress += $progressStep;
 
         if ($session->get('configrecursion') === '1')
         {
@@ -1077,10 +1095,10 @@ class eFaInitController extends Controller
              
                 $output = $process->getOutput() . '<br/> eFa -- recursion set for unbound<br/>' . $output;
 
-                eFaInitController::progressBar(35, 40, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
              } catch (ProcessFailedException $exception) {
-                 eFaInitController::progressBar(35, 40, $output, "Error setting recursion for unbound");
+                 eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting recursion for unbound");
                  return;
              }
          } else {
@@ -1094,13 +1112,16 @@ class eFaInitController extends Controller
 
                 $output = $process->getOutput() . '<br/> eFa -- dns forwarders set for unbound<br/>' . $output;
 
-                eFaInitController::progressBar(35, 40, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
              } catch (ProcessFailedException $exception) {
-                 eFaInitController::progressBar(35, 40, $output, "Error setting forwarders for unbound");
+                 eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting forwarders for unbound");
                  return;
              }
         }
+
+        $progress += $progressStep;
+
         $interface = $session->get('interface');
 
         if (file_exists('/etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak'))
@@ -1114,10 +1135,10 @@ class eFaInitController extends Controller
 
                 $output = $process->getOutput() . '<br/> eFa -- Interface config restored<br/>' . $output;
 
-                eFaInitController::progressBar(40, 45, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
             } catch (ProcessFailedException $exception) {
-                 eFaInitController::progressBar(40, 45, $output, "Error restoring interface config");
+                 eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error restoring interface config");
                 return;
             }
         } else {
@@ -1130,13 +1151,15 @@ class eFaInitController extends Controller
 
                 $output = $process->getOutput() . '<br/>eFa -- Interface config backed up<br/>' . $output;
 
-                eFaInitController::progressBar(40, 45, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
             } catch (ProcessFailedException $exception) {
-                 eFaInitController::progressBar(40, 45, $output, "Error backing up interface config");
+                 eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error backing up interface config");
                 return;
             }
-       }
+        }
+
+        $progress += $progressStep;
 
         $process = new Process('sudo sed -i "/^BOOTPROTO=/ c\BOOTPROTO=\"none\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
@@ -1147,13 +1170,15 @@ class eFaInitController extends Controller
 
             $output = $process->getOutput() . '<br/> eFa -- BOOTPROTO set for interface<br/>' . $output;
 
-            eFaInitController::progressBar(45, 50, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-             eFaInitController::progressBar(45, 50, $output, "Error BOOTPROTO for interface");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error BOOTPROTO for interface");
             return;
         }
-        
+
+        $progress += $progressStep;
+
         if ($session->get('configipv4') === '1')
         {
             $process = new Process('echo -e "IPADDR=\"' . $session->get('ipv4address') . '\"\nNETMASK=\"' . $session->get('ipv4netmask') . '\"\nGATEWAY=\"' . $session->get('ipv4gateway') . '\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
@@ -1165,13 +1190,15 @@ class eFaInitController extends Controller
 
                 $output = $process->getOutput() . '<br/> eFa -- ipv4 address, netmask, and gateway set for interface<br/>' . $output;
 
-                eFaInitController::progressBar(50, 55, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
             } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar(50, 55, $output, "Error setting ipv4 address, netmask, and gateway");
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv4 address, netmask, and gateway");
                 return;
             }
         }   
+
+        $progress += $progressStep;
 
         if ($session->get('configipv6') === '1')
         {
@@ -1184,12 +1211,14 @@ class eFaInitController extends Controller
 
                 $output = $process->getOutput() . '<br/> eFa -- set ipv6 auto config off<br/>' . $output;
 
-                eFaInitController::progressBar(55, 60, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
             } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar(55, 60, $output, "Error setting ipv6 auto config off");
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv6 auto config off");
                 return;
             }
+
+            $progress += $progressStep;
 
             $process = new Process('echo -e "IPV6ADDR=\"' . $session->get('ipv6address') . '/' . $session->get('ipv6prefix') . '\"\nIPV6_DEFAULTGW=\"' . $session->get('ipv6gateway'). '\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
@@ -1200,13 +1229,15 @@ class eFaInitController extends Controller
 
                 $output = $process->getOutput() . '<br/> eFa -- set ipv6 address and gateway<br/>' . $output;
 
-                eFaInitController::progressBar(60, 65, $output);
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
             } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar(60, 65, $output, "Error setting ipv6 address and gateway");
+                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv6 address and gateway");
                 return;
             }
         }
+
+        $progress += $progressStep;
 
         $process = new Process('echo -e "DNS1=\"127.0.0.1\"\nDNS2=\"::1\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
 
@@ -1217,12 +1248,14 @@ class eFaInitController extends Controller
 
             $output = $process->getOutput() . '<br/> eFa -- Directed interface DNS to unbound<br/>' . $output;
 
-            eFaInitController::progressBar(65, 70, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(65, 70, $output, "Error directing interface to unbound");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error directing interface to unbound");
             return;
         }
+
+        $progress += $progressStep;
 
         $output = '<br/>eFa -- Generating host keys...<br/>' . $output;
 
@@ -1259,16 +1292,16 @@ class eFaInitController extends Controller
 
             $output = '<br/>eFa -- Generated existing host keys<br/>' . $output;
 
-            eFaInitController::progressBar(70, 75, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(70, 75, $output, "Error generating host keys");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error generating host keys");
             return;
         }
 
-        $output = '<br/>eFa -- Generating dhparam...this may take a while...<br/>' . $output;
+        $progress += $progressStep;
 
-        eFaInitController::progressBar(75, 75, $output);
+        $output = '<br/>eFa -- Generating dhparam...this may take a while...<br/>' . $output;
 
         try {
             $process = new Process('sudo openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048');
@@ -1279,21 +1312,21 @@ class eFaInitController extends Controller
 
             $process = new Process('sudo postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"');
             $process->mustRun();
-            
+
             $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- Generated dhparam<br/>' . $output;
 
-            eFaInitController::progressBar(75, 80, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(75, 80, $output, "Error generating dhparam");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error generating dhparam");
             return;
         }
 
-        $output = '<br/>eFa -- Configuring Timezone<br/>' . $output;
+        $progress += $progressStep;
 
-        eFaInitController::progressBar(80, 80, $output);
+        $output = '<br/>eFa -- Configuring Timezone<br/>' . $output;
 
         try {
             $process = new Process('sudo rm -f /etc/localtime');
@@ -1303,31 +1336,31 @@ class eFaInitController extends Controller
 
             $process = new Process('sudo ln -s /usr/share/zoneinfo/' . $session->get('timezone') . ' /etc/localtime');
             $process->mustRun();
-            
+
             $output = $process->getOutput() . $output;
 
             $process = new Process('');
             $process->mustRun();
-            
+
             $output = $process->getOutput() . $output;
 
             $process = new Process('sudo timedatectl set-timezone ' . $session->get('timezone'));
             $process->mustRun();
-            
+
             $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- Timezone configured<br/>' . $output;
 
-            eFaInitController::progressBar(80, 85, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(80, 85, $output, "Error setting timezone");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting timezone");
             return;
         }
- 
-        $output = '<br/>eFa -- Writing IANA code to freshclam config<br/>' . $output;
 
-        eFaInitController::progressBar(85, 85, $output);
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Writing IANA code to freshclam config<br/>' . $output;
 
         try {
             if(file_exists('/etc/freshclam.conf.bak'))
@@ -1355,16 +1388,16 @@ class eFaInitController extends Controller
 
             $output = '<br/> eFa -- Wrote IANA code to freshclam config<br/>' . $output;
 
-            eFaInitController::progressBar(85, 90, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(85, 90, $output, "Error writing IANA code to freshclam config");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error writing IANA code to freshclam config");
             return;
         }
 
-        $output = '<br/>eFa -- Configuring razor<br/>' . $output;
+        $progress += $progressStep;
 
-        eFaInitController::progressBar(90, 90, $output);
+        $output = '<br/>eFa -- Configuring razor<br/>' . $output;
 
         try {
             $process = new Process("sudo su postfix -s /bin/bash -c 'razor-admin -create'");
@@ -1399,16 +1432,16 @@ class eFaInitController extends Controller
 
             $output = '<br/> eFa -- Configured razor<br/>' . $output;
 
-            eFaInitController::progressBar(90, 95, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(90, 95, $output, "Error configuring razor");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring razor");
             return;
         }
 
-        $output = '<br/>eFa -- Updating AV and SA rules...this may take a while...<br/>' . $output;
+        $progress += $progressStep;
 
-        eFaInitController::progressBar(95, 95, $output);
+        $output = '<br/>eFa -- Updating AV and SA rules...this may take a while...<br/>' . $output;
 
         try {
             $process = new Process("sudo systemctl start clamd@scan");
@@ -1422,7 +1455,7 @@ class eFaInitController extends Controller
             
             foreach($process as $type => $data) {
                 $output = $data . $output;
-                eFaInitController::progressBar(95, 95, $output);
+                eFaInitController::progressBar($progres, $progress, $output);
             }
 
             $process = new Process("sudo /usr/sbin/clamav-unofficial-sigs.sh");
@@ -1431,7 +1464,7 @@ class eFaInitController extends Controller
             
             foreach($process as $type => $data) {
                 $output = $data . $output;
-                eFaInitController::progressBar(95, 95, $output);
+                eFaInitController::progressBar($progres, $progress, $output);
             }
 
             $process = new Process("sa-update");
@@ -1440,27 +1473,28 @@ class eFaInitController extends Controller
             
             foreach($process as $type => $data) {
                 $output = $data . $output;
-                eFaInitController::progressBar(95, 95, $output);
+                eFaInitController::progressBar($progres, $progress, $output);
             }
 
             $process = new Process("sudo sa-compile");
             $process->setTimeout(600);
             $process->start();
-            
+
             foreach($process as $type => $data) {
                 $output = $data . $output;
-                eFaInitController::progressBar(95, 95, $output);
+                eFaInitController::progressBar($progres, $progress, $output);
             }
 
             $output = '<br/> eFa -- Updated AV and SA rules<br/>' . $output;
 
-            eFaInitController::progressBar(95, 100, $output);
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar(95, 100, $output, "Error updating AV and SA rules");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error updating AV and SA rules");
             return;
         }
  
+        $progress += $progressStep;
  
         return;
     }
