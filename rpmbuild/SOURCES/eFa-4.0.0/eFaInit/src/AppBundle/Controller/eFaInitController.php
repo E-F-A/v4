@@ -1455,7 +1455,7 @@ class eFaInitController extends Controller
             
             foreach($process as $type => $data) {
                 $output = $data . $output;
-                eFaInitController::progressBar($progres, $progress, $output);
+                eFaInitController::progressBar($progress, $progress, $output);
             }
 
             $process = new Process("sudo /usr/sbin/clamav-unofficial-sigs.sh");
@@ -1464,7 +1464,7 @@ class eFaInitController extends Controller
             
             foreach($process as $type => $data) {
                 $output = $data . $output;
-                eFaInitController::progressBar($progres, $progress, $output);
+                eFaInitController::progressBar($progress, $progress, $output);
             }
 
             $process = new Process("sa-update");
@@ -1473,7 +1473,7 @@ class eFaInitController extends Controller
             
             foreach($process as $type => $data) {
                 $output = $data . $output;
-                eFaInitController::progressBar($progres, $progress, $output);
+                eFaInitController::progressBar($progress, $progress, $output);
             }
 
             $process = new Process("sudo sa-compile");
@@ -1482,7 +1482,7 @@ class eFaInitController extends Controller
 
             foreach($process as $type => $data) {
                 $output = $data . $output;
-                eFaInitController::progressBar($progres, $progress, $output);
+                eFaInitController::progressBar($progress, $progress, $output);
             }
 
             $output = '<br/> eFa -- Updated AV and SA rules<br/>' . $output;
