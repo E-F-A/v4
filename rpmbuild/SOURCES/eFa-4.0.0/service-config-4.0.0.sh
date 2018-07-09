@@ -56,6 +56,6 @@ systemctl disable hypervkvpd >/dev/null 2>&1
 systemctl disable hypervvssd >/dev/null 2>&1
 
 # Disable selinux for eFaInit phase
-sed -i "/^SELINUX=/ c\SELINUX=permissive" /etc/sysconfig/selinux
+sed -i "/^SELINUX=/ c\SELINUX=permissive" /etc/selinux/config
 
 echo "Configuring services...done"
