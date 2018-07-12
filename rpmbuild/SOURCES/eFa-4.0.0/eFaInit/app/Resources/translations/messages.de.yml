@@ -1,83 +1,83 @@
-'Welcome to': 'Willkommen zu'
+'Welcome to': 'Willkommen bei'
 Language: Sprache
 Next: Weiter
-Hostname: Hostnamen
+Hostname: Hostname
 'Please enter a hostname': 'Bitte Hostnamen eingeben'
-Back: Zurueck
-English: English
-Danish: Dansk
-Dutch: Nederlands
-French: Français
-Portuguese: Portugues
+Back: Zurück
+English: Englisch
+Danish: Dänisch
+Dutch: Niederländisch
+French: Französisch
+Portuguese: Portugisisch
 German: Deutsch
-Turkish: Türkçe
-Italian: Italiano
-'Simplified Chinese': 簡體中文
-'Traditional Chinese': 繁體中文
-'Domain Name': 'Domainname'
-'Please enter a domain name': 'Bitte Domainnamen eingeben'
+Turkish: Türkisch
+Italian: Italienisch
+'Simplified Chinese': vereinfachtes Chinesisch
+'Traditional Chinese': traditionelles Chinesisch
+'Domain Name': 'Domäne'
+'Please enter a domain name': 'Bitte Domäne eingeben'
 Email: Email
-'Please enter an email address for important notifications': 'Bitte Emailadresse fuer wichtige Nachrichten eingeben'
-'IPv4 Address': 'IPv4 Adresse'
-'Please enter a valid IPv4 address': 'Bitte eine gueltige IPv4 Adresse eingeben'
-'IPv4 Netmask': 'IPv4 Netzmaske'
-'Please enter a valid IPv4 netmask': 'Bitte eine gueltige IPv4 Netzmaske eingeben'
-'Please enter a valid IPv4 gateway': 'Bitte einen gueltigen IPv4 Gateway eingeben'
-'IPv4 Gateway': 'IPv4 Gateway'
-'Do you want to set a static IPv4 address?': 'Wollen Sie eine statische IPv4 Adresse benutzen?'
+'Please enter an email address for important notifications': 'Bitte Emailadresse für wichtige Nachrichten eingeben'
+'IPv4 Address': 'IPv4-Adresse'
+'Please enter a valid IPv4 address': 'Bitte eine gültige IPv4-Adresse eingeben'
+'IPv4 Netmask': 'IPv4-Netzmaske'
+'Please enter a valid IPv4 netmask': 'Bitte eine gültige IPv4-Netzmaske eingeben'
+'Please enter a valid IPv4 gateway': 'Bitte einen gültigen IPv4-Gateway eingeben'
+'IPv4 Gateway': 'IPv4-Gateway'
+'Do you want to set a static IPv4 address?': 'Wollen Sie eine statische IPv4-Adresse benutzen?'
 'Yes': 'Ja'
 'No': 'Nein'
-'Do you want to set a static IPv6 address?': 'Wollen Sie eine statische IPv6 Adresse benutzen?'
+'Do you want to set a static IPv6 address?': 'Wollen Sie eine statische IPv6-Adresse benutzen?'
 'Configure IPv6': 'IPv6 konfigurieren'
-'Please enter a valid IPv6 address': 'Bitte eine gueltige IPv6 Adresse eingeben'
-'IPv6 Address': 'IPv6 Adresse'
-'Please enter a valid IPv6 gateway': 'Bitte einen gueltigen IPv6 Gateway eingeben'
-'IPv6 Gateway': 'IPv6 Gateway'
+'Please enter a valid IPv6 address': 'Bitte eine gültige IPv6-Adresse eingeben'
+'IPv6 Address': 'IPv6-Adresse'
+'Please enter a valid IPv6 gateway': 'Bitte einen gültigen IPv6-Gateway eingeben'
+'IPv6 Gateway': 'IPv6-Gateway'
 'Do you want to enable full DNS Recursion?': 'Wollen Sie DNS-Rekursion aktivieren?'
-'Configure DNS Recursion': 'DNS Rekursion konfigurieren'
-'Please enter the primary DNS address': 'Bitte die Adresse des primaeren DNS Servers eingeben'
-'Primary DNS': 'Primaerer DNS Server'
-'Please enter the secondary DNS address': 'Bitte die Adresse des sekundaeren DNS Servers eingeben'
-'Secondary DNS': 'Sekundaerer DNS'
-'Please enter the username for the admin web interface': 'Bitte geben Sie einen Benutzernamen fuer die Web-Admin-Oberflaeche ein'
-'Please enter the web admin password': 'Bitte geben Sie ein Passwort fuer die Web-Admin-Oberflaeche ein'
-'Web Admin Username': 'Web Admin Benutzername'
-'Please re-enter the web admin password': 'Bitte bestaetigen Sie das Passwort fuer die Web-Admin-Oberflaeche'
-'Web Admin Password': 'Web Admin Passwort'
-'Please enter the username for the admin console interface': 'PBitte geben Sie einen Benutzernamen fuer die Konsole ein'
+'Configure DNS Recursion': 'DNS-Rekursion konfigurieren'
+'Please enter the primary DNS address': 'Bitte die Adresse des primären DNS-Servers eingeben'
+'Primary DNS': 'Primärer DNS'
+'Please enter the secondary DNS address': 'Bitte die Adresse des sekundären DNS-Servers eingeben'
+'Secondary DNS': 'Sekundärer DNS'
+'Please enter the username for the admin web interface': 'Bitte geben Sie einen Benutzernamen für die Web-Admin-Oberfläche ein'
+'Please enter the web admin password': 'Bitte geben Sie ein Passwort fuer die Web-Admin-Oberfläche ein'
+'Web Admin Username': 'Web-Admin Benutzername'
+'Please re-enter the web admin password': 'Bitte bestätigen Sie das Passwort für die Web-Admin-Oberfläche'
+'Web Admin Password': 'Web-Admin Passwort'
+'Please enter the username for the admin console interface': 'Bitte geben Sie einen Benutzernamen für die Admin-Konsole ein'
 'Console Admin Username': 'Konsolenbenutzer'
-'Please enter the console admin password': 'Bitte geben Sie ein Passwort für die Konsole ein'
-'Please re-enter the console admin password': 'Bitte bestaetigen Sie das Konsolenpasswort'
-'Console Admin Password': 'Konsolenpasswort'
-'Do you want to install hypervisor tools for your hypervisor?': 'Wollen SIe die Erweiterungen fuer den Betrieb als virtuelle Maschine installieren?'
-'Configure Hypervisor Tools': 'Erweiterungen fuer VM Bertieb konfigurieren'
-'Is the host set to UTC time?': 'Ist die Server-Uhrzeit auf UTC eingestellt?'
-'Configure UTC Time': 'UTC konfigurieren'
-Timezone: Zeitzone
-'Timezone Selection': 'Zeitzone waehlen'
+'Please enter the console admin password': 'Bitte geben Sie ein Passwort für die Admin-Konsole ein'
+'Please re-enter the console admin password': 'Bitte bestätigen Sie das Admin-Konsolen-Passwort'
+'Console Admin Password': 'Admin-Konsolen-Passwort'
+'Do you want to install hypervisor tools for your hypervisor?': 'Wollen Sie die VM-Tools Ihres Hypervisors installieren?'
+'Configure Hypervisor Tools': 'VM-Tools konfigurieren'
+'Is the host set to UTC time?': 'Benutzt der Host UTC-Zeit?'
+'Configure UTC Time': 'UTC-Zeit konfigurieren'
+'Timezone: Zeitzone
+'Timezone Selection': 'Auswahl Zeitzone'
 'Please enter the IP or hostname of the local mail server': 'Bitte geben sie den Hostnamen oder die IP-Adresse des lokalen Mailservers an'
-'Local Mail Server': 'Lokaler Mailservers'
-'Please enter your IANA country code': 'Bitte geben Sie Ihren Laendercode nach IANA-Spezifikation an'
-'Please enter your organization name (No spaces, dots, or underscores)': 'Bitte geben Sie Ihren Organisationsnamen an (Keine Abstaende, Punkte, oder Unterstriche)'
-'Organization Name': 'Organizationsname'
-'"Passwords do not match': "Passwoerter stimmen nicht überein"
-'Enable Recursion': 'DNS Rekursion aktivieren'
-'DNS Primary Address': 'Primaerer DNS Server'
+'Local Mail Server': 'Lokaler Mailserver'
+'Please enter your IANA country code': 'Bitte geben Sie Ihren Ländercode (IANA-Format) an'
+'Please enter your organization name (No spaces, dots, or underscores)': 'Bitte geben Sie Ihren Organisationsnamen an (Ohne: Leerzeichen, Punkte, Unterstriche)'
+'Organization Name': 'Organisationsname'
+'"Passwords do not match': "Passwörter stimmen nicht überein"
+'Enable Recursion': 'DNS-Rekursion aktivieren'
+'DNS Primary Address': 'Primärer DNS-Server'
 'Set DNS': 'DNS konfigurieren'
-'DNS Secondary Address': 'Sekundaerer DNS Server'
+'DNS Secondary Address': 'Sekundärer DNS-Server'
 'Configure IPv4': 'IPv4 konfigurieren'
-'Set IP Address': 'IP Adresse eingeben'
-'Set IP Netmask': 'IP Netzmaske eingeben'
-'Set IP Gateway': 'IP Gateway eingeben'
+'Set IP Address': 'IP-Adresse eingeben'
+'Set IP Netmask': 'IP-Netzmaske eingeben'
+'Set IP Gateway': 'IP-Gateway eingeben'
 'Host is UTC': 'Server ist auf UTC eingestellt'
-'Set IP Mask': 'IP Maske eingeben'
-'IANA Country Code': 'IANA Laendercode'
-'IPv4 Netmask:' : 'IPv4 Netzmaske:'
-'IPv4 Gateway:' : 'IPv4 Gateway:'
-'IPv6 Mask': 'IPv6 Netzmaske:'
-'IPv6 Gateway:' : 'IPv6 Gateway:'
-'Web Admin Username:': 'Web Admin Benutzername:'
-'Web Admin Password:': 'Web Admin Passwort:'
+'Set IP Mask': 'IP-Maske eingeben'
+'IANA Country Code': 'IANA-Ländercode'
+'IPv4 Netmask:' : 'IPv4-Netzmaske:'
+'IPv4 Gateway:' : 'IPv4-Gateway:'
+'IPv6 Mask': 'IPv6-Netzmaske:'
+'IPv6 Gateway:' : 'IPv6-Gateway:'
+'Web Admin Username:': 'Web-Admin Benutzername:'
+'Web Admin Password:': 'Web-Admin Passwort:'
 'Console Admin Username:': 'Konsolenbenutzer:'
 'Console Admin Password:': 'Konsolenpasswort:'
-'Server Mail Locale:': 'Server Mail Locale:'
+'Server Mail Locale:': 'Server Mail Sprache:'
