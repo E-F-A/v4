@@ -86,6 +86,8 @@ postconf -e "smtpd_client_restrictions = permit_sasl_authenticated, reject_rbl_c
 postconf -e "smtpd_relay_restrictions = permit_sasl_authenticated, permit_mynetworks, defer_unauth_destination"
 postconf -e "smtpd_recipient_restrictions = reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
 postconf -e "masquerade_domains = \$mydomain"
+postconf -e "smtpd_milters = inet:127.0.0.1:33333"
+
 #other configuration files
 newaliases
 touch /etc/postfix/transport
