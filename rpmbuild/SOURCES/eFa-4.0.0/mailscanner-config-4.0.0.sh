@@ -30,6 +30,8 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring MailScanner..."
 
 chown postfix:mtagroup /var/spool/MailScanner/quarantine
+chown postfix:mtagroup /var/spool/MailScanner/milterin
+chown postfix:mtagroup /var/spool/MailScanner/milterout
 mkdir /var/spool/MailScanner/spamassassin
 chown postfix:mtagroup /var/spool/MailScanner/spamassassin
 mkdir /var/spool/mqueue
@@ -41,9 +43,9 @@ touch /etc/MailScanner/rules/spam.blacklist.rules
 sed -i '/^Max Children =/ c\Max Children = 2' /etc/MailScanner/MailScanner.conf
 sed -i '/^Run As User =/ c\Run As User = postfix' /etc/MailScanner/MailScanner.conf
 sed -i '/^Run As Group =/ c\Run As Group = postfix' /etc/MailScanner/MailScanner.conf
-sed -i '/^Incoming Queue Dir =/ c\Incoming Queue Dir = \/var\/spool\/postfix\/hold' /etc/MailScanner/MailScanner.conf
-sed -i '/^Outgoing Queue Dir =/ c\Outgoing Queue Dir = \/var\/spool\/postfix\/incoming' /etc/MailScanner/MailScanner.conf
-sed -i '/^MTA =/ c\MTA = postfix' /etc/MailScanner/MailScanner.conf
+sed -i '/^Incoming Queue Dir =/ c\Incoming Queue Dir = \/var\/spool\/MailScanner\/milterin' /etc/MailScanner/MailScanner.conf
+sed -i '/^Outgoing Queue Dir =/ c\Outgoing Queue Dir = \/var\/spool\/MailScanner\/milterout' /etc/MailScanner/MailScanner.conf
+sed -i '/^MTA =/ c\MTA = msmail' /etc/MailScanner/MailScanner.conf
 sed -i '/^Incoming Work Group =/ c\Incoming Work Group = mtagroup' /etc/MailScanner/MailScanner.conf
 sed -i '/^Incoming Work Permissions =/ c\Incoming Work Permissions = 0660' /etc/MailScanner/MailScanner.conf
 sed -i '/^Quarantine User =/ c\Quarantine User = postfix' /etc/MailScanner/MailScanner.conf

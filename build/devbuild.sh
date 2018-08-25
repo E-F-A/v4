@@ -113,6 +113,10 @@ rpmbuild -ba perl-Encoding-FixLatin.spec
 [ $? != 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Encoding-FixLatin-1.04-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
+rpmbuild -ba perl-Sendmail-PMilter.spec
+[ $? != 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sendmail-PMilter-1.00-1.eFa.el7.x86_64.rpm
+[ $? != 0 ] && exit 1
 rpmbuild -ba MailWatch-1.2.9.spec
 [ $? != 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-1.2.9-1.eFa.el7.x86_64.rpm
