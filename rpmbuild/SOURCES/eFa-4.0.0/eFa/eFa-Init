@@ -1055,7 +1055,7 @@ function func_configure-system() {
 
   echo -e "$green[eFa]$clean - Updating AV and SA rules"
 
-  systemctl start clam.scan
+  systemctl start clamd@scan
   freshclam
 
   /usr/sbin/clamav-unofficial-sigs.sh
@@ -1214,12 +1214,13 @@ function func_configure-system() {
   systemctl stop mailscanner
 
   systemctl enable mailscanner
+  systemctl enable msmilter
   systemctl enable postfix
   systemctl enable httpd
   systemctl enable mariadb
   #chkconfig saslauthd off
   systemctl enable crond
-  systemctl enable clam.scan
+  systemctl enable clamd@scan
   systemctl enable clam.freshclam
   systemctl enable clamav-unofficial-sigs
   systemctl enable sqlgrey
