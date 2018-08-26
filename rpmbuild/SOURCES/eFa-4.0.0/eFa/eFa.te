@@ -92,6 +92,7 @@ require {
     type rpm_exec_t;
     type ldconfig_exec_t;
     type rngd_t;
+    type mscan_exec_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -141,6 +142,8 @@ allow httpd_sys_script_t unconfined_t:dir { getattr search };
 allow httpd_sys_script_t unconfined_t:file { open read };
 allow httpd_sys_script_t mscan_t:dir { getattr search };
 allow httpd_sys_script_t mscan_t:file { ioctl open read };
+allow httpd_sys_script_t mscan_exec_t:dir { getattr search };
+allow httpd_sys_script_t mscan_exec_t:file { ioctl open read };
 allow httpd_sys_script_t httpd_t:tcp_socket { ioctl getattr };
 
 # allow ps to read antivirus process
