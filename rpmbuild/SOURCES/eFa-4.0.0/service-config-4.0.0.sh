@@ -37,6 +37,7 @@ systemctl enable php-fpm
 # Most of these are not enabled by default but add them here just to
 # make sure we don't forget them at eFa-Init.
 systemctl disable mailscanner
+systemctl disable msmilter
 systemctl disable postfix
 systemctl disable mariadb
 #chkconfig saslauthd off
