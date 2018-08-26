@@ -3,3 +3,4 @@
 /etc/eFa/SQLGrey-Config	    --	system_u:object_r:sqlgreysql_etc_t:s0
 /etc/eFa/eFaSQL-Config	    --	system_u:object_r:efasql_etc_t:s0
 /etc/eFa/MySQL-Config	    --	system_u:object_r:mysqlsql_etc_t:s0
+/usr/sbin/MSMilter          --  system_u:object_r:mscan_exec_t:s0
