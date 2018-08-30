@@ -1201,6 +1201,21 @@ function func_configure-system() {
   # Remove EFA-Init from console
   sed -i "/^\/usr\/sbin\/eFa-Init/d" /root/.bashrc
   
+  # Remove GUI eFaInit
+  rm -f /etc/httpd/conf.d/eFaInit.conf
+  
+  cat > /var/www/html/index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>MailWatch</title>
+    <meta http-equiv="refresh" content="0; url=/mailscanner/" />
+    </head>
+    <body>
+    </body>
+</html>
+EOF
+  
   sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa/eFa-Config
 
   chown root:mtagroup /etc/eFa/*
