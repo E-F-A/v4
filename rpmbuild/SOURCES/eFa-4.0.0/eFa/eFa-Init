@@ -1216,6 +1216,9 @@ function func_configure-system() {
 </html>
 EOF
   
+  # Lock down GUI
+  echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
+
   sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa/eFa-Config
 
   chown root:mtagroup /etc/eFa/*
