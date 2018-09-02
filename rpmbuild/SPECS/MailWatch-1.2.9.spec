@@ -166,6 +166,8 @@ EOF
 %{_localstatedir}/www/html/mailscanner/mcafee_status.php
 %{_localstatedir}/www/html/mailscanner/mcp_rules_update.php
 %{_localstatedir}/www/html/mailscanner/msconfig.php
+%{_localstatedir}/www/html/mailscanner/msmail.inc.php
+%{_localstatedir}/www/html/mailscanner/msmailq.php
 %{_localstatedir}/www/html/mailscanner/ms_lint.php
 %{_localstatedir}/www/html/mailscanner/msre_edit.php
 %{_localstatedir}/www/html/mailscanner/msre_table_functions.php
