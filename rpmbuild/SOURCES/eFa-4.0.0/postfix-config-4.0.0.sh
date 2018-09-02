@@ -87,9 +87,9 @@ postconf -e "smtpd_recipient_restrictions = reject_unauth_destination, reject_no
 postconf -e "masquerade_domains = \$mydomain"
 postconf -e "smtpd_milters = inet:127.0.0.1:33333"
 
-# Hide localhost
-echo '/^Received:.*\(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
-echo '/^Received:.*\(localhost\ \[::1/ IGNORE' >> /etc/postfix/header_checks
+# Hide localhost (moved to init phase)
+#echo '/^Received:.*\(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
+#echo '/^Received:.*\(localhost\ \[::1/ IGNORE' >> /etc/postfix/header_checks
 
 #other configuration files
 newaliases
