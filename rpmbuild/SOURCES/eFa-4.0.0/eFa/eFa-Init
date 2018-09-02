@@ -993,8 +993,8 @@ function func_configure-system() {
   hostname $HOSTNAME.$DOMAINNAME
 
   # Add Received header check to remove localhost entry
-  echo '/^Received:\ from\ ' . $HOSTNAME . '.' . $DOMAINNAME . '\ \(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
-  echo '/^Received:\ from\ ' . $HOSTNAME . '.' . $DOMAINNAME . '\ \(localhost\ \[::1/ IGNORE' >> /etc/postfix/header_checks
+  echo '/^Received:\ from\ '$HOSTNAME.$DOMAINNAME'\ \(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
+  echo '/^Received:\ from\ '$HOSTNAME.$DOMAINNAME'\ \(localhost\ \[::1/ IGNORE' >> /etc/postfix/header_checks
   postmap /etc/postfix/header_checks
 
   echo -e "$green[eFa]$clean - Setting DNS"
