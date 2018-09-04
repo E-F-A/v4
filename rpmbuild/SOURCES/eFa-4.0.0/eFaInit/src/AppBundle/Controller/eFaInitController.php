@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validation;
 
 class eFaInitController extends Controller
 {
-    protected $timeout=600;
+    protected $timeout=900;
 
     /**
      * @Route("/{_locale}",
@@ -933,7 +933,7 @@ class eFaInitController extends Controller
     private function eFaConfigure(SessionInterface $session) 
     {
         $progress = 0;
-        $progressStep = 2;
+        $progressStep = 4;
         eFaInitController::progressBar($progress, $progress);
 
         $output = '<br/>eFa -- Starting MariaDB...<br/>';
