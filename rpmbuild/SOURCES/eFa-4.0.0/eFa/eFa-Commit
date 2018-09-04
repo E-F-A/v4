@@ -872,11 +872,6 @@ if [[ $finalize -eq 1 ]]; then
 EOF
   [ $? -ne 0 ] && exit 1
   
-  # Lock down GUI
-  echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
-  [ $? -ne 0 ] && exit 1
-
-
   chown root:mtagroup /etc/eFa/*
   [ $? -ne 0 ] && exit 1
   chmod 640 /etc/eFa/*
@@ -941,6 +936,13 @@ EOF
 
   sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa/eFa-Config
   [ $? -ne 0 ] && exit 1
+  
+  # Lock down GUI
+  echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
+  [ $? -ne 0 ] && exit 1
+
+  echo "Configuration complete...rebooting..."
+  reboot
 fi
 
 exit 0
