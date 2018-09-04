@@ -905,8 +905,6 @@ EOF
   [ $? -ne 0 ] && exit 1
   systemctl enable clamd@scan
   [ $? -ne 0 ] && exit 1
-  systemctl enable clam.freshclam
-  [ $? -ne 0 ] && exit 1
   systemctl enable clamav-unofficial-sigs
   [ $? -ne 0 ] && exit 1
   systemctl enable sqlgrey
