@@ -24,7 +24,7 @@
 function randompw()
 {
   PASSWD=""
-  PASSWD=`cat /dev/urandom | tr -cd '[:alnum:]' | fold -w30 | head -n1`
+  PASSWD=`openssl rand -base64 32`
 }
 # +---------------------------------------------------+
 
@@ -853,8 +853,10 @@ if [[ $finalize -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   
   # Remove dynamic /etc/issue builder
-  cp -f /etc/rc.d/rc.local.bak /etc/rc.d/rc.local
-  [ $? -ne 0 ] && exit 1
+  if [[ -f /etc/rc.d/rc.local.bak ]]; then
+      cp -f /etc/rc.d/rc.local.bak /etc/rc.d/rc.local
+      [ $? -ne 0 ] && exit 1
+  fi
   
   # Remove GUI eFaInit
   rm -f /etc/httpd/conf.d/eFaInit.conf
