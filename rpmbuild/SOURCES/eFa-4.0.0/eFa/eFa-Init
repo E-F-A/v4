@@ -869,10 +869,7 @@ function func_configure-system() {
       --efauserpwd=$efauserpwd --username=$USERNAME --cliusername=$CLIUSERNAME --efaclipwd=$efaclipwd \
       --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC
 
-  if [[ $? -eq 0 ]]; then
-    echo -e "$green[eFa]$clean - Done, Rebooting system..."
-    reboot
-  else
+  if [[ $? -ne 0 ]]; then
     echo -e "$red[eFa]$clean - Error initializing system!  Pleae try again..."
   fi
 }
