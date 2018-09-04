@@ -520,7 +520,7 @@ function func_ask-clipassword() {
 function func_detect-virtual() {
   func_echo-header
   echo -e "$green[eFa]$clean This will install tools for your hypervisor."
-  echo -e "$green[eFa]$clean Configure virtualization? [Y/n]"
+  echo -e -n  "$green[eFa]$clean Configure virtualization? [Y/n]: "
   read ASKVIRTUAL
   if [[ $ASKVIRTUAL =~ ^[Yy]$ || -z $ASKVIRTUAL ]]; then
     CONFIGVIRTUAL=1
@@ -855,7 +855,7 @@ func_echo-header(){
 # +---------------------------------------------------+
 function func_configure-system() {
 
-  /usr/sbin/eFa-Commit --commitall --verbose --hostname=$HOSTNAME --domainname=$DOMAINNAME \ 
+  /usr/sbin/eFa-Commit --commitall --verbose --hostname=$HOSTNAME --domainname=$DOMAINNAME \
       --ipv4address=$IPV4ADDRESS --ipv6address=$IPV6ADDRESS --dnsip1=$DNSIP1 --dnsip2=$DNSIP2 \
       --enablerecursion=$enablerecursion --interface=$INTERFACE --ipv4netmask=$IPV4NETMASK \
       --ipv4gateway=$IPV4GATEWAY --ipv6mask=$IPV6MASK --ipv6gateway=$IPV6GATEWAY --timezone=$TZONE \
