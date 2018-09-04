@@ -24,7 +24,7 @@
 function randompw()
 {
   PASSWD=""
-  PASSWD=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
+  PASSWD=`cat /dev/urandom | tr -cd '[:alnum:]' | fold -w30 | head -n1`
 }
 # +---------------------------------------------------+
 
