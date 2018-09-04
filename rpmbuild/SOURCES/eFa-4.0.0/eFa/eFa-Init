@@ -456,7 +456,7 @@ function func_ask-cliusername() {
             echo -e "       $yellow WARNING: The user-name $CLIUSERNAME already exists"
             echo -e -n "$green[eFa]$clean Continue? (y/N): "
             read YESNO
-            if [[ $YESNO =~ ^Yy$ ]]; then
+            if [[ $YESNO =~ ^[Yy]$ ]]; then
               uncheck=0
             else
               echo -e "$green[eFa]$clean Please enter the user-name you would like to have."
