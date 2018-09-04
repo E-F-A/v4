@@ -1030,7 +1030,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring Timezone<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configtzone --tzone=' . $session->get('timezone'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configtzone --tzone=' . $session->get('timezone') . ' --isutc=' . $session->get('configutc'));
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
