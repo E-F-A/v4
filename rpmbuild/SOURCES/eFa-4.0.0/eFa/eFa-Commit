@@ -81,6 +81,14 @@ func_Install-QEMUAgent(){
 }
 # +---------------------------------------------------+
 
+red='\E[00;31m'
+green='\E[00;32m'
+yellow='\E[00;33m'
+blue='\E[00;34m'
+magenta='\E[00;35'
+cyan='\E[00;36m'
+clean='\e[00m'
+
 if [[ -f /etc/eFa/MySQL-Config && -n $(grep MYSQLROOTPWD /etc/eFa/MySQL-Config) ]]; then
   initpassword=$(grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/^.*://')
 else
@@ -831,7 +839,6 @@ EOF
   systemctl enable mariadb
   [ $? -ne 0 ] && exit 1
   #chkconfig saslauthd off
-  [ $? -ne 0 ] && exit 1
   systemctl enable crond
   [ $? -ne 0 ] && exit 1
   systemctl enable clamd@scan
