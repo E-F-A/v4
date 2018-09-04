@@ -665,7 +665,7 @@ function func_verify-settings() {
     echo -e "15) Web User PWD        : <hidden>"
     echo -e "16) CLI User            : $CLIUSERNAME"
     echo -e "17) CLI User PWD        : <hidden>"
-    echo -e -n "18) Hypervisor Agents   : "; if [[ "$CONFIGUREVIRTUAL" -eq 1 ]]; then echo "Install"; else echo "No"
+    echo -e -n "18) Hypervisor Agents   : "; if [[ "$CONFIGUREVIRTUAL" -eq 1 ]]; then echo "Install"; else echo "No"; fi
     echo -e -n "19) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
     echo -e "20) Keyboard            : $KEYBOARD"
     echo -e "21) IANA Code           : $IANACODE"
