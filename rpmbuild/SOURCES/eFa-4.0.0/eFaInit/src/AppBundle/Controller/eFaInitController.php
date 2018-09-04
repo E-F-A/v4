@@ -1007,7 +1007,9 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $output = '<br/>eFa -- Generating host keys...<br/>' . $output;
+        $output = '<br/>eFa -- Generating host keys (this may take a while)...<br/>' . $output;
+
+        eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --genhostkeys');
@@ -1030,7 +1032,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring Timezone<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configtzone --tzone=' . $session->get('timezone') . ' --isutc=' . $session->get('configutc'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configtzone --timezone=' . $session->get('timezone') . ' --isutc=' . $session->get('configutc'));
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
