@@ -1410,7 +1410,9 @@ class eFaInitController extends Controller
 
         $output = '<br/>eFa -- Rebooting...Please go <a href="https://' . $session->get('ipv4address') . '">https://' . $session->get('ipv4address') . '</a><br/>' . $output;
 
-        try {
+        eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+/*        try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --rebootsys'));
 
             $process->mustRun();
@@ -1418,7 +1420,7 @@ class eFaInitController extends Controller
         } catch (ProcessFailedException $exception) {
             eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error rebooting, please reboot manually");
             return;
-        }
+        }*/
 
 
         return;
