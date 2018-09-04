@@ -18,11 +18,70 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
-# Just adding some todo's here so we don't forget them later on:
-#
-# - Configure email for yum-cron
+# +---------------------------------------------------+
+# Function to create a random password
+# +---------------------------------------------------+
+function randompw()
+{
+  PASSWD=""
+  PASSWD=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
+}
+# +---------------------------------------------------+
 
-if [[ -n $(grep MYSQLROOTPWD /etc/eFa/MySQL-Config) ]]; then
+# +---------------------------------------------------+
+# Install Open VM Tools
+# +---------------------------------------------------+
+func_Install-OpenVMTools(){
+  yum -y install glib2-devel pam-devel libdnet-devel gcc-c++ libicu-devel open-vm-tools
+  [ $? -ne 0 ] && exit 1
+  systemctl enable vmtoolsd
+  [ $? -ne 0 ] && exit 1
+  checkmodule -M -m -o /var/eFa/lib/selinux/eFavmtools.mod /var/eFa/lib/selinux/eFavmtools.te
+  [ $? -ne 0 ] && exit 1
+  semodule_package -o /var/eFa/lib/selinux/eFavmtools.pp -m /var/eFa/lib/selinux/eFavmtools.mod
+  [ $? -ne 0 ] && exit 1
+  semodule -i /var/eFa/lib/selinux/eFavmtools.pp
+  [ $? -ne 0 ] && exit 1
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Install Hyper-V Tools
+# +---------------------------------------------------+
+func_Install-HyperVTools(){
+  yum -y install hyperv-tools hyperv-daemons hypervkvpd hypervvssd
+  [ $? -ne 0 ] && exit 1
+  systemctl enable hypervkvpd
+  [ $? -ne 0 ] && exit 1
+  systemctl enable hypervvssd
+  [ $? -ne 0 ] && exit 1
+  checkmodule -M -m -o /var/eFa/lib/selinux/eFahyperv.mod /var/eFa/lib/selinux/eFahyperv.te
+  [ $? -ne 0 ] && exit 1
+  semodule_package -o /var/eFa/lib/selinux/eFahyperv.pp -m /var/eFa/lib/selinux/eFahyperv.mod
+  [ $? -ne 0 ] && exit 1
+  semodule -i /var/eFa/lib/selinux/eFahyperv.pp
+  [ $? -ne 0 ] && exit 1
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Install QEMU Agent
+# +---------------------------------------------------+
+func_Install-QEMUAgent(){
+  yum -y install qemu-guest-agent
+  [ $? -ne 0 ] && exit 1
+  systemctl enable qemu-guest-agent
+  [ $? -ne 0 ] && exit 1
+  checkmodule -M -m -o /var/eFa/lib/selinux/eFaqemu.mod /var/eFa/lib/selinux/eFaqemu.te
+  [ $? -ne 0 ] && exit 1
+  semodule_package -o /var/eFa/lib/selinux/eFaqemu.pp -m /var/eFa/lib/selinux/eFaqemu.mod
+  [ $? -ne 0 ] && exit 1
+  semodule -i /var/eFa/lib/selinux/eFaqemu.pp
+  [ $? -ne 0 ] && exit 1
+}
+# +---------------------------------------------------+
+
+if [[ -f /etc/eFa/MySQL-Config && -n $(grep MYSQLROOTPWD /etc/eFa/MySQL-Config) ]]; then
   initpassword=$(grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/^.*://')
 else
   initpassword="eFaPr0j3ct"
@@ -313,14 +372,14 @@ done
 
 if [[ $startmariadb -eq 1 ]]; then
   # Start mariadb Daemon
-  [ $verbose -eq 1 ]] && echo -e "$green[eFa]$clean - Starting MariaDB"
+  [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Starting MariaDB"
   systemctl start mariadb
   [ $? -ne 0 ] && exit 1 
 fi
 
 if [[ $confighost -eq 1 ]]; then
   # Network settings
-  [ $verbose -eq 1 ]] && echo -e "$green[eFa]$clean - Configuring hostname and domainname"
+  [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Configuring hostname and domainname"
   echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
   [ $? -ne 0 ] && exit 1
   echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
@@ -339,7 +398,7 @@ if [[ $confighost -eq 1 ]]; then
   hostname $HOSTNAME.$DOMAINNAME
   [ $? -ne 0 ] && exit 1
 
-  # Add Received header check to remove localhost entrya
+  # Add Received header check to remove localhost entry
   if [[ -f /etc/postfix/header_checks.bak ]]; then
     rm -f /etc/postfix/header_checks
     [ $? -ne 0 ] && exit 1
@@ -443,19 +502,9 @@ if [[ $configtzone -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   ln -s /usr/share/zoneinfo/$TZONE /etc/localtime
   [ $? -ne 0 ] && exit 1
-  if [[ -f /etc/sysconfig/clock.bak ]]; then
-    rm -f /etc/sysconfig/clock
-    [ $? -ne 0 ] && exit 1
-    cp -f /etc/sysconfig/clock.bak /etc/sysconfig/clock
-    [ $? -ne 0 ] && exit 1
-  else
-    cp -f /etc/sysconfig/clock /etc/sysconfig/clock.bak
-    [ $? -ne 0 ] && exit 1
-  fi
-  
-  echo "ZONE=$TZONE">>/etc/sysconfig/clock
-  [ $? -ne 0 ] && exit 1
   sed -i "/^;date.timezone =/ c\date.timezone = $TZONE" /etc/php.ini
+  [ $? -ne 0 ] && exit 1
+  sed -i "/^date.timezone =/ c\date.timezone = $TZONE" /etc/php.ini
   [ $? -ne 0 ] && exit 1
 fi
 
@@ -488,15 +537,18 @@ if [[ $configclam -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Updating AV and SA rules"
 
   freshclam
-  [ $? -ne 0 ] && exit 1
+  # Returns non-zero when up to date
+  #[ $? -ne 0 ] && exit 1
 
   /usr/sbin/clamav-unofficial-sigs.sh
-  [ $? -ne 0 ] && exit 1
+  # Retuns non-zero when up to date
+  #[ $? -ne 0 ] && exit 1
 fi
 
 if [[ $updatesa -eq 1 ]]; then
   sa-update
-  [ $? -ne 0 ] && exit 1
+  # Returns non-zero when up to date
+  #[ $? -ne 0 ] && exit 1
   sa-compile
   [ $? -ne 0 ] && exit 1
 fi
@@ -822,66 +874,4 @@ fi
 
 exit 0
 
-# +---------------------------------------------------+
-# Function to create a random password
-# +---------------------------------------------------+
-function randompw()
-{
-  PASSWD=""
-  PASSWD=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
-}
-# +---------------------------------------------------+
-
-# +---------------------------------------------------+
-# Install Open VM Tools
-# +---------------------------------------------------+
-func_Install-OpenVMTools(){
-  yum -y install glib2-devel pam-devel libdnet-devel gcc-c++ libicu-devel open-vm-tools
-  [ $? -ne 0 ] && exit 1
-  systemctl enable vmtoolsd
-  [ $? -ne 0 ] && exit 1
-  checkmodule -M -m -o /var/eFa/lib/selinux/eFavmtools.mod /var/eFa/lib/selinux/eFavmtools.te
-  [ $? -ne 0 ] && exit 1
-  semodule_package -o /var/eFa/lib/selinux/eFavmtools.pp -m /var/eFa/lib/selinux/eFavmtools.mod
-  [ $? -ne 0 ] && exit 1
-  semodule -i /var/eFa/lib/selinux/eFavmtools.pp
-  [ $? -ne 0 ] && exit 1
-}
-# +---------------------------------------------------+
-
-# +---------------------------------------------------+
-# Install Hyper-V Tools
-# +---------------------------------------------------+
-func_Install-HyperVTools(){
-  yum -y install hyperv-tools hyperv-daemons hypervkvpd hypervvssd
-  [ $? -ne 0 ] && exit 1
-  systemctl enable hypervkvpd
-  [ $? -ne 0 ] && exit 1
-  systemctl enable hypervvssd
-  [ $? -ne 0 ] && exit 1
-  checkmodule -M -m -o /var/eFa/lib/selinux/eFahyperv.mod /var/eFa/lib/selinux/eFahyperv.te
-  [ $? -ne 0 ] && exit 1
-  semodule_package -o /var/eFa/lib/selinux/eFahyperv.pp -m /var/eFa/lib/selinux/eFahyperv.mod
-  [ $? -ne 0 ] && exit 1
-  semodule -i /var/eFa/lib/selinux/eFahyperv.pp
-  [ $? -ne 0 ] && exit 1
-}
-# +---------------------------------------------------+
-
-# +---------------------------------------------------+
-# Install QEMU Agent
-# +---------------------------------------------------+
-func_Install-QEMUAgent(){
-  yum -y install qemu-guest-agent
-  [ $? -ne 0 ] && exit 1
-  systemctl enable qemu-guest-agent
-  [ $? -ne 0 ] && exit 1
-  checkmodule -M -m -o /var/eFa/lib/selinux/eFaqemu.mod /var/eFa/lib/selinux/eFaqemu.te
-  [ $? -ne 0 ] && exit 1
-  semodule_package -o /var/eFa/lib/selinux/eFaqemu.pp -m /var/eFa/lib/selinux/eFaqemu.mod
-  [ $? -ne 0 ] && exit 1
-  semodule -i /var/eFa/lib/selinux/eFaqemu.pp
-  [ $? -ne 0 ] && exit 1
-}
-# +---------------------------------------------------+
 
