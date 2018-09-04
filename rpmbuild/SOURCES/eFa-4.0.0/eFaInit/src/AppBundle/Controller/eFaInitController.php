@@ -1157,9 +1157,12 @@ class eFaInitController extends Controller
         $progress += $progressStep;
 
         $output = '<br/>eFa -- Configuring Spamassassin<br/>' . $output;
+        
+        eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configsa --orgname=' . $session->get('orgname'));
+            $process->setTimeout(600);
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
