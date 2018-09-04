@@ -1104,9 +1104,14 @@ class eFaInitController extends Controller
             $process->setTimeout($this->timeout);
             $process->start();
             
+            $fold = '';
             foreach($process as $type => $data) {
-                $output = $data . $output;
-                eFaInitController::progressBar($progress, $progress, $output);
+                $fold .= $data;
+                if ( strlen($fold) > 80 ) {
+                   $output = $fold . "\n" . $output;
+                   $fold = '';
+                   eFaInitController::progressBar($progress, $progress, $output);
+                }
             }
 
             $output = '<br/> eFa -- Updated AV and SA rules<br/>' . $output;
