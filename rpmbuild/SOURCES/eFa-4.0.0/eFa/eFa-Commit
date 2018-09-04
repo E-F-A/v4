@@ -298,6 +298,7 @@ while [ $# -gt 0 ]; do
             sed -i "/^RECURSION:/ c\RECURSION:ENABLED" /etc/eFa/eFa-Config
           else
             sed -i "/^RECURSION:/ c\RECURSION:DISABLED" /etc/eFa/eFa-Config
+          fi
         fi
     ;;
       --dnsip1=*)
