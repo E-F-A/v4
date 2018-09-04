@@ -28,6 +28,8 @@ use Symfony\Component\Validator\Validation;
 
 class eFaInitController extends Controller
 {
+    protected $timeout=600;
+
     /**
      * @Route("/{_locale}",
      *     name="languagepage",
@@ -1013,7 +1015,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --genhostkeys');
-            $process->setTimeout(600);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
@@ -1090,7 +1092,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process("sudo /usr/sbin/eFa-Commit --configclam");
-            $process->setTimeout(600);
+            $process->setTimeout($this->timeout);
             $process->start();
             
             foreach($process as $type => $data) {
@@ -1099,7 +1101,7 @@ class eFaInitController extends Controller
             }
 
             $process = new Process("sudo /usr/sbin/eFa-Commit --updatesa");
-            $process->setTimeout(600);
+            $process->setTimeout($this->timeout);
             $process->start();
             
             foreach($process as $type => $data) {
@@ -1162,7 +1164,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configsa --orgname=' . $session->get('orgname'));
-            $process->setTimeout(600);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
