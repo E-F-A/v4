@@ -937,7 +937,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Starting MariaDB...<br/>';
 
         // Start MariaDB
-        $process = new Process('sudo systemctl restart mariadb');
+        $process = new Process('sudo /usr/sbin/eFa-Commit --startmariadb');
 
         try {
             $process->mustRun();
@@ -953,305 +953,55 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $process = new Process('echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" | sudo tee /etc/hosts');
+        $process = new Process('sudo /usr/sbin/eFa-Commit --confighost --ipv4address=' . $session->get('ipv4address') . ' --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --ipv6address=' . $session->get('ipv6address'));
 
-        $output = '<br/>eFa -- Adding ipv4 localhost entry...<br/>' . $output;
+        $output = '<br/>eFa -- Configuring host and domain...<br/>' . $output;
 
         try {
             $process->mustRun();
 
-            $output = $process->getOutput() . '<br/> eFa -- ipv4 locahost entry added<br/>' . $output;
+            $output = $process->getOutput() . '<br/> eFa -- Configured host and domain<br/>' . $output;
             
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv4 localhost");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring host and domain");
             return;
         }
 
         $progress += $progressStep;
 
-        $process = new Process('echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" | sudo tee -a /etc/hosts');
+        $process = new Process('sudo /usr/sbin/eFa-Commit --configdns --enablerecursion=' . $session->get('configrecursion') . ' --dnsip1=' . $session->get('dns1') . ' --dnsip2=' . $session->get('dns2');
 
-        $output = '<br/>eFa -- Adding ipv6 localhost entry...<br/>' . $output;
+        $output = '<br/>eFa -- Configuring DNS...<br/>' . $output;
 
         try {
             $process->mustRun();
             
-            $output = $process->getOutput() . '<br/> eFa -- ipv6 locahost entry added<br/>' . $output;
-            
+            $output = $process->getOutput() . '<br/> eFa -- DNS Configured<br/>' . $output;
+
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv6 localhost");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring DNS");
             return;
         }
 
         $progress += $progressStep;
 
-        if ($session->get('configipv4') === '1')
-        {
-            $process = new Process('echo "' . $session->get('ipv4address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" | sudo tee -a /etc/hosts');
+        $process = new Process('sudo /usr/sbin/eFa-Commit --configip --interface=' . $session->get('interface') . ' --ipv4address=' . $session->get('ipv4address' . ' --ipv4netmask=' . $session->get('ipv4netmask') . ' --ipv4gateway=' . $session->get('ipv4gateway') . ' --ipv6address=' . $session->get('ipv6address') . ' --ipv6mask=' . $session->get('ipv6mask') . ' --ipv6gateway=' . $session->get('ipv6gateway') . ' --dnsip1=' . $session->get('dns1') . ' --dnsip2=' . $session->get('dns2'));
 
-            $output = '<br/>eFa -- Adding ipv4 host entry...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-            
-                $output = $process->getOutput() . '<br/> eFa -- ipv4 host entry added<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-            } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv4 address hostname");
-                return;
-            }
-        }
-
-        $progress += $progressStep;
-
-        if ($session->get('configipv6') === '1')
-        {
-            $process = new Process('echo "' . $session->get('ipv6address') . '    ' . $session->get('hostname') . '.' . $session->get('domainname') . '    ' .  $session->get('hostname') .'" | sudo tee -a /etc/hosts');
-
-            $output = '<br/>eFa -- Adding ipv6 host entry...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-
-                $output = $process->getOutput() . '<br/> eFa -- ipv6 host entry added<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-            } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv6 address");
-                return;
-            }
-        }
-
-        $progress += $progressStep;
-
-        $process = new Process('echo "' . $session->get('hostname') . '.' . $session->get('domainname') . '" | sudo tee /etc/hostname');
-
-        $output = '<br/>eFa -- Adding hostname to /etc/hosts...<br/>' . $output;
+        $output = '<br/>eFa -- Configuring interface...<br/>' . $output;
 
         try {
             $process->mustRun();
 
-            $output = $process->getOutput() . '<br/> eFa -- hostname entry added to /etc/hosts<br/>' . $output;
+            $output = $process->getOutput() . '<br/> eFa -- Interface configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting /etc/hostname");
-            return;
-        }
-
-        $progress += $progressStep;
-
-        $process = new Process('sudo hostname ' . $session->get('hostname') . '.' . $session->get('domainname'));
-
-        $output = '<br/>eFa -- Setting hostname...<br/>' . $output;
-
-        try {
-            $process->mustRun();
-            
-            $output = $process->getOutput() . '<br/> eFa -- hostname set<br/>' . $output;
-
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-        } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting /etc/hostname");
-            return;
-        }
-
-        $progress += $progressStep;
-
-        $process = new Process('echo -e "forward-zone:\n  name: \".\"" | sudo tee /etc/unbound/conf.d/forwarders.conf');
-
-        $output = '<br/>eFa -- Setting root fowarder for unbound...<br/>' . $output;
-
-        try {
-            $process->mustRun();
-            
-            $output = $process->getOutput() . '<br/> eFa -- root forwarder set for unbound<br/>' . $output;
-
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-        } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting root forwarder for unbound");
-            return;
-        }
-
-        $progress += $progressStep;
-
-        if ($session->get('configrecursion') === '1')
-        {
-            $process = new Process('echo -e "  forward-first: yes\n" | sudo tee -a /etc/unbound/conf.d/forwarders.conf');
-
-            $output = '<br/>eFa -- Setting recursion for unbound...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-             
-                $output = $process->getOutput() . '<br/> eFa -- recursion set for unbound<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-             } catch (ProcessFailedException $exception) {
-                 eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting recursion for unbound");
-                 return;
-             }
-         } else {
-
-            $process = new Process('echo -e "  forward-addr: ' . $session->get('dns1') . '"\n  forward-addr: ' . $session->get('dns2') . '\n" | sudo tee -a /etc/unbound/conf.d/forwarders.conf');
-
-            $output = '<br/>eFa -- Setting dns forwarders for unbound...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-
-                $output = $process->getOutput() . '<br/> eFa -- dns forwarders set for unbound<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-             } catch (ProcessFailedException $exception) {
-                 eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting forwarders for unbound");
-                 return;
-             }
-        }
-
-        $progress += $progressStep;
-
-        $interface = $session->get('interface');
-
-        if (file_exists('/etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak'))
-        {
-            $process = new Process('sudo cp /etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak /etc/sysconfig/network-scripts/ifcfg-' . $interface);
-
-            $output = '<br/>eFa -- Restoring interface config...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-
-                $output = $process->getOutput() . '<br/> eFa -- Interface config restored<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-            } catch (ProcessFailedException $exception) {
-                 eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error restoring interface config");
-                return;
-            }
-        } else {
-            $process = new Process('sudo cp /etc/sysconfig/network-scripts/ifcfg-' . $interface . ' /etc/sysconfig/network-scripts/ifcfg-' . $interface . '.bak');
-
-            $output = '<br/>eFa -- Backing up interface config...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-
-                $output = $process->getOutput() . '<br/>eFa -- Interface config backed up<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-            } catch (ProcessFailedException $exception) {
-                 eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error backing up interface config");
-                return;
-            }
-        }
-
-        $progress += $progressStep;
-
-        $process = new Process('sudo sed -i "/^BOOTPROTO=/ c\BOOTPROTO=\"none\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
-
-        $output = '<br/>eFa -- Setting BOOTPROTO for interface...<br/>' . $output;
-
-        try {
-            $process->mustRun();
-
-            $output = $process->getOutput() . '<br/> eFa -- BOOTPROTO set for interface<br/>' . $output;
-
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-        } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error BOOTPROTO for interface");
-            return;
-        }
-
-        $progress += $progressStep;
-
-        if ($session->get('configipv4') === '1')
-        {
-            $process = new Process('echo -e "IPADDR=\"' . $session->get('ipv4address') . '\"\nNETMASK=\"' . $session->get('ipv4netmask') . '\"\nGATEWAY=\"' . $session->get('ipv4gateway') . '\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
-
-            $output = '<br/>eFa -- Setting static ipv4 address, netmask, and gateway for interface...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-
-                $output = $process->getOutput() . '<br/> eFa -- ipv4 address, netmask, and gateway set for interface<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-            } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv4 address, netmask, and gateway");
-                return;
-            }
-        }   
-
-        $progress += $progressStep;
-
-        if ($session->get('configipv6') === '1')
-        {
-            $process = new Process('sudo sed -i "/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF=\"no\"" /etc/sysconfig/network-scripts/ifcfg-' . $interface);
-
-            $output = '<br/>eFa -- Setting setting ipv6 auto config off...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-
-                $output = $process->getOutput() . '<br/> eFa -- set ipv6 auto config off<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-            } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv6 auto config off");
-                return;
-            }
-
-            $progress += $progressStep;
-
-            $process = new Process('echo -e "IPV6ADDR=\"' . $session->get('ipv6address') . '/' . $session->get('ipv6prefix') . '\"\nIPV6_DEFAULTGW=\"' . $session->get('ipv6gateway'). '\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
-
-            $output = '<br/>eFa -- Setting setting ipv6 address and gateway...<br/>' . $output;
-
-            try {
-                $process->mustRun();
-
-                $output = $process->getOutput() . '<br/> eFa -- set ipv6 address and gateway<br/>' . $output;
-
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-            } catch (ProcessFailedException $exception) {
-                eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting ipv6 address and gateway");
-                return;
-            }
-        }
-
-        $progress += $progressStep;
-
-        $process = new Process('echo -e "DNS1=\"127.0.0.1\"\nDNS2=\"::1\"" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-' . $interface);
-
-        $output = '<br/>eFa -- Directing interface DNS to unbound...<br/>' . $output;
-
-        try {
-            $process->mustRun();
-
-            $output = $process->getOutput() . '<br/> eFa -- Directed interface DNS to unbound<br/>' . $output;
-
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-        } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error directing interface to unbound");
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring interface");
             return;
         }
 
@@ -1260,37 +1010,13 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Generating host keys...<br/>' . $output;
 
         try {
-            $process = new Process('sudo rm -f /etc/ssh/ssh_host_rsa_key && sudo rm -f /etc/ssh/ssh_host_dsa_key && sudo rm -f /etc/ssh/ssh_host_ecdsa_key && sudo rm -f /etc/ssh/ssh_host_ed25519_key');
-
+            $process = new Process('sudo /usr/sbin/eFa-Commit --genhostkeys');
+            $process->setTimeout(600);
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
 
-            $process = new Process('sudo ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N \'\' -t rsa');
-            
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process('sudo ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N \'\' -t dsa');
-
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process('sudo ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N \'\' -t ecdsa');
-
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process('sudo ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N \'\' -t ed25519');
-
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $output = '<br/>eFa -- Generated existing host keys<br/>' . $output;
+            $output = '<br/>eFa -- Generated host keys<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
@@ -1301,50 +1027,10 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $output = '<br/>eFa -- Generating dhparam...this may take a while...<br/>' . $output;
-
-        try {
-            $process = new Process('sudo openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048');
-            $process->setTimeout(600);
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process('sudo postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"');
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $output = '<br/> eFa -- Generated dhparam<br/>' . $output;
-
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-        } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error generating dhparam");
-            return;
-        }
-
-        $progress += $progressStep;
-
         $output = '<br/>eFa -- Configuring Timezone<br/>' . $output;
 
         try {
-            $process = new Process('sudo rm -f /etc/localtime');
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process('sudo ln -s /usr/share/zoneinfo/' . $session->get('timezone') . ' /etc/localtime');
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process('');
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process('sudo timedatectl set-timezone ' . $session->get('timezone'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configtzone --tzone=' . $session->get('timezone'));
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
@@ -1363,25 +1049,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Writing IANA code to freshclam config<br/>' . $output;
 
         try {
-            if(file_exists('/etc/freshclam.conf.bak'))
-            {
-                $process = new Process('sudo rm -f /etc/freshclam.conf');
-                $process->mustRun();
-
-                $output = $process->getOutput() . $output;
-
-                $process = new Process('sudo cp -f /etc/freshclam.conf.bak /etc/freshclam.conf');
-                $process->mustRun();
-
-                $output = $process->getOutput() . $output;
-            } else {
-                $process = new Process('sudo cp -f /etc/freshclam.conf /etc/freshclam.conf.bak');
-                $process->mustRun();
-
-                $output = $process->getOutput() . $output;
-            }
-
-            $process = new Process('sudo sed -i "/^#DatabaseMirror / c\DatabaseMirror db.' . $session->get('ianacode') . '.clamav.net" /etc/freshclam.conf');
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configiana --ianacode=' . $session->get('ianacode'));
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
@@ -1400,32 +1068,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring razor<br/>' . $output;
 
         try {
-            $process = new Process("sudo su postfix -s /bin/bash -c 'razor-admin -create'");
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process("sudo su postfix -s /bin/bash -c 'razor-admin -register'");
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process("sudo sed -i '/^debuglevel/ c\debuglevel             = 0' /var/spool/postfix/.razor/razor-agent.conf");
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process("sudo chown -R postfix:mtagroup /var/spool/postfix/.razor");
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process("sudo chmod ug+s /var/spool/postfix/.razor");
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process("sudo chmod ug+rw /var/spool/postfix/.razor/*");
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configrazor');
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
@@ -1444,12 +1087,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Updating AV and SA rules...this may take a while...<br/>' . $output;
 
         try {
-            $process = new Process("sudo systemctl start clamd@scan");
-            $process->mustRun();
-
-            $output = $process->getOutput() . $output;
-
-            $process = new Process("sudo freshclam");
+            $process = new Process("sudo /usr/sbin/eFa-Commit --configclam");
             $process->setTimeout(600);
             $process->start();
             
@@ -1458,28 +1096,10 @@ class eFaInitController extends Controller
                 eFaInitController::progressBar($progress, $progress, $output);
             }
 
-            $process = new Process("sudo /usr/sbin/clamav-unofficial-sigs.sh");
+            $process = new Process("sudo /usr/sbin/eFa-Commit --updatesa");
             $process->setTimeout(600);
             $process->start();
             
-            foreach($process as $type => $data) {
-                $output = $data . $output;
-                eFaInitController::progressBar($progress, $progress, $output);
-            }
-
-            $process = new Process("sa-update");
-            $process->setTimeout(600);
-            $process->start();
-            
-            foreach($process as $type => $data) {
-                $output = $data . $output;
-                eFaInitController::progressBar($progress, $progress, $output);
-            }
-
-            $process = new Process("sudo sa-compile");
-            $process->setTimeout(600);
-            $process->start();
-
             foreach($process as $type => $data) {
                 $output = $data . $output;
                 eFaInitController::progressBar($progress, $progress, $output);
@@ -1495,7 +1115,285 @@ class eFaInitController extends Controller
         }
  
         $progress += $progressStep;
+
+        $output = '<br/>eFa -- Running GeoIP update...<br/>' . $output;
+
+        try {
+            $process = new Process("sudo /usr/sbin/eFa-Commit --configgeoip");
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- GeoIP updated<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error running GeoIP update");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configure transport<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configtransport --domainname=' . $session->get('domainname') . ' --mailserver=' . $session->get('mailserver') . ' --adminemail=' . $session->get('adminemail'));
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+            
+            $output = '<br/> eFa -- Transport configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring transport");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring Spamassassin<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configsa --orgname=' . $session->get('orgname'));
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Spamassassin configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring spamassassin");
+            return;
+        }
  
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring MailScanner<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailscanner --orgname=' . $session->get('orgname') . ' --adminemail=' . $session->get('adminemail') . ' --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname'));
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+            
+            $output = '<br/> eFa -- MailScanner configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring mailscanner");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring MailWatch<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --timezone=' . $session->get('timezone') . ' --username=' . $session->get('webusername') . ' --efauserpwd=' . $session->get('webpassword'));
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- MailWatch configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring mailscanner");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring SASL<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configsasl');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- SASL configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring SASL");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring SQLGrey<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configsqlgrey');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- SQLGrey configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring SQLGrey");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring apache<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configapache --adminemail=' . $session->get('adminemail'));
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Apache configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring Apache");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring yum-cron<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configyumcron --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --adminemail=' . $session->get('adminemail'));
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- yum-cron configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring yum-cron");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Locking down root<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configroot');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Root locked down<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error locking down root");
+
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring CLI<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configcli --cliusername=' $session->get('cliusername' . ' --efaclipwd=' . $session->get('clipassword'));
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Configured CLI<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring CLI");
+
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Configuring self-signed cert<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configcert');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Configured self-signed cert<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring self-signed cert");
+
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Locking down mysql <br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configmysql');
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Locked down mysql<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error locking down mysql");
+            return;
+        }
+
+        $progress += $progressStep;
+
+        $output = '<br/>eFa -- Finalizing configuration<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --finalize --configvirtual=' .  $session->get('configvirtual'));
+
+            $process->mustRun();
+
+            $output = $process->getOutput() . $output;
+
+            $output = '<br/> eFa -- Configuration Complete!<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error finalizing configuration");
+            return;
+        }
+
         return;
     }
     

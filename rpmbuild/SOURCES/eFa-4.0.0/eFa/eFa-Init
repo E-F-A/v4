@@ -23,8 +23,6 @@
 #
 # - Configure email for yum-cron
 
-initpassword="eFaPr0j3ct"
-
 # +---------------------------------------------------+
 # Lets start asking questions.
 # +---------------------------------------------------+
@@ -521,60 +519,13 @@ function func_ask-clipassword() {
 # +---------------------------------------------------+
 function func_detect-virtual() {
   func_echo-header
-  echo -e "$green[eFa]$clean Checking host type"
-  virtplatform=`sudo /usr/sbin/virt-what`
-  if [[ $virtplatform == "vmware"  ]]; then
-    echo -e "$green[eFa]$clean You seem to be running on VMware"
-    echo -e "$green[eFa]$clean Would you like to install Open VM Tools?"
-    echo ""
-    echo -e "$green[eFa]$clean Open VM Tools is the opensource version of VMware tools."
-    echo -e "$green[eFa]$clean If you require specific components that are not in Open VM Tools"
-    echo -e "$green[eFa]$clean then choose no here and install VMware tools manually later on."
-    echo ""
-    echo -e "$green[eFa]$clean For most VMware users, Open VM Tools should be good enough."
-    echo -e -n "$green[eFa]$clean [Y/n]:"
-    read VMwareInstallChoice
-    if [[ $VMwareInstallChoice == "" || $VMwareInstallChoice == "Y" || $VMwareInstallChoice == "y" ]]; then
-      InstallOpenVMTools="1"
-      InstallQEMUAgent="0"
-      InstallHyperVTools="0"
-    else
-      InstallOpenVMTools="0"
-      InstallQEMUAgent="0"
-      InstallHyperVTools="0"
-    fi
-  elif [[ $virtplatform == "kvm" ]]; then
-    echo -e "$green[eFa]$clean You seem to be running on a KVM based hypervisor"
-    echo -e "$green[eFa]$clean Would you like to install the QEMU Agent?"
-    echo -e -n "$green[eFa]$clean [Y/n]:"
-    read KVMInstallChoice
-    if [[ $KVMInstallChoice == "" || $KVMInstallChoice == "Y" || $KVMInstallChoice == "y" ]]; then
-      InstallQEMUAgent="1"
-      InstallOpenVMTools="0"
-      InstallHyperVTools="0"
-    else
-      InstallQEMUAgent="0"
-      InstallOpenVMTools="0"
-      InstallHyperVTools="0"
-    fi
-  elif [[ $virtplatform == "hyperv" ]]; then
-    echo -e "$green[eFa]$clean You seem to be running on a Hyper-V based hypervisor"
-    echo -e "$green[eFa]$clean Would you like to install the Hyper-V Tools?"
-    echo -e -n "$green[eFa]$clean [Y/n]:"
-    read HyperVInstallChoice
-    if [[ $HyperVInstallChoice == "" || $HyperVInstallChoice == "Y" || $HyperVnstallChoice == "y" ]]; then
-        InstallQEMUAgent="0"
-        InstallOpenVMTools="0"
-        InstallHyperVTools="1"
-    else
-        InstallQEMUAgent="0"
-        InstallOpenVMTools="0"
-        InstallHyperVTools="0"
-    fi
+  echo -e "$green[eFa]$clean This will install tools for your hypervisor."
+  echo -e "$green[eFa]$clean Configure virtualization? [Y/n]"
+  read ASKVIRTUAL
+  if [[ $ASKVIRTUAL =~ ^[Yy]$ || -z $ASKVIRTUAL ]]; then
+    CONFIGVIRTUAL=1
   else
-    echo -e "$green[eFa]$clean I was not able to determine the hypervisor technology that I am running on."
-    echo -e "$green[eFa]$clean If this is a physical machine, please ignore."
-    echo -e "$green[eFa]$clean Otherwise please consult your hypervisor documentation for guest based agents."
+    CONFIGVIRTUAL=0
   fi
 }
 # +---------------------------------------------------+
@@ -714,7 +665,7 @@ function func_verify-settings() {
     echo -e "15) Web User PWD        : <hidden>"
     echo -e "16) CLI User            : $CLIUSERNAME"
     echo -e "17) CLI User PWD        : <hidden>"
-    echo -e -n "18) Hypervisor Agents   : "; if [[ "$InstallOpenVMTools" -eq 1 ]]; then echo "VMware: Installing Open-VM-Tools."; elif [[ "$InstallQEMUAgent" -eq 1 ]]; then echo "KVM: Installing the QEMU Guest Agent."; elif [[ "$InstallHyperVTools" -eq 1 ]]; then echo "Hyper-V: Installiing Hyper-V Tools."; else echo "Not needed."; fi
+    echo -e -n "18) Hypervisor Agents   : "; if [[ "$CONFIGUREVIRTUAL" -eq 1 ]]; then echo "Install"; else echo "No"
     echo -e -n "19) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
     echo -e "20) Keyboard            : $KEYBOARD"
     echo -e "21) IANA Code           : $IANACODE"
@@ -870,77 +821,6 @@ fi
 # +---------------------------------------------------+
 
 # +---------------------------------------------------+
-# Install Open VM Tools
-# +---------------------------------------------------+
-func_Install-OpenVMTools(){
-  func_echo-header
-  echo -e "$green[eFa]$clean Starting the installation of Open VM Tools"
-  echo -e "$green[eFa]$clean Depending on the speed of your system this"
-  echo -e "$green[eFa]$clean might take a while."
-  pause
-  yum -y install glib2-devel pam-devel libdnet-devel gcc-c++ libicu-devel open-vm-tools
-  systemctl enable vmtoolsd
-  checkmodule -M -m -o /var/eFa/lib/selinux/eFavmtools.mod /var/eFa/lib/selinux/eFavmtools.te
-  semodule_package -o /var/eFa/lib/selinux/eFavmtools.pp -m /var/eFa/lib/selinux/eFavmtools.mod
-  semodule -i /var/eFa/lib/selinux/eFavmtools.pp
-  func_echo-header
-  echo -e "$green[eFa]$clean Installation of Open VM tools completed"
-  pause
-}
-# +---------------------------------------------------+
-
-# +---------------------------------------------------+
-# Install Hyper-V Tools
-# +---------------------------------------------------+
-func_Install-HyperVTools(){
-  func_echo-header
-  echo -e "$green[eFa]$clean Starting the installation of Hyper-V Tools"
-  echo -e "$green[eFa]$clean Depending on the speed of your system this"
-  echo -e "$green[eFa]$clean might take a while."
-  pause
-  yum -y install hyperv-tools hyperv-daemons hypervkvpd hypervvssd
-  systemctl enable hypervkvpd
-  systemctl enable hypervvssd
-  checkmodule -M -m -o /var/eFa/lib/selinux/eFahyperv.mod /var/eFa/lib/selinux/eFahyperv.te
-  semodule_package -o /var/eFa/lib/selinux/eFahyperv.pp -m /var/eFa/lib/selinux/eFahyperv.mod
-  semodule -i /var/eFa/lib/selinux/eFahyperv.pp
-  func_echo-header
-  echo -e "$green[eFa]$clean Installation of Hyper-V Tools completed"
-  pause
-}
-# +---------------------------------------------------+
-
-# +---------------------------------------------------+
-# Install QEMU Agent
-# +---------------------------------------------------+
-func_Install-QEMUAgent(){
-  func_echo-header
-  echo -e "$green[eFa]$clean Starting the installation of the QEMU Agent"
-  echo -e "$green[eFa]$clean Depending on the speed of your system this"
-  echo -e "$green[eFa]$clean might take a while."
-  pause
-  yum -y install qemu-guest-agent
-  systemctl enable qemu-guest-agent
-  checkmodule -M -m -o /var/eFa/lib/selinux/eFaqemu.mod /var/eFa/lib/selinux/eFaqemu.te
-  semodule_package -o /var/eFa/lib/selinux/eFaqemu.pp -m /var/eFa/lib/selinux/eFaqemu.mod
-  semodule -i /var/eFa/lib/selinux/eFaqemu.pp
-  func_echo-header
-  echo -e "$green[eFa]$clean Installation of the QEMU Guest Agent has completed"
-  pause
-}
-# +---------------------------------------------------+
-
-# +---------------------------------------------------+
-# Function to create a random password
-# +---------------------------------------------------+
-function randompw()
-{
-  PASSWD=""
-  PASSWD=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
-}
-# +---------------------------------------------------+
-
-# +---------------------------------------------------+
 # Trap CTRL+C, CTRL+Z and quit singles
 # +---------------------------------------------------+
 if [ $debug == "0" ]; then
@@ -975,300 +855,19 @@ func_echo-header(){
 # +---------------------------------------------------+
 function func_configure-system() {
 
- # Start mariadb Daemon
-  systemctl start mariadb
-
-  # Network settings
-  echo -e "$green[eFa]$clean - Setting new hostname"
-  echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
-  echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
-  if [[ -n $IPV4ADDRESS ]]; then
-    echo "$IPADDRESS   $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
-  fi
-  if [[ -n $IPV6ADDRESS ]]; then
-    echo "$IPV6ADDRESS   $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
-  fi
-
-  echo "$HOSTNAME.$DOMAINNAME" > /etc/hostname
-  hostname $HOSTNAME.$DOMAINNAME
-
-  # Add Received header check to remove localhost entry
-  echo '/^Received:\ from\ '$HOSTNAME.$DOMAINNAME'\ \(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
-  echo '/^Received:\ from\ '$HOSTNAME.$DOMAINNAME'\ \(localhost\ \[::1/ IGNORE' >> /etc/postfix/header_checks
-  postmap /etc/postfix/header_checks
-
-  echo -e "$green[eFa]$clean - Setting DNS"
-  echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
-  echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
-  if [[ $enablerecursion -eq 1 ]]; then
-    echo "  forward-first: yes" >> /etc/unbound/conf.d/forwarders.conf
+  /usr/sbin/eFa-Commit --commitall --verbose --hostname=$HOSTNAME --domainname=$DOMAINNAME \ 
+      --ipv4address=$IPV4ADDRESS --ipv6address=$IPV6ADDRESS --dnsip1=$DNSIP1 --dnsip2=$DNSIP2 \
+      --enablerecursion=$enablerecursion --interface=$INTERFACE --ipv4netmask=$IPV4NETMASK \
+      --ipv4gateway=$IPV4GATEWAY --ipv6mask=$IPV6MASK --ipv6gateway=$IPV6GATEWAY --timezone=$TZONE \
+      --ianacode=$IANACODE --orgname=$ORGNAME --mailserver=$MAILSERVER --adminemail=$ADMINEMAIL \
+      --efauserpwd=$efauserpwd --username=$USERNAME --cliusername=$CLIUSERNAME --efaclipwd=$efaclipwd \
+      --configvirtual=$CONFIGVIRTUAL
+  if [[ $? -eq 0 ]]; then
+    echo -e "$green[eFa]$clean - Done, Rebooting system..."
+    reboot
   else
-    echo "  forward-addr: $DNSIP1" >> /etc/unbound/conf.d/forwarders.conf
-    echo "  forward-addr: $DNSIP2" >> /etc/unbound/conf.d/forwarders.conf
+    echo -e "$red[eFa]$clean - Error initializing system!  Pleae try again..."
   fi
-
-  echo -e "$green[eFa]$clean - Setting IP settings"
-  sed -i '/^BOOTPROTO=/ c\BOOTPROTO="none"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-  if [[ -n $IPV4ADDRESS ]]; then
-    echo "IPADDR=\"$IPV4ADDRESS\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    echo "NETMASK=\"$IPV4NETMASK\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    echo "GATEWAY=\"$IPV4GATEWAY\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-  fi
-  if [[ -n $IPV6ADDRESS ]]; then
-    sed -i '/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF="no"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    echo "IPV6ADDR=\"$IPV6ADDRESS/$IPV6MASK\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    echo "IPV6_DEFAULTGW=\"$IPV6GATEWAY\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-  fi
-
-  echo "DNS1=\"127.0.0.1\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-  echo "DNS2=\"::1\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-
-  systemctl restart network
-  systemctl start unbound
-
-  echo -e "$green[eFa]$clean - Generating SSH Host keys"
-  rm -f /etc/ssh/ssh_host_rsa_key
-  rm -f /etc/ssh/ssh_host_dsa_key
-  rm -f /etc/ssh/ssh_host_ecdsa_key
-  rm -f /etc/ssh/ssh_host_ed25519_key
-  ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
-  ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
-  ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa
-  ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519
-  
-  echo -e "$green[eFa]$clean - Generating dh key for postfix..."
-  openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
-  postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
-
-  echo -e "$green[eFa]$clean - Configure timezone"
-  rm -f /etc/localtime
-  ln -s /usr/share/zoneinfo/$TZONE /etc/localtime
-  echo "ZONE=$TZONE">>/etc/sysconfig/clock
-
-  # Write ianacode to freshclam config.
-  sed -i "/^#DatabaseMirror / c\DatabaseMirror db.$IANACODE.clamav.net" /etc/freshclam.conf
-
-  echo -e "$green[eFa]$clean - Configuring razor"
-  su postfix -s /bin/bash -c 'razor-admin -create'
-  su postfix -s /bin/bash -c 'razor-admin -register'
-  sed -i '/^debuglevel/ c\debuglevel             = 0' /var/spool/postfix/.razor/razor-agent.conf
-  chown -R postfix:mtagroup /var/spool/postfix/.razor
-  chmod ug+rwx /var/spool/postfix/.razor
-  # setgid to lock in mtagroup group for new files
-  chmod ug+s /var/spool/postfix/.razor
-  chmod ug+rw /var/spool/postfix/.razor/*
-
-  echo -e "$green[eFa]$clean - Updating AV and SA rules"
-
-  #systemctl start clamd@scan
-  freshclam
-
-  /usr/sbin/clamav-unofficial-sigs.sh
-
-  sa-update
-  sa-compile
-  
-  # Run geoip update
-  /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1
-
-  echo -e "$green[eFa]$clean - Allow the current to receive mails"
-  echo "" >> /etc/postfix/transport
-  echo "###### START eFa ADDED DOMAINS ######" >> /etc/postfix/transport
-  echo "$DOMAINNAME  smtp:[$MAILSERVER]" >> /etc/postfix/transport
-  rm -f /etc/postfix/transport.db
-  postmap /etc/postfix/transport
-
-  echo "root: $ADMINEMAIL" >> /etc/aliases
-
-  echo -e "$green[eFa]$clean - Configuring spamassassin"
-  sed -i '/bayes_ignore_header/d' /etc/MailScanner/spamassassin.conf
-  echo "bayes_ignore_header X-$ORGNAME-MailScanner-eFa">>/etc/MailScanner/spamassassin.conf
-  echo "bayes_ignore_header X-$ORGNAME-MailScanner-eFa-SpamCheck">>/etc/MailScanner/spamassassin.conf
-  echo "bayes_ignore_header X-$ORGNAME-MailScanner-eFa-SpamScore">>/etc/MailScanner/spamassassin.conf
-  echo "bayes_ignore_header X-$ORGNAME-MailScanner-eFa-Information">>/etc/MailScanner/spamassassin.conf
-  sed -i "/^envelope_sender_header / c\envelope_sender_header X-$ORGNAME-MailScanner-eFa-From" /etc/MailScanner/spamassassin.conf
-
-  echo -e "$green[eFa]$clean - Configuring MailScanner"
-  sed -i "/^%org-name% =/ c\%org-name% = $ORGNAME" /etc/MailScanner/MailScanner.conf
-  sed -i "/^%org-long-name% =/ c\%org-long-name% = $ORGNAME" /etc/MailScanner/MailScanner.conf
-  sed -i "/^%web-site% =/ c\%web-site% = https://www.efa-project.org" /etc/MailScanner/MailScanner.conf
-  sed -i "/^Use Watermarking =/ c\Use Watermarking = yes" /etc/MailScanner/MailScanner.conf
-  sed -i "/^Information Header Value =/ c\Information Header Value = Please contact $ADMINEMAIL for more information" /etc/MailScanner/MailScanner.conf
-  sed -i "/^Unscanned Header Value =/ c\Unscanned Header Value = Please contact $ADMINEMAIL for details" /etc/MailScanner/MailScanner.conf
-  sed -i "/^Hostname =/ c\Hostname = $HOSTNAME.$DOMAINNAME" /etc/MailScanner/MailScanner.conf
-
-  echo -e "$green[eFa]$clean - Configuring MailWatch"
-  sed -i "/^define('MAILWATCH_FROM_ADDR'/ c\define('MAILWATCH_FROM_ADDR', 'no-reply@$HOSTNAME.$DOMAINNAME');" /var/www/html/mailscanner/conf.php
-  sed -i "/^define('TIME_ZONE',/ c\define('TIME_ZONE', '$TZONE');" /var/www/html/mailscanner/conf.php
-  sed -i "/^define('MAILWATCH_HOSTURL'/ c\define('MAILWATCH_HOSTURL', 'https:\/\/' . rtrim(gethostname()) . '\/mailscanner');" /var/www/html/mailscanner/conf.php
-
-  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$efauserpwd'), fullname = 'Administrator', type ='A'"
-  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '127.0.0.1'"
-  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '::1'"
-
-  sed -i "/^;date.timezone =/ c\date.timezone = $TZONE" /etc/php.ini
-
-  randompw
-  SAUSERSQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$SAUSERSQLPWD') WHERE User='sa_user';"
-  /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
-  sed -i "/bayes_sql_password/ c\bayes_sql_password              $SAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
-  sed -i "/user_awl_sql_password/ c\user_awl_sql_password           $SAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
-  sed -i "/\usr\/bin\/mysql -usa_user / c\\/usr\/bin\/mysql -usa_user -p$SAUSERSQLPWD < \/etc\/trim-awl.sql" /usr/sbin/trim-awl
-
-  randompw
-  MAILWATCHSQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$MAILWATCHSQLPWD') WHERE User='mailwatch';"
-  /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
-
-  randompw
-  SQLGREYSQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$SQLGREYSQLPWD') WHERE User='sqlgrey';"
-  /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
-  sed -i "/db_pass =/ c\db_pass = $SQLGREYSQLPWD" /etc/sqlgrey/sqlgrey.conf
-
-  randompw
-  EFASQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$EFASQLPWD') WHERE User='efa';"
-  /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
-
-  randompw
-  RANDOMSASLPWD=$PASSWD
-  echo $RANDOMSASLPWD | saslpasswd2 -p -c /etc/sasldb2
-  chgrp postfix /etc/sasldb2
-
-  randompw
-  MYSQLROOTPWD=$PASSWD
-  /usr/bin/mysqladmin -u root -p$initpassword password "$MYSQLROOTPWD"
-
-  randompw
-  WATERMARK=$PASSWD
-  sed -i "/^Watermark Secret =/ c\Watermark Secret = %org-name%-$WATERMARK" /etc/MailScanner/MailScanner.conf
-
-  sed -i "/^ServerAdmin/ c\ServerAdmin $ADMINEMAIL" /etc/httpd/conf/httpd.conf
-  sed -i "/^email_from =/ c\email_from = root@$HOSTNAME.$DOMAINNAME" /etc/yum/yum-cron.conf
-  sed -i "/^email_to =/ c\email_to = $ADMINEMAIL" /etc/yum/yum-cron.conf
-
-  echo -e "$green[eFa]$clean - Unsetting root password"
-  passwd --delete root
-  passwd --lock root
-  chage -E 0 root
-
-  echo -e "$green[eFa]$clean - Creating cli user"
-  useradd -m -d /home/$CLIUSERNAME -s /bin/bash -G wheel $CLIUSERNAME
-  echo "$CLIUSERNAME:$efaclipwd" | chpasswd --md5 $CLIUSERNAME
-  
-  echo -e "$green[eFa]$clean Generating Apache and postfix self-signed cert"
-  cd /etc/pki/tls/certs
-  openssl req -new -x509 -nodes -days 3650 -out localhost.crt -keyout ../private/localhost.key
-  cp localhost.crt /etc/postfix/ssl/smtpd.pem
-  cat /etc/pki/tls/private/localhost.key >> /etc/postfix/ssl/smtpd.pem
-  cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
-
-  echo "HOSTNAME:$HOSTNAME" >> /etc/eFa/eFa-Config
-  echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa/eFa-Config
-  echo "ADMINEMAIL:$ADMINEMAIL" >> /etc/eFa/eFa-Config
-  echo "INTERFACE:$INTERFACE" >> /etc/eFa/eFa-Config
-  echo "IPV4ADDRESS:$IPV4ADDRESS" >> /etc/eFa/eFa-Config
-  echo "IPV4NETMASK:$IPV4NETMASK" >> /etc/eFa/eFa-Config
-  echo "IPV4GATEWAY:$IPV4GATEWAY" >> /etc/eFa/eFa-Config
-  echo "IPV6ADDRESS:$IPV6ADDRESS" >> /etc/eFa/eFa-Config
-  echo "IPV6MASK:$IPV6MASK" >> /etc/eFa/eFa-Config
-  echo "IPV6GATEWAY:$IPV6GATEWAY" >> /etc/eFa/eFa-Config
-  if [[ "$enablerecursion" -eq 1 ]]; then
-    echo "RECURSION:ENABLED" >> /etc/eFa/eFa-Config
-  else
-    echo "RECURSION:DISABLED" >> /etc/eFa/eFa-Config
-  fi
-  echo "DNSIP1:$DNSIP1" >> /etc/eFa/eFa-Config
-  echo "DNSIP2:$DNSIP2" >> /etc/eFa/eFa-Config
-  echo "IANA:$IANACODE" >> /etc/eFa/eFa-Config
-  echo "MAILSERVER:$MAILSERVER" >> /etc/eFa/eFa-Config
-  echo "ORGNAME:$ORGNAME" >> /etc/eFa/eFa-Config
-
-  echo "SAUSERSQLPWD:$SAUSERSQLPWD" > /etc/eFa/SA-Config
-  echo "MAILWATCHSQLPWD:$MAILWATCHSQLPWD" > /etc/eFa/MailWatch-Config
-  echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" > /etc/eFa/SQLGrey-Config
-  echo "EFASQLPWD:$EFASQLPWD" > /etc/eFa/eFaSQL-Config
-  echo "MYSQLROOTPWD:$MYSQLROOTPWD" > /etc/eFa/MySQL-Config
-
-  # Reset selinux labels
-  touch /.autorelabel
-
-  SAUSERSQLPWD=
-  MAILWATCHSQLPWD=
-  SQLGREYSQLPWD=
-  EFASQLPWD=
-  MYSQLROOTPWD=
-
-  rm -f /etc/issue
-
-  # Remove EFA-Init from console
-  sed -i "/^\/usr\/sbin\/eFa-Init/d" /root/.bashrc
-  
-  # Remove GUI eFaInit
-  rm -f /etc/httpd/conf.d/eFaInit.conf
-  
-  cat > /var/www/html/index.html << 'EOF'
-<!DOCTYPE html>
-<html>
-    <head>
-    <title>MailWatch</title>
-    <meta http-equiv="refresh" content="0; url=/mailscanner/" />
-    </head>
-    <body>
-    </body>
-</html>
-EOF
-  
-  # Lock down GUI
-  echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
-
-  sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa/eFa-Config
-
-  chown root:mtagroup /etc/eFa/*
-  chmod 640 /etc/eFa/*
-
-  systemctl start mailscanner >/dev/null 2>&1
-
-  mkdir -p /var/spool/MailScanner/incoming/clamav-tmp
-  chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
-  chmod 770 /var/spool/MailScanner/incoming/clamav-tmp
-  systemctl stop mailscanner
-
-  systemctl enable mailscanner
-  systemctl enable msmilter
-  systemctl enable postfix
-  systemctl enable httpd
-  systemctl enable mariadb
-  #chkconfig saslauthd off
-  systemctl enable crond
-  systemctl enable clamd@scan
-  systemctl enable clam.freshclam
-  systemctl enable clamav-unofficial-sigs
-  systemctl enable sqlgrey
-  #chkconfig mailgraph-init off
-  chkconfig adcc on
-  #chkconfig webmin off
-  systemctl enable unbound
-  #chkconfig munin-node off
-  systemctl enable chronyd
-  systemctl enable yum-cron
-  systemctl enable sshd
-  systemctl enable php-fpm
-
-  if [[ "$InstallOpenVMTools" -eq 1 ]]; then
-    func_Install-OpenVMTools
-  elif [[ "$InstallQEMUAgent" -eq 1 ]]; then
-    func_Install-QEMUAgent
-  elif [[ "$InstallHyperVTools" -eq 1 ]]; then 
-    func_Install-HyperVTools
-  else
-    echo -e "Hypervisor tools are not needed."
-  fi
-
-  echo -e "$green[eFa]$clean - Done, Rebooting system..."
-  reboot
 }
 # +---------------------------------------------------+
 
