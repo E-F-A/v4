@@ -655,6 +655,7 @@ if [[ $configsa -eq 1 ]]; then
     [ $? -ne 0 ] && exit 1
   else
     cp -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.bak
+    [ $? -ne 0 ] && exit 1
   fi
 
   sed -i '/bayes_ignore_header/d' /etc/MailScanner/spamassassin.conf
