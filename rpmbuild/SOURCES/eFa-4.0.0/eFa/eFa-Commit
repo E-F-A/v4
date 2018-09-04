@@ -552,7 +552,7 @@ fi
 
 if [[ $configtzone -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Configure timezone"
-  if [[ $ISUTC -eq true ]]; then
+  if [[ $ISUTC -eq true || $ISUTC -eq 1 ]]; then
     timedatectl set-local-rtc 1
     [ $? -ne 0 ] && exit 1
   else
