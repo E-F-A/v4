@@ -255,108 +255,153 @@ while [ $# -gt 0 ]; do
     # Parameters
       --hostname=*)
         HOSTNAME=${1#*=}
-        if [[ -z $(grep HOSTNAME /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^HOSTNAME /etc/eFa/eFa-Config) ]]; then
           echo "HOSTNAME:$HOSTNAME" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^HOSTNAME:/ c\HOSTNAME:$HOSTNAME" /etc/eFa/eFa-Config
         fi
     ;;
       --domainname=*)
         DOMAINNAME=${1#*=}
-        if [[ -z $(grep DOMAINNAME /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^DOMAINNAME /etc/eFa/eFa-Config) ]]; then
           echo "DOMAINNAME:$DOMAINNAME" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^DOMAINNAME:/ c\DOMAINNAME:$DOMAINNAME" /etc/eFa/eFa-Config
         fi
     ;;
       --ipv4address=*)
         IPADDRESS=${1#*=}
-        if [[ -z $(grep IPV4ADDRESS /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^IPV4ADDRESS /etc/eFa/eFa-Config) ]]; then
           echo "IPV4ADDRESS:$IPV4ADDRESS" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^IPV4ADDRESS:/ c\IPV4ADDRESS:$IPV4ADDRESS" /etc/eFa/eFa-Config
         fi
     ;;
       --ipv6address=*)
         IPV6ADDRESS=${1#*=}
-        if [[ -z $(grep IPV6ADDRESS /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^IPV6ADDRESS /etc/eFa/eFa-Config) ]]; then
           echo "IPV6ADDRESS:$IPV6ADDRESS" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^IPV6ADDRESS:/ c\IPV6ADDRESS:$IPV6ADDRESS" /etc/eFa/eFa-Config
         fi
     ;;
       --enablerecursion=*)
         enablerecursion=${1#*=}
-        if [[ -z $(grep RECURSION /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^RECURSION /etc/eFa/eFa-Config) ]]; then
           if [[ "$enablerecursion" -eq 1 ]]; then
             echo "RECURSION:ENABLED" >> /etc/eFa/eFa-Config
           else
             echo "RECURSION:DISABLED" >> /etc/eFa/eFa-Config
           fi
+        else
+          if [[ "$enablerecursion" -eq 1 ]]; then
+            sed -i "/^RECURSION:/ c\RECURSION:ENABLED" /etc/eFa/eFa-Config
+          else
+            sed -i "/^RECURSION:/ c\RECURSION:DISABLED" /etc/eFa/eFa-Config
         fi
     ;;
       --dnsip1=*)
         DNSIP1=${1#*=}
-        if [[ -z $(grep DNSIP1 /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^DNSIP1 /etc/eFa/eFa-Config) ]]; then
           echo "DNSIP1:$DNSIP1" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^DNSIP1:/ c\DNSIP1:$DNSIP1" /etc/eFa/eFa-Config
         fi
     ;;
       --dnsip2=*)
         DNSIP2=${1#*=}
-        if [[ -z $(grep DNSIP2 /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^DNSIP2 /etc/eFa/eFa-Config) ]]; then
           echo "DNSIP2:$DNSIP2" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^DNSIP2:/ c\DNSIP2:$DNSIP2" /etc/eFa/eFa-Config
         fi
     ;;
       --interface=*)
         INTERFACE=${1#*=}
-        if [[ -z $(grep INTERFACE /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^INTERFACE /etc/eFa/eFa-Config) ]]; then
           echo "INTERFACE:$INTERFACE" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^INTERFACE:/ c\INTERFACE:$INTERFACE" /etc/eFa/eFa-Config
         fi
     ;;
       --ipv4netmask=*)
         IPV4NETMASK=${1#*=}
-        if [[ -z $(grep IPV4NETMASK /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^IPV4NETMASK /etc/eFa/eFa-Config) ]]; then
           echo "IPV4NETMASK:$IPV4NETMASK" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^IPV4NETMASK:/ c\IPV4NETMASK:$IPV4NETMASK" /etc/eFa/eFa-Config
         fi
     ;;
       --ipv4gateway=*)
         IPV4GATEWAY=${1#*=}
-        if [[ -z $(grep IPV4GATEWAY /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^IPV4GATEWAY /etc/eFa/eFa-Config) ]]; then
           echo "IPV4GATEWAY:$IPV4GATEWAY" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^IPV4GATEWAY:/ c\IPV4GATEWAY:$IPV4GATEWAY" /etc/eFa/eFa-Config
         fi
     ;;
       --ipv6mask=*)
         IPV6MASK=${1#*=}
-        if [[ -z $(grep IPV6MASK /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^IPV6MASK /etc/eFa/eFa-Config) ]]; then
           echo "IPV6MASK:$IPV6MASK" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^IPV6MASK:/ c\IPV6MASK:$IPV6MASK" /etc/eFa/eFa-Config
         fi
     ;;
       --ipv6gateway=*)
         IPV6GATEWAY=${1#*=}
-        if [[ -z $(grep IPV6GATEWAY /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^IPV6GATEWAY /etc/eFa/eFa-Config) ]]; then
           echo "IPV6GATEWAY:$IPV6GATEWAY" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^IPV6GATEWAY:/ c\IPV6GATEWAY:$IPV6GATEWAY" /etc/eFa/eFa-Config
         fi
     ;;
       --timezone=*)
         TZONE=${1#*=}
-        if [[ -z $(grep TZONE /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^TZONE /etc/eFa/eFa-Config) ]]; then
           echo "TZONE:$TZONE" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^TZONE:/ c\TZONE:$TZONE" /etc/eFa/eFa-Config
+        fi
+    ;;
+      --isutc=*)
+        ISUTC=${1#*=}
+        if [[ -z $(grep ^ISUTC /etc/eFa/eFa-Config) ]]; then
+          echo "ISUTC:$ISUTC" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^ISUTC:/ c\ISUTC:$ISUTC" /etc/eFa/eFa-Config
         fi
     ;;
       --ianacode=*)
         IANACODE=${1#*=}
-        if [[ -z $(grep IANA /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^IANA /etc/eFa/eFa-Config) ]]; then
           echo "IANA:$IANACODE" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^IANA:/ c\IANA:$IANACODE" /etc/eFa/eFa-Config
         fi  
     ;;
       --orgname=*)
         ORGNAME=${1#*=}
-        if [[ -z $(grep ORGNAME /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^ORGNAME /etc/eFa/eFa-Config) ]]; then
           echo "ORGNAME:$ORGNAME" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^ORGNAME:/ c\ORGNAME:$ORGNAME" /etc/eFa/eFa-Config
         fi
     ;;
       --mailserver=*)
         MAILSERVER=${1#*=}
-        if [[ -z $(grep MAILSERVER /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^MAILSERVER /etc/eFa/eFa-Config) ]]; then
           echo "MAILSERVER:$MAILSERVER" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^MAILSERVER:/ c\MAILSERVER:$MAILSERVER" /etc/eFa/eFa-Config
         fi
     ;;
       --adminemail=*)
         ADMINEMAIL=${1#*=}
-        if [[ -z $(grep ADMINEMAIL /etc/eFa/eFa-Config) ]]; then
+        if [[ -z $(grep ^ADMINEMAIL /etc/eFa/eFa-Config) ]]; then
           echo "ADMINEMAIL:$ADMINEMAIL" >> /etc/eFa/eFa-Config
+        else
+          sed -i "/^ADMINEMAIL:/ c\ADMINEMAIL:$ADMINEMAIL" /etc/eFa/eFa-Config
         fi
     ;;
       --efauserpwd=*)
@@ -506,9 +551,14 @@ fi
 
 if [[ $configtzone -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Configure timezone"
-  rm -f /etc/localtime
-  [ $? -ne 0 ] && exit 1
-  ln -s /usr/share/zoneinfo/$TZONE /etc/localtime
+  if [[ $ISUTC -eq true ]]; then
+    timedatectl set-local-rtc 1
+    [ $? -ne 0 ] && exit 1
+  else
+    timedatectl set-local-rtc 0
+    [ $? -ne 0 ] && exit 1
+  fi
+  timedatectl set-timezone "$TZONE"
   [ $? -ne 0 ] && exit 1
   sed -i "/^;date.timezone =/ c\date.timezone = $TZONE" /etc/php.ini
   [ $? -ne 0 ] && exit 1
@@ -519,6 +569,8 @@ fi
 if [[ $configiana -eq 1 ]]; then
   # Write ianacode to freshclam config.
   sed -i "/^#DatabaseMirror / c\DatabaseMirror db.$IANACODE.clamav.net" /etc/freshclam.conf
+  [ $? -ne 0 ] && exit 1
+  sed -i "/^DatabaseMirror / c\DatabaseMirror db.$IANACODE.clamav.net" /etc/freshclam.conf
   [ $? -ne 0 ] && exit 1
 fi
 
@@ -673,6 +725,11 @@ if [[ $configmailwatch -eq 1 ]]; then
   sed -i "/^define('MAILWATCH_HOSTURL'/ c\define('MAILWATCH_HOSTURL', 'https:\/\/' . rtrim(gethostname()) . '\/mailscanner');" /var/www/html/mailscanner/conf.php
   [ $? -ne 0 ] && exit 1
 
+  # Cleanup in case of a failed run
+  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "DELETE FROM users where username = '$USERNAME'" >/dev/null 2>&1
+  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "DELETE FROM whitelist where from_address= '127.0.0.1'" >/dev/null 2>&1
+  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "DELETE FROM whitelist where from_address= '::1'" >/dev/null 2>&1
+
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$efauserpwd'), fullname = 'Administrator', type ='A'"
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '127.0.0.1'"
@@ -748,6 +805,10 @@ fi
 
 if [[ $configcli -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Creating cli user"
+
+  # Cleanup in case of failed run
+  userdel $CLIUSERNAME >/dev/null 2>&1
+
   useradd -m -d /home/$CLIUSERNAME -s /bin/bash -G wheel $CLIUSERNAME
   [ $? -ne 0 ] && exit 1
   echo "$CLIUSERNAME:$efaclipwd" | chpasswd --md5 $CLIUSERNAME

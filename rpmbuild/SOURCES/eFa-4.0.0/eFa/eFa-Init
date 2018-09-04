@@ -453,11 +453,17 @@ function func_ask-cliusername() {
           then
             uncheck=0
           else
-            echo -e "       $red ERROR: The user-name $CLIUSERNAME already exists"
-            echo -e "        ERROR: please re-enter the user-name$clean"
-            echo -e "$green[eFa]$clean Please enter the user-name you would like to have."
-            echo -e -n "$green[eFa]$clean : "
-            read CLIUSERNAME
+            echo -e "       $yellow WARNING: The user-name $CLIUSERNAME already exists"
+            echo -e -n "$green[eFa]$clean Continue? (y/N): "
+            read YESNO
+            if [[ $YESNO =~ ^Yy$ ]]; then
+              uncheck=0
+            else
+              echo -e "$green[eFa]$clean Please enter the user-name you would like to have."
+              echo -e "$green[eFa]$clean This user will be used to logon to the shell"
+              echo -e -n "$green[eFa]$clean : "
+              read CLIUSERNAME
+            fi
         fi
       else
         echo -e "       $red ERROR: The user-name $CLIUSERNAME seems to be invalid"
@@ -861,7 +867,8 @@ function func_configure-system() {
       --ipv4gateway=$IPV4GATEWAY --ipv6mask=$IPV6MASK --ipv6gateway=$IPV6GATEWAY --timezone=$TZONE \
       --ianacode=$IANACODE --orgname=$ORGNAME --mailserver=$MAILSERVER --adminemail=$ADMINEMAIL \
       --efauserpwd=$efauserpwd --username=$USERNAME --cliusername=$CLIUSERNAME --efaclipwd=$efaclipwd \
-      --configvirtual=$CONFIGVIRTUAL
+      --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC
+
   if [[ $? -eq 0 ]]; then
     echo -e "$green[eFa]$clean - Done, Rebooting system..."
     reboot
