@@ -851,6 +851,10 @@ if [[ $finalize -eq 1 ]]; then
   sed -i "/^\/usr\/sbin\/eFa-Init/d" /root/.bashrc
   [ $? -ne 0 ] && exit 1
   
+  # Remove dynamic /etc/issue builder
+  cp -f /etc/rc.d/rc.local.bak /etc/rc.d/rc.local
+  [ $? -ne 0 ] && exit 1
+  
   # Remove GUI eFaInit
   rm -f /etc/httpd/conf.d/eFaInit.conf
   [ $? -ne 0 ] && exit 1
