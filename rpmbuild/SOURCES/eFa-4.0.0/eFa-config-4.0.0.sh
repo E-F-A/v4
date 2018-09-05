@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 initial service-configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,21 +45,14 @@ cp $srcdir/eFa/eFaqemu.te /var/eFa/lib/selinux/eFaqemu.te
 # pre-create the EFA Trusted Networks Config
 touch /etc/sysconfig/eFa_trusted_networks
 
-# write issue file
-echo '' > /etc/issue
-echo '------------------------------' >> /etc/issue
-echo "--- Welcome to eFa-$version ---" >> /etc/issue
-echo '------------------------------' >> /etc/issue
-echo '   https://efa-project.org' >> /etc/issue
-echo '------------------------------' >> /etc/issue
-echo '' >> /etc/issue
-echo 'First time login: root/eFaPr0j3ct' >> /etc/issue
-
 cp $srcdir/eFa/eFa-SA-Update /usr/sbin/eFa-SA-Update
 chmod 700 /usr/sbin/eFa-SA-Update
 
 cp $srcdir/eFa/eFa-Init /usr/sbin/eFa-Init
 chmod 755 /usr/sbin/eFa-Init
+
+cp $srcdir/eFa/eFa-Init /usr/sbin/eFa-Commit
+chmod 755 /usr/sbin/eFa-Commit
 
 # Write SSH banner
 sed -i "/^#Banner / c\Banner /etc/banner"  /etc/ssh/sshd_config
@@ -125,7 +118,20 @@ semodule -i $srcdir/eFa/eFa.pp
 
 # Set EFA-Init to run at first root login:
 sed -i '1i\\/usr\/sbin\/eFa-Init' /root/.bashrc
-
+cp -f /etc/rc.d/rc.local /etc/rc.d/rc.local.bak
+cat >> /etc/rc.local << 'EOF' 
+IP=$(ip add | grep inet | grep -v inet\ 127. | grep -v inet6\ ::1 | awk '{print $2}' | awk -F'/' '{print $1}')
+echo '' > /etc/issue
+echo '------------------------------' >> /etc/issue
+echo '---  Welcome to eFa-4.0.0  ---' >> /etc/issue
+echo '------------------------------' >> /etc/issue
+echo '-- https://efa-project.org ---' >> /etc/issue
+echo '------------------------------' >> /etc/issue
+echo '' >> /etc/issue
+echo 'First time login: root/eFaPr0j3ct' >> /etc/issue
+echo -e "IP Address(es) for GUI:\n$IP" >> /etc/issue
+EOF
+chmod +x /etc/rc.d/rc.local
 # Set the system as unconfigured
 mkdir -p /etc/eFa
 echo 'CONFIGURED:NO' > /etc/eFa/eFa-Config
