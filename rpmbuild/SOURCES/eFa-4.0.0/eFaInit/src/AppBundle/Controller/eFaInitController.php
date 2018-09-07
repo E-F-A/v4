@@ -1147,7 +1147,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configure transport<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configtransport --domainname=' . $session->get('domainname') . ' --mailserver=' . $session->get('mailserver') . ' --adminemail=' . $session->get('adminemail'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configtransport --domainname=' . $session->get('domainname') . ' --mailserver=' . $session->get('mailserver') . ' --adminemail=' . $session->get('email'));
             $process->mustRun();
 
             $output = $process->getOutput() . $output;
@@ -1188,7 +1188,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring MailScanner<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailscanner --orgname=' . $session->get('orgname') . ' --adminemail=' . $session->get('adminemail') . ' --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailscanner --orgname=' . $session->get('orgname') . ' --adminemail=' . $session->get('email') . ' --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname'));
 
             $process->mustRun();
 
@@ -1268,7 +1268,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring apache<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configapache --adminemail=' . $session->get('adminemail'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configapache --adminemail=' . $session->get('email'));
 
             $process->mustRun();
 
@@ -1288,7 +1288,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring yum-cron<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configyumcron --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --adminemail=' . $session->get('adminemail'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configyumcron --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --adminemail=' . $session->get('email'));
 
             $process->mustRun();
 
