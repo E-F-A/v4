@@ -1409,7 +1409,6 @@ class eFaInitController extends Controller
         }
 
         $progress += $progressStep;
-        my $buffer = '';
         $buffer = '<br/>eFa -- Rebooting...Please visit after reboot is complete:<br/>';
         if ( $session->get('ipv4address') != '' ) {
             $buffer .= '<a href="https://' . $session->get('ipv4address') . '">https://' . $session->get('ipv4address') . '</a><br/>';
