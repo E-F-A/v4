@@ -1427,7 +1427,7 @@ class eFaInitController extends Controller
             $process->mustRun();
 
         } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error rebooting, please reboot manually");
+            eFaInitController::progressBar(100, 100, $output, "Error rebooting, please reboot manually");
             return;
         }
 
