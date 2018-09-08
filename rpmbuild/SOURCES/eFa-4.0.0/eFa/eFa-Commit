@@ -953,7 +953,7 @@ fi
 
 if [[ $rebootsys -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo "Configuration complete...rebooting..."
-  reboot
+  shutdown -r now
 fi
 
 exit 0
