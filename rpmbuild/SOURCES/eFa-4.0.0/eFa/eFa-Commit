@@ -127,7 +127,6 @@ configroot=0
 configcli=0
 configcert=0
 finalize=0
-rebootsys=0
 HOSTNAME=
 DOMAINNAME=
 IPV4ADDRESS=
@@ -176,7 +175,6 @@ while [ $# -gt 0 ]; do
         configcli=1
         configcert=1
         finalize=1
-        rebootsys=1
     ;;
       --verbose)
         verbose=1
@@ -253,9 +251,6 @@ while [ $# -gt 0 ]; do
     ;;
       --finalize)
         finalize=1
-    ;;
-      --rebootsys)
-        rebootsys=1
     ;;
     # Parameters
       --hostname=*)
@@ -949,11 +944,6 @@ EOF
   echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
   [ $? -ne 0 ] && exit 1
 
-fi
-
-if [[ $rebootsys -eq 1 ]]; then
-  [ $verbose -eq 1 ] && echo "Configuration complete...rebooting..."
-  shutdown -r now
 fi
 
 exit 0

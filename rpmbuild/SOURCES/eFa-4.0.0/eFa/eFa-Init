@@ -867,7 +867,11 @@ function func_configure-system() {
       --ipv4gateway=$IPV4GATEWAY --ipv6mask=$IPV6MASK --ipv6gateway=$IPV6GATEWAY --timezone=$TZONE \
       --ianacode=$IANACODE --orgname=$ORGNAME --mailserver=$MAILSERVER --adminemail=$ADMINEMAIL \
       --efauserpwd=$efauserpwd --username=$USERNAME --cliusername=$CLIUSERNAME --efaclipwd=$efaclipwd \
-      --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC --rebootsys
+      --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC
+
+  echo "Configuration complete...rebooting"
+
+  reboot
 
   if [[ $? -ne 0 ]]; then
     echo -e "$red[eFa]$clean - Error initializing system!  Pleae try again..."
