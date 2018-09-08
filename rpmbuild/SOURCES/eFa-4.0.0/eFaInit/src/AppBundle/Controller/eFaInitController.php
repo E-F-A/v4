@@ -1422,7 +1422,7 @@ class eFaInitController extends Controller
         eFaInitController::progressBar(100, 100, $output);
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --rebootsys');
+            $process = new Process('sudo reboot');
 
             $process->mustRun();
 
