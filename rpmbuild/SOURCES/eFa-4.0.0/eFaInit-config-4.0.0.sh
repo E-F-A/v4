@@ -61,6 +61,6 @@ EOF
 
 # Allow apache to sudo for eFaInit phase
 sed -i '/Defaults    requiretty/ c\#Defaults    requiretty' /etc/sudoers
-echo "apache ALL=NOPASSWD: /usr/sbin/eFa-Commit *" > /etc/sudoers.d/eFa-Services
+echo "apache ALL=NOPASSWD: /usr/sbin/eFa-Commit+" > /etc/sudoers.d/eFa-Services
 
 echo "Configuring eFaInit...done"

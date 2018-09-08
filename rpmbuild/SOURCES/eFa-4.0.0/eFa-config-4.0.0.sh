@@ -51,7 +51,7 @@ chmod 700 /usr/sbin/eFa-SA-Update
 cp $srcdir/eFa/eFa-Init /usr/sbin/eFa-Init
 chmod 755 /usr/sbin/eFa-Init
 
-cp $srcdir/eFa/eFa-Init /usr/sbin/eFa-Commit
+cp $srcdir/eFa/eFa-Commit /usr/sbin/eFa-Commit
 chmod 755 /usr/sbin/eFa-Commit
 
 # Write SSH banner
