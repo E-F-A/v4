@@ -1108,8 +1108,8 @@ class eFaInitController extends Controller
             foreach($process as $type => $data) {
                 $fold .= $data;
                 if ( strlen($fold) > 80 ) {
-                   $output = $fold . "\n" . $output;
-                   $fold = '';
+                   $output = substr($fold, 1, 80) . "\n" . $output;
+                   $fold = substr($fold, 81);
                    eFaInitController::progressBar($progress, $progress, $output);
                 }
             }

@@ -68,7 +68,7 @@ fi
 EOF
 chmod +x /usr/sbin/checkreboot.sh
 
-echo '* * * * * /usr/sbin/checkreboot.sh' > /etc/cron.d/checkreboot
+echo '* * * * * root /usr/sbin/checkreboot.sh' > /etc/cron.d/checkreboot
 
 # Allow apache to sudo for eFaInit phase
 sed -i '/Defaults    requiretty/ c\#Defaults    requiretty' /etc/sudoers
