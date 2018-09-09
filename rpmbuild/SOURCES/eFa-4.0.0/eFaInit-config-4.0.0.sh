@@ -59,6 +59,17 @@ cat > /var/www/html/index.html << 'EOF'
 </html>
 EOF
 
+cat > /usr/sbin/checkreboot.sh << 'EOF'
+#!/bin/bash
+if [[ -f /reboot.system ]]; then
+  rm -f /reboot.system
+  shutdown -r now
+fi
+EOF
+chmod +x /usr/sbin/checkreboot.sh
+
+echo '* * * * * /usr/sbin/checkreboot.sh' > /etc/cron.d/checkreboot
+
 # Allow apache to sudo for eFaInit phase
 sed -i '/Defaults    requiretty/ c\#Defaults    requiretty' /etc/sudoers
 echo "apache ALL=NOPASSWD: ALL" > /etc/sudoers.d/eFa-Services

@@ -1409,7 +1409,7 @@ class eFaInitController extends Controller
         }
 
         $progress += $progressStep;
-        $buffer = '<br/>eFa -- Rebooting...Please visit after reboot is complete:<br/>';
+        $buffer = '<br/>eFa -- Rebooting...Please visit after reboot is complete (in a few minutes):<br/>';
         if ( $session->get('ipv4address') != '' ) {
             $buffer .= '<a href="https://' . $session->get('ipv4address') . '">https://' . $session->get('ipv4address') . '</a><br/>';
         }
@@ -1418,11 +1418,7 @@ class eFaInitController extends Controller
         }
         $output = $buffer . $output;
 
-
         eFaInitController::progressBar(100, 100, $output);
-
-        exec('sudo reboot');
-        }
 
         return;
     }

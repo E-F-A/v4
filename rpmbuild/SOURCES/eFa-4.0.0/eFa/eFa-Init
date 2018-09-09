@@ -869,9 +869,7 @@ function func_configure-system() {
       --efauserpwd=$efauserpwd --username=$USERNAME --cliusername=$CLIUSERNAME --efaclipwd=$efaclipwd \
       --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC
 
-  echo "Configuration complete...rebooting"
-
-  reboot
+  echo "Configuration complete, reboot is pending."
 
   if [[ $? -ne 0 ]]; then
     echo -e "$red[eFa]$clean - Error initializing system!  Pleae try again..."
