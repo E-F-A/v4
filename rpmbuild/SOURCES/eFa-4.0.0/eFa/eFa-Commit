@@ -796,13 +796,9 @@ if [[ $configyumcron -eq 1 ]]; then
 fi
 
 if [[ $configroot -eq 1 ]]; then
-  [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Unsetting root password"
-  passwd --delete root
-  [ $? -ne 0 ] && exit 1
-  passwd --lock root
-  [ $? -ne 0 ] && exit 1
-  chage -E 0 root
-  [ $? -ne 0 ] && exit 1
+  [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Lockdown root"
+  randompw
+  echo "root:$PASSWD" | chpasswd
 fi
 
 if [[ $configcli -eq 1 ]]; then
