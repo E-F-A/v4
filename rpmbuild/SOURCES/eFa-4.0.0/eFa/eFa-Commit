@@ -901,7 +901,7 @@ EOF
   #chkconfig saslauthd off
   systemctl enable crond
   [ $? -ne 0 ] && exit 1
-  [systemctl start crond
+  systemctl start crond
   [ $? -ne 0 ] && exit 1
   systemctl enable clamd@scan
   [ $? -ne 0 ] && exit 1
