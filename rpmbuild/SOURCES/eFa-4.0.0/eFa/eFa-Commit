@@ -905,6 +905,8 @@ EOF
   #chkconfig saslauthd off
   systemctl enable crond
   [ $? -ne 0 ] && exit 1
+  [systemctl start crond
+  [ $? -ne 0 ] && exit 1
   systemctl enable clamd@scan
   [ $? -ne 0 ] && exit 1
   systemctl enable clamav-unofficial-sigs
@@ -939,6 +941,8 @@ EOF
 
   sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa/eFa-Config
   [ $? -ne 0 ] && exit 1
+  
+  touch /reboot.system
   
   # Lock down GUI
   echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
