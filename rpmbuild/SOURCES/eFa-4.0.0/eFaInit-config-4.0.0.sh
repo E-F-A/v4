@@ -63,7 +63,7 @@ cat > /usr/sbin/checkreboot.sh << 'EOF'
 #!/bin/bash
 if [[ -f /reboot.system ]]; then
   rm -f /reboot.system
-  shutdown -r now
+  /sbin/shutdown -r now
 fi
 EOF
 chmod +x /usr/sbin/checkreboot.sh
