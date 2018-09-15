@@ -86,6 +86,8 @@ postconf -e "smtpd_relay_restrictions = permit_sasl_authenticated, permit_mynetw
 postconf -e "smtpd_recipient_restrictions = reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
 postconf -e "masquerade_domains = \$mydomain"
 postconf -e "smtpd_milters = inet:127.0.0.1:33333"
+# 128 MB limit
+postconf -e "message_size_limit = 133169152"
 
 # Hide localhost (moved to init phase)
 #echo '/^Received:.*\(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
