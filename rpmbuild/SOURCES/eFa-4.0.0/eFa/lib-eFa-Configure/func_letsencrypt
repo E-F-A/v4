@@ -1,0 +1,168 @@
+# +---------------------------------------------------+
+# Configure Lets Encrypt
+# +---------------------------------------------------+
+function func_lets-encrypt() {
+  func_echo-header
+
+  local MyHost
+  local MyDomain
+  local MyName
+  local MyNameLower
+  local CBRegEmail
+  MyHost="`grep HOSTNAME /etc/EFA-Config | sed 's/^.*://'`"
+  MyDomain="`grep DOMAINNAME /etc/EFA-Config | sed 's/^.*://'`"
+  MyName=$MyHost.$MyDomain
+  MyNameLower=${MyName,,}
+  CBRegEmail="`grep ADMINEMAIL /etc/EFA-Config | sed 's/^.*://'`"
+
+  echo -e ""
+  echo -e "$green[eFa]$clean This is the current FQDN that will be used for all cert functions:"
+  echo -e ""
+  echo -e "$green[eFa]$clean $MyNameLower"
+  echo -e ""
+  echo -e "$green[eFa]$clean If this is not correct, please update your Hostname and Domain Name within main menu #4."
+  echo -e ""
+  echo -e "$green[eFa]$clean Please also make sure the name above is externally resolvabe before continuing."
+  echo -e "$green[eFa]$clean Please also make sure that TCP 443 is opened from the WAN to EFA." 
+  echo -e "$green[eFa]$clean By continuing, you agree to the Terms Of Service for Let's Encrypt and EFF."
+  echo -e ""
+  echo -e ""
+
+  if [[ -e /etc/letsencrypt ]]
+  then
+    echo -e "The Let's Encrypt feature is already $green Enabled $clean"
+    echo -e "You may update an exisiting configuration (ex. new FQDN) by disabling and then re-enabling this feature."
+    echo -e "Would you like to $red Disable $clean Let's Encrypt? [y/n/c]"
+    read TMPLE
+    if [[ $TMPLE == "y" || $TMPLE == "Y" ]]; then
+      #flip back ssl.conf
+      echo -e ""
+      echo -e "I'm restoring the original self-signed certs back to Apache."
+      echo -e ""
+      sed -i "/^ServerName/ c\#ServerName www.example.com:443" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^SSLCertificateFile/ c\SSLCertificateFile \/etc\/pki\/tls\/certs\/localhost.crt" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^SSLCertificateKeyFile/ c\SSLCertificateKeyFile \/etc\/pki\/tls\/private\/localhost.key" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^SSLCertificateChainFile/d" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^ServerAlias/d" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^Header always set Strict-Transport-Security/d" /etc/httpd/conf.d/ssl.conf
+
+      echo -e "Done."
+      echo -e ""
+      #remove cron job
+      if [ -e /etc/cron.monthly/RenewLetsEncrypt ]
+        then
+          rm -f /etc/cron.monthly/RenewLetsEncrypt
+          echo -e ""
+          echo -e "I've removed the monthly renewal task."
+          echo -e ""
+        else
+          echo -e "Monthly renewal task has already been cleaned up."
+      fi
+
+      #restore self signed certs (webmin)
+      if [ -e /etc/webmin/miniserv.pem.orig ]
+        then
+          rm -f /etc/webmin/miniserv.pem
+          mv /etc/webmin/miniserv.pem.orig /etc/webmin/miniserv.pem
+          sed -i "/extracas=/d" /etc/webmin/miniserv.conf
+          echo -e ""
+          echo -e "I've restored the original self-signed cert to Webmin."
+          echo -e ""
+        else
+          echo -e "Webmin was previously cleaned up."
+      fi
+
+      #restart apache
+      killall -15 httpd
+      service httpd start
+      #restore selfsigned certs postfix
+      echo -e "I'm restoring the self signed certs to Postfix now..."
+      sed -i "/^smtp_tls_CAfile/ c\smtp_tls_CAfile = \/etc\/postfix\/ssl\/rsa_smtpd.pem" /etc/postfix/main.cf
+      sed -i "/^smtpd_tls_key_file/ c\smtpd_tls_key_file = \/etc\/postfix\/ssl\/rsa_smtpd.pem" /etc/postfix/main.cf
+      sed -i "/^smtpd_tls_cert_file/ c\smtpd_tls_cert_file = \/etc\/postfix\/ssl\/rsa_smtpd.pem" /etc/postfix/main.cf
+      sed -i "/^smtpd_tls_CAfile/ c\smtpd_tls_CAfile = \/etc\/postfix\/ssl\/rsa_smtpd.pem" /etc/postfix/main.cf
+      #sed -i "/^#smtpd_tls_eckey_file/ c\smtpd_tls_eckey_file = \/etc\/postfix\/ssl\/ec_smtpd.pem" /etc/postfix/main.cf
+      #sed -i "/^#smtpd_tls_eccert_file/ c\smtpd_tls_eccert_file = \/etc\/postfix\/ssl\/ec_smtpd.pem" /etc/postfix/main.cf
+      service postfix stop
+      service postfix start
+      echo -e "Postfix certs updated."
+      #remove LE files
+      rm -rf /etc/letsencrypt
+      echo -e ""
+      echo -e "Let's Encrypt has been disabled."
+      echo -e ""
+      pause
+    elif [[ $TMPLE == "n" || $TMPLE == "N" || $TMPLE == "c" || $TMPLE == "C" ]]
+      then
+        echo -e "No action taken. Exiting."
+        pause
+    else
+      echo -e "Choice $green\"$TMPLE\"$clean is not a valid choice."
+      echo -e ""
+      echo -e -n "$green[eFa]$clean Disable Let's Encrypt? (y/n/c): "
+      read TMPLE
+    fi
+
+
+  else
+  
+    echo -e "Would you like to $green Enable $clean Let's Encrypt? [y/n/c]"
+    read TMPLE
+    if [[ $TMPLE == "y" || $TMPLE == "Y" ]]; then
+      #change SSL.CONF to hostname
+      sed -i "/^#ServerName/ c\ServerName $MyNameLower:443" /etc/httpd/conf.d/ssl.conf
+      #call the certbot
+      /opt/certbot/certbot-auto --authenticator webroot --webroot-path /var/www/html  --installer apache --domains $MyNameLower --non-interactive --no-redirect --agree-tos -m $CBRegEmail --rsa-key-size 4096 --hsts
+      killall -15 httpd
+      service httpd start
+      #update webmin cert (add logic to detect if cert is here before)
+      echo -e ""
+      echo -e "Applying new cert to webmin!"        
+      mv /etc/webmin/miniserv.pem /etc/webmin/miniserv.pem.orig
+      cat /etc/letsencrypt/live/$MyNameLower/privkey.pem /etc/letsencrypt/live/$MyNameLower/cert.pem > /etc/webmin/miniserv.pem
+      echo "extracas=/etc/letsencrypt/live/$MyNameLower/chain.pem" >> /etc/webmin/miniserv.conf
+      service webmin stop
+      service webmin start
+      echo -e "I've updated the Webmin cert"    
+      #add a cron job to renew cert
+      if [ -e /etc/cron.monthly/RenewLetsEncrypt ]
+        then
+          echo -e "Monthly renewal task already exists."
+        else
+          ln -s /usr/local/sbin/EFA-Renew-Certs /etc/cron.monthly/RenewLetsEncrypt
+          echo -e "I've added a monthly renewal task."
+      fi
+
+      #update postfix
+      echo -e "I'm updating Postfix to use the new cert!"
+      sed -i "/^smtp_tls_CAfile/ c\smtp_tls_CAfile = \/etc\/letsencrypt\/live\/$MyNameLower\/chain.pem" /etc/postfix/main.cf
+      sed -i "/^smtpd_tls_key_file/ c\smtpd_tls_key_file = \/etc\/letsencrypt\/live\/$MyNameLower\/privkey.pem" /etc/postfix/main.cf
+      sed -i "/^smtpd_tls_cert_file/ c\smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/$MyNameLower\/cert.pem" /etc/postfix/main.cf
+      sed -i "/^smtpd_tls_CAfile/ c\smtpd_tls_CAfile = \/etc\/letsencrypt\/live\/$MyNameLower\/chain.pem" /etc/postfix/main.cf
+      #sed -i "/^smtpd_tls_eckey_file/ c\#smtpd_tls_eckey_file = \/etc\/postfix\/ssl\/ec_smtpd.pem" /etc/postfix/main.cf
+      #sed -i "/^smtpd_tls_eccert_file/ c\#smtpd_tls_eccert_file = \/etc\/postfix\/ssl\/ec_smtpd.pem" /etc/postfix/main.cf
+
+      service postfix stop
+      service postfix start
+      echo -e "Postfix cert has been changed!"
+      
+
+      echo -e ""
+      echo -e "Let's Encrypt has been enabled"
+      echo -e ""
+      pause
+
+      elif [[ $TMPLE == "n" || $TMPLE == "N" || $TMPLE == "c" || $TMPLE == "C" ]]
+	    then
+          echo -e "No action taken. Exiting."
+          pause
+        else
+          echo -e "Choice $green\"$TMPLE\"$clean is not a valid choice."
+          echo -e ""
+          echo -e -n "$green[eFa]$clean Enable Let's Encrypt? (y/n/c): "
+          read TMPLE
+      fi
+fi
+}
+
+# +----------------------------------------------

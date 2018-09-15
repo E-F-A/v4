@@ -1,0 +1,37 @@
+# +---------------------------------------------------+
+# Function to set mailwatch max size
+# +---------------------------------------------------+
+func_ask-maxsizemailwatch(){
+  func_echo-header
+  echo -e "$green[eFa]$clean MailWatch sa-learn Max Size"
+  echo -e ""
+  mwmaxsize="`grep -e "^define('SA_MAXSIZE'" /var/www/html/mailscanner/conf.php | awk -F' ' '{print $2}' | tr -d '[:blank:]' | tr -d ');'`"
+  echo -e "$green[eFa]$clean MailWatch is currently set to use $mwmaxsize bytes (default is 0 which is 262144 bytes)."
+  echo -e "" 
+  echo -e -n "$green[eFa]$clean : Mailwatch sa-learn max size in bytes : (min 262144/default 262144/max 9999999 (9MB)):"
+  read MWMAXSIZE
+  mwflag=1
+  while [ $mwflag != "0" ]
+   do
+     if [[ -z $MWMAXSIZE ]]
+      then
+        MWMAXSIZE="262144"
+     fi
+     if [[ $MWMAXSIZE =~ [0-9]+ && $MWMAXSIZE -ge 262144 && $MWMAXSIZE -lt 10000000 ]]
+      then
+        mwflag=0
+      else
+        echo -e "       $red ERROR: The max sa-learn size $MWMAXSIZE appears to be invalid."
+        echo -e "        ERROR: please re-enter the max sa-learn size in bytes.$clean"
+        echo -e -n "$green[eFa]$clean : MailWatch max sa-learn size in bytes: (min 262144/default 262144/max 9999999 (9MB)):"
+        read MWMAXSIZE
+     fi
+   done
+
+  # Set mailwatch sa-learn size
+  sed -i "/^define('SA_MAXSIZE'/ c\define('SA_MAXSIZE', $MWMAXSIZE);" /var/www/html/mailscanner/conf.php
+  echo -e "Mailwatch reconfigured to use $MWMAXSIZE bytes sa-learn max size."
+  pause
+
+}
+# +---------------------------------------------------+

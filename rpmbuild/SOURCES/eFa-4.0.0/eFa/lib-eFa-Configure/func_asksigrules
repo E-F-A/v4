@@ -1,0 +1,120 @@
+# +---------------------------------------------------+
+# Configure Signature Rules
+# +---------------------------------------------------+
+function func_ask-sigrules() {
+  sigrules=0
+  while [ $sigrules == "0" ]
+  do
+    func_echo-header
+  
+    echo -e ""
+    echo -e "Description:"
+    echo -e "Signature rules control which mail domains"
+    echo -e "receive non spam inline signatures"
+    echo -e "that allow users to submit spam."
+    echo -e ""
+  
+    RULES=( `cat /etc/MailScanner/rules/sig.html.rules | sed '/^To:[[:space:]]\+default/d;/^$/d' | awk '{print $2}' | awk -F'@' '{print $2}'` )
+  
+    echo -e "Below is the list of current mail domains in the ruleset:"
+    echo -e ""
+    rLen=${#RULES[@]}
+    for (( y=0; y<$rLen; y++ ));
+      do
+        echo -e "$((y+1))) ${RULES[$y]}"
+      done
+      echo -e ""
+      echo -e "n) Add new mail domain rule"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+             +([0-9]))
+               if [[ $choice > "0" && $choice < $((rLen+1)) ]]; then
+                 ENTDOMAIN=${RULES[$((choice-1))]}
+                 echo -e "Entry Selected: $ENTDOMAIN" 
+                 flag=0
+                 while [ $flag == "0" ]
+                   do
+                     echo -e ""
+                     echo -e "Do you want to $green[r]$clean replace, $green[d]$clean delete or $green[c]$clean cancel this entry? : "
+                     local TMPOPTION
+                     read TMPOPTION
+                     if [[ $TMPOPTION == "r" || $TMPOPTION == "R" ]]; then
+                        echo -e ""
+                        echo -e "Please enter the domain you want use:"
+                        echo -e -n "$green[Domain]$clean : "
+                        local DOMAIN
+                        read DOMAIN
+                        DOMAINCHECK=1
+                        while [ $DOMAINCHECK != 0 ]
+                          do
+                            if [[ $DOMAIN =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*\.[a-z]{2,6}$ ]]; then
+                              DOMAINCHECK=0
+                            else
+                              echo -e "       $red ERROR: The domain $DOMAINNAME seems to be invalid"
+                              echo -e "        ERROR: please re-enter the domain$clean"
+                              echo -e ""
+                              echo -e -n "$green[Domain]$clean : "
+                              read DOMAIN
+                            fi
+                          done
+                          echo -e "Thank you.."
+                        sed -i "/^To:[[:space:]]\+\*\@$ENTDOMAIN/ c\To: *@$DOMAIN /etc/MailScanner/reports/en/inline.sig.in.html" /etc/MailScanner/rules/sig.html.rules
+                        sed -i "/^To:[[:space:]]\+\*\@$ENTDOMAIN/ c\To: *@$DOMAIN /etc/MailScanner/reports/en/inline.sig.in.txt" /etc/MailScanner/rules/sig.text.rules
+                        flag=1
+                      elif [[ $TMPOPTION == "d" || $TMPOPTION == "D" ]]; then
+                        sed -i "/^To:[[:space:]]\+\*\@$ENTDOMAIN/d" /etc/MailScanner/rules/sig.html.rules
+                        sed -i "/^To:[[:space:]]\+\*\@$ENTDOMAIN/d" /etc/MailScanner/rules/sig.text.rules
+                        echo -e "Entry deleted from signature rules." && pause
+                        flag=1
+                      elif [[ $TMPOPTION == "c" || $TMPOPTION == "C" ]]; then
+                        flag=1
+                      else 
+                        echo -e "Error \"$TMPOPTION\" is not an option..." && pause
+                      fi
+                    done
+                  else
+                        echo -e "Error \"$choice\" is not an option..." && pause
+                  fi  
+                    ;;
+                n)  echo -e ""
+                    echo -e "Please enter the domain you want add:"
+                    echo -e -n "$green[Domain]$clean : "
+                    local DOMAIN
+                    read DOMAIN
+                    DOMAINCHECK=1
+                    while [ $DOMAINCHECK != 0 ]
+                      do
+                        if [[ $DOMAIN =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*\.[a-z]{2,6}$ ]]; then
+                         DOMAINCHECK=0
+                       else
+                         echo -e "       $red ERROR: The domain $DOMAINNAME seems to be invalid"
+                         echo -e "        ERROR: please re-enter the domain$clean"
+                         echo -e ""
+                         echo -e -n "$green[Domain]$clean : "
+                         read DOMAIN
+                       fi
+                     done
+                    echo -e "Thank you..."
+                    echo -e ""
+                    echo -e "To: *@$DOMAIN /etc/MailScanner/reports/en/inline.sig.in.html" >> /etc/MailScanner/rules/sig.html.rules
+                    echo -e "To: *@$DOMAIN /etc/MailScanner/reports/en/inline.sig.in.txt" >> /etc/MailScanner/rules/sig.text.rules
+                    echo -e "Domain $DOMAIN added to to signature rules"
+                    pause
+                    entry=1
+                    ;;
+                e)  spammenu=1 
+                    service mailscanner restart
+                    return
+                    ;;
+                *)  echo -e "Error \"$choice\" is not an option..." && pause
+                    echo -e -n "$green[eFa]$clean : "
+                    ;;
+          esac
+  done
+}
+# +---------------------------------------------------+

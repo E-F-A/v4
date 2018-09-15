@@ -1,0 +1,63 @@
+# +---------------------------------------------------+
+# MariaDB Recovery
+# +---------------------------------------------------+
+function func_recover-mariadb() {
+  func_echo-header
+  echo -e ""
+  echo -e "MariaDB Daemon and Database Recovery"
+  echo -e ""
+  echo -e "Description:"
+  echo -e "This tool will assist with MariaDB recovery"
+  echo -e "after a system crash or power failure."
+  echo -e ""
+  echo -e "If recovery fails, it is recommended that"
+  echo -e "you restore your MariaDB database from a"
+  echo -e "recent backup."
+  echo -e ""
+  echo -e -n "$green[eFa]$clean Do you wish to continue? (y/n): "
+  read MARIADBQ
+    
+  flag=0
+  while [ $flag == "0" ]
+    do
+      if [[ $MARIADBQ == "y" || $MARIADBQ == "Y" ]]; then
+        # Fetch mysql pw
+        MYSQLPW=`grep MYSQLROOTPWD /etc/EFA-Config | awk -F':' '{print $2}'` 
+
+        echo -e ""
+        echo -e "Beginning recovery..."
+
+        echo -e ""
+        echo -e "Stopping MariaDB, MailScanner, and sqlgrey"
+        service sqlgrey stop
+        service MailScanner stop
+        
+        echo -e "Performing additional database checks"
+        mysqlcheck -u root -p$MYSQLPW --repair --all-databases
+        pause
+       
+        echo -e "Runing database optimization"
+        mysqlcheck -u root -p$MYSQLPW --optimize --all-databases
+        pause
+
+        echo -e "MailScanner and SQLgrey"
+        service MailScanner start
+        service sqlgrey start
+
+        pause
+
+        flag=1
+      elif [[ $MARIADBQ == "n" || $MARIADBQ == "N" ]]; then
+        echo -e ""
+        echo -e "Exiting..."
+        pause
+        flag=1
+      else
+        echo -e "Choice $green\"$MARIADBQ\"$clean is not a valid choice."
+        echo -e ""
+        echo -e -n "$green[eFa]$clean: "
+        read MARIADBQ
+      fi
+    done
+}
+# +---------------------------------------------------+

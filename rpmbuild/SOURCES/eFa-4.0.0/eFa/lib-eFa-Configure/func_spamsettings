@@ -1,0 +1,42 @@
+# +---------------------------------------------------+
+# Configure Spam Behaviour
+# +---------------------------------------------------+
+function func_spam-settings() {
+  menu=0
+  spammenu=1
+  while [ $spammenu == "1" ]
+    do  
+      func_echo-header
+      echo -e "Spam settings"
+      echo ""
+      echo -e "1) Non Spam Settings"
+      echo -e "2) Spam Settings"
+      echo -e "3) Inline Signature Rules"
+      echo -e "4) Trusted Networks"
+      echo -e "5) MailScanner Max Message Size"
+      echo -e "6) Mailwatch sa-learn Max Message Size"
+      echo -e "7) Mailwatch hide high spam/mcp"
+      echo -e "8) MalwarePatrol Key Code"
+      echo -e "9) DCC Servers"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1) func_ask-nonspam;;
+                2) func_ask-spam;;
+                3) func_ask-sigrules;;
+                4) func_ask-trustednets;;
+                5) func_ask-maxsize;;
+                6) func_ask-maxsizemailwatch;;
+                7) func_ask-highspammailwatch;;
+                8) func_ask-malwarepatrol;;
+                9) func_ask-dccservers;;
+                e) menu=1 && return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+      esac
+    done
+}
+# +---------------------------------------------------+
