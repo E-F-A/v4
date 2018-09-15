@@ -1,0 +1,164 @@
+# +---------------------------------------------------+
+# Configure Trusted Networks
+# +---------------------------------------------------+
+function func_ask-trustednets() {
+  local trustednets=0
+  while [ $trustednets != "1" ];
+    do
+      func_echo-header
+      echo -e ""
+      echo -e "$green[eFa]$clean Trusted Network Settings:"
+      echo -e ""
+      echo -e "$green[eFa]$clean Trusted networks are networks from which you want to accept"
+      echo -e "$green[eFa]$clean spam submissions via the \"Click here to report this message as spam\""
+      echo -e "$green[eFa]$clean link. All other networks will receive a message indicating that"
+      echo -e "$green[eFa]$clean submission is being attempted from an untrusted network."
+      echo -e ""
+
+      local RULES
+      RULES=( `cat /etc/sysconfig/EFA_trusted_networks` )
+  
+      echo -e "Below is the list of current trusted networks:"
+      echo -e ""
+      rLen=${#RULES[@]}
+      padding="                        "
+      for (( y=0; y<$rLen; y+=2 ));
+        do
+          # Fix layout spacing up to 999 rows..
+          if (( $((y/2+1)) < 10 )); then echo -n "  "
+          elif (( $((y/2+1)) < 100 )); then echo -n " "
+          fi
+          echo -e "$((y/2+1))) ${RULES[$y]} ${padding:${#RULES[$y]}} ${RULES[$((y+1))]}"
+        done
+      echo -e ""
+      echo -e "n) Add new trusted network"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+             +([0-9]))
+                if [[ $choice > "0" && $choice < $((rLen/2+1)) ]]; then
+                  ENTIP=${RULES[$((choice*2-2))]}
+                  ENTNET=${RULES[$((choice*2-1))]}
+                  echo -e "Entry Selected: $ENTIP  $ENTNET" 
+                  local flag=0
+                  while [ $flag == "0" ]
+                   do
+                     echo -e ""
+                     echo -e "Do you want to $green[r]$clean replace, $green[d]$clean delete this entry, or $green[c]$clean cancel? : "
+                     local TMPOPTION
+                     read TMPOPTION
+                     if [[ $TMPOPTION == "r" || $TMPOPTION == "R" ]]; then
+                        echo -e ""
+                        echo -e "Please enter the ip network (i.e. 192.168.0.0, 10.0.0.0, 172.16.0.0)  you want use:"
+                        echo -e -n "$green[ipnetwork]$clean : "
+                        local IPNET
+                        read IPNET
+                        # Simple check if domain is valid.
+                        local IPCHECK=1
+                        while [ $IPCHECK != 0 ]
+                          do
+                            if checkip $IPNET; then
+                              IPCHECK=0
+                            else
+                              echo -e "       $red ERROR: The IP $IPNET seems to be invalid"
+                              echo -e "        ERROR: please re-enter the IP network$clean"
+                              echo -e ""
+                              echo -e -n "$green[ipnetwork]$clean : "
+                              read IPNET
+                            fi
+                          done
+                        echo -e "Thank you..."
+                        echo -e ""
+                        echo -e "Now enter the subnet mask"
+                        echo -e -n "$green[netmask]$clean : "
+                        local NETMASK
+                        read NETMASK
+                        # Simple check if destination contains any data.
+                        local NETCHECK=1
+                        while [ $NETCHECK != 0 ]
+                        do
+                          if checkip $NETMASK; then
+                            NETCHECK=0
+                          else
+                            echo -e "       $red ERROR: The value $NETMASK seems to be invalid"
+                            echo -e "        ERROR: please re-enter the subnet mask$clean"
+                            echo -e ""
+                            echo -e -n "$green[netmask]$clean : "
+                            read NETMASK
+                          fi
+                        done
+                        echo -e "Thank you.."
+                        sed -i "/$ENTIP[[:space:]]\+$ENTNET/ c\\$IPNET $NETMASK" /etc/sysconfig/EFA_trusted_networks
+                        flag=1
+                      elif [[ $TMPOPTION == "d" || $TMPOPTION == "D" ]]; then
+                        sed -i "/$ENTIP[[:space:]]\+$ENTNET/d" /etc/sysconfig/EFA_trusted_networks
+                        echo -e "Entry deleted from trusted networks." && pause
+                        flag=1
+                      elif [[ $TMPOPTION == "c" || $TMPOPTION == "C" ]]; then
+                        flag=1
+                      else 
+                        echo -e "Error \"$TMPOPTION\" is not an option..." && pause
+                      fi
+                   done
+                else
+                  echo -e "Error \"$choice\" is not an option..." && pause
+                fi
+                ;;
+                n)
+                echo -e ""
+                echo -e "Please enter the IP network (192.168.0.0, 10.0.0.0, 172.16.0.0) you want add:"
+                echo -e -n "$green[ipnetwork]$clean : "
+                local IPNET
+                read IPNET
+                local IPCHECK=1
+                while [ $IPCHECK != 0 ]
+                  do
+                    if checkip $IPNET; then
+                      IPCHECK=0
+                    else
+                      echo -e "       $red ERROR: The IP network $IPNET seems to be invalid"
+                      echo -e "        ERROR: please re-enter the IP network$clean"
+                      echo -e ""
+                      echo -e -n "$green[ipnetwork]$clean : "
+                      read IPNET
+                    fi
+                  done
+                echo -e "Thank you..."
+                echo -e ""
+                echo -e "Now enter the subnet mask"
+                echo -e -n "$green[netmask]$clean : "
+                local NETMASK
+                read NETMASK
+                NETCHECK=1
+                while [ $NETCHECK != 0 ]
+                  do
+                    if checkip $NETMASK; then
+                      NETCHECK=0
+                    else
+                      echo -e "       $red ERROR: The value $NETMASK seems to be invalid"
+                      echo -e "        ERROR: please re-enter the subnet mask$clean"
+                      echo -e ""
+                      echo -e -n "$green[netmask]$clean : "
+                      read NETMASK
+                    fi
+                  done
+                echo -e "Thank you.."
+                echo -e "$IPNET $NETMASK " >> /etc/sysconfig/EFA_trusted_networks
+                echo -e "Trused network added to this system"
+                pause
+                ;;
+                e)  
+                spammenu=1 && return 
+                ;;
+                *)  
+                echo -e "Error \"$choice\" is not an option..." && pause
+                echo -e -n "$green[eFa]$clean : "
+                ;;
+      esac
+    done
+}
+# +---------------------------------------------------+

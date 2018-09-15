@@ -1,0 +1,80 @@
+# +---------------------------------------------------+
+# Function to enable/disable greylisting
+# +---------------------------------------------------+
+func_greylisting(){
+  func_echo-header
+  echo -e "$green[eFa]$clean Enable/Disable greylisting"
+  echo -e ""
+  echo -e "$green[eFa]$clean Greylisting will temporarily reject any email from a sender it" 
+  echo -e "$green[eFa]$clean does not recognize. If the mail is legitimate the originating server"
+  echo -e "$green[eFa]$clean will, after a delay, try again and, if sufficient time has elapsed,"
+  echo -e "$green[eFa]$clean the email will be accepted."
+  echo ""
+  echo -e "$green[eFa]$clean This however causes an delay in receiving mail, by default this system"
+  echo -e "$green[eFa]$clean is configured to reject any email for 5 minutes."
+  echo -e "$green[eFa]$clean Not all admin's like this setup so giving you the option to disable"
+  echo -e "$green[eFa]$clean greylisting on this system."
+  echo ""
+  if [[ -n $(cat /etc/postfix/main.cf | grep "check_policy_service inet:127.0.0.1:2501") ]]
+    then
+      # DISABLE greylisting
+      echo -e "$green[eFa]$clean Greylisting is currently $green ENABLED $clean"
+      echo -e -n "$green[eFa]$clean Would you like to $red DISABLE $clean greylisting? [y/N/c]: "
+      read TMPGREY
+        if [[ "$TMPGREY" == "Y" || "$TMPGREY" == "y" ]]; then
+          # Issue #228 Greylist toggle overwrites custom smtpd_recipient_restrictions
+          # postconf -e "smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access" 
+          sed -i "s/, \{0,1\}check_policy_service inet:127.0.0.1:2501//" /etc/postfix/main.cf
+          postfix reload 
+          service sqlgrey stop 
+          chkconfig sqlgrey off
+
+          # disable Greylist menu item
+          sed -i "/^define('SHOW_GREYLIST', true);/ c\define('SHOW_GREYLIST', false);" /var/www/html/mailscanner/conf.php
+
+          echo -e "$green[eFa]$clean Greylisting $red DISABLED $clean"
+          pause
+        elif [[ "$TMPGREY" == "" || "$TMPGREY" == "N" || "$TMPGREY" == "n" ]]; then 
+          echo -e "$green[eFa]$clean No changes made"
+          echo ""
+          pause
+        elif [[ "$TMPGREY" == "C" || "$TMPGREY" == "c" ]]; then
+          echo -e "$green[eFa]$clean No action taken, exiting."
+          pause
+        else
+          echo -e "       $red ERROR: please make an selection.$clean"
+          echo -e -n "$green[eFa]$clean Would you like to $red DISABLE $clean greylisting? [y/N/c]: "
+          read TMPGREY
+        fi
+    else
+      # ENABLE Greylisting
+      echo -e "$green[eFa]$clean Greylisting is currently $red DISABLED $clean"
+      echo -e -n "$green[eFa]$clean Would you like to $green ENABLE $clean greylisting? [y/N/c]: "
+      read TMPGREY
+        if [[ "$TMPGREY" == "Y" || "$TMPGREY" == "y" ]]; then
+          # Issue #228 Greylist toggle overwrites custom smtpd_recipient_restrictions
+          # postconf -e "smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
+          sed -i "s/^smtpd_recipient_restrictions = \(.*\)$/smtpd_recipient_restrictions = \1, check_policy_service inet:127.0.0.1:2501/" /etc/postfix/main.cf
+          postfix reload 
+          service sqlgrey start 
+          chkconfig sqlgrey on
+          # Enable Greylist menu item
+          sed -i "/^define('SHOW_GREYLIST', false);/ c\define('SHOW_GREYLIST', true);" /var/www/html/mailscanner/conf.php
+
+          echo -e "$green[eFa]$clean Greylisting $green ENABLED $clean"
+          pause
+        elif [[ "$TMPGREY" == "" || "$TMPGREY" == "N" || "$TMPGREY" == "n" ]]; then 
+          echo -e "$green[eFa]$clean No changes made"
+          echo ""
+          pause
+        elif [[ "$TMPGREY" == "C" || "$TMPGREY" == "c" ]]; then
+          echo -e "$green[eFa]$clean No action taken, exiting."
+          pause
+        else
+          echo -e "       $red ERROR: please make an selection.$clean"
+          echo -e -n "$green[eFa]$clean Would you like to $green ENABLE $clean greylisting? [y/N/c]: "
+          read TMPGREY
+        fi
+  fi
+}
+# +---------------------------------------------------+

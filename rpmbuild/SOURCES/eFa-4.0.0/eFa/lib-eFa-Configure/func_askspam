@@ -1,0 +1,86 @@
+# +---------------------------------------------------+
+# Configure Spam Behaviour
+# +---------------------------------------------------+
+function func_ask-spam() {
+  func_echo-header
+
+  echo -e ""
+  echo -e "$green[eFa]$clean Spam Delivery and Retention Settings:"
+  echo -e ""
+  echo -e "$green[eFa]$clean By default, EFA stores spam in quarantine"
+  echo -e "$green[eFa]$clean and does not deliver it upon receipt."
+  echo -e "$green[eFa]$clean You can optionally choose to deliver spam"
+  echo -e "$green[eFa]$clean with \"X-Spam-Status: Yes\" in the mail header."
+  echo -e "$green[eFa]$clean This is useful with mail servers that have an"
+  echo -e "$green[eFa]$clean integrated spam folder."
+  echo -e ""
+  echo -e -n "$green[eFa]$clean Do you want to $green ENABLE $clean spam delivery? [y/N/c]: "
+  read TMPDELIVERSPAM
+  DELIVERSPAM=""
+  spamcheck=1
+  while [ $spamcheck != "0" ]
+    do 
+      if [[ "$TMPDELIVERSPAM" == "Y" || "$TMPDELIVERSPAM" == "y" ]]; then
+        # Set spam delivery behavior
+        DELIVERSPAM="deliver header \"X-Spam-Status:Yes\""
+        echo -e "$green[eFa]$clean Spam delivery $green ENABLED $clean"
+        spamcheck=0
+        # Set spam delivery behavior
+      elif [[ "$TMPDELIVERSPAM" == "" || "$TMPDELIVERSPAM" == "N" || "$TMPDELIVERSPAM" == "n" ]]; then 
+        DELIVERSPAM="store"
+        echo -e "$green[eFa]$clean Spam delivery $green DISABLED $clean"
+        spamcheck=0
+      elif [[ "$TMPDELIVERSPAM" == "C" || "$TMPDELIVERSPAM" == "c" ]]; then
+        echo -e "$green[eFa]$clean No action taken, exiting."
+        spamcheck=0
+      else
+          echo -e "       $red ERROR: please make an selection.$clean"
+          echo -e -n "$green[eFa]$clean Do you want to $green ENABLE $clean spam delivery? [y/N/c]: "
+          read TMPDELIVERSPAM
+      fi
+  done
+
+  if [[ $DELIVERSPAM == "store" ]]; then
+    echo -e ""
+    echo -e "$green[eFa]$clean Spam Notification Settings:"
+    echo -e ""
+    echo -e "$green[eFa]$clean By default, EFA notifies users of lower scoring"
+    echo -e "$green[eFa]$clean spam when spam is stored in quarantine. Users"
+    echo -e "$green[eFa]$clean can release the message by clicking the link"
+    echo -e "$green[eFa]$clean link in the {Spam Not Delivered} notification."
+    echo -e "$green[eFa]$clean You can optionally choose to disable"
+    echo -e "$green[eFa]$clean this feature, especially if your users are"
+    echo -e "$green[eFa]$clean abusing this feature and causing Spamassassin"
+    echo -e "$green[eFa]$clean to autolearn and poison the Bayesian filter."
+    echo -e ""
+    echo -e -n "$green[eFa]$clean Do you want to $green DISABLE $clean spam notification? [y/N]: "
+    read TMPSPAMNOTIFY
+    SPAMNOTIFY=""
+    spamcheck=1
+    while [ $spamcheck != "0" ]
+      do 
+        if [[ "$TMPSPAMNOTIFY" == "Y" || "$TMPSPAMNOTIFY" == "y" ]]; then 
+          # Set spam notification behavior
+          SPAMNOTIFY=""
+          echo -e "$green[eFa]$clean Spam Notifications $green DISABLED $clean"
+          spamcheck=0
+        elif [[ "$TMPSPAMNOTIFY" == "" || "$TMPSPAMNOTIFY" == "N" || "$TMPSPAMNOTIFY" == "n" ]]; then 
+          SPAMNOTIFY="custom(spam)"
+          echo -e "$green[eFa]$clean Spam Notifications $green ENABLED $clean"
+          spamcheck=0
+        else
+          echo -e "       $red ERROR: please make an selection.$clean"
+          echo -e -n "$green[eFa]$clean Do you want to $green DISABLE $clean spam notification? [y/N]: "
+          read TMPSPAMNOTIFY
+        fi
+      done
+  fi
+
+  if [[ "$TMPDELIVERSPAM" != "C" && "$TMPDELIVERSPAM" != "c" ]]; then
+    sed -i "/^Spam Actions =/ c\Spam Actions = $DELIVERSPAM $SPAMNOTIFY" /etc/MailScanner/MailScanner.conf
+    service mailscanner restart
+  fi
+
+  pause
+}
+# +---------------------------------------------------+

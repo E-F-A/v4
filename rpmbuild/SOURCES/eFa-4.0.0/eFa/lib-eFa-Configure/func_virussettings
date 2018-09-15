@@ -1,0 +1,28 @@
+# +---------------------------------------------------+
+# Configure Deliver Cleaned Messages Behaviour
+# +---------------------------------------------------+
+function func_virus-settings() {
+  local menu
+  local virusmenu
+  menu=0
+  virusmenu=1
+  while [ $virusmenu == "1" ]
+    do  
+      func_echo-header
+      echo -e "Virus settings"
+      echo ""
+      echo -e "1) Cleaned Message Delivery"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1) func_ask-cleandeliver;;
+                e) menu=1 && return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+      esac
+    done
+}
+# +---------------------------------------------------+

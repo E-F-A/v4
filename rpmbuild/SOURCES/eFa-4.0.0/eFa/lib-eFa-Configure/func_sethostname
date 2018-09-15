@@ -1,0 +1,95 @@
+# +---------------------------------------------------+
+# Function to set the new hostname
+# +---------------------------------------------------+
+function func_sethostname() {
+  func_echo-header
+
+  # Check if the hostname is valid
+  hncheck=1
+  while [ $hncheck != 0 ]
+   do
+     if [[ $HOSTNAME =~ ^[-a-zA-Z0-9]{2,256}+$ ]]
+      then
+        hncheck=0
+      else
+        echo -e "       $red ERROR: The hostname $HOSTNAME seems to be invalid"
+        echo -e "        ERROR: please re-enter the hostname$clean"
+        echo -e "$green[eFa]$clean What is the hostname of this machine: $cyan(single Word)$clean"
+        echo -e -n "$green[eFa]$clean : "
+        read HOSTNAME
+     fi
+    done
+
+  # Check if the Domain name is valid  
+  dncheck=1
+  while [ $dncheck != 0 ]
+   do
+     if [[ $DOMAINNAME =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,15}$ ]]
+      then
+        dncheck=0
+      else
+        echo -e "       $red ERROR: The domain $DOMAINNAME seems to be invalid"
+        echo -e "        ERROR: please re-enter the domain$clean"
+        echo -e "$green[eFa]$clean Please enter the domain name for this machine"
+        echo -e -n "$green[eFa]$clean : "
+        read DOMAINNAME
+     fi
+    done
+
+  echo -e ""
+  echo -e "$red Changing your hostname will reboot your server. $clean"
+  echo -e ""
+  echo -e "Are you sure you want to change the hostname of this machine"
+  echo -e -n "$green[eFa]$clean to $HOSTNAME.$DOMAINNAME? (y/N): "
+  local TMPYN
+  read TMPYN
+  if [[ $TMPYN == "y" || $TMPYN == "Y" ]]; then
+    # Grab old hostname for later
+    OLDHOSTNAME=$(grep "^HOSTNAME" /etc/EFA-Config | sed 's/^.*://')
+    OLDDOMAINNAME=$(grep "^DOMAINNAME" /etc/EFA-Config | sed 's/^.*://')
+
+    # Write new hosts file
+    echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
+    echo "$IP   $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
+
+    sed -i "/^HOSTNAME=/ c\HOSTNAME=$HOSTNAME.$DOMAINNAME" /etc/sysconfig/network
+
+    sed -i "/^Hostname =/ c\Hostname = $HOSTNAME.$DOMAINNAME" /etc/MailScanner/MailScanner.conf
+
+    # Set the hostname for the active system
+    hostname $HOSTNAME
+
+    # Write change to EFA-Config
+    sed -i "/^HOSTNAME:/ c\HOSTNAME:$HOSTNAME" /etc/EFA-Config
+    sed -i "/^DOMAINNAME:/ c\DOMAINNAME:$DOMAINNAME" /etc/EFA-Config
+
+    # Change mailscanner config
+    sed -i "/^define('QUARANTINE_FROM_ADDR',/ c\define('QUARANTINE_FROM_ADDR', 'postmaster@$DOMAINNAME');" /var/www/html/mailscanner/conf.php
+
+    # Issue 195 -- Update MySQL database hostname fields
+    MAILWATCHPWD=$(grep "^MAILWATCHSQLPWD" /etc/EFA-Config | sed 's/^.*://')
+
+    service MailScanner stop
+
+    mysql -u mailwatch --password=$MAILWATCHPWD mailscanner -e "\
+    LOCK TABLES maillog WRITE; \
+    ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
+    UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
+    ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; \
+    LOCK TABLES mtalog WRITE; \
+    UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
+    UNLOCK TABLES;"
+
+    echo -e ""
+    echo -e "Hostname changed"
+    echo -e ""
+    echo -e "$red [EFA] Your system will now reboot. $clean"
+    pause
+    reboot
+
+  elif [[ $TMPSECURE == "n" || $TMPSECURE == "N" || $TMPSECURE="" ]]; then
+    echo -e "No changes made"
+    pause
+    ipmenu=1
+  fi
+}

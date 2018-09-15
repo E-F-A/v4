@@ -1,0 +1,263 @@
+# +---------------------------------------------------+
+# Option IPv6_SETTINGS
+# +---------------------------------------------------+
+func_ipv6-settings(){
+  menu=0
+  ipv6menu=1
+  while [ $ipv6menu == "1" ]
+    do
+      func_getipv6settings
+      func_echo-header
+      echo -e "Current IP settings for $INTERFACE are:"
+      echo -e "1) IPV6 Enabled          : $IPv6ENABLED"
+      echo -e "1) IPv6 IP                   :  $IPv6IP"
+      echo -e "2) IPv6 Netmask              :  $IPv6NM"
+      echo -e "3) IPv6 Gateway              :  $IPv6GW"
+      echo -e "4) IPv6 Primary DNS          :  $IPv6DNS1"
+      echo -e "5) IPv6 Secondary DNS        :  $IPv6DNS2"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e "$red Note: Network will reset when changing values.$clean"
+      echo -e ""
+      echo -e "Enter setting you want to change"
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new IPv6 address: " IPv6IP
+					if [ -z "$IPv6IP" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_setipv6settings
+                      menu=1
+					fi
+                    ;;
+                2)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new IPv6 netmask bit (64,48 etc..): " IPv6NM
+					if [ -z "$IPv6NM" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_setipv6settings
+                      menu=1
+					fi
+                    ;;
+                3)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new IPv6 gateway: " IPv6GW
+					if [ -z "$IPv6GW" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_setipv6settings
+                      menu=1
+					fi
+                    ;;
+                4)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new primary IPv6 DNS: " IPv6DNS1
+					if [ -z "$IPv6DNS1" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_setipv6settings
+                      menu=1
+					fi
+                    ;;
+                5)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new secondary IPv6 DNS: " IPv6DNS2
+					if [ -z "$IPv6DNS2" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_setipv6settings
+                      menu=1
+					fi
+                    ;;
+                e) menu=1 && return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+            esac
+        done
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Function to grab the current IPv6 IP settings.
+# +---------------------------------------------------+
+function func_getipv6settings(){
+  nrintf=`cat /proc/net/dev | grep eth | sed 's/:/ /g' | awk {'print $1 '} | wc -l`
+  interf=`cat /proc/net/dev | grep eth | sed 's/:/ /g' | awk {'print $1 '}`
+  if [ $nrintf -gt 1 ]
+    then
+      func_echo-header
+      echo -e "You seem to have multiple network interfaces"
+      echo -e "Please select the interface you want to configure"
+      echo -e "The interface names on your machine are:"
+      for int in $interf
+        do
+          echo " - $int"
+        done
+
+      echo -e ""
+      echo -e "Enter the primary interface name:"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      choice_check=0
+      for int in $interf
+        do
+        if [ $int == $choice ]
+          then
+            choice_check=1
+        fi
+        done
+         
+      # Check if the user typed a interface that exists.
+      if [ $choice_check -eq 0 ]
+        then
+          echo -e "$red [EFA] ERROR, That interface does not exist. $clean"
+          pause
+          func_getipsettings
+          return
+      fi
+      if [ $choice_check -eq 1 ]
+         then
+          INTERFACE=$choice
+        fi
+     else
+        INTERFACE=$interf
+    fi
+	IPv6ENABLED="`cat /etc/sysconfig/network | grep NETWORKING_IPV6 | sed 's/NETWORKING_IPV6=//'`"
+    IPv6IP="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPV6IPADDR | sed 's/IPV6ADDR=//;s/"//g'`"
+    IPv6NM="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep NETMASK | sed 's/NETMASK=//;s/"//g'`"
+    IPv6GW="`cat /etc/sysconfig/network | grep IPV6_DEFAULTGW | sed 's/IPV6_DEFAULTGW=//'`"
+    IPv6DNS1="`cat /etc/resolv.dnsmasq  | grep -v '#' | grep -v 127.0.0.1 | grep nameserver | awk 'NR==1 {print $2}'`"
+    IPv6DNS2="`cat /etc/resolv.dnsmasq  | grep -v '#' | grep -v 127.0.0.1 | grep nameserver | awk 'NR==2 {print $2}'`"
+ }
+# +---------------------------------------------------+
+
+
+# +---------------------------------------------------+
+# Function to set the new IP settings
+# +---------------------------------------------------+
+func_setipv6settings(){
+
+# TODO Write ipv6 validator
+#    for ipv6 in $IPv6IP $IPv6NM $IPv6GW $IPv6DNS1 $IPv6DNS2
+#        do
+#           validcheck=1
+#          while [ $validcheck != "0" ]
+#                do
+#                    if checkipv6 $ipv6
+#                       then
+#                            validcheck=0
+#                        else
+#                            echo "ERROR: The value $ipv6 seems to be invalid"
+#                            pause
+#                            return
+#                    fi
+#                done
+#        done
+  # Grab current FQDN
+  HOSTNAME="`cat /etc/EFA-Config | grep HOSTNAME | sed 's/.*://'`"
+  DOMAINNAME="`cat /etc/EFA-Config | grep DOMAINNAME | sed 's/.*://'`"
+
+  # TODO Write hosts file  
+  # Write new hosts file
+  echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
+  # TODO ADD IPV4 address here!
+  echo "$IPv6IP   $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
+        
+  # Write resolv file
+  # TODO ADD IPV4 DNS servers here!
+  #echo "nameserver $IPv6DNS1" > /etc/resolv.dnsmasq
+  #echo "nameserver $IPv6DNS2" >> /etc/resolv.dnsmasq
+
+
+  
+  
+  
+  # Set ip settings
+  ifdown $INTERFACE
+  echo "DEVICE=\"$INTERFACE\"" > /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  echo "BOOTPROTO=\"none\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  echo "ONBOOT=\"yes\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  echo "$BROADCAST" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  echo "$NETWORK" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  echo "NETMASK=\"$NM\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  echo "IPADDR=\"$IP\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  sed -i "/GATEWAY=/ c\GATEWAY=$GW" /etc/sysconfig/network
+  ifup $INTERFACE
+  
+  # Write change to EFA-Config
+  sed -i "/^IPv6ADDRESS:/ c\IPv6IPADDRESS:$IPv6IP" /etc/EFA-Config
+  sed -i "/^IPv6NETMASK:/ c\IPv6NETMASK:$IPv6NM" /etc/EFA-Config
+  sed -i "/^IPv6GATEWAY:/ c\IPv6GATEWAY:$IPv6GW" /etc/EFA-Config
+  sed -i "/^IPv6DNS1:/ c\IPv6DNS1:$IPv6DNS1" /etc/EFA-Config
+  sed -i "/^IPv6DNS2:/ c\IPv6DNS2:$IPv6DNS2" /etc/EFA-Config
+  
+  echo -e "All done"
+  pause
+}
+# +---------------------------------------------------+
+
+func_testsetipv6settings(){
+# test part:
+
+
+IPv6ENABLED=yes
+IPv6IP="2001:1AF8:3100:A00F::dead"
+IPv6NETMASK="64"
+IPv6GW="2001:1AF8:3100:A00F::3"
+IPv6DNS1="2001:4860:4860::8888"
+IPv6DNS2="2001:4860:4860::8844"
+
+
+INTERFACE=eth0
+
+  # ----------
+  # Enable IPv6 if it is disabled  
+  CIPv6ENABLED="`cat /etc/sysconfig/network | grep NETWORKING_IPV6 | sed 's/NETWORKING_IPV6=//'`"
+  # If there is no config add it:
+  if [ -z $CIPv6ENABLED ]; then 
+	echo "NETWORKING_IPV6=yes" >> /etc/sysconfig/network
+	echo "IPV6_AUTOCONF=no" >> /etc/sysconfig/network
+	echo "IPV6INIT=yes" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+	
+	sed -i "/^net.ipv6.conf.all.disable_ipv6/ c\net.ipv6.conf.all.disable_ipv6 = 0"  /etc/sysctl.conf
+	sed -i "/^net.ipv6.conf.default.disable_ipv6/ c\net.ipv6.conf.default.disable_ipv6 = 0"  /etc/sysctl.conf
+	sed -i "/^net.ipv6.conf.lo.disable_ipv6/ c\net.ipv6.conf.lo.disable_ipv6 = 0"  /etc/sysctl.conf
+    sysctl -q -p
+  fi
+  # If there is a config check if it is enabled, if not enable it
+  if [[ "$IPv6ENABLED" == "no" || "$IPv6ENABLED" == "NO" ]]; then 
+    sed -i "/^NETWORKING_IPV6=/ c\NETWORKING_IPV6=yes" /etc/sysconfig/network
+  fi
+  # ----------
+  
+  # ----------
+  # Add the IPv6 Gateway
+  CIPv6GW="`cat /etc/sysconfig/network | grep IPV6_DEFAULTGW | sed 's/IPV6_DEFAULTGW=//'`"
+  if [ -z $CIPv6GW ]; then 
+	echo "IPV6_DEFAULTGW=$IPv6GW" >> /etc/sysconfig/network
+  else
+    sed -i "/^IPV6_DEFAULTGW=/ c\IPV6_DEFAULTGW=$IPv6GW" /etc/sysconfig/network
+  fi
+  # ----------
+  
+  # ----------
+  # Add the IP address
+  CIPv6IP="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPV6IPADDR | sed 's/IPV6ADDR=//;s/"//g'`"
+  if [ -z $CIPv6IP ]; then 
+	echo "IPV6ADDR=$IPv6IP/$IPv6NETMASK" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  else
+    sed -i "/^IPV6ADDR=/ c\IPV6ADDR=$IPv6IP\/$IPv6NETMASK" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  fi
+  # ----------
+  
+  # Restart networking
+  /etc/init.d/network restart
+  
+  # ----------
+  # Enable postfix for ipv4 and ipv6
+  sed -i "/^inet_protocols/ c\inet_protocols = all" /etc/postfix/main.cf
+  service postfix restart
+    
+  # Issues
+  # - IPV6 whitelisting from mailwatch does not work.
+}
+
+#Test to remove:
+func_testsetipv6settings

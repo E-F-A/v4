@@ -1,0 +1,57 @@
+# +---------------------------------------------------+
+# Function to grab the current IP settings.
+# +---------------------------------------------------+
+function func_getipsettings(){
+  nrintf=`cat /proc/net/dev | grep eth | sed 's/:/ /g' | awk {'print $1 '} | wc -l`
+  interf=`cat /proc/net/dev | grep eth | sed 's/:/ /g' | awk {'print $1 '}`
+  if [ $nrintf -gt 1 ]
+    then
+      func_echo-header
+      echo -e "You seem to have multiple network interfaces"
+      echo -e "Please select the interface you want to configure"
+      echo -e "The interface names on your machine are:"
+      for int in $interf
+        do
+          echo " - $int"
+        done
+
+      echo -e ""
+      echo -e "Enter the primary interface name:"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      choice_check=0
+      for int in $interf
+        do
+        if [ $int == $choice ]
+          then
+            choice_check=1
+        fi
+        done
+         
+      # Check if the user typed a interface that exists.
+      if [ $choice_check -eq 0 ]
+        then
+          echo -e "$red [eFa] ERROR, That interface does not exist. $clean"
+          pause
+          func_getipsettings
+          return
+      fi
+      if [ $choice_check -eq 1 ]
+         then
+          INTERFACE=$choice
+        fi
+     else
+        INTERFACE=$interf
+    fi
+    IP="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPADDR | sed 's/IPADDR=//;s/"//g'`"
+    NM="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep NETMASK | sed 's/NETMASK=//;s/"//g'`"
+    GW="`cat /etc/sysconfig/network | grep GATEWAY | sed 's/GATEWAY=//'`"
+    RECURSIVEDNS="`grep RECURSION /etc/EFA-Config | sed 's/.*://'`"
+    DNS1="`grep forward-addr /etc/unbound/conf.d/forwarders.conf | awk 'NR==1 {print $2}'`"
+    DNS2="`grep forward-addr /etc/unbound/conf.d/forwarders.conf | awk 'NR==2 {print $2}'`"
+    HOSTNAME="`grep HOSTNAME /etc/EFA-Config | sed 's/.*://'`"
+    DOMAINNAME="`grep DOMAINNAME /etc/EFA-Config | sed 's/.*://'`"
+}
+# +---------------------------------------------------+
