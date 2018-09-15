@@ -1,0 +1,162 @@
+# +---------------------------------------------------+
+# System Restore
+# +---------------------------------------------------+
+function func_system-restore() {
+  func_echo-header
+
+  echo -e ""
+  echo -e "System Restore"
+  echo -e ""
+  echo -e "$red !!!WARNING!!! $clean"
+  echo -e "System Restore is intended to be used in disaster recovery"
+  echo -e "situations only as a last resort! Rolling back the system"
+  echo -e "to a recent backup can have consequences, such as the need to"
+  echo -e "clean up MySQL databases and loss of recent configuration changes."
+  echo -e ""
+  echo -en "$green[eFa]$clean Are you sure you want to continue? (y/N):"
+  local TMPRECOVER
+  read TMPRECOVER
+  local flag=0
+  while [[ $flag != "1" ]]
+    do
+      if [[ $TMPRECOVER == "N" || $TMPRECOVER == "n" || $TMPRECOVER == "" ]]; then
+        flag=1
+      elif [[ $TMPRECOVER = "Y" || $TMPRECOVER == "y" ]]; then
+        # Gather backups
+        local BACKUPLIST
+        BACKUPLIST=(`find /var/EFA/backup -type f | grep tar\.gz$`)
+        if [[ -n $BACKUPLIST ]]; then
+          func_echo-header
+          echo -e "Backup Listing"
+          echo -e ""
+          local tLen=${#BACKUPLIST[@]}
+          for (( y=0; y<$tLen; y++ ));
+          do
+            echo -e "$((y+1))) ${BACKUPLIST[$y]}"
+          done
+          local flag2=0
+          echo -e ""
+          echo -en "Choose a backup or press $green (e) $clean to exit:"
+          while [[ $flag2 != "1" ]]
+          do
+            local choice
+            read choice
+            case $choice in
+              +([0-9]))  
+                if [[ $choice > 0 && $choice < $((tLen+1)) ]]; then
+                  echo -e "You have chosen $green $choice $clean"
+                  echo -e ""
+                  echo -e "$choice) ${BACKUPLIST[$((choice-1))]}"
+                  echo -e ""
+                  echo -e "Proceed with restore? (y/N)"
+                  local TMPRESTORE
+                  read TMPRESTORE
+                  local flag3=0
+                  while [[ $flag3 != "1" ]]
+                  do
+                    if [[ $TMPRESTORE == "n" || $TMPRESTORE == "N" || $TMPRESTORE == "" ]]; then
+                      flag2=1
+                      flag3=1
+                    elif [[ $TMPRESTORE == "Y" || $TMPRESTORE == "y" ]]; then
+                      echo -e "Beginning Restore of ${BACKUPLIST[$((choice-1))]}..."
+                      echo -e
+                      cd /var/EFA/backup
+                      tar xzvf ${BACKUPLIST[$((choice-1))]} --overwrite
+                      #fetch SQL root password
+                      MYSQLROOTPWD="`grep MYSQLROOTPWD /etc/EFA-Config | sed 's/.*://'`"
+                      RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                      if [[ "$MYSQLROOTPWD" != "$RESTOREMYSQLROOTPWD" ]]; then
+                        echo "Foreign backup detected, performing import..."
+                        # Restore importable configurations
+                        cp -f /var/EFA/backup/backup/etc/EFA-Config /etc/EFA-Config
+                        cp -f /var/EFA/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
+                        cp -rf /var/EFA/backup/backup/etc/MailScanner/* /etc/MailScanner
+                        cp -f /var/EFA/backup/backup/etc/pki/tls/certs/localhost.crt /etc/pki/tls/certs/localhost.crt
+                        cp -f /var/EFA/backup/backup/etc/pki/tls/private/localhost.key /etc/pki/tls/private/localhost.key
+                        cp -rf /var/EFA/backup/backup/etc/postfix/* /etc/postfix
+                        
+                        # Postmaps
+                        postmap /etc/postfix/helo_access.db
+                        postmap /etc/postfix/recipient_access.db
+                        postmap /etc/postfix/sasl_passwd.db
+                        postmap /etc/postfix/sender_access.db
+                        postmap /etc/postfix/transport.db
+                        postmap /etc/postfix/virtual.db
+                        
+                        cp -rf /var/EFA/backup/backup/etc/sqlgrey/* /etc/sqlgrey
+                        cp -rf /var/EFA/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
+                        cp -f /var/EFA/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php
+                        # Import database passwords
+                        RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
+                        RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
+                        RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
+                        RESTOREEFASQLPWD="`grep EFASQLPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREEFASQLPWD') WHERE User='efa';"
+                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
+                        /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
+                        MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
+                        # Update EFA-Config with imported values
+                        sed -i "/^MAILWATCHSQLPWD:/ c\MAILWATCHSQLPWD:$RESTOREMAILWATCHSQLPWD" /etc/EFA-Config
+                        sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/EFA-Config
+                        sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/EFA-Config
+                        sed -i "/^EFASQLPWD:/ c\EFASQLPWD:$RESTOREEFASQLPWD" /etc/EFA-Config
+                        sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/EFA-Config
+                        
+                        # Restore trim-awl
+                        cp -f /var/EFA/backup/backup/usr/sbin/trim-awl /usr/sbin
+                      else
+                        cp -rf /var/EFA/backup/backup/etc/* /etc
+                        cp -rf /var/EFA/backup/backup/var/* /var
+                      fi
+                      cd /var/EFA/backup/backup/sql
+                      # Restore SQL databases
+                      mysql --user=root --password=$MYSQLROOTPWD < backup.sql
+                      rm -rf /var/EFA/backup/backup
+
+                      echo -e "Restore Complete!"
+                      echo -e ""
+                      echo -e "A restart is needed to complete restore.  Press enter to reboot."
+                      pause
+                      shutdown -r now
+                      flag3=1
+                      flag2=1
+                      flag=1
+                    fi
+                  done
+                 else
+                   echo -e "$red $choice $clean is not a valid choice."
+                   echo -en "Choose a backup or press $green e) $clean to exit:"
+                 fi
+                 ;;
+                     e)
+                 pause
+                 flag3=1
+                 flag2=1  
+                 flag=1
+                 ;;
+                     *) 
+                   echo -e "$red $choice $clean is not a valid choice."
+                   echo -en "Choose a backup or press $green e) $clean to exit:"
+                 ;;
+            esac
+          done
+        else
+          echo "No backups were found!"
+          echo "Press enter to exit."
+          pause
+        fi
+        flag=1
+      else
+        echo -e "An invalid option $red $TMPRECOVER $clean was entered."
+        echo -en "$green[eFa]$clean Are you sure you want to continue? (y/N):"
+        read TMPRECOVER
+      fi
+    done
+
+  pause
+
+}
+# +---------------------------------------------------+

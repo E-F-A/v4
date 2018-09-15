@@ -1,0 +1,105 @@
+# +---------------------------------------------------+
+# Option IP_SETTINGS
+# +---------------------------------------------------+
+func_ip-settings(){
+  menu=0
+  ipmenu=1
+  while [ $ipmenu == "1" ]
+    do
+      func_getipsettings
+      func_echo-header
+      echo -e "Current IP settings for $INTERFACE are:"
+      echo -e "1) IP                   :  $IP"
+      echo -e "2) Netmask              :  $NM"
+      echo -e "3) Gateway              :  $GW"
+      echo -e "4) DNS Recursion        :  $RECURSIVEDNS"
+      echo -e "5) Primary DNS          :  $DNS1"
+      echo -e "6) Secondary DNS        :  $DNS2"
+      echo -e "7) Hostname             :  $HOSTNAME"
+      echo -e "8) Domain Name          :  $DOMAINNAME"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e "$red Note: Network will reset when changing values.$clean"
+      echo -e ""
+      echo -e "Enter setting you want to change"
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new IP: " IP
+                    if [ -z "$IP" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_setipsettings
+                      menu=1
+                    fi
+                    ;;
+                2)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new netmask: " NM
+                    if [ -z "$NM" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_setipsettings
+                      menu=1
+                    fi
+                    ;;
+                3)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new gateway: " GW
+                    if [ -z "$GW" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_setipsettings
+                      menu=1
+                    fi
+                    ;;
+                4)  ipmenu=0
+                    func_ask-recursion
+                    menu=1
+                    ;;
+                5)  ipmenu=0
+                    echo ""
+                    if [ "$RECURSIVEDNS" == "ENABLED" ]; then 
+                      echo "ERROR: DNS Recursion is enabled.  Disable recursion to set DNS"
+                      pause && menu=1
+                    else
+                      read -p "Enter your new primary DNS: " DNS1
+                      if [ -z "$DNS1" ]; then echo "ERROR empty value" && pause && menu=1; else
+                        func_setipsettings
+                        menu=1
+                      fi
+                    fi
+                    ;;
+                6)  ipmenu=0
+                    echo ""
+                    if [ "$RECURSIVEDNS" == "ENABLED" ]; then 
+                      echo "ERROR: DNS Recursion is enabled.  Disable recursion to set DNS"
+                      pause && menu=1
+                    else
+                      read -p "Enter your new secondary DNS: " DNS2
+                      if [ -z "$DNS2" ]; then echo "ERROR empty value" && pause && menu=1; else
+                        func_setipsettings
+                        menu=1
+                      fi
+                    fi
+                    ;;
+                7)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new HOSTNAME: " HOSTNAME
+                    if [ -z "$HOSTNAME" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_sethostname
+                      menu=1
+                    fi
+                    ;;
+                8)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new DOMAIN NAME: " DOMAINNAME
+                    if [ -z "$DOMAINNAME" ]; then echo "ERROR empty value" && pause && menu=1; else
+                      func_sethostname
+                      menu=1
+                    fi
+                    ;;
+                e) menu=1 && return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+            esac
+        done
+}
+# +---------------------------------------------------+

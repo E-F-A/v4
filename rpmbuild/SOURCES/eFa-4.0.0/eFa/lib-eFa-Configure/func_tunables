@@ -1,0 +1,28 @@
+# +---------------------------------------------------+
+# Configure Tunables
+# +---------------------------------------------------+
+func_tunables() {
+  menu=0
+  tuneablemenu=1
+  while [ $tuneablemenu == "1" ]
+    do  
+      func_echo-header
+      echo -e "Tunable settings"
+      echo ""
+      echo -e "1) Modify MailScanner Children"
+      echo -e "2) Modify Processing Attempts"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1) func_tunables_children;;
+                2) func_tunables_procdb;;
+                e) menu=1 && return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+      esac
+    done
+}
+# +---------------------------------------------------+

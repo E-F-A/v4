@@ -1,0 +1,185 @@
+# +---------------------------------------------------+
+# Configure Apache
+# +---------------------------------------------------+
+function func_apache-settings() {
+  menu=0
+  apachemenu=1
+  while [ $apachemenu == "1" ]
+    do  
+      func_echo-header
+      echo -e "Apache settings"
+      echo ""
+      echo -e "1) HTTPS Configure"
+      echo -e "2) Modsecurity"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1) func_https;;
+                2) func_modsecurity;;
+                e) menu=1 && return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+            esac
+    done
+}
+# +---------------------------------------------------+
+# Configure Apache HTTPS
+# +---------------------------------------------------+
+function func_https() {
+  func_echo-header
+  
+  echo -e ""
+  echo -e "Apache Settings"
+  echo -e ""
+  echo -e "By default, EFA uses port 443"
+  echo -e "You can enable port 443 for secure access."
+  echo -e ""
+  echo -e -n "$green[eFa]$clean Enable port 443? (Y/n/c): "
+  local TMPSECURE
+  read TMPSECURE
+
+  flag=0
+  while [ $flag == "0" ]
+    do
+      if [[ $TMPSECURE == "y" || $TMPSECURE == "Y" || -z $TMPSECURE ]]; then
+        sed -i '/^#Listen 443/ c\Listen 443' /etc/httpd/conf.d/ssl.conf
+        iptables -D INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT>/dev/null 2>&1
+        iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
+        /etc/init.d/iptables save
+        echo -e ""
+        echo -e "Port 443 $green[Enabled]$clean"
+        echo -e ""
+        echo -e "If you have your own pki certificate, please copy the certificate to:"
+        echo -e "/etc/pki/tls/certs/localhost.crt"
+        echo -e ""
+        echo -e "and copy the private key to:"
+        echo -e "/etc/pki/tls/private/localhost.key"
+        echo -e ""
+        pause
+        flag=1
+      elif [[ $TMPSECURE == "n" || $TMPSECURE == "N" ]]; then
+
+        sed -i '/^Listen 443/ c\#Listen 443' /etc/httpd/conf.d/ssl.conf
+
+        iptables -D INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT >/dev/null 2>&1
+        /etc/init.d/iptables save
+
+        echo -e ""
+        echo -e "Port 443 $green[Disabled]$clean"
+        pause
+
+        # Issue #74 EFA-Configure Disable SSL does not disable redirect
+        rm -f /etc/httpd/conf.d/redirectssl.conf >/dev/null 2>&1
+        echo -e "Port 443 Redirection $green[Disabled]$clean"
+        pause
+
+        flag=1
+      elif [[ $TMPSECURE == "c" || $TMPSECURE == "C" ]]; then
+        echo -e "$green[EFA]$clean No action taken, exiting."
+        pause
+        flag=1
+      else
+        echo -e "Choice $green\"$TMPSECURE\"$clean is not a valid choice."
+        echo -e ""
+        echo -e -n "$green[eFa]$clean Enable port 443? (Y/n/c): "
+        read TMPSECURE 
+      fi
+    done
+
+    if [[ $TMPSECURE == "Y" || $TMPSECURE == "y" || -z $TMPSECURE ]]; then
+      echo -e ""
+      echo -e "Port 80 --> 443 Redirect"
+      echo -e "You can choose to redirect all port 80 traffic to port 443"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean Redirect port 80 to port 443? (Y/n): "
+      local TMPREDIRECT
+      read TMPREDIRECT
+
+      flag=0
+      while [ $flag == "0" ]
+        do
+        if [[ $TMPREDIRECT == "y" || $TMPREDIRECT == "Y" || -z $TMPREDIRECT ]]; then
+        echo -e "RewriteEngine On" > /etc/httpd/conf.d/redirectssl.conf
+        echo -e "RewriteCond %{HTTPS} !=on" >> /etc/httpd/conf.d/redirectssl.conf
+        echo -e "RewriteRule ^/?(.*) https://%{SERVER_NAME}/\$1 [R,L]" >> /etc/httpd/conf.d/redirectssl.conf
+        
+        echo -e ""
+        echo -e "Port 80 to 443 redirection $green[Enabled]$clean"
+        pause
+        flag=1
+      elif [[ $TMPREDIRECT == "n" || $TMPREDIRECT == "N" ]]; then
+        rm -f /etc/httpd/conf.d/redirectssl.conf >/dev/null 2>&1
+        echo -e ""
+        echo -e "Port 80 to 443 redirection $green[Disabled]$clean"
+        pause
+        flag=1
+      else
+        echo -e "Choice $green\"$TMPREDIRECT\"$clean is not a valid choice."
+        echo -e ""
+        echo -e -n "$green[eFa]$clean Redirect port 80 to port 443? (Y/n): "
+        read TMPREDIRECT 
+      fi
+    done
+  fi
+
+  if [[ $TMPSECURE != "c" && $TMPSECURE != "C" ]]; then
+    service iptables reload
+    service httpd reload
+    pause
+  fi
+
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Configure Mod Security
+# +---------------------------------------------------+
+function func_modsecurity()
+{
+  func_echo-header
+  
+  echo -e ""
+  echo -e "Modsecurity Settings"
+  echo -e ""
+  echo -e "As of v3.0.2.4, Modsecurity was disabled moving forward."
+  echo -e "You may enable modsecurity again."
+  echo -e "EFA provided modifications to modsecurity were discontinued as of v3.0.2.4."
+  echo -e ""
+  echo -e -n "$green[eFa]$clean Enable modsecurity? (y/N/c): "
+  local TMPMODSECURITY
+  read TMPMODSECURITY
+  
+  flag=0
+  while [ $flag == "0" ]
+    do
+      if [[ $TMPMODSECURITY == "n" || $TMPMODSECURITY == "N" ]]; then
+        sed -i "/^LoadModule security2_module modules\/mod_security2.so/ c\#LoadModule security2_module modules/mod_security2.so" /etc/httpd/conf.d/mod_security.conf
+        service httpd restart
+        echo -e ""
+        echo -e "Modsecurity $red[Disabled]$clean"
+        echo -e ""
+        pause
+        flag=1
+      elif [[ $TMPMODSECURITY == "y" || $TMPMODSECURITY == "Y" || -z $TMPMODSECURITY ]]; then
+        sed -i "/^#LoadModule security2_module modules\/mod_security2.so/ c\LoadModule security2_module modules/mod_security2.so" /etc/httpd/conf.d/mod_security.conf
+        service httpd restart
+
+        echo -e "Modsecurity $green[Enabled]$clean"
+        pause
+
+        flag=1
+      elif [[ $TMPMODSECURITY == "c" || $TMPMODSECURITY == "C" ]]; then
+        echo -e "$green[eFa]$clean No action taken, exiting."
+        pause
+        flag=1
+      else
+        echo -e "Choice $green\"$TMPMODSECURITY\"$clean is not a valid choice."
+        echo -e ""
+        echo -e -n "$green[eFa]$clean Disable Mod Security? (Y/n/c): "
+        read TMPMODSECURITY
+      fi
+    done
+}
