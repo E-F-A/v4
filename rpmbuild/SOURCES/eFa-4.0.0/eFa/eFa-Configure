@@ -92,7 +92,7 @@ show_menu() {
       echo -e "4) IP Settings                        13) System Restore"
       echo -e "5) Tunables                           14) Update Now"
       echo -e "6) MailWatch Settings                 15) Maintenance Mode"
-      echo -e "7) Auto Update                        16) Let's Encrypt"
+      echo -e "7)                                    16) Let's Encrypt"
       echo -e "8) Mail Settings                      17) DKIM and DMARC"
       echo -e ""
       echo -e -n "$green[eFa]$clean : "
@@ -106,7 +106,6 @@ show_menu() {
                     4) func_ip-settings ;;
                     5) func_tunables ;;
                     6) func_mailwatch-settings ;;
-                    7) func_autoupdates ;;
                     8) func_mail-settings ;;
                     9) func_spam-settings ;;
                    10) func_recover-mariadb ;;
