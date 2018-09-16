@@ -99,7 +99,8 @@ sed -i '/    Options Indexes FollowSymLinks/ c\    Options None' /etc/httpd/conf
 sed -i '/^#Listen 443/ c\Listen 443 https' /etc/httpd/conf.d/ssl.conf
 sed -i "/^SSLProtocol/ c\SSLProtocol all -SSLv2 -SSLv3" /etc/httpd/conf.d/ssl.conf
 echo -e "RewriteEngine On" > /etc/httpd/conf.d/redirectssl.conf
-echo -e "RewriteCond %{HTTPS} !=on" >> /etc/httpd/conf.d/redirectssl.conf
+echo -e "RewriteCond %{SERVER_PORT} 80" >> /etc/httpd/conf.d/redirectssl.conf
+echo -e "RewriteCond %{REQUEST_URI} !^/\.well\-known/acme\-challenge/" >> /etc/httpd/conf.d/redirectssl.conf
 echo -e "RewriteRule ^/?(.*) https://%{SERVER_NAME}/\$1 [R,L]" >> /etc/httpd/conf.d/redirectssl.conf
 
 # Harden Apache
