@@ -1,0 +1,45 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# eFa 4.0.0 Daily DMARC Reporting Cron
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2018 https://efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+set -e
+
+# Database and History File Info
+DBHOST='localhost'
+DBUSER='opendmarc'
+DBPASS="`grep OPENDMARCSQLPWD /etc/eFa/DMARC-Config | sed 's/^.*://'`"
+DBNAME='opendmarc'
+HISTDIR='/var/opendmarc'
+HISTFILE='dmarc_msg_history'
+DMARCRepEmail="`grep DMARCREPEMAIL /etc/eFa/eFa-Config | sed 's/^.*://'`"
+DMARCRepDomain="`grep DMARCREPDOMAIN /etc/eFa/eFa-Config | sed 's/^.*://'`"
+
+# Make sure history file exists
+touch ${HISTDIR}/${HISTFILE}.dat
+
+# Move history file temp dir for processing
+mv ${HISTDIR}/${HISTFILE}.dat /tmp/${HISTFILE}.$$
+
+# Import temp history file data and send reports
+/usr/sbin/opendmarc-import -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} -verbose < /tmp/${HISTFILE}.$$
+/usr/sbin/opendmarc-reports -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} -verbose -interval=86400 -report-email $DMARCRepEmail -report-org $DMARCRepDomain -smtp-server=127.0.0.1
+/usr/sbin/opendmarc-expire -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} -verbose
+
+# Delete temp history file
+rm -rf *.$$
