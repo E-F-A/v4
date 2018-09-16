@@ -18,6 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
+# TODO
+# 600 sec random backoff
+# Host on efa-project.org servers
+
 #Stop OpenDMARC Service
 systemctl stop opendmarc
 
