@@ -52,5 +52,12 @@ chown postfix:mtagroup /var/dcc
 cp /var/dcc/libexec/rcDCC /etc/init.d/adcc
 sed -i "s/#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/g" /etc/mail/spamassassin/v310.pre
 
+/usr/local/bin/cdcc "add dcc1.dcc-servers.net"
+/usr/local/bin/cdcc "add dcc2.dcc-servers.net"
+/usr/local/bin/cdcc "add dcc3.dcc-servers.net"
+/usr/local/bin/cdcc "add dcc4.dcc-servers.net"
+/usr/local/bin/cdcc "add dcc5.dcc-servers.net"
+echo '/^DCCPOOL:/ c\DCCPOOL:default' >> /etc/eFa-Config
+
 echo "Configuring dcc...done"
 
