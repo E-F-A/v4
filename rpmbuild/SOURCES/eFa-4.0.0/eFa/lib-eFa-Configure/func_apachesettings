@@ -99,13 +99,12 @@ function func_https() {
       while [ $flag == "0" ]
         do
         if [[ $TMPREDIRECT == "y" || $TMPREDIRECT == "Y" || -z $TMPREDIRECT ]]; then
-        
 
         echo -e "RewriteEngine On" > /etc/httpd/conf.d/redirectssl.conf
         echo -e "RewriteCond %{SERVER_PORT} 80" >> /etc/httpd/conf.d/redirectssl.conf
         echo -e "RewriteCond %{REQUEST_URI} !^/\.well\-known/acme\-challenge/" >> /etc/httpd/conf.d/redirectssl.conf
         echo -e "RewriteRule ^/?(.*) https://%{SERVER_NAME}/\$1 [R,L]" >> /etc/httpd/conf.d/redirectssl.conf
-        
+
         echo -e ""
         echo -e "Port 80 to 443 redirection $green[Enabled]$clean"
         pause
