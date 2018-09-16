@@ -2,8 +2,8 @@
 # Function to grab the current IP settings.
 # +---------------------------------------------------+
 function func_getipsettings(){
-  nrintf=`cat /proc/net/dev | grep eth | sed 's/:/ /g' | awk {'print $1 '} | wc -l`
-  interf=`cat /proc/net/dev | grep eth | sed 's/:/ /g' | awk {'print $1 '}`
+  interf=$(ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' | sort | uniq)
+  nrintf=$(cat $interf | wc -l)
   if [ $nrintf -gt 1 ]
     then
       func_echo-header
@@ -45,13 +45,15 @@ function func_getipsettings(){
      else
         INTERFACE=$interf
     fi
-    IP="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPADDR | sed 's/IPADDR=//;s/"//g'`"
-    NM="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep NETMASK | sed 's/NETMASK=//;s/"//g'`"
-    GW="`cat /etc/sysconfig/network | grep GATEWAY | sed 's/GATEWAY=//'`"
-    RECURSIVEDNS="`grep RECURSION /etc/EFA-Config | sed 's/.*://'`"
+    IP4="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPADDR | sed 's/IPADDR=//;s/"//g'`"
+    NM4="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep NETMASK | sed 's/NETMASK=//;s/"//g'`"
+    GW4="`cat /etc/sysconfig/network | grep GATEWAY | sed 's/GATEWAY=//'`"
+    IP6="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPV6ADDR | sed 's/IPV6ADDR=//;s/"//g'`"
+    GW6="`cat /etc/sysconfig/network | grep IPV6_DEFAULTGW | sed 's/IPV6_DEFAULTGW=//'`"
+    RECURSIVEDNS="`grep RECURSION /etc/eFa/eFa-Config | sed 's/.*://'`"
     DNS1="`grep forward-addr /etc/unbound/conf.d/forwarders.conf | awk 'NR==1 {print $2}'`"
     DNS2="`grep forward-addr /etc/unbound/conf.d/forwarders.conf | awk 'NR==2 {print $2}'`"
-    HOSTNAME="`grep HOSTNAME /etc/EFA-Config | sed 's/.*://'`"
-    DOMAINNAME="`grep DOMAINNAME /etc/EFA-Config | sed 's/.*://'`"
+    HOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
+    DOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
 }
 # +---------------------------------------------------+
