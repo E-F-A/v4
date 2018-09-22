@@ -338,6 +338,10 @@ Requires: php72u-process >= 7.2.5-2
     # php72u-process                             # IUS     # eFaInit
 Requires: php72u-json >= 7.2.5-2
     # php72u-json                                # IUS     # eFaInit
+Requires: sqlgreywebinterface >= 1.1.9-2
+    # sqlgreywebinterrface                       # eFa     # mailwatch
+Requires: perl-Sendmail-PMilter >= 1.0.0-1
+    # perl-Sendmail-PMilter                      # eFa     # MailScanner
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -412,6 +416,7 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/apache-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/sqlgrey-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/mailwatch-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/sgwi-config.4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/pyzor-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/dcc-config-4.0.0.sh
