@@ -42,18 +42,6 @@ fi
 yum -y install epel-release
 [ $? != 0 ] && exit 1
 
-# echo "- Adding mariadb Repo"
-# cat > /etc/yum.repos.d/mariadb.repo << 'EOF'
-# # MariaDB 10.1 CentOS repository list - created 2017-03-19 11:09 UTC
-# # http://downloads.mariadb.org/mariadb/repositories/
-# [mariadb]
-# name = MariaDB
-# baseurl = http://yum.mariadb.org/10.1/centos7-amd64
-# gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-# gpgcheck=1
-# enabled=1
-# EOF
-
 echo "- Adding IUS Repo"
 yum -y install https://centos7.iuscommunity.org/ius-release.rpm
 [ $? != 0 ] && exit 1
@@ -120,6 +108,10 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sendmail-PMilter-1.00-1.eFa.el
 rpmbuild -ba MailWatch-1.2.9.spec
 [ $? != 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-1.2.9-1.eFa.el7.x86_64.rpm
+[ $? != 0 ] && exit 1
+rpmbuild -ba sqlgreywebinterface.spec
+[ $? != 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/sqlgreywebinterface-1.1.9-2.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 cd $GITPATH/rpmbuild/SOURCES
 [ $? != 0 ] && exit 1
