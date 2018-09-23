@@ -26,7 +26,7 @@
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
 
 Name:           perl-Sendmail-PMilter
-Version:        1.0.0
+Version:        1.00
 Release:        1.eFa%{?dist}
 Summary:        Mail Filtering API implementing the Sendmail milter protocol
 License:        perl_5
