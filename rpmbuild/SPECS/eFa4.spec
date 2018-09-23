@@ -340,7 +340,7 @@ Requires: php72u-json >= 7.2.5-2
     # php72u-json                                # IUS     # eFaInit
 Requires: sqlgreywebinterface >= 1.1.9-2
     # sqlgreywebinterrface                       # eFa     # mailwatch
-Requires: perl-Sendmail-PMilter >= 1.0.0-1
+Requires: perl-Sendmail-PMilter >= 1.00-1
     # perl-Sendmail-PMilter                      # eFa     # MailScanner
 
 %description
@@ -398,7 +398,7 @@ rm composer-setup.php
 
 if [ "$1" = "1" ]; then
     # Perform Installation tasks
-    
+
     # Sanity check in case rpm was removed
     if [[ -e %{_sysconfdir}/eFa-Version ]]; then
         echo "Previous eFa install detected."
