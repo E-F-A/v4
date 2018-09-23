@@ -22,11 +22,9 @@ func_greylisting(){
       echo -e -n "$green[eFa]$clean Would you like to $red DISABLE $clean greylisting? [y/N/c]: "
       read TMPGREY
         if [[ "$TMPGREY" == "Y" || "$TMPGREY" == "y" ]]; then
-          # Issue #228 Greylist toggle overwrites custom smtpd_recipient_restrictions
-          # postconf -e "smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access" 
           sed -i "s/, \{0,1\}check_policy_service inet:127.0.0.1:2501//" /etc/postfix/main.cf
           postfix reload 
-          service sqlgrey stop 
+          service sqlgrey stop
           chkconfig sqlgrey off
 
           # disable Greylist menu item
@@ -52,8 +50,6 @@ func_greylisting(){
       echo -e -n "$green[eFa]$clean Would you like to $green ENABLE $clean greylisting? [y/N/c]: "
       read TMPGREY
         if [[ "$TMPGREY" == "Y" || "$TMPGREY" == "y" ]]; then
-          # Issue #228 Greylist toggle overwrites custom smtpd_recipient_restrictions
-          # postconf -e "smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
           sed -i "s/^smtpd_recipient_restrictions = \(.*\)$/smtpd_recipient_restrictions = \1, check_policy_service inet:127.0.0.1:2501/" /etc/postfix/main.cf
           postfix reload 
           service sqlgrey start 
