@@ -34,11 +34,11 @@ and the official repositories
 Download CentOS 7 Minimal and add the following line to the boot kernel
 options:
 
-inst.ks=http://dl.efa-project.org/build/4/ksnobuild.sh
+inst.ks=http://dl.efa-project.org/build/4/ksnobuild.cfg
 
 This will set up the machine with the recommended partitioning
 
-Next, run the build.sh script in the builds directory:
+Next, run the build.sh script in the build directory:
 chmod +x build.sh
 logsave build.log ./build.sh testing
 
@@ -46,9 +46,8 @@ logsave build.log ./build.sh testing
 # Building using github clone
 #######################################################################
 
-For development purposes, you can clone the repo and
-use devbuild.sh to build all rpm ackages and install on a fresh
-CentOS 7 
+For development purposes, you can clone the repo and use devbuild.sh
+to build all rpm packages and install on a fresh CentOS 7
 
 yum install git-core
 git clone https://github.com/E-F-A/v4
