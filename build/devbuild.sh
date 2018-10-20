@@ -105,9 +105,9 @@ rpmbuild -ba perl-Sendmail-PMilter.spec
 [ $? != 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sendmail-PMilter-1.00-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
-rpmbuild -ba MailWatch-1.2.9.spec
+rpmbuild -ba MailWatch.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-1.2.9-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-1.2.10-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba sqlgreywebinterface.spec
 [ $? != 0 ] && exit 1
@@ -119,9 +119,9 @@ rm -f eFa-4.0.0.tar.gz
 [ $? != 0 ] && exit 1
 tar czvf eFa-4.0.0.tar.gz eFa-4.0.0/
 [ $? != 0 ] && exit 1
-tar xzvf MailScanner-5.1.1-1.rhel.tar.gz
+tar xzvf MailScanner-5.1.2-1.rhel.tar.gz
 [ $? != 0 ] && exit 1
-yum -y install MailScanner-5.1.1-1/MailScanner-5.1.2-1.noarch.rpm
+yum -y install MailScanner-5.1.2-1/MailScanner-5.1.2-1.noarch.rpm
 [ $? != 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1

@@ -24,7 +24,7 @@
 #-----------------------------------------------------------------------------#
 Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
-Version:       1.2.9
+Version:       1.2.10
 Epoch:         1
 Release:       1.eFa%{?dist}
 License:       GNU GPL v2
@@ -218,6 +218,9 @@ EOF
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sat Oct 20 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.10-1
+- Update to MailWatch 1.2.10
+
 * Sun Jul 8 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.9-1
 - Update to MailWatch 1.2.9 and fix case
 
