@@ -1,6 +1,6 @@
 # roles/common/tasks/main.yml
 #-----------------------------------------------------------------------------#
-# eFa 4.0.0 roles/common/tasks/main.yml version 20180204
+# eFa 4.0.0 roles/common/tasks/main.yml version 20181020 devbuild
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2018 https://efa-project.org
 #
@@ -17,41 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
-- name: Add eFa Testing Repo Key
-  rpm_key:
-    state: present
-    key: '{{ mirror }}/rpm/eFa4/RPM-GPG-KEY-eFa-Project'
-- name: Add eFa Testing Repository
-  yum_repository:
-    state: present
-    name: eFa-Project-Testing
-    description: eFa4 Test Repo
-    baseurl: https://dl.efa-project.org/rpm/eFa4/testing/x86_64
-    mirrorlist: https://dl.efa-project.org/rpm/eFa4/mirrors-eFa-testing
-    failovermethod: priority
-    enabled: yes
-- name: Add MariaDB Repository
-  yum_repository:
-    state: present
-    name: MariaDB
-    description: MariaDB Repo
-    baseurl: http://yum.mariadb.org/10.1/centos7-amd64
-    gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-    gpgcheck: yes
-    enabled: yes
-- name: Add EPEL Repository
-  yum:
-    name: epel-release
-    state: present
-- name: Add Remi Repository
-  yum:
-    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-    state: present
-- name: Enable Remi Repository
-  command: yum-config-manager --enable remi-php72
-- name: Install eFa 4 Testing
-  yum:
-    state: present
-    update_cache: yes
-    name: eFa
-    
+- name: clone repository
+  git:
+    clone: yes
+    dest: /root/v4
+    repo: https://github.com/E-F-A/v4.git
+- name: Copy and execute devbuild.sh
+  script: /root/v4/build/devbuild.sh

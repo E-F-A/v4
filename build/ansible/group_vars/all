@@ -18,3 +18,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 mirror: 'https://mirrors.efa-project.org'
+gitpath: '/root/v4'
