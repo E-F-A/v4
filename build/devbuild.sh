@@ -121,7 +121,7 @@ tar czvf eFa-4.0.0.tar.gz eFa-4.0.0/
 [ $? != 0 ] && exit 1
 tar xzvf MailScanner-5.1.1-1.rhel.tar.gz
 [ $? != 0 ] && exit 1
-yum -y install MailScanner-5.1.1-1/MailScanner-5.1.1-1.noarch.rpm
+yum -y install MailScanner-5.1.1-1/MailScanner-5.1.2-1.noarch.rpm
 [ $? != 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
 [ $? != 0 ] && exit 1
