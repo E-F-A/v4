@@ -289,7 +289,7 @@ Requires:  spamassassin >= 3.4.1-1
     # #    procmail                              #         #
     # #    perl-Geo-IP                           #         #
     # #    perl-Net-Patricia                     #         #
-Requires:  MailScanner >= 5.0.7-4
+Requires:  MailScanner >= 5.1.2-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-3
     # clamav-unofficial-sigs                     # eFa     # clamav
