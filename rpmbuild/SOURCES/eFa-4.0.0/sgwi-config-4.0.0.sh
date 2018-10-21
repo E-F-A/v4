@@ -32,7 +32,7 @@ echo "Configuring sgwi..."
     # add db credential
     # Issue #66 Grab all passwords from EFA-Config
     sed -i '/^$db_user/ c\$db_user        = "sqlgrey";' /var/www/html/sgwi/includes/config.inc.php
-    sed -i "/^\$db_pass/ c\$efa_array = preg_grep('/^SQLGREYSQLPWD/', file('/etc/EFA-Config'));\nforeach(\$efa_array as \$num => \$line) {\n  if (\$line) {\n    \$db_pass = chop(preg_replace('/^SQLGREYSQLPWD:(.*)/','\$1',\$line));\n  }\n}" /var/www/html/sgwi/includes/config.inc.php
+    sed -i "/^\$db_pass/ c\$efa_array = preg_grep('/^SQLGREYSQLPWD/', file('/etc/eFa/SQLGrey-Config'));\nforeach(\$efa_array as \$num => \$line) {\n  if (\$line) {\n    \$db_pass = chop(preg_replace('/^SQLGREYSQLPWD:(.*)/','\$1',\$line));\n  }\n}" /var/www/html/sgwi/includes/config.inc.php
 
     # Add greylist to mailwatch menu
     # hide from non-admins
