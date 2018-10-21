@@ -162,6 +162,7 @@ while [ $# -gt 0 ]; do
         configclam=1
         updatesa=1
         configsa=1
+        configip=1
         configgeoip=1
         configtransport=1
         configmailscanner=1
@@ -498,7 +499,7 @@ if [[ $configip -eq 1 ]]; then
     cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak
     [ $? -ne 0 ] && exit 1
   fi    
-   
+
   sed -i '/^BOOTPROTO=/ c\BOOTPROTO="none"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
   [ $? -ne 0 ] && exit 1
   if [[ -n $IPV4ADDRESS ]]; then
