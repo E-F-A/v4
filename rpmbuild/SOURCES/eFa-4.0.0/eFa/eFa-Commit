@@ -944,7 +944,7 @@ EOF
   # Lock down GUI
   echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
   [ $? -ne 0 ] && exit 1
-  echo "apache ALL=NOPASSWD: touch /reboot.system" >> /etc/sudoers.d/eFa-Services
+  echo "apache ALL=NOPASSWD: /usr/bin/touch /reboot.system" >> /etc/sudoers.d/eFa-Services
   [ $? -ne 0 ] && exit 1
 
 fi
