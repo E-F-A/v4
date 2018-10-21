@@ -18,4 +18,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 yum -y install ansible
-ansible-playbook -i test_inventory.yml test_site.yml -v
+ansible-playbook -i dev_inventory.yml dev_site.yml -v
