@@ -6,6 +6,6 @@
 !/rpmbuild/RPMS
 /rpmbuild/SRPMS/*
 !/rpmbuild/SRPMS
-/rpmbuild/SOURCES/MailScanner-5.1.2-1/
+/rpmbuild/SOURCES/MailScanner*/
 /rpmbuild/SOURCES/eFa-4.0.0.tar.gz
 
