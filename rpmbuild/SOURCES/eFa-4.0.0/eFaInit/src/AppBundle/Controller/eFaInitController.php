@@ -1091,7 +1091,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Updating AV and SA rules...this may take a while...<br/>' . $output;
 
         try {
-            $process = new Process("sudo /usr/sbin/eFa-Commit --configclam");
+            $process = new Process("sudo su - -c '/usr/sbin/eFa-Commit --configclam'");
             $process->setTimeout($this->timeout);
             $process->start();
             
@@ -1208,7 +1208,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring MailWatch<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --timezone=' . $session->get('timezone') . ' --username=' . $session->get('webusername') . ' --efauserpwd=' . $session->get('webpassword'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --timezone=' . $session->get('timezone') . ' --username=' . $session->get('webusername') . ' --efauserpwd=\'' . $session->get('webpassword') . '\'');
 
             $process->mustRun();
 
@@ -1329,7 +1329,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring CLI<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configcli --cliusername=' .  $session->get('cliusername') . ' --efaclipwd=' . $session->get('clipassword'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configcli --cliusername=' .  $session->get('cliusername') . ' --efaclipwd=\'' . $session->get('clipassword') . '\'');
 
             $process->mustRun();
 
