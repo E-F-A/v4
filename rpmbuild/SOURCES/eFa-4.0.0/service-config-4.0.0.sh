@@ -53,9 +53,6 @@ systemctl disable chronyd
 systemctl disable yum-cron
 systemctl disable sshd
 
-systemctl disable hypervkvpd >/dev/null 2>&1
-systemctl disable hypervvssd >/dev/null 2>&1
-
 # Disable selinux for eFaInit phase
 sed -i "/^SELINUX=/ c\SELINUX=permissive" /etc/selinux/config
 
