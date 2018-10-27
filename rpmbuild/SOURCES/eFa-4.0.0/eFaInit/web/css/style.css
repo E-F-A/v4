@@ -113,9 +113,9 @@ select {
 }
 
 input {
-    font-size: 28px;
+    font-size: 18px;
     margin-bottom: 40px;
-    width: 200px;
+    width: 250px;
     border: solid 2px #000;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
