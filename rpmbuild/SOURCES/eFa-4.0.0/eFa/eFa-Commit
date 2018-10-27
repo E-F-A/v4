@@ -931,7 +931,7 @@ EOF
   systemctl enable php-fpm
   [ $? -ne 0 ] && exit 1
   if [[ $configvirtual -eq 1 ]]; then
-    virtplatform=`sudo /usr/sbin/virt-what`
+    virtplatform=`/usr/sbin/virt-what`
     if [[ $virtplatform == "vmware"  ]]; then
       func_Install-OpenVMTools
     elif [[ $virtplatform == "kvm" ]]; then
