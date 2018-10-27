@@ -803,8 +803,8 @@ fi
 
 if [[ $configroot -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Lockdown root"
-  randompw
-  echo "root:$PASSWD" | chpasswd
+  passwd -l root
+  [ $? -ne 0 ] && exit 1
 fi
 
 if [[ $configcli -eq 1 ]]; then

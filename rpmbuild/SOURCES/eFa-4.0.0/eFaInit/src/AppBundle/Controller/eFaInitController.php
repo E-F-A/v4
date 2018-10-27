@@ -1390,7 +1390,15 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $output = '<br/>eFa -- Finalizing configuration<br/>' . $output;
+        $output = '<br/>eFa -- Finalizing configuration and rebooting <br/>' . $output;
+        $buffer = '<br/>eFa -- Please visit after reboot is complete (in a few minutes):<br/>';
+        if ( $session->get('ipv4address') != '' ) {
+            $buffer .= '<a href="https://' . $session->get('ipv4address') . '">https://' . $session->get('ipv4address') . '</a><br/>';
+        }
+        if ( $session->get('ipv6address') != '' ) {
+            $buffer .= '<a href="https://' . $session->get('ipv6address') . '">https://' . $session->get('ipv6address') . '</a><br/>';
+        }
+        $output = $buffer . $output;
 
         eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
@@ -1403,28 +1411,16 @@ class eFaInitController extends Controller
 
             $output = '<br/> eFa -- Configuration Complete!<br/>' . $output;
 
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+            eFaInitController::progressBar(100, 100, $output);
 
         } catch (ProcessFailedException $exception) {
             eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error finalizing configuration");
             return;
         }
 
-        $progress += $progressStep;
-        $buffer = '<br/>eFa -- Rebooting...Please visit after reboot is complete (in a few minutes):<br/>';
-        if ( $session->get('ipv4address') != '' ) {
-            $buffer .= '<a href="https://' . $session->get('ipv4address') . '">https://' . $session->get('ipv4address') . '</a><br/>';
-        }
-        if ( $session->get('ipv6address') != '' ) {
-            $buffer .= '<a href="https://' . $session->get('ipv6address') . '">https://' . $session->get('ipv6address') . '</a><br/>';
-        }
-        $output = $buffer . $output;
-
-        eFaInitController::progressBar(100, 100, $output);
-
         return;
     }
-    
+
     private function progressBar($oldVal, $val, $output='', $error='')
     {
         for($i=$oldVal; $i<=$val; $i++)
