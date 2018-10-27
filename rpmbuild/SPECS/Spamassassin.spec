@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 Summary: Spam filter for email which can be invoked from mail delivery agents
 Name:    spamassassin
-Version: 3.4.1
+Version: 3.4.2
 Release: 1.eFa%{?dist}
 License: ASL 2.0
 Group:   Applications/Internet
@@ -238,6 +238,9 @@ fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v341.pre ]; then
   mv %{_sysconfdir}/mail/spamassassin/v341.pre %{_sysconfdir}/mail/spamassassin/v341.pre.tmp
 fi
+if [ -f %{_sysconfdir}/mail/spamassassin/v342.pre ]; then
+  mv %{_sysconfdir}/mail/spamassassin/v342.pre %{_sysconfdir}/mail/spamassassin/v342.pre.tmp
+fi
 exit 0
 
 %post
@@ -275,6 +278,10 @@ if [ -f %{_sysconfdir}/mail/spamassassin/v341.pre.tmp ]; then
   rm -f %{_sysconfdir}/mail/spamassassin/v341.pre
   mv %{_sysconfdir}/mail/spamassassin/v341.pre.tmp %{_sysconfdir}/mail/spamassassin/v341.pre
 fi
+if [ -f %{_sysconfdir}/mail/spamassassin/v342.pre.tmp ]; then
+  rm -f %{_sysconfdir}/mail/spamassassin/v342.pre
+  mv %{_sysconfdir}/mail/spamassassin/v342.pre.tmp %{_sysconfdir}/mail/spamassassin/v342.pre
+fi
 exit 0
 
 %postun
@@ -291,6 +298,9 @@ fi
 exit 0
 
 %changelog
+* Sat Oct 27 2018 Shawn Iverson <shawniverson@gmail.com> - 3.4.2-1
+- Updated and rebuilt for eFa https://efa-project.org
+
 * Sat Mar 5 2016 Shawn Iverson <shawniverson@gmail.com> - 3.4.1-1
 - Updated and rebuilt for eFa https://efa-project.org
 
