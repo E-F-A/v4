@@ -1407,8 +1407,6 @@ class eFaInitController extends Controller
 
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/> eFa -- Configuration Complete!<br/>' . $output;
 
             eFaInitController::progressBar(100, 100, $output);
