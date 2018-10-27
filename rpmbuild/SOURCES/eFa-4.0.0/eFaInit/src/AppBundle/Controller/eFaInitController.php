@@ -1020,8 +1020,6 @@ class eFaInitController extends Controller
             $process->setTimeout($this->timeout);
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/>eFa -- Generated host keys<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
