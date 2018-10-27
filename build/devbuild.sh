@@ -135,7 +135,6 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 
 # Set root default pass for devbuild
-
-echo 'First time login: root/eFaPr0j3ct' >> /etc/issue
+echo 'First time login: root/eFaPr0j3ct' >> /etc/rc.d/rc.local
 echo "root:eFaPr0j3ct" | chpasswd --md5 root
 

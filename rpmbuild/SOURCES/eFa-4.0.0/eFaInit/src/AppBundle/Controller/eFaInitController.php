@@ -730,9 +730,8 @@ class eFaInitController extends Controller
                 }
 
                 return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
-            } elseif ($form->get('Back')->isClicked) {
-                $action = $previousSlug;
-                $page = $previousPage;
+            } elseif (!($form->get('Next')->isClicked || $form->get('NextHidden')->isClicked())) {
+                return $this->redirectToRoute($previousPage, array('_locale' => $request->getLocale(), 'slug' => $previousSlug));
             } else {
                 if ($edit === 'edit') {
                     return $this->render('passwordeditbox/index.html.twig', array(
