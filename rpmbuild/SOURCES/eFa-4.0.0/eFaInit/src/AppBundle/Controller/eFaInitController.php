@@ -730,6 +730,9 @@ class eFaInitController extends Controller
                 }
 
                 return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
+            } elseif ($form->get('Back')->isClicked) {
+                $action = $previousSlug;
+                $page = $previousPage;
             } else {
                 if ($edit === 'edit') {
                     return $this->render('passwordeditbox/index.html.twig', array(
@@ -1091,7 +1094,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Updating AV and SA rules...this may take a while...<br/>' . $output;
 
         try {
-            $process = new Process("sudo su - -c '/usr/sbin/eFa-Commit --configclam'");
+            $process = new Process("sudo /usr/sbin/eFa-Commit --configclam%");
             $process->setTimeout($this->timeout);
             $process->start();
             
