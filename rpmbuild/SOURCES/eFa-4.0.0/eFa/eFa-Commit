@@ -602,17 +602,16 @@ if [[ $configclam -eq 1 ]]; then
   # Returns non-zero when up to date
   #[ $? -ne 0 ] && exit 1
 
-  # TODO: Move to post-init phase
   #/usr/sbin/clamav-unofficial-sigs.sh
   # Retuns non-zero when up to date
   #[ $? -ne 0 ] && exit 1
 fi
 
 if [[ $updatesa -eq 1 ]]; then
-  sa-update
+  # sa-update
   # Returns non-zero when up to date
   #[ $? -ne 0 ] && exit 1
-  sa-compile
+  # sa-compile
   [ $? -ne 0 ] && exit 1
 fi
 
@@ -848,22 +847,30 @@ if [[ $finalize -eq 1 ]]; then
   touch /.autorelabel
   [ $? -ne 0 ] && exit 1
 
+  sed -i "/^SELINUX=/ c\SELINUX=enforcing" /etc/selinux/config
+
   rm -f /etc/issue
   [ $? -ne 0 ] && exit 1
 
   # Remove EFA-Init from console
   sed -i "/^\/usr\/sbin\/eFa-Init/d" /root/.bashrc
   [ $? -ne 0 ] && exit 1
-  
-  # Switch to post-init
-  cp -f /usr/sbin/eFa-Post-Init /etc/rc.d/rc.local
+
+  # Restore rc.local
+  if [[ -f /etc/rc.d/rc.local.bak ]]; then
+      cp -f /etc/rc.d/rc.local.bak /etc/rc.d/rc.local
+  else
+      rm -f /etc/rc.d/rc.local
+      touch /etc/rc.d/rc.local
+  fi
+
+  # Remove GUI eFaInit
+  rm -f /etc/httpd/conf.d/eFaInit.conf
   [ $? -ne 0 ] && exit 1
   
-  # Remove GUI eFaInit
-  #rm -f /etc/httpd/conf.d/eFaInit.conf
-  # Move to post-init
-  #[ $? -ne 0 ] && exit 1
+  # Schedule post init
   
+
   cat > /var/www/html/index.html << 'EOF'
 <!DOCTYPE html>
 <html>
@@ -944,6 +951,8 @@ EOF
   sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa/eFa-Config
   [ $? -ne 0 ] && exit 1
   
+  echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
+  
   touch /reboot.system
   
   # Lock down GUI
@@ -951,9 +960,9 @@ EOF
   [ $? -ne 0 ] && exit 1
   echo "apache ALL=NOPASSWD: /usr/bin/touch /reboot.system" >> /etc/sudoers.d/eFa-Services
   [ $? -ne 0 ] && exit 1
+  
+  
 
 fi
 
 exit 0
-
-
