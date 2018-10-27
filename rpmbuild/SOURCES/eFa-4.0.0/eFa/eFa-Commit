@@ -544,11 +544,11 @@ if [[ $genhostkeys -eq 1 ]]; then
   ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519
   [ $? -ne 0 ] && exit 1
   
-  [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Generating dh key for postfix..."
-  openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
-  [ $? -ne 0 ] && exit 1
-  postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
-  [ $? -ne 0 ] && exit 1
+  #[ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Generating dh key for postfix..."
+  #openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
+  #[ $? -ne 0 ] && exit 1
+  #postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
+  #[ $? -ne 0 ] && exit 1
 fi
 
 if [[ $configtzone -eq 1 ]]; then
@@ -828,8 +828,9 @@ if [[ $configcert -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   cat /etc/pki/tls/private/localhost.key >> /etc/postfix/ssl/smtpd.pem
   [ $? -ne 0 ] && exit 1
-  cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
-  [ $? -ne 0 ] && exit 1
+  # Move to post init
+  #cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
+  #[ $? -ne 0 ] && exit 1
 fi
 
 if [[ $configmysql -eq 1 ]]; then
@@ -854,15 +855,14 @@ if [[ $finalize -eq 1 ]]; then
   sed -i "/^\/usr\/sbin\/eFa-Init/d" /root/.bashrc
   [ $? -ne 0 ] && exit 1
   
-  # Remove dynamic /etc/issue builder
-  if [[ -f /etc/rc.d/rc.local.bak ]]; then
-      cp -f /etc/rc.d/rc.local.bak /etc/rc.d/rc.local
-      [ $? -ne 0 ] && exit 1
-  fi
+  # Switch to post-init
+  cp -f /usr/sbin/eFa-Post-Init /etc/rc.d/rc.local
+  [ $? -ne 0 ] && exit 1
   
   # Remove GUI eFaInit
-  rm -f /etc/httpd/conf.d/eFaInit.conf
-  [ $? -ne 0 ] && exit 1
+  #rm -f /etc/httpd/conf.d/eFaInit.conf
+  # Move to post-init
+  #[ $? -ne 0 ] && exit 1
   
   cat > /var/www/html/index.html << 'EOF'
 <!DOCTYPE html>
