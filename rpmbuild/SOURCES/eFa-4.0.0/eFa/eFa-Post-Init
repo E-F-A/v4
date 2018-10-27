@@ -1,0 +1,42 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# eFa 4.0.0 post initial configuration script
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2018 https://efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+# Remove eFaInit config
+rm -f /etc/httpd/conf.d/eFaInit.conf
+
+# Restore rc.local
+if [[ -f /etc/rc.d/rc.local.bak ]]; then
+      cp -f /etc/rc.d/rc.local.bak /etc/rc.d/rc.local
+      [ $? -ne 0 ] && exit 1
+else
+      rm -f /etc/rc.d/rc.local
+      touch /etc/rc.d/rc.local
+fi
+
+openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
+postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
+cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
+
+# Update clamav unofficial-sigs
+/usr/sbin/clamav-unofficial-sigs.sh
+
+# Reload daemons
+systemctl reload postfix
+systemctl reload httpd
