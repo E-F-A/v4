@@ -18,12 +18,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
+# Don't run if reboot is pending
+[[ -f /reboot.system ]] && exit 0
+
 # Remove eFaInit config
 rm -f /etc/httpd/conf.d/eFaInit.conf
 
 openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
 postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
 cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
+
+sa-update
+sa-compile
 
 # Update clamav unofficial-sigs
 /usr/sbin/clamav-unofficial-sigs.sh
@@ -32,10 +38,4 @@ cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
 systemctl reload postfix
 systemctl reload httpd
 
-# Restore rc.local
-if [[ -f /etc/rc.d/rc.local.bak ]]; then
-      cp -f /etc/rc.d/rc.local.bak /etc/rc.d/rc.local
-else
-      rm -f /etc/rc.d/rc.local
-      touch /etc/rc.d/rc.local
-fi
+rm -f /etc/cron.d/efapostinit
