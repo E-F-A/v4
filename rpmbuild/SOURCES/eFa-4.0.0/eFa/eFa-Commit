@@ -602,7 +602,8 @@ if [[ $configclam -eq 1 ]]; then
   # Returns non-zero when up to date
   #[ $? -ne 0 ] && exit 1
 
-  /usr/sbin/clamav-unofficial-sigs.sh
+  # TODO: Move to post-init phase
+  #/usr/sbin/clamav-unofficial-sigs.sh
   # Retuns non-zero when up to date
   #[ $? -ne 0 ] && exit 1
 fi
