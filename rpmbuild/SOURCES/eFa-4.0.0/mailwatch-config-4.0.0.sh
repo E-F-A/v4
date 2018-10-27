@@ -111,8 +111,5 @@ chgrp -R apache /etc/MailScanner/rules
 chmod g+rwxs /etc/MailScanner/rules
 chmod g+rw /etc/MailScanner/rules/*.rules
 
-chmod +x $srcdir/mailwatch/upgrade.php
-$srcdir/mailwatch/upgrade.php
-
 echo "Configuring MailWatch...done"
 

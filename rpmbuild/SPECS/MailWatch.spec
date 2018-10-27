@@ -72,6 +72,7 @@ cp MailScanner_perl_scripts/MailWatchConf.pm %{buildroot}%{_datarootdir}/MailSca
 
 mkdir -p %{buildroot}/%{_bindir}/mailwatch
 cp -a tools %{buildroot}%{_bindir}/mailwatch
+cp upgrade.php %{buildroot}/%{_bindir}/mailwatch/tools
 rm -f %{buildroot}%{_bindir}/mailwatch/tools/Cron_jobs/INSTALL
 
 mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
@@ -131,6 +132,7 @@ EOF
 %{_bindir}/mailwatch/tools/LDAP/*
 %{_bindir}/mailwatch/tools/sudo/*
 %{_bindir}/mailwatch/tools/MailScanner_config/*
+%attr(0755, root, root) %{_bindir}/mailwatch/tools/upgrade.php
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
