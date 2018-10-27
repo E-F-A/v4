@@ -54,6 +54,9 @@ chmod 755 /usr/sbin/eFa-Init
 cp $srcdir/eFa/eFa-Commit /usr/sbin/eFa-Commit
 chmod 755 /usr/sbin/eFa-Commit
 
+cp $srcdir/eFa/eFa-Post-Init /usr/sbin/eFa-Post-Init
+chmod 755 /usr/sbin/eFa-Post-Init
+
 # Write SSH banner
 sed -i "/^#Banner / c\Banner /etc/banner"  /etc/ssh/sshd_config
 cat > /etc/banner << 'EOF'
