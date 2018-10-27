@@ -722,7 +722,7 @@ class eFaInitController extends Controller
 
             if (count($errors) === 0) {
                 if ($edit === 'edit') {
-                    $action = 'verify';
+                   $action = 'verify';
                    $page   = 'verifysettingspage';
                 } else {
                     $action = $form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked() ? $nextSlug : $previousSlug;
@@ -946,7 +946,7 @@ class eFaInitController extends Controller
         try {
             $process->mustRun();
 
-            $output = $process->getOutput() . '<br/> eFa -- Started MariaDB<br/>' . $output;
+            $output = '<br/> eFa -- Started MariaDB<br/>' . $output;
             
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
@@ -964,7 +964,7 @@ class eFaInitController extends Controller
         try {
             $process->mustRun();
 
-            $output = $process->getOutput() . '<br/> eFa -- Configured host and domain<br/>' . $output;
+            $output = '<br/> eFa -- Configured host and domain<br/>' . $output;
             
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
@@ -982,7 +982,7 @@ class eFaInitController extends Controller
         try {
             $process->mustRun();
             
-            $output = $process->getOutput() . '<br/> eFa -- DNS Configured<br/>' . $output;
+            $output = '<br/> eFa -- DNS Configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
@@ -1000,7 +1000,7 @@ class eFaInitController extends Controller
         try {
             $process->mustRun();
 
-            $output = $process->getOutput() . '<br/> eFa -- Interface configured<br/>' . $output;
+            $output = '<br/> eFa -- Interface configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
@@ -1039,8 +1039,6 @@ class eFaInitController extends Controller
             $process = new Process('sudo /usr/sbin/eFa-Commit --configtzone --timezone=' . $session->get('timezone') . ' --isutc=' . $session->get('configutc'));
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/> eFa -- Timezone configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1057,8 +1055,6 @@ class eFaInitController extends Controller
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configiana --ianacode=' . $session->get('ianacode'));
             $process->mustRun();
-
-            $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- Wrote IANA code to freshclam config<br/>' . $output;
 
@@ -1077,8 +1073,6 @@ class eFaInitController extends Controller
             $process = new Process('sudo /usr/sbin/eFa-Commit --configrazor');
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/> eFa -- Configured razor<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1090,7 +1084,7 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $output = '<br/>eFa -- Updating AV and SA rules...this may take a while...<br/>' . $output;
+        $output = '<br/>eFa -- Updating clam...this may take a while...<br/>' . $output;
 
         try {
             $process = new Process("sudo /usr/sbin/eFa-Commit --configclam%");
@@ -1102,21 +1096,7 @@ class eFaInitController extends Controller
                 eFaInitController::progressBar($progress, $progress, $output);
             }
 
-            $process = new Process("sudo /usr/sbin/eFa-Commit --updatesa");
-            $process->setTimeout($this->timeout);
-            $process->start();
-            
-            $fold = '';
-            foreach($process as $type => $data) {
-                $fold .= $data;
-                if ( strlen($fold) > 80 ) {
-                   $output = substr($fold, 1, 80) . "\n" . $output;
-                   $fold = substr($fold, 81);
-                   eFaInitController::progressBar($progress, $progress, $output);
-                }
-            }
-
-            $output = '<br/> eFa -- Updated AV and SA rules<br/>' . $output;
+            $output = '<br/> eFa -- Updated clam<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
@@ -1132,8 +1112,6 @@ class eFaInitController extends Controller
         try {
             $process = new Process("sudo /usr/sbin/eFa-Commit --configgeoip");
             $process->mustRun();
-
-            $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- GeoIP updated<br/>' . $output;
 
@@ -1152,8 +1130,6 @@ class eFaInitController extends Controller
             $process = new Process('sudo /usr/sbin/eFa-Commit --configtransport --domainname=' . $session->get('domainname') . ' --mailserver=' . $session->get('mailserver') . ' --adminemail=' . $session->get('email'));
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-            
             $output = '<br/> eFa -- Transport configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1174,8 +1150,6 @@ class eFaInitController extends Controller
             $process->setTimeout($this->timeout);
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/> eFa -- Spamassassin configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1194,8 +1168,6 @@ class eFaInitController extends Controller
 
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-            
             $output = '<br/> eFa -- MailScanner configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1210,11 +1182,11 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring MailWatch<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --timezone=' . $session->get('timezone') . ' --username=' . $session->get('webusername') . ' --efauserpwd=\'' . $session->get('webpassword') . '\'');
+            $password = $session->get('webpassword');
+            $password =~ s/'/\\\\'/g;
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --timezone=' . $session->get('timezone') . ' --username=' . $session->get('webusername') . ' --efauserpwd=\'' . $password . '\'');
 
             $process->mustRun();
-
-            $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- MailWatch configured<br/>' . $output;
 
@@ -1234,8 +1206,6 @@ class eFaInitController extends Controller
 
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/> eFa -- SASL configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1253,8 +1223,6 @@ class eFaInitController extends Controller
             $process = new Process('sudo /usr/sbin/eFa-Commit --configsqlgrey');
 
             $process->mustRun();
-
-            $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- SQLGrey configured<br/>' . $output;
 
@@ -1274,8 +1242,6 @@ class eFaInitController extends Controller
 
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/> eFa -- Apache configured<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1293,8 +1259,6 @@ class eFaInitController extends Controller
             $process = new Process('sudo /usr/sbin/eFa-Commit --configyumcron --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --adminemail=' . $session->get('email'));
 
             $process->mustRun();
-
-            $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- yum-cron configured<br/>' . $output;
 
@@ -1314,8 +1278,6 @@ class eFaInitController extends Controller
 
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/> eFa -- Root locked down<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1331,11 +1293,11 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring CLI<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configcli --cliusername=' .  $session->get('cliusername') . ' --efaclipwd=\'' . $session->get('clipassword') . '\'');
+            $password = $session->get('clipassword');
+            $password =~ s/'/\\\\'/g;
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configcli --cliusername=' .  $session->get('cliusername') . ' --efaclipwd=\'' . $password . '\'');
 
             $process->mustRun();
-
-            $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- Configured CLI<br/>' . $output;
 
@@ -1356,8 +1318,6 @@ class eFaInitController extends Controller
 
             $process->mustRun();
 
-            $output = $process->getOutput() . $output;
-
             $output = '<br/> eFa -- Configured self-signed cert<br/>' . $output;
 
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
@@ -1376,8 +1336,6 @@ class eFaInitController extends Controller
             $process = new Process('sudo /usr/sbin/eFa-Commit --configmysql');
 
             $process->mustRun();
-
-            $output = $process->getOutput() . $output;
 
             $output = '<br/> eFa -- Locked down mysql<br/>' . $output;
 
@@ -1404,7 +1362,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --finalize --configvirtual=' .  $session->get('configvirtual'));
-
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Configuration Complete!<br/>' . $output;
@@ -1421,30 +1379,26 @@ class eFaInitController extends Controller
 
     private function progressBar($oldVal, $val, $output='', $error='')
     {
-        for($i=$oldVal; $i<=$val; $i++)
-        {
-            echo '
-                <div style="margin:0;color: #000;font-family: Arial, Helvetica, sans-serif;font-size: 16px;line-height: 1.5em;">
-                    <div style="text-align: center; width:1100px; margin: 0 auto;">
-                        <div style="position: absolute; width:1100px;">
-                            <div style="background-color: #999999; -webkit-border-radius: 15px 15px 0 0; -moz-border-radius: 15px 15px 0 0;border-radius: 15px 15px 0 0;color: #222; font-size: 28px; padding: 15px 15px; margin: 0;text-align: center; border: 2px solid #000000;border-bottom: 0;">
-                                <h1>Configuring System...</h1>
-                            </div>
-                            <div style="padding: 15px 15px; border: solid 2px #000;border-top: 0;-webkit-border-radius: 0 0 15px 15px;-moz-border-radius: 0 0 15px 15px; border-radius: 0 0 15px 15px;">
-                               <div style="color: #000; list-style: none; background-color: #009; border: solid 2px #000; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;">
-                                    <div style="-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;width:'.$i.'%;background:linear-gradient(to bottom, rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); ;height:35px;">&nbsp;
-                                    </div>
+        echo '
+            <div style="margin:0;color: #000;font-family: Arial, Helvetica, sans-serif;font-size: 16px;line-height: 1.5em;">
+                <div style="text-align: center; width:1100px; margin: 0 auto;">
+                    <div style="position: absolute; width:1100px;">
+                        <div style="background-color: #999999; -webkit-border-radius: 15px 15px 0 0; -moz-border-radius: 15px 15px 0 0;border-radius: 15px 15px 0 0;color: #222; font-size: 28px; padding: 15px 15px; margin: 0;text-align: center; border: 2px solid #000000;border-bottom: 0;">
+                            <h1>Configuring System...</h1>
+                        </div>
+                        <div style="padding: 15px 15px; border: solid 2px #000;border-top: 0;-webkit-border-radius: 0 0 15px 15px;-moz-border-radius: 0 0 15px 15px; border-radius: 0 0 15px 15px;">
+                           <div style="color: #000; list-style: none; background-color: #009; border: solid 2px #000; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;">
+                                <div style="-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;width:'.$val.'%;background:linear-gradient(to bottom, rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); ;height:35px;">&nbsp;
                                 </div>
                             </div>
                         </div>
                     </div>
-                 </div>
-             ';
+                </div>
+             </div>
+         ';
 
-             ob_flush(); 
-             flush();
-             usleep(10000);
-         }
+         ob_flush(); 
+         flush();
 
          if ($output !== '')
          {
