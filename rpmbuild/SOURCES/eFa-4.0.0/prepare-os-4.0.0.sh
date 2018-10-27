@@ -24,8 +24,10 @@
 source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Change the root password
-echo "- Changing the root password"
-echo "root:$password" | chpasswd --md5 root
+# Move out of package to build scripts
+# Do not change root pass during rpm phase
+# echo "- Changing the root password"
+# echo "root:$password" | chpasswd --md5 root
 
 echo "- Adding Firewall rules"
 firewall-cmd --permanent --add-service=smtp

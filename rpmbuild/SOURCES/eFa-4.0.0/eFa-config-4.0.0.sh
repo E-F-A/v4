@@ -117,6 +117,7 @@ semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod -f $srcdir/eFa/eFa
 semodule -i $srcdir/eFa/eFa.pp
 
 # Set EFA-Init to run at first root login:
+# Do not set root default password in rpm phase
 sed -i '1i\\/usr\/sbin\/eFa-Init' /root/.bashrc
 cp -f /etc/rc.d/rc.local /etc/rc.d/rc.local.bak
 cat >> /etc/rc.local << 'EOF' 
@@ -128,7 +129,6 @@ echo '------------------------------' >> /etc/issue
 echo '-- https://efa-project.org ---' >> /etc/issue
 echo '------------------------------' >> /etc/issue
 echo '' >> /etc/issue
-echo 'First time login: root/eFaPr0j3ct' >> /etc/issue
 echo -e "IP Address(es) for GUI:\n$IP" >> /etc/issue
 EOF
 chmod +x /etc/rc.d/rc.local
