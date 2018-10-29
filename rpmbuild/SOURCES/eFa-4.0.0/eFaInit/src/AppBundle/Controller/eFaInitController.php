@@ -226,7 +226,8 @@ class eFaInitController extends Controller
 
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process("route -n | grep 0.0.0.0 | awk '{print $2}' | grep -v 0.0.0.0");
+                        $interface = $session->get('interface');
+                        $process = new Process("route -n | grep $interface | grep 0.0.0.0 | awk '{print $2}' | grep -v 0.0.0.0");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -485,9 +486,11 @@ class eFaInitController extends Controller
         try {
             $process = new Process("ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' | sort | uniq");
             $process->mustRun();
-            foreach ( explode('\n',$process->getOutput()) as $var ) 
+            foreach ( explode("\n",$process->getOutput()) as $var ) 
             {
-               $options['varChoices'][trim($var)] = trim($var);
+                if ( trim($var) !== '') {
+                    $options['varChoices'][trim($var)] = trim($var);
+                }
             }
         } catch (ProcessFailedException $exception) {
                $options['varChoices']['eth0'] = 'eth0';
