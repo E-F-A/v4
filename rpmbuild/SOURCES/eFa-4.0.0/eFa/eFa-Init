@@ -218,7 +218,7 @@ function func_ask-ipv4gateway() {
   func_echo-header
 
   # Display current gateway
-  CIPV4GATEWAY=`route -n | grep 0.0.0.0 | awk '{print $2}' | grep -v 0.0.0.0`
+  CIPV4GATEWAY=`route -n | grep $INTERFACE | grep 0.0.0.0 | awk '{print $2}' | grep -v 0.0.0.0`
   echo -e ""
   echo -e "$green[eFa]$clean Your current default gateway is: $CIPV4GATEWAY"
   echo -e ""
@@ -779,7 +779,7 @@ function checkip6()
 # +---------------------------------------------------+
 func_interfaces(){
   interf=$(ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' | sort | uniq)
-  nrintf=$(cat $interf | wc -l)
+  nrintf=$(echo $interf | wc -w)
 
   if [ $nrintf -gt 1 ]
     then
