@@ -733,6 +733,9 @@ if [[ $configmailwatch -eq 1 ]]; then
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "DELETE FROM whitelist where from_address= '127.0.0.1'" >/dev/null 2>&1
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "DELETE FROM whitelist where from_address= '::1'" >/dev/null 2>&1
 
+  # Handle single quotes
+  efauserpwd=$(echo $efauserpwd | sed -e "s/'/''/g")
+  
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$efauserpwd'), fullname = 'Administrator', type ='A'"
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '127.0.0.1'"
