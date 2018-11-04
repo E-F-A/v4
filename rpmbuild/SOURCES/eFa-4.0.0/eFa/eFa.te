@@ -21,6 +21,7 @@ require {
     type postfix_qmgr_t;
     type postfix_cleanup_t;
     type postfix_smtp_t;
+    type postfix_postdrop_t;
     type httpd_t;
     type mscan_etc_t;
     type mscan_t;
@@ -93,6 +94,7 @@ require {
     type ldconfig_exec_t;
     type rngd_t;
     type mscan_exec_t;
+    type system_mail_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -100,7 +102,7 @@ require {
     class chr_file getattr;
     class lnk_file { getattr read };
     class tcp_socket { name_connect getattr ioctl };
-    class capability { kill setuid setgid chown dac_override dac_read_search sys_resource fsetid fowner audit_write };
+    class capability { kill setuid setgid chown dac_override dac_read_search sys_resource fsetid fowner audit_write net_raw };
     class netlink_audit_socket { create write nlmsg_relay read };
     class process setrlimit;
     class service enable;
@@ -176,6 +178,10 @@ allow httpd_sys_script_t postfix_smtp_t:dir { getattr search };
 allow httpd_sys_script_t postfix_smtp_t:file { read open };
 allow httpd_sys_script_t postfix_smtpd_t:dir { getattr search read open};
 allow httpd_sys_script_t postfix_smtpd_t:file { open read };
+allow httpd_sys_script_t postfix_postdrop_t:dir { getattr search read open};
+allow httpd_sys_script_t postfix_postdrop_t:file { open read };
+allow httpd_sys_script_t system_mail_t:dir { getattr search read open};
+allow httpd_sys_script_t system_mail_t:file { open read };
 
 # Allow ps to get process information for MailScanner and postfix only
 dontaudit httpd_sys_script_t init_t:dir { getattr search };
@@ -350,3 +356,6 @@ allow unconfined_t self:capability2 mac_admin;
 
 #============= sendmail_t ==============
 allow sendmail_t postfix_etc_t:dir read;
+
+#============= named_t ==============
+allow named_t self:capability { net_raw };
