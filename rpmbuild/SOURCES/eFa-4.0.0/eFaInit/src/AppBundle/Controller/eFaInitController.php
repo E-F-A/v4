@@ -1184,8 +1184,9 @@ class eFaInitController extends Controller
 
         try {
             $password = $session->get('webpassword');
-            $password = preg_replace("/'/", "\\\\'", $password);
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --timezone=' . $session->get('timezone') . ' --username=' . $session->get('webusername') . ' --efauserpwd="' . $password . '"');
+            # Single quote handling
+            $password = preg_replace("/'/", "''", $password);
+            $process = new Process("sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=" . $session->get('hostname') . " --domainname=" . $session->get('domainname') . " --timezone=" . $session->get('timezone') . " --username=" . $session->get('webusername') . " --efauserpwd=\"'\"" . $password . "\"'\"");
 
             $process->mustRun();
 
@@ -1295,7 +1296,7 @@ class eFaInitController extends Controller
 
         try {
             $password = $session->get('clipassword');
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configcli --cliusername=' .  $session->get('cliusername') . ' --efaclipwd="' . $password . '"');
+            $process = new Process("sudo /usr/sbin/eFa-Commit --configcli --cliusername=" .  $session->get('cliusername') . " --efaclipwd=\"'\"" . $password . "\"'\"");
 
             $process->mustRun();
 
