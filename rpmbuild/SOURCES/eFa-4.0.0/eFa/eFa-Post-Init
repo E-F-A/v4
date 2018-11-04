@@ -34,8 +34,11 @@ sa-compile
 # Update clamav unofficial-sigs
 /usr/sbin/clamav-unofficial-sigs.sh
 
+freshclam
+
 # Reload daemons
 systemctl reload postfix
 systemctl reload httpd
+systemctl restart clamd@scan
 
 rm -f /etc/cron.d/efapostinit

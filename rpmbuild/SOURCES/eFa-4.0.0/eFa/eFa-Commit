@@ -598,7 +598,7 @@ fi
 if [[ $configclam -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Updating AV and SA rules"
 
-  freshclam
+  # freshclam
   # Returns non-zero when up to date
   #[ $? -ne 0 ] && exit 1
 
