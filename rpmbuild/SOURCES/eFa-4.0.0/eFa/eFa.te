@@ -134,6 +134,7 @@ allow httpd_t postfix_spool_t:dir read;
 allow httpd_t mscan_spool_t:dir { read write remove_name };
 allow httpd_t mscan_spool_t:file { read getattr open unlink };
 allow httpd_t tmpfs_t:file getattr;
+allow httpd_t sqlgreysql_etc_t:file { getattr read };
 
 # Allow access to MailWatch-Configuration
 allow httpd_t mailwatchsql_etc_t:file { getattr read open };
