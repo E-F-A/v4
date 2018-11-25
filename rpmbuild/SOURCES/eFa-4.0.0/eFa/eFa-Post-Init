@@ -21,6 +21,11 @@
 # Don't run if reboot is pending
 [[ -f /reboot.system ]] && exit 0
 
+# Don't run if lock is present
+[[ -f /var/run/eFa-Post-Init.lock ]] && exit 0
+
+touch /var/run/eFa-Post-Init.lock
+
 # Remove eFaInit config
 rm -f /etc/httpd/conf.d/eFaInit.conf
 
@@ -42,3 +47,4 @@ systemctl reload httpd
 systemctl restart clamd@scan
 
 rm -f /etc/cron.d/efapostinit
+rm -f /var/run/eFa-Post-Init.lock
