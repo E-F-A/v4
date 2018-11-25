@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 initial postfix-configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ echo "Configuring postfix..."
 mkdir /etc/postfix/ssl
 postconf -e "inet_protocols = ipv4, ipv6"
 postconf -e "inet_interfaces = all"
-postconf -e "mynetworks = 127.0.0.0/8"
+postconf -e "mynetworks = 127.0.0.0/8,::1"
 postconf -e "header_checks = regexp:/etc/postfix/header_checks"
 postconf -e "myorigin = \$mydomain"
 postconf -e "mydestination = \$myhostname, localhost.\$mydomain, localhost"
@@ -48,7 +48,7 @@ postconf -e "alias_database = hash:/etc/aliases"
 postconf -e "default_destination_recipient_limit = 1"
 # SASL config
 postconf -e "broken_sasl_auth_clients = yes"
-postconf -e "smtpd_sasl_auth_enable = yes"
+postconf -e "smtpd_sasl_auth_enable = no"
 postconf -e "smtpd_sasl_local_domain = "
 postconf -e "smtpd_sasl_path = smtpd"
 postconf -e "smtpd_sasl_local_domain = $myhostname"
@@ -88,6 +88,8 @@ postconf -e "masquerade_domains = \$mydomain"
 postconf -e "smtpd_milters = inet:127.0.0.1:33333"
 # 128 MB limit
 postconf -e "message_size_limit = 133169152"
+postconf -e "qmqpd_authorized_clients = 127.0.0.1,::1"
+postconf -e "enable_long_queue_ids = yes"
 
 # Hide localhost (moved to init phase)
 #echo '/^Received:.*\(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
@@ -114,5 +116,8 @@ chmod 0600 /etc/postfix/sasl_passwd
 echo "pwcheck_method: auxprop">/usr/lib64/sasl2/smtpd.conf
 echo "auxprop_plugin: sasldb">>/usr/lib64/sasl2/smtpd.conf
 echo "mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5">>/usr/lib64/sasl2/smtpd.conf
+
+# Enable QMQP delivery
+sed -i "/^#628 / c\qmqp      unix  n       -       n       -       -       qmqpd" /etc/postfix/master.cf
 
 echo "Configuring postfix...done"
