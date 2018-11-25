@@ -32,7 +32,7 @@ echo "Configuring postfix..."
 mkdir /etc/postfix/ssl
 postconf -e "inet_protocols = ipv4, ipv6"
 postconf -e "inet_interfaces = all"
-postconf -e "mynetworks = 127.0.0.0/8 ::1"
+postconf -e "mynetworks = 127.0.0.0/8 [::1]/128"
 postconf -e "header_checks = regexp:/etc/postfix/header_checks"
 postconf -e "myorigin = \$mydomain"
 postconf -e "mydestination = \$myhostname, localhost.\$mydomain, localhost"
@@ -88,7 +88,7 @@ postconf -e "masquerade_domains = \$mydomain"
 postconf -e "smtpd_milters = inet:127.0.0.1:33333"
 # 128 MB limit
 postconf -e "message_size_limit = 133169152"
-postconf -e "qmqpd_authorized_clients = 127.0.0.1 ::1"
+postconf -e "qmqpd_authorized_clients = 127.0.0.1 [::1]"
 postconf -e "enable_long_queue_ids = yes"
 
 # Hide localhost (moved to init phase)
