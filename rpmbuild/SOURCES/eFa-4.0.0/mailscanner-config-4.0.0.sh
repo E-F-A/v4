@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 initial mailscanner-configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2018 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -46,6 +46,11 @@ sed -i '/^Run As Group =/ c\Run As Group = postfix' /etc/MailScanner/MailScanner
 sed -i '/^Incoming Queue Dir =/ c\Incoming Queue Dir = \/var\/spool\/MailScanner\/milterin' /etc/MailScanner/MailScanner.conf
 sed -i '/^Outgoing Queue Dir =/ c\Outgoing Queue Dir = \/var\/spool\/MailScanner\/milterout' /etc/MailScanner/MailScanner.conf
 sed -i '/^MTA =/ c\MTA = msmail' /etc/MailScanner/MailScanner.conf
+sed -i '/^MSMail Queue Type =/ c\MSMail Queue Type = long' /etc/MailScanner/MailScanner.conf
+sed -i '/^MSMail Delivery Method =/ c\MSMail Delivery Method = QMQP' /etc/MailScanner/MailScanner.conf
+sed -i '/^MSMail Socket Type =/ c\MSMail Socket Type = unix' /etc/MailScanner/MailScanner.conf
+sed -i '/^MSMail Socket Dir =/ c\MSMail Socket Dir = /var/spool/postfix/public/qmqp' /etc/MailScanner/MailScanner.conf
+sed -i '/^Milter Ignore Loopback =/ c\Milter Ignore Loopback = no' /etc/MailScanner/MailScanner.conf
 sed -i '/^Incoming Work Group =/ c\Incoming Work Group = mtagroup' /etc/MailScanner/MailScanner.conf
 sed -i '/^Incoming Work Permissions =/ c\Incoming Work Permissions = 0660' /etc/MailScanner/MailScanner.conf
 sed -i '/^Quarantine User =/ c\Quarantine User = postfix' /etc/MailScanner/MailScanner.conf
