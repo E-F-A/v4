@@ -317,6 +317,7 @@ allow mscan_t postfix_spool_t:file { append getattr read ioctl lock open write c
 allow mscan_t postfix_spool_t:lnk_file { getattr read };
 allow mscan_t postfix_public_t:dir search;
 allow mscan_t postfix_public_t:fifo_file { getattr ioctl write open };
+allow mscan_t postfix_public_t:sock_file write;
 allow mscan_t etc_mail_t:dir { search getattr read open };
 allow mscan_t etc_mail_t:file { getattr read open ioctl };
 allow mscan_t etc_mail_t:lnk_file read;
