@@ -57,7 +57,6 @@ sed -i "s/#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssas
 /usr/bin/cdcc "add dcc3.dcc-servers.net"
 /usr/bin/cdcc "add dcc4.dcc-servers.net"
 /usr/bin/cdcc "add dcc5.dcc-servers.net"
-echo '/^DCCPOOL:/ c\DCCPOOL:default' >> /etc/eFa/eFa-Config
 
 echo "Configuring dcc...done"
 
