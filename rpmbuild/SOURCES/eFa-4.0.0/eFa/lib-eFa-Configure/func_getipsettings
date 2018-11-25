@@ -3,7 +3,7 @@
 # +---------------------------------------------------+
 function func_getipsettings(){
   interf=$(ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' | sort | uniq)
-  nrintf=$(cat $interf | wc -l)
+  nrintf=$(echo $interf | wc -w)
   if [ $nrintf -gt 1 ]
     then
       func_echo-header
@@ -29,7 +29,7 @@ function func_getipsettings(){
             choice_check=1
         fi
         done
-         
+
       # Check if the user typed a interface that exists.
       if [ $choice_check -eq 0 ]
         then
