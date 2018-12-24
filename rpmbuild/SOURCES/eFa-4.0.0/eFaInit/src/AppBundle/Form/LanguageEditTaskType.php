@@ -17,12 +17,15 @@ class LanguageEditTaskType extends AbstractType
         $builder
             ->add('Language', ChoiceType::class, array(
                 'choices' => array(
+                    'Czech' => 'cz',
                     'Danish' => 'da',
                     'Dutch' => 'nl',
                     'English' => 'en',
                     'French' => 'fr',
                     'German' => 'de',
+                    'Greek' => 'el',
                     'Italian' => 'it',
+                    'Norwegian' => 'no',
                     'Portuguese' => 'pt_PT',
                     'Russian' => 'ru',
                     'Simplified Chinese' => 'zh_CN',

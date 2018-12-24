@@ -111,6 +111,18 @@ class eFaInitController extends Controller
         case 'ru':
             return $this->redirectToRoute('languagepage', array('_locale' => 'ru'));
         break;
+        case 'cz':
+            return $this->redirectToRoute('languagepage', array('_locale' => 'cz'));
+        break;
+        case 'el':
+            return $this->redirectToRoute('languagepage', array('_locale' => 'el'));
+        break;
+        case 'it':
+            return $this->redirectToRoute('languagepage', array('_locale' => 'it'));
+        break;
+        case 'no':
+            return $this->redirectToRoute('languagepage', array('_locale' => 'no'));
+        break;
         default:
             return $this->redirectToRoute('languagepage', array('_locale' => 'en'));
         break;
