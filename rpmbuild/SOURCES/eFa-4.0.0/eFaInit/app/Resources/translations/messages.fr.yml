@@ -78,13 +78,3 @@ Swedish: Svensk
 'Host is UTC': 'L''hôte est configuré sur l''heure UTC'
 'Set IP Mask': 'Déterminer le masque'
 'IANA Country Code': 'Code pays IANA [FR]'
-'IPv4 Netmask:': 'Masque IPv4 :'
-'IPv4 Gateway:': 'Passerelle IPv4 :'
-'IPv6 Mask:': 'Masque IPv6 :'
-'IPv6 Gateway:': 'Passerelle IPv6 :'
-'Web Admin Username:': 'Nom d''utilisateur administrateur pour l''interface d''administration web :'
-'Web Admin Password:': 'Mot de passe administrateur pour l''interface d''administration web :'
-'Console Admin Username:': 'Nom d''utilisateur administrateur pour la console d''administration :'
-'Console Admin Password:': 'Mot de passe administrateur pour la console d''administration :'
-'Server Mail Locale:': 'Serveur de messagerie local :'
-
