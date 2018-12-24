@@ -51,7 +51,8 @@ systemctl disable unbound
 #chkconfig munin-node off
 systemctl disable chronyd
 systemctl disable yum-cron
-systemctl disable sshd
+# Moved to build script to allow yum/cloud/remote based installs
+#systemctl disable sshd
 
 # Disable selinux for eFaInit phase
 sed -i "/^SELINUX=/ c\SELINUX=permissive" /etc/selinux/config
