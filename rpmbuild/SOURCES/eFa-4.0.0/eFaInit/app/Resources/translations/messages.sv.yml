@@ -1,17 +1,19 @@
 # Note: Language selections are in each respective language, not this language
-English: English
-Danish: Dansk
-Dutch: Nederlands
-French: Français
-Portuguese: Portugues
-German: Deutsche
-Turkish: Türk
-Italian: Italiano
-Greek: Ελληνικά
-Russian: Pусский
-Swedish: Svensk
-'Simplified Chinese': 簡體中文
-'Traditional Chinese': 繁體中文
+'English': 'English'
+'Danish': 'Dansk'
+'Dutch': 'Nederlands'
+'French': 'Français'
+'Portuguese': 'Portugues'
+'German': 'Deutsche'
+'Turkish': 'Türk'
+'Italian': 'Italiano'
+'Greek': 'Ελληνικά'
+'Russian': 'Pусский'
+'Swedish': 'Svensk'
+'Norwegian': 'Norsk'
+'Czech': 'Český'
+'Simplified Chinese': '簡體中文'
+'Traditional Chinese': '繁體中文'
 # End of language selections
 
 'Welcome to': 'Välkommen till'
