@@ -92,3 +92,12 @@ yum -y update
 
 # install eFa
 yum -y install eFa
+
+if [[ "$action" == "kickstart" ]]; then
+  # Set root default pass for kickstart builds
+  echo 'echo "First time login: root/eFaPr0j3ct" >> /etc/issue' >> /etc/rc.d/rc.local
+  echo "root:eFaPr0j3ct" | chpasswd --md5 root
+
+  # Disable ssh for kickstart builds
+  systemctl disable sshd
+fi
