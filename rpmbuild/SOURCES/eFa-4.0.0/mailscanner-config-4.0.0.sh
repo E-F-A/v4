@@ -40,7 +40,7 @@ touch /var/lock/subsys/MailScanner.off
 touch /etc/MailScanner/rules/spam.blacklist.rules
 
 # Configure MailScanner
-sed -i '/^Max Children =/ c\Max Children = 2' /etc/MailScanner/MailScanner.conf
+sed -i '/^Max Children =/ c\Max Children = 4' /etc/MailScanner/MailScanner.conf
 sed -i '/^Run As User =/ c\Run As User = postfix' /etc/MailScanner/MailScanner.conf
 sed -i '/^Run As Group =/ c\Run As Group = postfix' /etc/MailScanner/MailScanner.conf
 sed -i '/^Incoming Queue Dir =/ c\Incoming Queue Dir = \/var\/spool\/MailScanner\/milterin' /etc/MailScanner/MailScanner.conf
@@ -69,7 +69,7 @@ sed -i 's/X-%org-name%-MailScanner/X-%org-name%-MailScanner-eFa/g' /etc/MailScan
 sed -i '/^Remove These Headers =/ c\Remove These Headers = X-Mozilla-Status: X-Mozilla-Status2: Disposition-Notification-To: Return-Receipt-To:' /etc/MailScanner/MailScanner.conf
 sed -i '/^Disarmed Modify Subject =/ c\Disarmed Modify Subject = no' /etc/MailScanner/MailScanner.conf
 sed -i '/^Send Notices =/ c\Send Notices = no' /etc/MailScanner/MailScanner.conf
-sed -i '/^Notice Signature =/ c\Notice Signature = -- \\nEFA\\nEmail Filter Appliance\\nwww.efa-project.org' /etc/MailScanner/MailScanner.conf
+sed -i '/^Notice Signature =/ c\Notice Signature = -- \\neFa\\nemail Filter appliance\\nwww.efa-project.org' /etc/MailScanner/MailScanner.conf
 sed -i '/^Notices From =/ c\Notices From = eFa' /etc/MailScanner/MailScanner.conf
 sed -i '/^Inline HTML Signature =/ c\Inline HTML Signature = %rules-dir%\/sig.html.rules' /etc/MailScanner/MailScanner.conf
 sed -i '/^Inline Text Signature =/ c\Inline Text Signature = %rules-dir%\/sig.text.rules' /etc/MailScanner/MailScanner.conf
@@ -81,7 +81,7 @@ sed -i '/^Max SpamAssassin Size =/ c\Max SpamAssassin Size = 100k continue 150k'
 sed -i '/^Required SpamAssassin Score =/ c\Required SpamAssassin Score = 4' /etc/MailScanner/MailScanner.conf
 sed -i '/^Spam Actions =/ c\Spam Actions = store' /etc/MailScanner/MailScanner.conf
 sed -i '/^High Scoring Spam Actions =/ c\High Scoring Spam Actions = store' /etc/MailScanner/MailScanner.conf
-sed -i '/^Non Spam Actions =/ c\Non Spam Actions = store deliver header "X-Spam-Status:No" custom(nonspam)' /etc/MailScanner/MailScanner.conf
+sed -i '/^Non Spam Actions =/ c\Non Spam Actions = store deliver header "X-Spam-Status:No"' /etc/MailScanner/MailScanner.conf
 sed -i '/^Log Spam =/ c\Log Spam = yes' /etc/MailScanner/MailScanner.conf
 sed -i '/^Log Silent Viruses =/ c\Log Silent Viruses = yes' /etc/MailScanner/MailScanner.conf
 sed -i '/^Log Dangerous HTML Tags =/ c\Log Dangerous HTML Tags = yes' /etc/MailScanner/MailScanner.conf
