@@ -1,20 +1,25 @@
+# Note: Language selections are in each respective language, not this language
+English: English
+Danish: Dansk
+Dutch: Nederlands
+French: Français
+Portuguese: Portugues
+German: Deutsche
+Turkish: Türk
+Italian: Italiano
+Greek: Ελληνικά
+Russian: Pусский
+Swedish: Svensk
+'Simplified Chinese': 簡體中文
+'Traditional Chinese': 繁體中文
+# End of language selections
+
 'Welcome to': 'Welcome to'
 Language: Language
 Next: Next
 Hostname: Hostname
 'Please enter a hostname': 'Please enter a hostname'
 Back: Back
-English: English
-Danish: Danish
-Dutch: Nederlands
-French: Français
-Portuguese: Portugues
-German: Deutsche
-Turkish: Turkish
-Italian: Italiano
-Greek: Ελληνικά
-'Simplified Chinese': 簡體中文
-'Traditional Chinese': 繁體中文
 'Domain Name': 'Domain Name'
 'Please enter a domain name': 'Please enter a domain name'
 Email: Email
