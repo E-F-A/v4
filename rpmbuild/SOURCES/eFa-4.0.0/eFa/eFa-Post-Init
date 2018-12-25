@@ -49,5 +49,8 @@ systemctl reload httpd
 systemctl restart clamd@scan
 systemctl restart sqlgrey
 
+# Schedule eFa-Monitor cron
+echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
+
 rm -f /etc/cron.d/efapostinit
 rm -f /var/run/eFa-Post-Init.lock
