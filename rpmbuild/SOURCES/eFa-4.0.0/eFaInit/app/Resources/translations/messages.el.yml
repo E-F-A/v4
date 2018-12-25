@@ -17,14 +17,14 @@
 # End of language selections
 
 'Welcome to': 'Καλώς ήρθατε στο'
-Language: Γλώσσα 
-Next: Επόμενο
-Hostname: 'Όνομα υπολογιστή'
+'Language': 'Γλώσσα'
+'Next': 'Επόμενο'
+'Hostname': 'Όνομα υπολογιστή'
 'Please enter a hostname': 'Παρακαλώ εισάγετε ένα όνομα υπολογιστή'
-Back: Πίσω
+'Back': 'Πίσω'
 'Domain Name': 'Όνομα Τομέα'
 'Please enter a domain name': 'Παρακαλώ εισάγετε ένα όνομα τομέα'
-Email: Email
+'Email': 'Email'
 'Please enter an email address for important notifications': 'Παρακαλώ εισάγετε μια email διεύθυνση για σημαντικές ειδοποιήσεις'
 'IPv4 Address': 'IPv4 Διεύθυνση'
 'Please enter a valid IPv4 address': 'Παρακαλώ εισάγετε μια έγκυρη IPv4 διεύθυνση'
@@ -52,18 +52,18 @@ Email: Email
 'Please enter the username for the admin web interface': 'Παρακαλώ εισάγετε το όνομα χρήστη για την ιστοσελίδα διαχείρισης'
 'Web Admin Username': 'Όνομα Χρήστη Ιστοσελίδας Διαχείρισης'
 'Please enter the web admin password': 'Παρακαλώ εισάγετε τον κωδικό πρόσβασης για την ιστοσελίδα διαχείρισης'
-'Please re-enter the web admin password': 'Παρακαλώ εισάγετε ξανά τον κωδικό πρόσβασης για την ιστοσελίδα διαχείρισης''
+'Please re-enter the web admin password': 'Παρακαλώ εισάγετε ξανά τον κωδικό πρόσβασης για την ιστοσελίδα διαχείρισης'
 'Web Admin Password': 'Κωδικός Πρόσβασης Ιστοσελίδας Διαχείρισης'
 'Please enter the username for the admin console interface': 'Παρακαλώ εισάγετε το όνομα χρήστη για την κονσόλα διαχείρισης'
 'Console Admin Username': 'Όνομα Χρήστη Κονσόλας Διαχείρισης'
 'Please enter the console admin password': 'Παρακαλώ εισάγετε τον κωδικό πρόσβασης για την κονσόλα διαχείρισης'
-'Please re-enter the console admin password': 'Παρακαλώ εισάγετε ξανά τον κωδικό πρόσβασης για την κονσόλα διαχείρισης''
+'Please re-enter the console admin password': 'Παρακαλώ εισάγετε ξανά τον κωδικό πρόσβασης για την κονσόλα διαχείρισης'
 'Console Admin Password': 'Κωδικός Πρόσβασης Κονσόλας Διαχείρισης'
 'Do you want to install hypervisor tools for your hypervisor?': 'Θέλετε να εγκαταστήσετε εργαλεία hypervisor για τον hypervisor σας;'
 'Configure Hypervisor Tools': 'Ρύθμιση Εργαλείων Hypervisor'
 'Is the host set to UTC time?': 'Είναι ρυθμισμένος ο υπολογιστής σε ώρα UTC;'
 'Configure UTC Time': 'Ρύθμιση Ώρας UTC'
-Timezone: 'Ζώνη Ώρας'
+'Timezone': 'Ζώνη Ώρας'
 'Timezone Selection': 'Επιλογή Ζώνης Ώρας'
 'Please enter the IP or hostname of the local mail server': 'Παρακαλώ εισάγετε την IP ή το όνομα του τοπικού εξυπηρετητή ηλεκτρονικής αλληλογραφίας'
 'Local Mail Server': 'Τοπικός Εξυπηρετητής Ηλεκτρονικής Αλληλογραφίας'
