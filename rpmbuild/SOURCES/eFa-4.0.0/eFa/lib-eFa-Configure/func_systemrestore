@@ -24,7 +24,7 @@ function func_system-restore() {
       elif [[ $TMPRECOVER = "Y" || $TMPRECOVER == "y" ]]; then
         # Gather backups
         local BACKUPLIST
-        BACKUPLIST=(`find /var/EFA/backup -type f | grep tar\.gz$`)
+        BACKUPLIST=(`find /var/eFa/backup -type f | grep tar\.gz$`)
         if [[ -n $BACKUPLIST ]]; then
           func_echo-header
           echo -e "Backup Listing"
@@ -60,20 +60,20 @@ function func_system-restore() {
                     elif [[ $TMPRESTORE == "Y" || $TMPRESTORE == "y" ]]; then
                       echo -e "Beginning Restore of ${BACKUPLIST[$((choice-1))]}..."
                       echo -e
-                      cd /var/EFA/backup
+                      cd /var/eFa/backup
                       tar xzvf ${BACKUPLIST[$((choice-1))]} --overwrite
                       #fetch SQL root password
-                      MYSQLROOTPWD="`grep MYSQLROOTPWD /etc/EFA-Config | sed 's/.*://'`"
-                      RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                      MYSQLROOTPWD="`grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/.*://'`"
+                      RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/eFa/backup/backup/etc/eFa/MySQL-Config | sed 's/.*://'`"
                       if [[ "$MYSQLROOTPWD" != "$RESTOREMYSQLROOTPWD" ]]; then
                         echo "Foreign backup detected, performing import..."
                         # Restore importable configurations
-                        cp -f /var/EFA/backup/backup/etc/EFA-Config /etc/EFA-Config
-                        cp -f /var/EFA/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
-                        cp -rf /var/EFA/backup/backup/etc/MailScanner/* /etc/MailScanner
-                        cp -f /var/EFA/backup/backup/etc/pki/tls/certs/localhost.crt /etc/pki/tls/certs/localhost.crt
-                        cp -f /var/EFA/backup/backup/etc/pki/tls/private/localhost.key /etc/pki/tls/private/localhost.key
-                        cp -rf /var/EFA/backup/backup/etc/postfix/* /etc/postfix
+                        cp -f /var/eFa/backup/backup/etc/eFa/* /etc/eFa/
+                        cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
+                        cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
+                        cp -f /var/eFa/backup/backup/etc/pki/tls/certs/localhost.crt /etc/pki/tls/certs/localhost.crt
+                        cp -f /var/eFa/backup/backup/etc/pki/tls/private/localhost.key /etc/pki/tls/private/localhost.key
+                        cp -rf /var/eFa/backup/backup/etc/postfix/* /etc/postfix
                         
                         # Postmaps
                         postmap /etc/postfix/helo_access.db
@@ -83,38 +83,38 @@ function func_system-restore() {
                         postmap /etc/postfix/transport.db
                         postmap /etc/postfix/virtual.db
                         
-                        cp -rf /var/EFA/backup/backup/etc/sqlgrey/* /etc/sqlgrey
-                        cp -rf /var/EFA/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
-                        cp -f /var/EFA/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php
+                        cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
+                        cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
+                        cp -f /var/eFa/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php
                         # Import database passwords
-                        RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
-                        RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/eFa/MailWatch-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
-                        RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/EFA/backup/backup/etc/eFa/SQLGrey-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
-                        RESTOREEFASQLPWD="`grep EFASQLPWD /var/EFA/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        RESTOREEFASQLPWD="`grep EFASQLPWD /var/EFA/backup/backup/etc/eFa/eFaSQL-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREEFASQLPWD') WHERE User='efa';"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
                         /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
                         MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
-                        # Update EFA-Config with imported values
-                        sed -i "/^MAILWATCHSQLPWD:/ c\MAILWATCHSQLPWD:$RESTOREMAILWATCHSQLPWD" /etc/EFA-Config
-                        sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/EFA-Config
-                        sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/EFA-Config
-                        sed -i "/^EFASQLPWD:/ c\EFASQLPWD:$RESTOREEFASQLPWD" /etc/EFA-Config
-                        sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/EFA-Config
+                        # Update eFa-Config with imported values
+                        sed -i "/^MAILWATCHSQLPWD:/ c\MAILWATCHSQLPWD:$RESTOREMAILWATCHSQLPWD" /etc/eFa/MailWatch-Config
+                        sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
+                        sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
+                        sed -i "/^EFASQLPWD:/ c\EFASQLPWD:$RESTOREEFASQLPWD" /etc/eFa/eFaSQL-Config
+                        sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
                         
                         # Restore trim-awl
-                        cp -f /var/EFA/backup/backup/usr/sbin/trim-awl /usr/sbin
+                        cp -f /var/eFa/backup/backup/usr/sbin/trim-awl /usr/sbin
                       else
-                        cp -rf /var/EFA/backup/backup/etc/* /etc
-                        cp -rf /var/EFA/backup/backup/var/* /var
+                        cp -rf /var/eFa/backup/backup/etc/* /etc
+                        cp -rf /var/eFa/backup/backup/var/* /var
                       fi
-                      cd /var/EFA/backup/backup/sql
+                      cd /var/eFa/backup/backup/sql
                       # Restore SQL databases
                       mysql --user=root --password=$MYSQLROOTPWD < backup.sql
-                      rm -rf /var/EFA/backup/backup
+                      rm -rf /var/eFa/backup/backup
 
                       echo -e "Restore Complete!"
                       echo -e ""

@@ -32,7 +32,7 @@ func_tunables_procdb(){
 
   # Set processing attempts
   sed -i "/^Maximum Processing Attempts =/ c\Maximum Processing Attempts = $MSPROCDB" /etc/MailScanner/MailScanner.conf
-  service mailscanner restart
+  systemctl restart mailscanner
   echo -e "MailScanner processing attempts reconfigured to use $MSPROCDB attempts."
   pause
 

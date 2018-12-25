@@ -1,6 +1,9 @@
 # +---------------------------------------------------+
 # Configure Lets Encrypt
 # +---------------------------------------------------+
+
+# TODO: Refactor, disabled for now
+
 function func_lets-encrypt() {
   func_echo-header
 

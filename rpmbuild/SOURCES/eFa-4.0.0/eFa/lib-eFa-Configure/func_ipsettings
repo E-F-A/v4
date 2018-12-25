@@ -13,12 +13,13 @@ func_ip-settings(){
       echo -e " 2) Netmask              :  $NM"
       echo -e " 3) Gateway              :  $GW"
       echo -e " 4) IPv6 IP              :  $IP6"
-      echo -e " 5) IPv6 Gateway         :  $GW6"
-      echo -e " 6) DNS Recursion        :  $RECURSIVEDNS"
-      echo -e " 7) Primary DNS          :  $DNS1"
-      echo -e " 8) Secondary DNS        :  $DNS2"
-      echo -e " 9) Hostname             :  $HOSTNAME"
-      echo -e "10) Domain Name          :  $DOMAINNAME"
+      echo -e " 5) IPv6 Prefix          :  $PF6"
+      echo -e " 6) IPv6 Gateway         :  $GW6"
+      echo -e " 7) DNS Recursion        :  $RECURSIVEDNS"
+      echo -e " 8) Primary DNS          :  $DNS1"
+      echo -e " 9) Secondary DNS        :  $DNS2"
+      echo -e "10) Hostname             :  $HOSTNAME"
+      echo -e "11) Domain Name          :  $DOMAINNAME"
       echo -e ""
       echo -e "e) Return to main menu"
       echo -e ""
@@ -61,11 +62,27 @@ func_ip-settings(){
                       menu=1
                     fi
                     ;;
+                5)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new IPv6 Prefix: " PF6
+                    if [[ -z "$PF6" || !($PF6 =~ ^[0-9]{1,3}$ && $PF6 -ge 1 && $PF6 -le 128 && $(( $PF6 & ($PF6 - 1) )) -eq 0) ]]; then echo "ERROR invalid ipv6 prefix" && pause && menu=1; else
+                      func_setipsettings
+                      menu=1
+                    fi
+                    ;;
                 6)  ipmenu=0
+                    echo ""
+                    read -p "Enter your new IPv6 Gateway: " GW6
+                    if [[ -z "$GW6" || !(checkip6 $GW6) ]]; then echo "ERROR invalid gateway address" && pause && menu=1; else
+                      func_setipsettings
+                      menu=1
+                    fi
+                    ;;
+                7)  ipmenu=0
                     func_ask-recursion
                     menu=1
                     ;;
-                7)  ipmenu=0
+                8)  ipmenu=0
                     echo ""
                     if [ "$RECURSIVEDNS" == "ENABLED" ]; then 
                       echo "ERROR: DNS Recursion is enabled.  Disable recursion to set DNS"
@@ -78,7 +95,7 @@ func_ip-settings(){
                       fi
                     fi
                     ;;
-                8)  ipmenu=0
+                9)  ipmenu=0
                     echo ""
                     if [ "$RECURSIVEDNS" == "ENABLED" ]; then 
                       echo "ERROR: DNS Recursion is enabled.  Disable recursion to set DNS"
@@ -91,7 +108,7 @@ func_ip-settings(){
                       fi
                     fi
                     ;;
-                9)  ipmenu=0
+                10) ipmenu=0
                     echo ""
                     read -p "Enter your new HOSTNAME: " HOSTNAME
                     if [ -z "$HOSTNAME" ]; then echo "ERROR empty value" && pause && menu=1; else
@@ -99,7 +116,7 @@ func_ip-settings(){
                       menu=1
                     fi
                     ;;
-                10)  ipmenu=0
+                11) ipmenu=0
                     echo ""
                     read -p "Enter your new DOMAIN NAME: " DOMAINNAME
                     if [ -z "$DOMAINNAME" ]; then echo "ERROR empty value" && pause && menu=1; else

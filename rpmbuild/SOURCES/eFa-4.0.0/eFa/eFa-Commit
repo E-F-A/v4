@@ -819,6 +819,10 @@ if [[ $configcli -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   echo "$CLIUSERNAME:$efaclipwd" | chpasswd --md5 $CLIUSERNAME
   [ $? -ne 0 ] && exit 1
+  
+  # Set eFa-Configure to launch
+  sed -i "1i\if ! [ -z \"\$PS1\" ]; then\n  sudo \/usr\/sbin\/eFa-Configure\nfi" /home/$CLIUSERNAME/.bashrc
+  echo "$CLIUSERNAME ALL=(ALL) NOPASSWD: /usr/sbin/eFa-Configure" >> /etc/sudoers.d/eFa-users
 fi
 
 if [[ $configcert -eq 1 ]]; then
@@ -870,9 +874,6 @@ if [[ $finalize -eq 1 ]]; then
   # Remove GUI eFaInit
   rm -f /etc/httpd/conf.d/eFaInit.conf
   [ $? -ne 0 ] && exit 1
-  
-  # Schedule post init
-  
 
   cat > /var/www/html/index.html << 'EOF'
 <!DOCTYPE html>
@@ -953,19 +954,20 @@ EOF
 
   sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa/eFa-Config
   [ $? -ne 0 ] && exit 1
-  
+
+  # Schedule post init
   echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
   
+  # Schedule eFa-Monitor cron
+  echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
+
   touch /reboot.system
-  
+
   # Lock down GUI
   echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
   [ $? -ne 0 ] && exit 1
   echo "apache ALL=NOPASSWD: /usr/bin/touch /reboot.system" >> /etc/sudoers.d/eFa-Services
   [ $? -ne 0 ] && exit 1
-  
-  
-
 fi
 
 exit 0

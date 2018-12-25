@@ -1,0 +1,111 @@
+#!/bin/bash
+# +--------------------------------------------------------------------+
+# eFa Monitor cron
+# Version 20181224
+# +--------------------------------------------------------------------+
+# Copyright (C) 2012~2018 https://efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# +--------------------------------------------------------------------+
+
+# +--------------------------------------------------------------------+
+# eFa Monitor Cron Script
+# Set to run at a regular interval (i.e. every minute)
+# +--------------------------------------------------------------------+
+
+# +--------------------------------------------------------------------+
+# Configurable Variables
+# +--------------------------------------------------------------------+
+MaxRestartAttempts=3
+# Monitored Service Array (daemon=sysv)
+MonitoredServices=("mysqld=mysqld" "MailScanner=mailscanner" "master=postfix" "httpd=httpd" "clamd=clamd" "unbound=unbound" "dccifd=adcc")
+# Enable restart expiry (1 day)
+RestartExpiry=1
+AttemptsFile="/var/eFa/eFamonitor"
+ADMINEMAIL="`cat /etc/eFa/eFa-Config | grep ADMINEMAIL | sed 's/.*://'`"
+MAILFROM="$ADMINEMAIL"
+MAILTO="$ADMINEMAIL"
+MAILSUBJECT="eFa Monitor ALERT"
+SENDMAIL="/usr/lib/sendmail"
+TMPMAIL="/tmp/tempmail"
+
+# +--------------------------------------------------------------------+
+
+# +--------------------------------------------------------------------+
+# Check Services Function
+# +--------------------------------------------------------------------+
+function CheckServices() {
+  for monitoredService in ${MonitoredServices[@]}; do
+    # Load attempts, or create if not present
+    [[ -x $AttemptsFile ]] || ( touch $AttemptsFile )
+    mDaemon=$(echo $monitoredService | awk -F'=' '{print $1}')
+    mService=$(echo $monitoredService | awk -F'=' '{print $2}')
+    serviceCheck=$(ps -C $mDaemon --no-heading)
+    dateStamp=$(date +%Y%m%d)
+    if [[ -z "$serviceCheck" ]]; then
+      # Service is not running!
+      # Check # of attempts, if present
+      serviceAttempts=$(grep -e "^$mService=" $AttemptsFile | awk -F'=' '{print $2}') 
+      if [[ -z "$serviceAttempts" || "$serviceAttempts" -lt "$MaxRestartAttempts" ]]; then
+        # Start Service
+        systemctl start $mService
+        # Increment restart attempts
+        attemptCount=$(grep -e "^$mService=" $AttemptsFile | awk -F'=' '{print $2}')
+        if [[ -z $attemptCount ]]; then
+          attemptCount=1
+          echo "$mService=$attemptCount" >> $AttemptsFile
+          echo "date$mService=$dateStamp" >> $AttemptsFile
+        else
+          attemptCount=$(($attemptCount+1))
+          sed -i "/^$mService=/ c\\$mService=$attemptCount" $AttemptsFile
+          sed -i "/^date$mService=/ c\date$mService=$dateStamp" $AttemptsFile
+        fi
+        AlertOnFailure
+      fi
+    else
+      if [[ "$RestartExpiry" -eq "1" ]]; then
+        checkDate=$(grep -e "^date$mService=" $AttemptsFile | awk -F'=' '{print $2}')
+
+        if [[ -n "$checkDate" && "$checkDate" -ne "$dateStamp" ]]; then
+          sed -i "/^$mService=/d" $AttemptsFile
+          sed -i "/^date$mService=/d" $AttemptsFile
+        fi
+      fi
+    fi
+  done
+}
+
+# +--------------------------------------------------------------------+
+# Alert On Failure Notification Function
+# +--------------------------------------------------------------------+
+function AlertOnFailure() {
+  logger -p "daemon.alert" "eFa Monitor ALERT: Service $mService down and restarted ( $attemptCount attempts in past day, max attempts is $MaxRestartAttempts )"
+  echo "From: $MAILFROM" > $TMPMAIL
+  echo "To: $MAILTO" >> $TMPMAIL
+  echo "Reply-To: $MAILFROM" >> $TMPMAIL
+  echo "Subject: $MAILSUBJECT" >> $TMPMAIL
+  echo "" >> $TMPMAIL
+  echo "Service $mService down and restarted ( $attemptCount attempts in past day, max attempts is $MaxRestartAttempts )" >> $TMPMAIL
+  echo "" >> $TMPMAIL
+  HOST=$(hostname)
+  echo "Please examine your eFa logs on $HOST and resources to determine cause of failure." >> $TMPMAIL
+  cat $TMPMAIL | $SENDMAIL -t
+  rm $TMPMAIL
+}
+# +--------------------------------------------------------------------+
+
+# +--------------------------------------------------------------------+
+# Main Function
+# +--------------------------------------------------------------------+
+CheckServices
