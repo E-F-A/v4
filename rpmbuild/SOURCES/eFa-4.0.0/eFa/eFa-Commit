@@ -907,8 +907,6 @@ EOF
 
   systemctl enable mailscanner
   [ $? -ne 0 ] && exit 1
-  systemctl enable msmilter
-  [ $? -ne 0 ] && exit 1
   systemctl enable postfix
   [ $? -ne 0 ] && exit 1
   systemctl enable httpd
