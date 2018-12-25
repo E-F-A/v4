@@ -51,7 +51,7 @@ function CheckServices() {
     [[ -x $AttemptsFile ]] || ( touch $AttemptsFile )
     mDaemon=$(echo $monitoredService | awk -F'=' '{print $1}')
     mService=$(echo $monitoredService | awk -F'=' '{print $2}')
-    serviceCheck=$(ps -C $mDaemon --no-heading)
+    serviceCheck=$(ps -A | grep $mDaemon)
     dateStamp=$(date +%Y%m%d)
     if [[ -z "$serviceCheck" ]]; then
       # Service is not running!
