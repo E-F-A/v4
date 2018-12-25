@@ -148,6 +148,7 @@ allow httpd_sys_script_t mscan_t:file { ioctl open read };
 allow httpd_sys_script_t mscan_exec_t:dir { getattr search };
 allow httpd_sys_script_t mscan_exec_t:file { ioctl open read };
 allow httpd_sys_script_t httpd_t:tcp_socket { ioctl getattr };
+allow httpd_sys_script_t mscan_spool_t:dir { read open };
 
 # allow ps to read antivirus process
 allow httpd_sys_script_t antivirus_t:dir { getattr search };
@@ -293,6 +294,7 @@ allow httpd_sys_script_t mailwatchsql_etc_t:file { ioctl getattr read open };
 allow httpd_sys_script_t postfix_spool_t:file { unlink ioctl };
 allow httpd_sys_script_t spamd_compiled_t:dir { search getattr read open };
 allow httpd_sys_script_t spamd_compiled_t:file { getattr read open ioctl execute };
+allow httpd_sys_script_t shadow_t:file { read open };
 
 # Allow file release
 allow httpd_sys_script_t postfix_spool_t:file { rename setattr };
