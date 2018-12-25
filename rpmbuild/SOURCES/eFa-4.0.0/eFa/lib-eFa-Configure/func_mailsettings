@@ -389,9 +389,9 @@ func_outbound-smarthost(){
       func_echo-header
       echo " "
       echo "Description:"
-      echo "With this option you can configure E.F.A."
+      echo "With this option you can configure eFa"
       echo "to use a external smart-host for outgoing"
-      echo "mail. (useful if you also use E.F.A. as"
+      echo "mail. (useful if you also use eFa as"
       echo "an mail-relay)"
       echo ""
       echo "Current settings are:"
