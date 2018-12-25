@@ -425,6 +425,7 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFaInit-config-4.0.0.sh
+        [[ -n "%{_usrsrc}" ]] && /bin/rm -rf %{_usrsrc}/eFa
 
         echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
         echo "Build completed!"
@@ -445,5 +446,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/composer
 
 %changelog
-* Thu Mar 22 2017 eFa Project <somebody@efa-project.org> - 4.0.0-1
+* Tue Dec 25 2018 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
 - Initial Build for eFa v4 on CentOS7 <https://efa-project.org>
