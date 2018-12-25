@@ -957,9 +957,6 @@ EOF
 
   # Schedule post init
   echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
-  
-  # Schedule eFa-Monitor cron
-  echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
 
   touch /reboot.system
 
