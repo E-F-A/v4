@@ -10,8 +10,8 @@ func_setipsettings(){
   # Write new hosts file
   echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
   echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
-  if [[ -n $IP ]]; then
-    echo "$IP    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
+  if [[ -n $IP4 ]]; then
+    echo "$IP4    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
   fi
   if [[ -n $IP6 ]]; then
     echo "$IP6    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
@@ -24,6 +24,8 @@ func_setipsettings(){
     echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
     echo "  forward-addr: $DNS1" >> /etc/unbound/conf.d/forwarders.conf
     echo "  forward-addr: $DNS2" >> /etc/unbound/conf.d/forwarders.conf
+  else
+    rm -f /etc/unbound/conf.d/forwarders.conf
   fi
 
   # Set ip settings
@@ -34,21 +36,21 @@ func_setipsettings(){
     cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak
   fi
 
-  if [[ -n $IP ]]; then
+  if [[ -n $IP4 ]]; then
     if [[ -z $(grep ^IPADDR) ]]; then
-      echo "IPADDR=\"$IP\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+      echo "IPADDR=\"$IP4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     else
-      sed -i "/^IPADDR=/ c\IPADDR=\"$IP\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+      sed -i "/^IPADDR=/ c\IPADDR=\"$IP4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     fi
     if [[ -z $(grep ^NETMASK) ]]; then
-      echo "NETMASK=\"$NM\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+      echo "NETMASK=\"$NM4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     else
-      sed -i "/^NETMASK=/ c\NETMASK=\"$NM\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+      sed -i "/^NETMASK=/ c\NETMASK=\"$NM4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     fi
     if [[ -z $(grep ^GATEWAY) ]]; then
-      echo "GATEWAY=\"$GW\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+      echo "GATEWAY=\"$GW4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     else
-      sed -i "/^GATEWAY=/ c\GATEWAY=\"$GW\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+      sed -i "/^GATEWAY=/ c\GATEWAY=\"$GW4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     fi
   fi
   if [[ -n $IP6 ]]; then
@@ -68,9 +70,9 @@ func_setipsettings(){
   systemctl restart networking
   
   # Write change to EFA-Config
-  sed -i "/^IPV4ADDRESS:/ c\IPV4ADDRESS:$IP" /etc/eFa/eFa-Config
-  sed -i "/^IPV4NETMASK:/ c\IPV4NETMASK:$NM" /etc/eFa/eFa-Config
-  sed -i "/^IPV4GATEWAY:/ c\IPV4GATEWAY:$GW" /etc/eFa/eFa-Config
+  sed -i "/^IPV4ADDRESS:/ c\IPV4ADDRESS:$IP4" /etc/eFa/eFa-Config
+  sed -i "/^IPV4NETMASK:/ c\IPV4NETMASK:$NM4" /etc/eFa/eFa-Config
+  sed -i "/^IPV4GATEWAY:/ c\IPV4GATEWAY:$GW4" /etc/eFa/eFa-Config
   sed -i "/^IPV6ADDRESS:/ c\IPV6ADDRESS:$IP6" /etc/eFa/eFa-Config
   sed -i "/^IPV6MASK:/ c\IPV6MASK:$PF6" /etc/eFa/eFa-Config
   sed -i "/^IPV6GATEWAY:/ c\IPV6GATEWAY:$GW6" /etc/eFa/eFa-Config

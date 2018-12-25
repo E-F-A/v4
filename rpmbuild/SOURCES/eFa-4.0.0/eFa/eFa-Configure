@@ -85,17 +85,17 @@ show_menu() {
       echo -e ""
       echo -e "Please choose an option:"
       echo -e " "
-      echo -e "0) Logout from ssh                    9)  Spam Settings"
-      echo -e "1) Shell                              10) MariaDB Recovery"
-      echo -e "2) Reboot system                      11) Apache Settings"
-      echo -e "3) Halt system                        12) Virus Settings"
-      echo -e "4) IP Settings                        13) System Restore"
-      echo -e "5) Tunables                           14) Update Now"
-      echo -e "6) MailWatch Settings                 15) Maintenance Mode"
+      echo -e "0) Logout from ssh                    8)  Spam Settings"
+      echo -e "1) Shell                              9) MariaDB Recovery"
+      echo -e "2) Reboot system                      10) Apache Settings"
+      echo -e "3) Halt system                        11) Virus Settings"
+      echo -e "4) IP Settings                        12) System Restore"
+      echo -e "5) Tunables                           13) Update Now"
+      echo -e "6) MailWatch Settings                 14) Maintenance Mode"
       #echo -e "7)                                    16) Let's Encrypt"
       #echo -e "7)                                   "
       #echo -e "8) Mail Settings                      17) DKIM and DMARC"
-      echo -e "8) Mail Settings                      "
+      echo -e "7) Mail Settings                      "
       echo -e ""
       echo -e -n "$green[eFa]$clean : "
       local choice
@@ -108,14 +108,14 @@ show_menu() {
                     4) func_ip-settings ;;
                     5) func_tunables ;;
                     6) func_mailwatch-settings ;;
-                    8) func_mail-settings ;;
-                    9) func_spam-settings ;;
-                   10) func_recover-mariadb ;;
-                   11) func_apache-settings ;;
-                   12) func_virus-settings ;;
-                   13) func_system-restore ;;
-                   14) func_update-now ;;
-                   15) func_maintenance-mode ;;
+                    7) func_mail-settings ;;
+                    8) func_spam-settings ;;
+                    9) func_recover-mariadb ;;
+                   10) func_apache-settings ;;
+                   11) func_virus-settings ;;
+                   12) func_system-restore ;;
+                   13) func_update-now ;;
+                   14) func_maintenance-mode ;;
                    #16) func_lets-encrypt ;;
                    #17) func_dkim-dmarc ;;
                     *) echo -e "Error \"$choice\" is not an option..." && sleep 2

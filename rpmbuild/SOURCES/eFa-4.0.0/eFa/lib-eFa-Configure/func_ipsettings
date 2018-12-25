@@ -9,9 +9,9 @@ func_ip-settings(){
       func_getipsettings
       func_echo-header
       echo -e "Current IP settings for $INTERFACE are:"
-      echo -e " 1) IP                   :  $IP"
-      echo -e " 2) Netmask              :  $NM"
-      echo -e " 3) Gateway              :  $GW"
+      echo -e " 1) IP                   :  $IP4"
+      echo -e " 2) Netmask              :  $NM4"
+      echo -e " 3) Gateway              :  $GW4"
       echo -e " 4) IPv6 IP              :  $IP6"
       echo -e " 5) IPv6 Prefix          :  $PF6"
       echo -e " 6) IPv6 Gateway         :  $GW6"
@@ -32,24 +32,24 @@ func_ip-settings(){
       case $choice in
                 1)  ipmenu=0
                     echo ""
-                    read -p "Enter your new IP: " IP
-                    if [[ -z "$IP" || !(checkip4 $IP) ]]; then echo "ERROR invalid ip address" && pause && menu=1; else
+                    read -p "Enter your new IP: " IP4
+                    if [[ -z "$IP4" || !(checkip4 $IP4) ]]; then echo "ERROR invalid ip address" && pause && menu=1; else
                       func_setipsettings
                       menu=1
                     fi
                     ;;
                 2)  ipmenu=0
                     echo ""
-                    read -p "Enter your new netmask: " NM
-                    if [[ -z "$NM" || !(checkip4 $NM) ]]; then echo "ERROR invalid netmask" && pause && menu=1; else
+                    read -p "Enter your new netmask: " NM4
+                    if [[ -z "$NM4" || !(checkip4 $NM4) ]]; then echo "ERROR invalid netmask" && pause && menu=1; else
                       func_setipsettings
                       menu=1
                     fi
                     ;;
                 3)  ipmenu=0
                     echo ""
-                    read -p "Enter your new gateway: " GW
-                    if [[ -z "$GW" || !(checkip4 $GW) ]]; then echo "ERROR empty value" && pause && menu=1; else
+                    read -p "Enter your new gateway: " GW4
+                    if [[ -z "$GW4" || !(checkip4 $GW4) ]]; then echo "ERROR empty value" && pause && menu=1; else
                       func_setipsettings
                       menu=1
                     fi
