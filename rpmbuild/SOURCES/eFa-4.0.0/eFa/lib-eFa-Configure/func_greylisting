@@ -23,9 +23,9 @@ func_greylisting(){
       read TMPGREY
         if [[ "$TMPGREY" == "Y" || "$TMPGREY" == "y" ]]; then
           sed -i "s/, \{0,1\}check_policy_service inet:127.0.0.1:2501//" /etc/postfix/main.cf
-          postfix reload 
-          service sqlgrey stop
-          chkconfig sqlgrey off
+          systemctl reload postfix
+          systemctl stop sqlgrey
+          systemctl disable sqlgrey
 
           # disable Greylist menu item
           sed -i "/^define('SHOW_GREYLIST', true);/ c\define('SHOW_GREYLIST', false);" /var/www/html/mailscanner/conf.php
@@ -51,9 +51,10 @@ func_greylisting(){
       read TMPGREY
         if [[ "$TMPGREY" == "Y" || "$TMPGREY" == "y" ]]; then
           sed -i "s/^smtpd_recipient_restrictions = \(.*\)$/smtpd_recipient_restrictions = \1, check_policy_service inet:127.0.0.1:2501/" /etc/postfix/main.cf
-          postfix reload 
-          service sqlgrey start 
-          chkconfig sqlgrey on
+          systemctl reload postfix
+          systemctl enable sqlgrey
+          systemctl start sqlgrey
+
           # Enable Greylist menu item
           sed -i "/^define('SHOW_GREYLIST', false);/ c\define('SHOW_GREYLIST', true);" /var/www/html/mailscanner/conf.php
 

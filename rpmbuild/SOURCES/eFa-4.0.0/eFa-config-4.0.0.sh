@@ -37,6 +37,11 @@ mkdir -p /var/eFa/lib
 mkdir -p /var/eFa/lib/selinux
 mkdir -p /var/eFa/lib/eFa-Configure
 
+# Copy eFa-Configure
+cp $srcdir/eFa/eFa-Configure /usr/sbin/eFa-Configure
+chmod 755 /usr/sbin/eFa-Configure
+cp $srcdir/eFa/lib-eFa-Configure/* /var/eFa/lib/eFa-Configure
+
 # Copy agent selinux modules rulesets
 cp $srcdir/eFa/eFavmtools.te /var/eFa/lib/selinux/eFavmtools.te
 cp $srcdir/eFa/eFahyperv.te /var/eFa/lib/selinux/eFahyperv.te
@@ -56,6 +61,9 @@ chmod 755 /usr/sbin/eFa-Commit
 
 cp $srcdir/eFa/eFa-Post-Init /usr/sbin/eFa-Post-Init
 chmod 755 /usr/sbin/eFa-Post-Init
+
+cp $srcdir/eFa/eFa-Monitor-cron /usr/sbin/eFa-Monitor-cron
+chmod 755 /usr/sbin/eFa-Monitor-cron
 
 # Write SSH banner
 sed -i "/^#Banner / c\Banner /etc/banner"  /etc/ssh/sshd_config
@@ -119,7 +127,7 @@ checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
 semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod -f $srcdir/eFa/eFa.fc
 semodule -i $srcdir/eFa/eFa.pp
 
-# Set EFA-Init to run at first root login:
+# Set eFa-Init to run at first root login:
 # Do not set root default password in rpm phase
 sed -i '1i\\/usr\/sbin\/eFa-Init' /root/.bashrc
 cp -f /etc/rc.d/rc.local /etc/rc.d/rc.local.bak

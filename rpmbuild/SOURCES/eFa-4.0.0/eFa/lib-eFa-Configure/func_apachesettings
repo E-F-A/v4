@@ -125,7 +125,7 @@ function func_https() {
   fi
 
   if [[ $TMPSECURE != "c" && $TMPSECURE != "C" ]]; then
-    service httpd reload
+    systemctl reload httpd
     pause
   fi
 

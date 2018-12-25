@@ -289,7 +289,7 @@ Requires:  spamassassin >= 3.4.1-1
     # #    procmail                              #         #
     # #    perl-Geo-IP                           #         #
     # #    perl-Net-Patricia                     #         #
-Requires:  MailScanner >= 5.1.2-2
+Requires:  MailScanner >= 5.1.3-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-3
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -303,7 +303,7 @@ Requires:  perl-libnet >= 3.10-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.10-1
+Requires:  MailWatch >= 1:1.2.12-1
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 1.3.159-1
     # dcc                                        # eFa     # Spamassassin, MailScanner

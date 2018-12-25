@@ -56,7 +56,7 @@ func_peruser(){
               fi
             done
 
-          service mailscanner restart
+          systemctl restart mailscanner
           FLAG=0
           echo -e "$green[eFa]$clean Per user spam scoring $red DISABLED $clean"
           pause
@@ -88,13 +88,13 @@ func_peruser(){
             FLAG2=1
             while [ $FLAG2 != "0" ]; do
               if [[ "$SPAMSCORE" =~ ^[1-9]|[1-9][0-9]|100$ ]]; then
-                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/EFA-Config | awk -F':' '{print $2}'`
+                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
                 /usr/bin/mysql -u mailwatch -p"$MAILWATCHPW" mailscanner -e "ALTER TABLE \`users\` ALTER COLUMN \`spamscore\` SET DEFAULT '$SPAMSCORE';"
                 MAILWATCHPW=''
                 sed -i "/^Required SpamAssassin Score =/ c\Required SpamAssassin Score = &SQLSpamScores" /etc/MailScanner/MailScanner.conf
                 FLAG2=0
               elif [[ -z "$SPAMSCORE" ]]; then
-                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/EFA-Config | awk -F':' '{print $2}'`
+                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
                 /usr/bin/mysql -u mailwatch -p"$MAILWATCHPW" mailscanner -e 'ALTER TABLE `users` ALTER COLUMN `spamscore` SET DEFAULT '4';'
                 MAILWATCHPW=''
                 sed -i "/^Required SpamAssassin Score =/ c\Required SpamAssassin Score = &SQLSpamScores" /etc/MailScanner/MailScanner.conf
@@ -111,13 +111,13 @@ func_peruser(){
             FLAG3=1
             while [ $FLAG3 != "0" ]; do
               if [[ "$HIGHSPAMSCORE" =~ ^[1-9]|[1-9][0-9]|100$ ]]; then
-                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/EFA-Config | awk -F':' '{print $2}'`
+                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
                 /usr/bin/mysql -u mailwatch -p"$MAILWATCHPW" mailscanner -e "ALTER TABLE \`users\` ALTER COLUMN \`highspamscore\` SET DEFAULT '$HIGHSPAMSCORE';"
                 MAILWATCHPW=''
                 sed -i "/^High SpamAssassin Score =/ c\High SpamAssassin Score = &SQLHighSpamScores" /etc/MailScanner/MailScanner.conf
                 FLAG3=0
               elif [[ -z "$SPAMSCORE" ]]; then
-                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/EFA-Config | awk -F':' '{print $2}'`
+                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
                 /usr/bin/mysql -u mailwatch -p"$MAILWATCHPW" mailscanner -e 'ALTER TABLE `users` ALTER COLUMN `highspamscore` SET DEFAULT '7';'
                 MAILWATCHPW=''
                 sed -i "/^High SpamAssassin Score =/ c\High SpamAssassin Score = &SQLHighSpamScores" /etc/MailScanner/MailScanner.conf
@@ -129,7 +129,7 @@ func_peruser(){
               fi
             done
 
-          service mailscanner restart
+          systemctl restart mailscanner
           FLAG=0
           echo -e "$green[eFa]$clean Per user spam scoring $green ENABLED $clean"
           pause
