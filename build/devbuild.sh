@@ -107,7 +107,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sendmail-PMilter-1.00-1.eFa.el
 [ $? != 0 ] && exit 1
 rpmbuild -ba MailWatch.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-1.2.10-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-1.2.12-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba sqlgreywebinterface.spec
 [ $? != 0 ] && exit 1
