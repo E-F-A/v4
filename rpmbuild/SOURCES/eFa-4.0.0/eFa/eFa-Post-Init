@@ -54,5 +54,8 @@ systemctl start msmilter
 # Schedule eFa-Monitor cron
 echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
 
+# Remove INITIALIZING message
+sed -i "/^    echo ' running on '/ c\    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php
+
 rm -f /etc/cron.d/efapostinit
 rm -f /var/run/eFa-Post-Init.lock

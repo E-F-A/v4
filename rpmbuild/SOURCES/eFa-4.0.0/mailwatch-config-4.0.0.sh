@@ -84,7 +84,7 @@ function efa_version()
 }
 EOF
 
-sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php
+sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...INITIALIZING SYSTEM, PLEASE WAIT... ';" /var/www/html/mailscanner/functions.php
 
 usermod apache -G mtagroup
 
