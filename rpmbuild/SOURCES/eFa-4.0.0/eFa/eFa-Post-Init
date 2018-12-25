@@ -36,10 +36,10 @@ cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
 sa-update
 sa-compile
 
+freshclam
+
 # Update clamav unofficial-sigs
 /usr/sbin/clamav-unofficial-sigs.sh
-
-freshclam
 
 /etc/cron.daily/mailscanner
 
