@@ -44,16 +44,12 @@ function func_ask-spam() {
     echo -e ""
     echo -e "$green[eFa]$clean Spam Notification Settings:"
     echo -e ""
-    echo -e "$green[eFa]$clean By default, eFa notifies users of lower scoring"
-    echo -e "$green[eFa]$clean spam when spam is stored in quarantine. Users"
-    echo -e "$green[eFa]$clean can release the message by clicking the link"
-    echo -e "$green[eFa]$clean link in the {Spam Not Delivered} notification."
-    echo -e "$green[eFa]$clean You can optionally choose to disable"
-    echo -e "$green[eFa]$clean this feature, especially if your users are"
-    echo -e "$green[eFa]$clean abusing this feature and causing Spamassassin"
-    echo -e "$green[eFa]$clean to autolearn and poison the Bayesian filter."
+    echo -e "$green[eFa]$clean By default, eFa does not notify users of lower scoring"
+    echo -e "$green[eFa]$clean spam when spam is stored in quarantine.
+    echo -e "$green[eFa]$clean You can optionally choose to enable"
+    echo -e "$green[eFa]$clean this feature."
     echo -e ""
-    echo -e -n "$green[eFa]$clean Do you want to $green DISABLE $clean spam notification? [y/N]: "
+    echo -e -n "$green[eFa]$clean Do you want to $green ENABLE $clean spam notification? [y/N]: "
     read TMPSPAMNOTIFY
     SPAMNOTIFY=""
     spamcheck=1
@@ -61,12 +57,12 @@ function func_ask-spam() {
       do 
         if [[ "$TMPSPAMNOTIFY" == "Y" || "$TMPSPAMNOTIFY" == "y" ]]; then 
           # Set spam notification behavior
-          SPAMNOTIFY=""
-          echo -e "$green[eFa]$clean Spam Notifications $green DISABLED $clean"
+          SPAMNOTIFY="notify"
+          echo -e "$green[eFa]$clean Spam Notifications $green ENABLED $clean"
           spamcheck=0
         elif [[ "$TMPSPAMNOTIFY" == "" || "$TMPSPAMNOTIFY" == "N" || "$TMPSPAMNOTIFY" == "n" ]]; then 
-          SPAMNOTIFY="custom(spam)"
-          echo -e "$green[eFa]$clean Spam Notifications $green ENABLED $clean"
+          SPAMNOTIFY=""
+          echo -e "$green[eFa]$clean Spam Notifications $green DISABLED $clean"
           spamcheck=0
         else
           echo -e "       $red ERROR: please make an selection.$clean"
@@ -78,7 +74,7 @@ function func_ask-spam() {
 
   if [[ "$TMPDELIVERSPAM" != "C" && "$TMPDELIVERSPAM" != "c" ]]; then
     sed -i "/^Spam Actions =/ c\Spam Actions = $DELIVERSPAM $SPAMNOTIFY" /etc/MailScanner/MailScanner.conf
-    service mailscanner restart
+    systemctl restart mailscanner
   fi
 
   pause

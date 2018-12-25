@@ -3,7 +3,7 @@
 # EFA learn spam message script version 20140105
 # This script is an modification of the previous ESVA learn-msg.cgi
 # +--------------------------------------------------------------------+
-# Copyright (C) 2013~2017 http://www.efa-project.org
+# Copyright (C) 2013~2018 http://www.efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ while ($line = <FILE>) {
 }
 close (FILE);
 
-open(FILE, '/etc/sysconfig/EFA_trusted_networks') or die ("Trusted Networks File Missing");
+open(FILE, '/etc/sysconfig/eFa_trusted_networks') or die ("Trusted Networks File Missing");
 @trustednetworks = <FILE>;
 close (FILE);
 

@@ -54,14 +54,14 @@ function func_ask-nonspam() {
   echo -e ""
   echo -e "$green[eFa]$clean Non Spam Inline Signature Settings:"
   echo -e ""
-  echo -e "$green[eFa]$clean By default, non spam has a signature appended."
-  echo -e "$green[eFa]$clean This allows users to submit emails that they"
+  echo -e "$green[eFa]$clean By default, no signature is appended."
+  echo -e "$green[eFa]$clean If enabled, this allows users to submit emails that they"
   echo -e "$green[eFa]$clean suspect is spam or to receive the default signature"
   echo -e "$green[eFa]$clean depending on your inline signature rules."
   echo -e ""
   echo -e "$green[eFa]$clean You can choose to disable the signature entirely."
   echo -e ""
-  echo -e -n "$green[eFa]$clean Do you want to $green DISABLE $clean non spam signatures ? [y/N/c]: "
+  echo -e -n "$green[eFa]$clean Do you want to $green ENABLE $clean non spam signatures ? [y/N/c]: "
 
   read TMPNSPAMSIG
   NSPAMSIG=""
@@ -70,18 +70,18 @@ function func_ask-nonspam() {
     do 
       if [[ "$TMPNSPAMSIG" == "Y" || "$TMPNSPAMSIG" == "y" ]]; then
         # Set non spam delivery behavior
-        NSPAMSIG=""
-        echo -e "$green[eFa]$clean Non spam signatures $green DISABLED $clean"
-        spamcheck=0
-        sed -i "/Non Spam Actions =/ c\Non Spam Actions = $STORENSPAM $NSPAMSIG" /etc/MailScanner/MailScanner.conf
-        service mailscanner restart
-        pause
-      elif [[ "$TMPNSPAMSIG" == "" || "$TMPNSPAMSIG" == "N" || "$TMPNSPAMSIG" == "n" ]]; then 
         NSPAMSIG="custom(nonspam)"
         echo -e "$green[eFa]$clean Non spam signatures $green ENABLED $clean"
         spamcheck=0
         sed -i "/Non Spam Actions =/ c\Non Spam Actions = $STORENSPAM $NSPAMSIG" /etc/MailScanner/MailScanner.conf
-        service mailscanner restart
+        systemctl restart mailscanner
+        pause
+      elif [[ "$TMPNSPAMSIG" == "" || "$TMPNSPAMSIG" == "N" || "$TMPNSPAMSIG" == "n" ]]; then 
+        NSPAMSIG=""
+        echo -e "$green[eFa]$clean Non spam signatures $green DISABLED $clean"
+        spamcheck=0
+        sed -i "/Non Spam Actions =/ c\Non Spam Actions = $STORENSPAM $NSPAMSIG" /etc/MailScanner/MailScanner.conf
+        systemctl restart mailscanner
         pause
       elif [[ "$TMPNSPAMSIG" == "C" || "$TMPNSPAMSIG" == "c" ]]; then
         echo -e "$green[eFa]$clean No action taken, exiting."
@@ -89,7 +89,7 @@ function func_ask-nonspam() {
         pause
       else
           echo -e "       $red ERROR: please make an selection.$clean"
-          echo -e -n "$green[eFa]$clean Do you want to $green DISABLE $clean non spam signatures? [y/N/c]: "
+          echo -e -n "$green[eFa]$clean Do you want to $green ENABLE $clean non spam signatures? [y/N/c]: "
           read TMPSPAMSIG
       fi
   done

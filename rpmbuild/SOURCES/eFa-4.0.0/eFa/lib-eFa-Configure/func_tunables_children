@@ -30,7 +30,7 @@ func_tunables_children(){
 
   # Set mailscanner children 
   sed -i "/^Max Children =/ c\Max Children = $MSTHREADS" /etc/MailScanner/MailScanner.conf
-  service mailscanner restart
+  systemctl restart mailscanner
   echo -e "MailScanner threads reconfigured to use $MSTHREADS children."
   pause
 

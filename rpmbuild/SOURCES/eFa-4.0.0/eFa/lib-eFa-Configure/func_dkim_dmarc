@@ -2,6 +2,8 @@
 # Configure DKIM and DMARC
 # +---------------------------------------------------+
 
+# TODO:  Refactor, disabled for now
+
 function func_dkim-dmarc() {
 func_echo-header
 

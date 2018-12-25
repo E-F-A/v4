@@ -25,13 +25,13 @@ function func_ask-cleandeliver() {
         echo -e "$green[eFa]$clean Cleaned Message Delivery $green DISABLED $clean"
         pause
         flag=0
-        service mailscanner restart
+        systemctl restart mailscanner
       elif [[ "$TMPDELIVER" == "" || "$TMPDELIVER" == "N" || "$TMPDELIVER" == "n" ]]; then 
         sed -i '/Deliver Cleaned Messages =/ c\Deliver Cleaned Messages = Yes' /etc/MailScanner/MailScanner.conf
         echo -e "$green[eFa]$clean Cleaned Message Delivery $green ENABLED $clean"
         flag=0
         pause
-        service mailscanner restart
+        systemctl restart mailscanner
       elif [[ "$TMPDELIVER" == "C" || "$TMPDELIVER" == "c" ]]; then 
         echo -e "$green[eFa]$clean No action taken, exiting."
         pause

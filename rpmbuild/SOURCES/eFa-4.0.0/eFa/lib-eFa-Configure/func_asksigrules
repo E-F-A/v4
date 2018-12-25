@@ -108,7 +108,7 @@ function func_ask-sigrules() {
                     entry=1
                     ;;
                 e)  spammenu=1 
-                    service mailscanner restart
+                    systemctl restart mailscanner
                     return
                     ;;
                 *)  echo -e "Error \"$choice\" is not an option..." && pause

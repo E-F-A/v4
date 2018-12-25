@@ -45,31 +45,37 @@ function func_sethostname() {
   read TMPYN
   if [[ $TMPYN == "y" || $TMPYN == "Y" ]]; then
     # Grab old hostname for later
-    OLDHOSTNAME=$(grep "^HOSTNAME" /etc/EFA-Config | sed 's/^.*://')
-    OLDDOMAINNAME=$(grep "^DOMAINNAME" /etc/EFA-Config | sed 's/^.*://')
+    OLDHOSTNAME=$(grep "^HOSTNAME" /etc/eFa/eFa-Config | sed 's/^.*://')
+    OLDDOMAINNAME=$(grep "^DOMAINNAME" /etc/eFa/eFa-Config | sed 's/^.*://')
 
-    # Write new hosts file
-    echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
-    echo "$IP   $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
+# Write new hosts file
+  echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
+  echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
+  if [[ -n $IP ]]; then
+    echo "$IP    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
+  fi
+  if [[ -n $IP6 ]]; then
+    echo "$IP6    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
+  fi
 
-    sed -i "/^HOSTNAME=/ c\HOSTNAME=$HOSTNAME.$DOMAINNAME" /etc/sysconfig/network
+    echo "$HOSTNAME.$DOMAINNAME" /etc/hostname
 
     sed -i "/^Hostname =/ c\Hostname = $HOSTNAME.$DOMAINNAME" /etc/MailScanner/MailScanner.conf
 
     # Set the hostname for the active system
-    hostname $HOSTNAME
+    hostname $HOSTNAME.$DOMAINNAME
 
-    # Write change to EFA-Config
-    sed -i "/^HOSTNAME:/ c\HOSTNAME:$HOSTNAME" /etc/EFA-Config
-    sed -i "/^DOMAINNAME:/ c\DOMAINNAME:$DOMAINNAME" /etc/EFA-Config
+    # Write change to eFa-Config
+    sed -i "/^HOSTNAME:/ c\HOSTNAME:$HOSTNAME" /etc/eFa/eFa-Config
+    sed -i "/^DOMAINNAME:/ c\DOMAINNAME:$DOMAINNAME" /etc/eFa/eFa-Config
 
     # Change mailscanner config
-    sed -i "/^define('QUARANTINE_FROM_ADDR',/ c\define('QUARANTINE_FROM_ADDR', 'postmaster@$DOMAINNAME');" /var/www/html/mailscanner/conf.php
+    sed -i "/^define('MAILWATCH_FROM_ADDR',/ c\define('MAILWATCH_FROM_ADDR', 'no-reply@$HOSTNAME.$DOMAINNAME');" /var/www/html/mailscanner/conf.php
 
     # Issue 195 -- Update MySQL database hostname fields
-    MAILWATCHPWD=$(grep "^MAILWATCHSQLPWD" /etc/EFA-Config | sed 's/^.*://')
+    MAILWATCHPWD=$(grep "^MAILWATCHSQLPWD" /etc/eFa/MailWatch-Config | sed 's/^.*://')
 
-    service MailScanner stop
+    systemctl stop mailscanner
 
     mysql -u mailwatch --password=$MAILWATCHPWD mailscanner -e "\
     LOCK TABLES maillog WRITE; \
@@ -83,7 +89,7 @@ function func_sethostname() {
     echo -e ""
     echo -e "Hostname changed"
     echo -e ""
-    echo -e "$red [EFA] Your system will now reboot. $clean"
+    echo -e "$red [eFa] Your system will now reboot. $clean"
     pause
     reboot
 
