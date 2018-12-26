@@ -101,8 +101,15 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.hourly
 cat > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh << 'EOF'
 #!/bin/bash
 
-/usr/bin/php /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php --refresh
-/usr/bin/php /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_mailscanner_relay.php --refresh
+if ps -C php -o args h | grep mailwatch_postfix_relay.php
+then true ## mailwatch_postfix_relay.php running
+else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php > /dev/null &
+fi
+if ps -C php -o args h | grep mailwatch_milter_relay.php
+then true ## mailwatch_milter_relay.php running
+else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php > /dev/null &
+fi
+
 EOF
 
 %pre
