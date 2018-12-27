@@ -35,9 +35,6 @@ cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
 
 freshclam
 
-# Update clamav unofficial-sigs
-/usr/sbin/clamav-unofficial-sigs.sh
-
 /etc/cron.daily/mailscanner
 
 # Reload daemons
@@ -47,6 +44,9 @@ systemctl restart clamd@scan
 systemctl restart sqlgrey
 systemctl enable msmilter
 systemctl start msmilter
+
+# Update clamav unofficial-sigs
+/usr/sbin/clamav-unofficial-sigs.sh
 
 # Schedule eFa-Monitor cron
 echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
