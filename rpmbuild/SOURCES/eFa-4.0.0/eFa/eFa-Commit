@@ -955,6 +955,9 @@ EOF
 
   # Schedule post init
   echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
+  
+  # Clear Audit log
+  echo "" > /var/log/audit/audit.log
 
   touch /reboot.system
 

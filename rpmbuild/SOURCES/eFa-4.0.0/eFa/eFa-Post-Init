@@ -33,9 +33,6 @@ openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
 postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
 cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
 
-sa-update
-sa-compile
-
 freshclam
 
 # Update clamav unofficial-sigs
