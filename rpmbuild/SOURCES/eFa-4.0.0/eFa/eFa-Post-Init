@@ -37,6 +37,9 @@ freshclam
 
 /etc/cron.daily/mailscanner
 
+/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php
+/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php
+
 # Reload daemons
 systemctl reload postfix
 systemctl reload httpd
