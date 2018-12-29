@@ -38,6 +38,7 @@ freshclam
 /etc/cron.daily/mailscanner
 
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php
+
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php
 
 # Reload daemons
@@ -45,6 +46,9 @@ systemctl reload postfix
 systemctl reload httpd
 systemctl restart clamd@scan
 systemctl restart sqlgrey
+
+# Spawn mta relay stats watchers
+/etc/cron.hourly/mailwatch_relay.sh
 
 # Update clamav unofficial-sigs
 # This has a little trouble running as a child process

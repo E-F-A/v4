@@ -65,6 +65,12 @@ chmod 755 /usr/sbin/eFa-Post-Init
 cp $srcdir/eFa/eFa-Monitor-cron /usr/sbin/eFa-Monitor-cron
 chmod 755 /usr/sbin/eFa-Monitor-cron
 
+cp $srcdir/eFa/eFa-Backup-cron /usr/sbin/eFa-Backup-cron
+chmod 755 /usr/sbin/eFa-Backup-cron
+
+cp $srcdir/eFa-Backup.cron /etc/cron.daily
+chmod 755 /etc/cron.daily/eFa-Backup.cron
+
 # Write SSH banner
 sed -i "/^#Banner / c\Banner /etc/banner"  /etc/ssh/sshd_config
 cat > /etc/banner << 'EOF'
