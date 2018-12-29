@@ -64,36 +64,25 @@ function func_system-restore() {
                       tar xzvf ${BACKUPLIST[$((choice-1))]} --overwrite
                       #fetch SQL root password
                       MYSQLROOTPWD="`grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/.*://'`"
-                      RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/eFa/backup/backup/etc/eFa/MySQL-Config | sed 's/.*://'`"
-                      if [[ "$MYSQLROOTPWD" != "$RESTOREMYSQLROOTPWD" ]]; then
-                        echo "Foreign backup detected, performing import..."
-                        # Restore importable configurations
-                        cp -f /var/eFa/backup/backup/etc/eFa/* /etc/eFa/
-                        cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
-                        cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
-                        cp -f /var/eFa/backup/backup/etc/pki/tls/certs/localhost.crt /etc/pki/tls/certs/localhost.crt
-                        cp -f /var/eFa/backup/backup/etc/pki/tls/private/localhost.key /etc/pki/tls/private/localhost.key
-                        cp -rf /var/eFa/backup/backup/etc/postfix/* /etc/postfix
-                        
-                        # Postmaps
-                        postmap /etc/postfix/helo_access.db
-                        postmap /etc/postfix/recipient_access.db
-                        postmap /etc/postfix/sasl_passwd.db
-                        postmap /etc/postfix/sender_access.db
-                        postmap /etc/postfix/transport.db
-                        postmap /etc/postfix/virtual.db
-                        
-                        cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
-                        cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
-                        cp -f /var/eFa/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php
+
+                      if [[ -f /var/eFa/backup/backup/etc/EFA-Config ]]; then
+                        echo "eFa v3 backup detected, performing migration..."
+                        RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+
+                        # If hostname is different, database entries must be updated!
+                        OLDHOSTNAME="`grep HOSTNAME /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        OLDDOMAINNAME="`grep DOMAINNAME var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        HOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
+                        DOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
+
                         # Import database passwords
-                        RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
+                        RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
-                        RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/eFa/MailWatch-Config | sed 's/.*://'`"
+                        RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
-                        RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/EFA/backup/backup/etc/eFa/SQLGrey-Config | sed 's/.*://'`"
+                        RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
-                        RESTOREEFASQLPWD="`grep EFASQLPWD /var/EFA/backup/backup/etc/eFa/eFaSQL-Config | sed 's/.*://'`"
+                        RESTOREEFASQLPWD="`grep EFASQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREEFASQLPWD') WHERE User='efa';"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
                         /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
@@ -104,17 +93,147 @@ function func_system-restore() {
                         sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
                         sed -i "/^EFASQLPWD:/ c\EFASQLPWD:$RESTOREEFASQLPWD" /etc/eFa/eFaSQL-Config
                         sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
+
+                        mv -f /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf.v4
+                        cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
+
+                        # Keep certain files
+                        mv -f /etc/MailScanner/MailScanner.conf /etc/MailScanner/MailScanner.conf.v4
+                        mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v4
+                        mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v4
+                        mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v4
+
+                        cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
+
+                        # Replace old v3 files with v4 but leave v3 variants for review
+                        mv -f /etc/MailScanner/MailScanner.conf /etc/MailScanner/MailScanner.conf.v3
+                        mv -f /etc/MailScanner/defaults /etc/MailScanner/defautls.v3
+                        mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v3
+                        mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v3
+
+                        mv -f /etc/MailScanner/MailScanner.conf.v4 /etc/MailScanner/MailScanner.conf
+                        mv -f /etc/MailScanner/defaults.v4 /etc/MailScanner/defaults
+                        mv -f /etc/MailScanner/virus.scanners.conf.v4 /etc/MailScanner/virus.scanners.conf
+                        mv -f /etc/MailScanner/spamassassin.conf.v4 /etc/MailScanner/spamassassin.conf
+
+                        # MailScanner Conf
+                        cp -f /var/eFa/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php.v3
+
+                        # Postfix Conf
+                        mv -f /etc/postfix/access /etc/postfix/access.v4
+                        mv -f /etc/postfix/canonical /etc/postfix/canonical.v4
+                        mv -f /etc/postfix/generic /etc/postfix/generic.v4
+                        mv -f /etc/postfix/header_checks /etc/postfix/header_checks.v4
+                        mv -f /etc/postfix/helo_access /etc/postfix/helo_access.v4
+                        mv -f /etc/postfix/main.cf /etc/postfix/main.cf.v4
+                        mv -f /etc/postfix/master.cf /etc/postfix/master.cf.v4
+                        mv -f /etc/postfix/recipient_access /etc/postfix/recipient_access.v4
+                        mv -f /etc/postfix/relocated /etc/postfix/relocated.v4
+                        mv -f /etc/postfix/sender_access /etc/postfix/sender_access.v4
+                        mv -f /etc/postfix/transport /etc/postfix/transport.v4
+                        mv -f /etc/postfix/virtual /etc/postfix/virtual.v4
+
+                        cp -f /var/eFa/backup/backup/etc/postfix/* /etc/postfix
+
+                        # Milter in effect use v4
+                        mv -f /etc/postfix/header_checks /etc/postfix/header_checks.v3
+                        mv -f /etc/postfix/header_checks.v4 /etc/postfix/header_checks
+
+                        # Several operational changes to main.cf in v4
+                        mv -f /etc/postfix/main.cf /etc/postfix/main.cf.v3
+                        mv -f /etc/postfix/main.cf.v4 /etc/postfix/main.cf
+
+                        # Ditto
+                        mv -f /etc/postfix/master.cf /etc/postfix/master.cf.v3
+                        mv -f /etc/postfix/master.cf.v4 /etc/postfix/master.cf
+
+                        # Postmaps
+                        postmap /etc/postfix/helo_access.db
+                        postmap /etc/postfix/recipient_access.db
+                        postmap /etc/postfix/sasl_passwd.db
+                        postmap /etc/postfix/sender_access.db
+                        postmap /etc/postfix/transport.db
+                        postmap /etc/postfix/virtual.db
+
+                        cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
+
+                        cp -f /var/eFa/backup/backup/etc/sysconfig/eFa_trusted_networks /etc/sysconfig/eFa_trusted_networks
+
+                        cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
                         
                         # Restore trim-awl
                         cp -f /var/eFa/backup/backup/usr/sbin/trim-awl /usr/sbin
                       else
+                        RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/eFa/backup/backup/etc/eFa/MySQL-Config | sed 's/.*://'`"
+                        if [[ "$MYSQLROOTPWD" != "$RESTOREMYSQLROOTPWD" ]]; then
+                          echo "Foreign backup detected, performing import..."
+                          
+                          # If hostname is different, database entries must be updated!
+                          OLDHOSTNAME="`grep HOSTNAME /var/eFa/backup/backup/etc/eFa/eFa-Config | sed 's/.*://'`"
+                          OLDDOMAINNAME="`grep DOMAINNAME var/eFa/backup/backup/etc/eFa/eFa-Config | sed 's/.*://'`"
+                          HOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
+                          DOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
+                        
+                          # Restore importable configurations
+                          cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
+                          cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
+                          cp -rf /var/eFa/backup/backup/etc/postfix/* /etc/postfix
+                          cp -f /var/eFa/backup/backup/etc/sysconfig/eFa_trusted_networks /etc/sysconfig/eFa_trusted_networks
+
+                          # Postmaps
+                          postmap /etc/postfix/helo_access.db
+                          postmap /etc/postfix/recipient_access.db
+                          postmap /etc/postfix/sasl_passwd.db
+                          postmap /etc/postfix/sender_access.db
+                          postmap /etc/postfix/transport.db
+                          postmap /etc/postfix/virtual.db
+
+                          cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
+                          cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
+                          cp -f /var/eFa/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php
+                          # Import database passwords
+                          RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
+                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
+                          RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/eFa/MailWatch-Config | sed 's/.*://'`"
+                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
+                          RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/eFa/SQLGrey-Config | sed 's/.*://'`"
+                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
+                          RESTOREEFASQLPWD="`grep EFASQLPWD /var/eFa/backup/backup/etc/eFa/eFaSQL-Config | sed 's/.*://'`"
+                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREEFASQLPWD') WHERE User='efa';"
+                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
+                          /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
+                          MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
+                          # Update eFa-Config with imported values
+                          sed -i "/^MAILWATCHSQLPWD:/ c\MAILWATCHSQLPWD:$RESTOREMAILWATCHSQLPWD" /etc/eFa/MailWatch-Config
+                          sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
+                          sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
+                          sed -i "/^EFASQLPWD:/ c\EFASQLPWD:$RESTOREEFASQLPWD" /etc/eFa/eFaSQL-Config
+                          sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
+
+                          # Restore trim-awl
+                          cp -f /var/eFa/backup/backup/usr/sbin/trim-awl /usr/sbin
+                        fi
+                      else
                         cp -rf /var/eFa/backup/backup/etc/* /etc
                         cp -rf /var/eFa/backup/backup/var/* /var
+                        cp -rf /usr/eFa/backup/backup/usr/* /usr
                       fi
                       cd /var/eFa/backup/backup/sql
                       # Restore SQL databases
                       mysql --user=root --password=$MYSQLROOTPWD < backup.sql
                       rm -rf /var/eFa/backup/backup
+                      
+                      # Are hostnames different from original?
+                      if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME ! = $OLDDOMAINNAME ]];
+                        mysql -u mailwatch --password=$MAILWATCHSQLPWD mailscanner -e "\
+                        LOCK TABLES maillog WRITE; \
+                        ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
+                        UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
+                        ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; \
+                        LOCK TABLES mtalog WRITE; \
+                        UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
+                        UNLOCK TABLES;" 
+                      fi
 
                       echo -e "Restore Complete!"
                       echo -e ""

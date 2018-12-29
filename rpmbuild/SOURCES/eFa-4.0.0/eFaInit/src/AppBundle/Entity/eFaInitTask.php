@@ -4,6 +4,7 @@
 namespace AppBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as eFaInitAssert;
 
 class eFaInitTask
 {
@@ -329,8 +330,7 @@ class eFaInitTask
      * @Assert\NotBlank(
      *    groups={"Webusername"}
      * )
-     * @Assert\Regex(
-     *    "/^[a-z_][a-z0-9_-]{1,30}+$/",
+     * @eFaInitAssert\UsernameOrEmail(
      *    groups={"Webusername"}
      * )
      */

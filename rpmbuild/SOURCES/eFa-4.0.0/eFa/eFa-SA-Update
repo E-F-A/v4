@@ -61,14 +61,14 @@ function update_kam()
   wget -N $KAMSRC
   if [ "$?" = "0" ]; then
         echo It completed okay.
-        if [ -r /var/EFA/backup/KAM/KAM.cf.backup ]; then
-                if [ KAM.cf -nt /var/EFA/backup/KAM/KAM.cf.backup ]; then
+        if [ -r /var/eFa/backup/KAM/KAM.cf.backup ]; then
+                if [ KAM.cf -nt /var/eFa/backup/KAM/KAM.cf.backup ]; then
                         if ( tail -10 KAM.cf | grep -q '^#.*EOF' ); then
                                 # echo It succeeded, so make a backup
-                                cp -f KAM.cf /var/EFA/backup/KAM/KAM.cf.backup
+                                cp -f KAM.cf /var/eFa/backup/KAM/KAM.cf.backup
                          else
                                 echo ERROR: Could not find EOF marker in KAM.cf
-                                cp -f /var/EFA/backup/KAM/KAM.cf.backup KAM.cf
+                                cp -f /var/eFa/backup/KAM/KAM.cf.backup KAM.cf
                         fi
                 else
                 # Remote file not newer than local copy
@@ -78,7 +78,7 @@ function update_kam()
                 # No backup file present, so delete file if it is bad
                 if ( tail -10 KAM.cf | grep -q '^#.*EOF' ); then
                         #      echo Success, make a backup
-                        cp -f KAM.cf /var/EFA/backup/KAM/KAM.cf.backup
+                        cp -f KAM.cf /var/eFa/backup/KAM/KAM.cf.backup
                  else
                         echo ERROR: Could not find EOF marker in KAM.cf and no backup
                         rm -f KAM.cf
@@ -87,9 +87,9 @@ function update_kam()
         fi
   else
         echo It failed to complete properly
-        if [ -r /var/EFA/backup/KAM/KAM.cf.backup ]; then
+        if [ -r /var/eFa/backup/KAM/KAM.cf.backup ]; then
                 echo Restored backup of KAM.cf
-                cp -f /var/EFA/backup/KAM/KAM.cf.backup KAM.cf
+                cp -f /var/eFa/backup/KAM/KAM.cf.backup KAM.cf
          else
                 # No backup copy present, so delete bad KAM.cf
                 echo ERROR: wget of KAM.cf failed and no backup
@@ -126,7 +126,7 @@ function user_check()
 {
   if [ `whoami` != root ]
     then
-                echo "[EFA] Please become root to run this update"
+                echo "[eFa] Please become root to run this update"
                 exit 0
   fi
 }

@@ -1,1 +1,3 @@
 'Enter a valid hostname': 'Insira um nome de host válido'
+'Passwords do not match': '__Passwords do not match'
+'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': '__Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address'
