@@ -1,1 +1,3 @@
+'Enter a valid hostname': '__Enter a valid hostname'
 'Passwords do not match': 'Пароли не совпадают'
+'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': '__Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address'
