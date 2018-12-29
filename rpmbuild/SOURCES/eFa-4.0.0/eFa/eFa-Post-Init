@@ -44,7 +44,10 @@ systemctl restart clamd@scan
 systemctl restart sqlgrey
 
 # Update clamav unofficial-sigs
-/usr/sbin/clamav-unofficial-sigs.sh
+# This has a little trouble running as a child process
+# and hangs for a while
+# Background it and keep moving
+/usr/sbin/clamav-unofficial-sigs.sh &
 
 systemctl enable msmilter
 systemctl start msmilter
