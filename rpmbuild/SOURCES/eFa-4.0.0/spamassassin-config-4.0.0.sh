@@ -79,6 +79,28 @@ echo '#End eFa mods for MySQL' >> /etc/MailScanner/spamassassin.conf
 # Enable TxRep Plugin
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::TxRep/ c\loadplugin Mail::SpamAssassin::Plugin::TxRep" /etc/mail/spamassassin/v341.pre
 
+# Enable HashBL Plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::HashBL/ c\loadplugin Mail::SpamAssassin::Plugin::HashBL" /etc/mail/spamassassin/v342.pre
+
+# Enable FromNameSpoof plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::FromNameSpoof/ c\loadplugin Mail::SpamAssassin::Plugin::FromNameSpoof" /etc/mail/spamassassin/v342.pre
+
+# Enable Phishing plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::Phishing/ c\loadplugin Mail::SpamAssassin::Plugin::Phishing" /etc/mail/spamassassin/v342.pre
+
+# Enable URILocalBL plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::URILocalBL/ c\loadplugin Mail::SpamAssassin::Plugin::URILocalBL" /etc/mail/spamassassin/v341.pre
+
+# Enable Shortcircuit plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::Shortcircuit/ c\loadplugin Mail::SpamAssassin::Plugin::Shortcircuit" /etc/mail/spamassassin/v320.pre
+
+# Enable ASM plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::ASM/ c\loadplugin Mail::SpamAssassin::Plugin::ASM" /etc/mail/spamassassin/v320.pre
+
+# Enable Av plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::AntiVirus/ c\loadplugin Mail::SpamAssassin::Plugin::AntiVirus" /etc/mail/spamassassin/v310.pre
+
+
 # Add example spam to db
 # source: http://spamassassin.apache.org/gtube/gtube.txt
 /usr/bin/sa-learn --spam /usr/src/eFa/spamassassin/gtube.txt
@@ -126,6 +148,7 @@ ln -s /etc/mail/spamassassin/v320.pre /etc/MailScanner/mcp/v320.pre
 ln -s /etc/mail/spamassassin/v330.pre /etc/MailScanner/mcp/v330.pre
 ln -s /etc/mail/spamassassin/v340.pre /etc/MailScanner/mcp/v340.pre
 ln -s /etc/mail/spamassassin/v341.pre /etc/MailScanner/mcp/v341.pre
+ln -s /etc/mail/spamassassin/v342.pre /etc/MailScanner/mcp/v342.pre
 mkdir -p /var/spool/postfix/.spamassassin
 chown postfix:mtagroup /var/spool/postfix/.spamassassin
 
