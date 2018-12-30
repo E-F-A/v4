@@ -6,6 +6,7 @@ type sqlgreysql_etc_t;
 type sasql_etc_t;
 type efasql_etc_t;
 type mysqlsql_etc_t;
+type efa_var_t;
 
 require {
     attribute file_type;
