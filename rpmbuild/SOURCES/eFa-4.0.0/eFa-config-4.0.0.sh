@@ -68,7 +68,7 @@ chmod 755 /usr/sbin/eFa-Monitor-cron
 cp $srcdir/eFa/eFa-Backup-cron /usr/sbin/eFa-Backup-cron
 chmod 755 /usr/sbin/eFa-Backup-cron
 
-cp $srcdir/eFa-Backup.cron /etc/cron.daily
+cp $srcdir/eFa/eFa-Backup.cron /etc/cron.daily
 chmod 755 /etc/cron.daily/eFa-Backup.cron
 
 # Write SSH banner
