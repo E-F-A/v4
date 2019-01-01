@@ -41,6 +41,7 @@ sed -i 's/LoadModule authz_dbd_module modules\/mod_authz_dbd.so/#&/' /etc/httpd/
 sed -i 's/LoadModule authz_dbm_module modules\/mod_authz_dbm.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule autoindex_module modules\/mod_autoindex.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule cache_module modules\/mod_cache.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+sed -i 's/LoadModule cache_socache_module modules\/mod_cache_socache.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule cache_disk_module modules\/mod_cache_disk.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule data_module modules\/mod_data.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule dbd_module modules\/mod_dbd.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
