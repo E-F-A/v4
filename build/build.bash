@@ -92,6 +92,10 @@ echo "- Updating the OS"
 yum -y update
 [ $? != 0 ] && exit 1
 
+echo "- Removing conflicting packages"
+yum -y remove postfix mariadb-libs php-common
+# Ignore return here 
+
 # install eFa
 yum -y install eFa
 [ $? != 0 ] && exit 1
