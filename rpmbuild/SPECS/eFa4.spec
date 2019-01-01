@@ -342,6 +342,10 @@ Requires: sqlgreywebinterface >= 1.1.9-2
     # sqlgreywebinterrface                       # eFa     # mailwatch
 Requires: perl-Sendmail-PMilter >= 1.00-1
     # perl-Sendmail-PMilter                      # eFa     # MailScanner
+Requires: php72u-cli >= 7.2.13-2
+    # php72u-cli                                 # IUS     # mailwatch, frontend
+Requires: php72u-xml >= 7.2.13-2
+    # php72u-xml                                 # IUS     # mailwatch, frontend
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
