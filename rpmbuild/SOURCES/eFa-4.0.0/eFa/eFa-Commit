@@ -427,9 +427,82 @@ done
 
 if [[ $startmariadb -eq 1 ]]; then
   # Start mariadb Daemon
-  [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Starting MariaDB"
+  [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Starting MariaDB and Configuring"
   systemctl start mariadb
   [ $? -ne 0 ] && exit 1 
+  
+  # remove default security flaws from MySQL.
+  password="eFaPr0j3ct"
+  /usr/bin/mysqladmin -u root password "$password"
+  [ $? -ne 0 ] && exit 1
+  /usr/bin/mysqladmin -u root -p"$password" -h localhost.localdomain password "$password"
+  [ $? -ne 0 ] && exit 1
+  echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
+  [ $? -ne 0 ] && exit 1
+  /usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='';"
+  [ $? -ne 0 ] && exit 1
+  /usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+  [ $? -ne 0 ] && exit 1
+
+  # Create the databases
+  /usr/bin/mysql -u root -p"$password" -e "CREATE DATABASE sa_bayes"
+  [ $? -ne 0 ] && exit 1
+  /usr/bin/mysql -u root -p"$password" -e "CREATE DATABASE sqlgrey"
+  [ $? -ne 0 ] && exit 1
+
+  # Create and populate the mailscanner db
+  /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/create.sql
+  [ $? -ne 0 ] && exit 1
+
+  # Create and populate efa db
+  /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/efatokens.sql
+  [ $? -ne 0 ] && exit 1
+
+  # Create the users
+  /usr/bin/mysql -u root -p"$password" -e "GRANT SELECT,INSERT,UPDATE,DELETE on sa_bayes.* to 'sa_user'@'localhost' identified by '$password'"
+  [ $? -ne 0 ] && exit 1
+
+  # mailwatch mysql user and login user
+  /usr/bin/mysql -u root -p"$password" -e "GRANT ALL ON mailscanner.* TO mailwatch@localhost IDENTIFIED BY '$password';"
+  [ $? -ne 0 ] && exit 1
+  /usr/bin/mysql -u root -p"$password" -e "GRANT FILE ON *.* to mailwatch@localhost IDENTIFIED BY '$password';"
+  [ $? -ne 0 ] && exit 1
+
+  # sqlgrey user
+  /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on sqlgrey.* to 'sqlgrey'@'localhost' identified by '$password'"
+  [ $? -ne 0 ] && exit 1 
+
+  # efa user for token handling
+  /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$password'"
+  [ $? -ne 0 ] && exit 1
+
+  # flush
+  /usr/bin/mysql -u root -p"$password" -e "FLUSH PRIVILEGES;"
+  [ $? -ne 0 ] && exit 1
+
+  # populate the sa_bayes DB
+  /usr/bin/mysql -u root -p"$password" sa_bayes < /usr/src/eFa/mariadb/bayes_mysql.sql
+  [ $? -ne 0 ] && exit 1
+
+  # add the AWL table to sa_bayes
+  /usr/bin/mysql -u root -p"$password" sa_bayes < /usr/src/eFa/mariadb/awl_mysql.sql
+  [ $? -ne 0 ] && exit 1
+
+  sed -i "/^\[mysqld\]/ a\character-set-server = utf8mb4" /etc/my.cnf.d/mariadb-server.cnf
+  [ $? -ne 0 ] && exit 1
+  sed -i "/^\[mysqld\]/ a\init-connect = 'SET NAMES utf8mb4'" /etc/my.cnf.d/mariadb-server.cnf
+  [ $? -ne 0 ] && exit 1
+  sed -i "/^\[mysqld\]/ a\collation-server = utf8mb4_unicode_ci" /etc/my.cnf.d/mariadb-server.cnf
+  [ $? -ne 0 ] && exit 1
+
+  mkdir /var/lib/mysql/temp
+  [ $? -ne 0 ] && exit 1
+
+  chown mysql:mysql /var/lib/mysql/temp
+  [ $? -ne 0 ] && exit 1
+
+  sed -i "/^\[mysqld\]/ a\tmpdir = /var/lib/mysql/temp" /etc/my.cnf.d/mariadb-server.cnf
+  [ $? -ne 0 ] && exit 1
 fi
 
 if [[ $confighost -eq 1 ]]; then
@@ -598,7 +671,7 @@ fi
 if [[ $configclam -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Updating AV and SA rules"
 
-  # freshclam
+  # freshclam # moved to post init
   # Returns non-zero when up to date
   #[ $? -ne 0 ] && exit 1
 
@@ -611,14 +684,19 @@ if [[ $updatesa -eq 1 ]]; then
   # sa-update
   # Returns non-zero when up to date
   #[ $? -ne 0 ] && exit 1
-  # sa-compile
+  # sa-compile # moved to post init
+
+  # Add example spam to db
+  # source: http://spamassassin.apache.org/gtube/gtube.txt
+  /usr/bin/sa-learn --spam /usr/src/eFa/spamassassin/gtube.txt
   [ $? -ne 0 ] && exit 1
 fi
 
 if [[ $configgeoip -eq 1 ]]; then
   # Run geoip update
-  /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1
-  [ $? -ne 0 ] && exit 1
+  # Moved to post init
+  #/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1
+  #[ $? -ne 0 ] && exit 1
 fi
 
 if [[ $configtransport -eq 1 ]]; then
@@ -950,6 +1028,24 @@ EOF
     fi
   fi
 
+  # Configure Firewall
+  systemctl enable firewalld
+  [ $? -ne 0 ] && exit 1
+  systemctl start firewalld
+  [ $? -ne 0 ] && exit 1
+  firewall-cmd --permanent --add-service=smtp
+  [ $? -ne 0 ] && exit 1
+  firewall-cmd --permanent --add-service=ssh
+  [ $? -ne 0 ] && exit 1
+  firewall-cmd --permanent --add-port 80/tcp
+  [ $? -ne 0 ] && exit 1
+  firewall-cmd --permanent --add-port 443/tcp
+  [ $? -ne 0 ] && exit 1
+  firewall-cmd --permanent --add-port 587/tcp
+  [ $? -ne 0 ] && exit 1
+  firewall-cmd --reload
+  [ $? -ne 0 ] && exit 1
+
   sed -i "/CONFIGURED:/ c\CONFIGURED:YES" /etc/eFa/eFa-Config
   [ $? -ne 0 ] && exit 1
 
@@ -958,6 +1054,9 @@ EOF
   
   # Clear Audit log
   echo "" > /var/log/audit/audit.log
+  
+  # Remove source files
+  rm -rf /usr/src/eFa
 
   touch /reboot.system
 

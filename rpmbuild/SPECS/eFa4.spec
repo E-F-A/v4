@@ -425,7 +425,8 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFaInit-config-4.0.0.sh
-        [[ -d %{_usrsrc} ]] && /bin/rm -rf %{_usrsrc}/eFa
+        # Moved to init phase, items needed during init
+        # [[ -d %{_usrsrc} ]] && /bin/rm -rf %{_usrsrc}/eFa
 
         echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
         echo "Build completed!"

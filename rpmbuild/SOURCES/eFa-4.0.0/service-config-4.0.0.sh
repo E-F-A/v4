@@ -51,6 +51,8 @@ systemctl disable unbound
 #chkconfig munin-node off
 systemctl disable chronyd
 systemctl disable yum-cron
+systemctl disable firewalld
+
 # Moved to build script to allow yum/cloud/remote based installs
 #systemctl disable sshd
 
