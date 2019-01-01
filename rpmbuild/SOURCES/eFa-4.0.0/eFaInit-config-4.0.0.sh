@@ -32,7 +32,7 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring eFaInit..."
 
 cd /var/www/eFaInit
-composer install --quiet
+/usr/bin/php composer install --quiet
 
 # Grant apache permissions to cache/logs/sessions
 chown apache /var/www/eFaInit/var/{cache,logs,sessions}

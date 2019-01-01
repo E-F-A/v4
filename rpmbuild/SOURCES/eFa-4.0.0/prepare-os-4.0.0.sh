@@ -29,10 +29,11 @@ source /usr/src/eFa/eFa-settings.inc
 # echo "- Changing the root password"
 # echo "root:$password" | chpasswd --md5 root
 
-echo "- Adding Firewall rules"
-firewall-cmd --permanent --add-service=smtp
-firewall-cmd --permanent --add-service=ssh
-firewall-cmd --permanent --add-port 80/tcp
-firewall-cmd --permanent --add-port 443/tcp
-firewall-cmd --permanent --add-port 587/tcp
-firewall-cmd --reload
+# Moved to init phase FirewallD not available in kickstart chroot jail
+#echo "- Adding Firewall rules"
+#firewall-cmd --permanent --add-service=smtp
+#firewall-cmd --permanent --add-service=ssh
+#firewall-cmd --permanent --add-port 80/tcp
+#firewall-cmd --permanent --add-port 443/tcp
+#firewall-cmd --permanent --add-port 587/tcp
+#firewall-cmd --reload

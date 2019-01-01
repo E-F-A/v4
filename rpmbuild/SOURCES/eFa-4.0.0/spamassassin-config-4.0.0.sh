@@ -100,11 +100,6 @@ sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::ASM/ c\loadplugin Mail::SpamA
 # Enable Av plugin
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::AntiVirus/ c\loadplugin Mail::SpamAssassin::Plugin::AntiVirus" /etc/mail/spamassassin/v310.pre
 
-
-# Add example spam to db
-# source: http://spamassassin.apache.org/gtube/gtube.txt
-/usr/bin/sa-learn --spam /usr/src/eFa/spamassassin/gtube.txt
-
 # AWL cleanup tools (just a bit different then esva)
 # http://notes.sagredo.eu/node/86
 echo '#!/bin/sh'>/usr/sbin/trim-awl
