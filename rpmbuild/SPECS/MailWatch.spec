@@ -99,19 +99,16 @@ mv %{buildroot}%{_localstatedir}/www/html/mailscanner/conf.php.example %{buildro
 rm -rf %{buildroot}%{_localstatedir}/www/html/mailscanner/docs
 
 mkdir -p %{buildroot}%{_sysconfdir}/cron.hourly
-cat > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh << 'EOF'
-#!/bin/bash
-
-if ps -C php -o args h | grep mailwatch_postfix_relay.php
-then true ## mailwatch_postfix_relay.php running
-else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php > /dev/null &
-fi
-if ps -C php -o args h | grep mailwatch_milter_relay.php
-then true ## mailwatch_milter_relay.php running
-else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php > /dev/null &
-fi
-
-EOF
+echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "if ps -C php -o args h | grep mailwatch_postfix_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "then true ## mailwatch_postfix_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php > /dev/null &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "if ps -C php -o args h | grep mailwatch_milter_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "then true ## mailwatch_milter_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php > /dev/null &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 
 %pre
 # Nothing to do
