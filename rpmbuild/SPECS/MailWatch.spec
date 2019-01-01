@@ -32,6 +32,19 @@ Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
+AutoReqProv:   no 
+Requires:      /bin/bash
+Requires:      perl(DBI)
+Requires:      perl(Digest::SHA1)
+Requires:      perl(File::BaseName)
+Requires:      perl(POSIX)
+Requires:      perl(Socket)
+Requires:      perl(Storable)
+Requires:      perl(Sys::Hostname)
+Requires:      perl(strict)
+Requires:      perl(utf8)
+Requires:      perl(vars)
+Requires:      perl(warnings)
 Requires:      httpd >= 2.4.6-88
 Requires:      php72u >= 7.2.13-2
 Requires:      php72u-gd >= 7.2.13-2
