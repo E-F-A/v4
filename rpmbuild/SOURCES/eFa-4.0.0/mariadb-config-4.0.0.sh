@@ -27,54 +27,9 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 # Start configuration of MariaDB
 #-----------------------------------------------------------------------------#
-echo "Configuring mariadb..."
-systemctl start mariadb
+#echo "Configuring mariadb..."
+#systemctl start mariadb
 
-# remove default security flaws from MySQL.
-/usr/bin/mysqladmin -u root password "$password"
-/usr/bin/mysqladmin -u root -p"$password" -h localhost.localdomain password "$password"
-echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
-/usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='';"
-/usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+# Moved to init phase, cannot run mariadb server in chroot jail during kickstart
 
-# Create the databases
-/usr/bin/mysql -u root -p"$password" -e "CREATE DATABASE sa_bayes"
-/usr/bin/mysql -u root -p"$password" -e "CREATE DATABASE sqlgrey"
-
-# Create and populate the mailscanner db
-/usr/bin/mysql -u root -p"$password" < $srcdir/mariadb/create.sql
-
-# Create and populate efa db
-/usr/bin/mysql -u root -p"$password" < $srcdir/mariadb/efatokens.sql
-
-# Create the users
-/usr/bin/mysql -u root -p"$password" -e "GRANT SELECT,INSERT,UPDATE,DELETE on sa_bayes.* to 'sa_user'@'localhost' identified by '$password'"
-
-# mailwatch mysql user and login user
-/usr/bin/mysql -u root -p"$password" -e "GRANT ALL ON mailscanner.* TO mailwatch@localhost IDENTIFIED BY '$password';"
-/usr/bin/mysql -u root -p"$password" -e "GRANT FILE ON *.* to mailwatch@localhost IDENTIFIED BY '$password';"
-
-# sqlgrey user
-/usr/bin/mysql -u root -p"$password" -e "GRANT ALL on sqlgrey.* to 'sqlgrey'@'localhost' identified by '$password'"
-
-# efa user for token handling
-/usr/bin/mysql -u root -p"$password" -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$password'"
-
-# flush
-/usr/bin/mysql -u root -p"$password" -e "FLUSH PRIVILEGES;"
-
-# populate the sa_bayes DB
-/usr/bin/mysql -u root -p"$password" sa_bayes < $srcdir/mariadb/bayes_mysql.sql
-
-# add the AWL table to sa_bayes
-/usr/bin/mysql -u root -p"$password" sa_bayes < $srcdir/mariadb/awl_mysql.sql
-
-sed -i "/^\[mysqld\]/ a\character-set-server = utf8mb4" /etc/my.cnf.d/mariadb-server.cnf
-sed -i "/^\[mysqld\]/ a\init-connect = 'SET NAMES utf8mb4'" /etc/my.cnf.d/mariadb-server.cnf
-sed -i "/^\[mysqld\]/ a\collation-server = utf8mb4_unicode_ci" /etc/my.cnf.d/mariadb-server.cnf
-
-mkdir /var/lib/mysql/temp
-chown mysql:mysql /var/lib/mysql/temp
-sed -i "/^\[mysqld\]/ a\tmpdir = /var/lib/mysql/temp" /etc/my.cnf.d/mariadb-server.cnf
-
-echo "Configuring mariadb...done"
+#echo "Configuring mariadb...done"
