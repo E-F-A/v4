@@ -33,28 +33,6 @@ URL:           https://github.com/mailwatch/MailWatch
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 AutoReqProv:   no 
-Requires:      /bin/bash
-Requires:      perl(DBI)
-Requires:      perl(Digest::SHA1)
-Requires:      perl(File::BaseName)
-Requires:      perl(POSIX)
-Requires:      perl(Socket)
-Requires:      perl(Storable)
-Requires:      perl(Sys::Hostname)
-Requires:      perl(strict)
-Requires:      perl(utf8)
-Requires:      perl(vars)
-Requires:      perl(warnings)
-Requires:      httpd >= 2.4.6-88
-Requires:      php72u >= 7.2.13-2
-Requires:      php72u-gd >= 7.2.13-2
-Requires:      php72u-mbstring >= 7.2.13-2
-Requires:      mariadb101u-server >= 1:10.1.35-1
-Requires:      php72u-mysqlnd >= 7.2.13-2
-Requires:      php72u-ldap >= 7.2.13-2
-Requires:      php72u-xml >= 7.2.13-2
-Requires:      php72u-common >= 7.2.13-2
-Requires:      perl(Encoding::FixLatin) >= 1.04-1
 
 %description
 MailWatch for MailScanner is a web-based front-end to MailScanner written in
