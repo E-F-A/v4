@@ -80,6 +80,7 @@ fi
 
 echo "- Adding epel Repo"
 yum -y install epel-release
+[ $? != 0 ] && exit 1
 
 echo "- Adding IUS Repo"
 yum -y install https://centos7.iuscommunity.org/ius-release.rpm
@@ -89,9 +90,11 @@ rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
 
 echo "- Updating the OS"
 yum -y update
+[ $? != 0 ] && exit 1
 
 # install eFa
 yum -y install eFa
+[ $? != 0 ] && exit 1
 
 if [[ "$action" == "kickstart" ]]; then
   # Set root default pass for kickstart builds
