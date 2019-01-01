@@ -37,7 +37,7 @@ options:
 inst.ks=http://dl.efa-project.org/build/4/kstesting.cfg
 
 #######################################################################
-# Building using github clone
+# Building using github clone for development
 #######################################################################
 
 For development purposes, you can clone the repo and use devbuild.sh
