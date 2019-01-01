@@ -93,7 +93,7 @@ yum -y update
 [ $? != 0 ] && exit 1
 
 echo "- Removing conflicting packages"
-yum -y remove postfix mariadb-libs php-common
+yum -y remove postfix mariadb-libs
 # Ignore return here 
 
 # install eFa
