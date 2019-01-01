@@ -36,17 +36,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # Control dependencies here as updates are released
 # Use version and release numbers required for each update
 # to maintain strict version control and dependency resolution
-Requires:  clamav >= 0.100.0-2
+Requires:  clamav >= 0.101.0-1
     # clamav                                     # epel    # MailScanner
     # #     clamav-data                          #         #
     # #     clamav-filesystem                    #         #
     # #     clamav-lib                           #         #
-Requires:  clamav-update >= 0.99.4-1
+Requires:  clamav-update >= 0.101.0-1
     # clamav-update                              # epel    # MailScanner
-Requires:  clamav-server >= 0.99.4-1
+Requires:  clamav-server >= 0.101.0-1
     # clamav-server                              # epel    # MailScanner
     # #     nmap-ncat                            # base    #
-Requires:  mariadb101u-server >= 1:10.1.32-1
+Requires:  mariadb101u-server >= 1:10.1.35-1
     # mariadb101u-server                         # IUS     # postfix, mailwatch
     # #     mariadb101u-common                   #         #
     # #     perl-Compress-Raw-Bzip2              #         #
@@ -60,9 +60,9 @@ Requires:  mariadb101u-server >= 1:10.1.32-1
     # #     mariadb101u-shared                   #         #
     # #     galera                               #         #
     # #     jemalloc                             #         #
-Requires:  perl-DBD-MySQL >= 4.023-5
+Requires:  perl-DBD-MySQL >= 4.023-6
     # perl-DBD-mysql                             # base    # spamassassin
-Requires:  php72u >= 7.2.5-2
+Requires:  php72u >= 7.2.13-2
     # php72u                                     # IUS     # mailwatch, frontend
     # #     libzip                               #         #
     # #     php72u-cli                           #         #
@@ -71,16 +71,16 @@ Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
 Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # screen                                     # base    # basic system tools
-Requires:  php72u-gd >= 7.2.5-2
+Requires:  php72u-gd >= 7.2.13-2
     # php72u-gd                                  # IUS     # mailwatch, frontend
     # #     libXpm                               #         #
     # #     t11ib                                #         #
-Requires:  php72u-mbstring >= 7.2.5-2
+Requires:  php72u-mbstring >= 7.2.13-2
     # php72u-mbstring                            # IUS     # mailwatch, frontend
-Requires:  php72u-mysqlnd >= 7.2.5-2
+Requires:  php72u-mysqlnd >= 7.2.13-2
     # php72u-mysqlnd                             # IUS     # mailwatch, frontend
     # #     php72u-pdo                           #         #
-Requires:  php72u-ldap >= 7.2.5-2
+Requires:  php72u-ldap >= 7.2.13-2
     # php72u-ldap                                # IUS     # mailwatch, frontend
 Requires:  httpd >= 2.4.6-67
     # httpd                                      # base    # mailwatch, frontend
@@ -90,9 +90,9 @@ Requires:  httpd >= 2.4.6-67
     # #     mailcap                              #         #
 Requires:  cyrus-sasl-md5 >= 2.1.26-21
     # cyrus-sasl-md5                             # base    # postfix
-Requires:  mod_ssl >= 2.4.6-67
+Requires:  mod_ssl >= 2.4.6-88
     # mod_ssl                                    # base    # httpd
-Requires:  openssl-devel >= 1.0.2k-8
+Requires:  openssl-devel >= 1.0.2k-16
     # openssl-devel                              # base    # MailScanner
     # #     keyutils-libs-devel                  #         #
     # #     libcom_err-devel                     #         #
@@ -103,7 +103,7 @@ Requires:  openssl-devel >= 1.0.2k-8
     # #     zlib-devel                           #         #
     # #     krb5-devel                           # updates #
     # #     libkadm5                             #         #
-Requires:  patch >= 2.7.1-8
+Requires:  patch >= 2.7.1-10
     # patch                                      # base    # MailScanner
 Requires:  pyzor >= 0.5.0-10
     # pyzor                                      # epel    # MailScanner
@@ -111,7 +111,7 @@ Requires:  re2c >= 0.14.3-2
     # re2c                                       # epel    # MailScanner
 Requires:  tnef >= 1.4.15-1
     # tnef                                       # epel    # MailScanner
-Requires:  gcc >= 4.8.5-16
+Requires:  gcc >= 4.8.5-36
     # gcc                                        # base    # MailScanner
     # #     cpp                                  #         #
     # #     libmpc                               #         #
@@ -139,7 +139,7 @@ Requires:  perl-Convert-TNEF >= 0.18-2
     # #     perl-Net-SSLeay                      #         #
     # #     perl-TimeDate                        #         #
     # #     perl-MIME-tools                      # epel    #
-Requires:  perl-CPAN >= 1.9800-292
+Requires:  perl-CPAN >= 1.9800-293
     # perl-CPAN                                  # base    # MailScanner
     # #     perl-local-lib                       #         #
 Requires:  perl-Data-Dump >= 1.22-1
@@ -160,7 +160,7 @@ Requires:  perl-Encode-Detect >= 1.01-13
     # perl-Encode-Detect                         # base    # MailScanner
 Requires:  perl-Env >= 1.04-2
     # perl-Env                                   # base    # MailScanner
-Requires:  perl-ExtUtils-CBuilder >= 0.28.2.6-292
+Requires:  perl-ExtUtils-CBuilder >= 0.28.2.6-293
     # perl-ExtUtils-CBuilder                     # base    # MailScanner
     # #     perl-IPC-Cmd                         #         #
     # #     perl-Locale-Maketext                 #         #
@@ -203,7 +203,7 @@ Requires:  perl-Inline >= 0.53-4
     # #     perl-Parse-RecDescent                #         #
 Requires:  perl-IO-String >= 1.08-19
     # perl-IO-String                             # base    # MailScanner
-Requires:  perl-LDAP >= 0.56-5
+Requires:  perl-LDAP >= 0.56-6
     # perl-LDAP                                  # base    # MailScanner
     # #     perl-Authen-SASL                     #         #
     # #     perl-Convert-ASN1                    #         #
@@ -270,7 +270,7 @@ Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 5.4.5-1
     # unrar                                      # eFa     # MailScanner
-Requires:  postfix_eFa >= 3.2.4-1
+Requires:  postfix_eFa >= 3.3.0-1
     # postfix_eFa                                # eFa     # MTA
     # #    libicu                                # base    #
     # #    mariadb-libs                          #         #
@@ -278,9 +278,9 @@ Requires:  postfix_eFa >= 3.2.4-1
     # #    perl-Carp-Clan                        #         #
     # #    perl-Date-Calc postgresql-libs        #         #
     # #    tinycdb                               # epel    #
-Requires:  sqlgrey >= 1.8.0-1
+Requires:  sqlgrey >= 1.8.0-8
     # sqlgrey                                    # epel    # Greylisting
-Requires:  spamassassin >= 3.4.1-1
+Requires:  spamassassin >= 3.4.2-1
     # spamassassin                               # eFa     # MailScanner
     # #    perl-DB_File                          # base    #
     # #    perl-IO-Socket-INET6                  #         #
