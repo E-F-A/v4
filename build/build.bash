@@ -55,7 +55,7 @@ else
 fi
 
 # Add eFa Repo
-if [[ "$action" == "testing" ]]; then
+if [[ "$action" == "testing" || "$action" == "kstesting" ]]; then
   echo "- Adding eFa Testing Repo"
   rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
   /usr/bin/wget -O /etc/yum.repos.d/eFa4-testing.repo $mirror/rpm/eFa4/eFa4-testing.repo
@@ -96,7 +96,7 @@ yum -y update
 yum -y install eFa
 [ $? != 0 ] && exit 1
 
-if [[ "$action" == "kickstart" ]]; then
+if [[ "$action" == "kstesting" || "$action" == "ksproduction" ]]; then
   # Set root default pass for kickstart builds
   echo 'echo "First time login: root/eFaPr0j3ct" >> /etc/issue' >> /etc/rc.d/rc.local
   echo "root:eFaPr0j3ct" | chpasswd --md5 root
