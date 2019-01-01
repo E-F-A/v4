@@ -299,7 +299,7 @@ Requires:  perl-Mail-SPF-Query >= 1.999.1-1
     # perl-Mail-SPF-Query                        # eFa     # MailScanner
 Requires:  perl-Geography-Countries >= 2009041301-17
     # perl-Geography-Countries                   # eFa     # Spamassassin
-Requires:  perl-libnet >= 3.10-1
+Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
