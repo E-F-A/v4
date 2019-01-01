@@ -1051,12 +1051,15 @@ EOF
 
   # Schedule post init
   echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
-  
+
   # Clear Audit log
   echo "" > /var/log/audit/audit.log
-  
+
   # Remove source files
   rm -rf /usr/src/eFa
+
+  # Remove build logs
+  rm -f /var/log/eFa/*
 
   touch /reboot.system
 
