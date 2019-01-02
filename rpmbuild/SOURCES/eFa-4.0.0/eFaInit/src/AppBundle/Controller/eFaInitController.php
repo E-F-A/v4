@@ -959,6 +959,7 @@ class eFaInitController extends Controller
         $process = new Process('sudo /usr/sbin/eFa-Commit --startmariadb');
 
         try {
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Started MariaDB<br/>' . $output;
