@@ -636,9 +636,7 @@ fi
 if [[ $configrazor -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Configuring razor"
   su postfix -s /bin/bash -c 'razor-admin -create'
-  [ $? -ne 0 ] && exit 1
   su postfix -s /bin/bash -c 'razor-admin -register'
-  [ $? -ne 0 ] && exit 1
   sed -i '/^debuglevel/ c\debuglevel             = 0' /var/spool/postfix/.razor/razor-agent.conf
   [ $? -ne 0 ] && exit 1
   chown -R postfix:mtagroup /var/spool/postfix/.razor
