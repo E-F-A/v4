@@ -32,6 +32,7 @@ sed -i '/^ExecStart=/ c\ExecStart=/usr/sbin/clamav-unofficial-sigs.sh' /usr/lib/
 sed -i '/^WantedBy=/ c\WantedBy=clamd@scan.service'  /usr/lib/systemd/system/clamav-unofficial-sigs.timer
 sed -i '/^clamd_restart_opt=/ c\clamd_restart_opt="systemctl restart clamd@scan"' /etc/clamav-unofficial-sigs/os.conf
 sed -i '/^clamd_reload_opt=/ c\clamd_reload_opt=="clamdscan --config-file=/etc/clamd.d/scan.conf --reload"' /etc/clamav-unofficial-sigs/os.conf
+sed -i '/^yararulesproject_enabled=/ c\yararulesproject_enabled="no" # Yara-Rule Project, disabled since it does not play nice with clamav' /etc/clamav-unofficial-sigs/master.conf
 
 #-----------------------------------------------------------------------------#
 # Finalize the installation
