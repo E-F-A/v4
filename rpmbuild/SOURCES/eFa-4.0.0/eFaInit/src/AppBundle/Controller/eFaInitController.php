@@ -951,9 +951,9 @@ class eFaInitController extends Controller
     {
         $progress = 0;
         $progressStep = 4;
-        eFaInitController::progressBar($progress, $progress);
 
         $output = '<br/>eFa -- Starting MariaDB...<br/>';
+        eFaInitController::progressBar($progress, $progress, $output);
 
         // Start MariaDB
         $process = new Process('sudo /usr/sbin/eFa-Commit --startmariadb');
