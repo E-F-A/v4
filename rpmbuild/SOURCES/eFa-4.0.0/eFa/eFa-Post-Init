@@ -24,35 +24,46 @@
 # Don't run if lock is present
 [[ -f /var/run/eFa-Post-Init.lock ]] && exit 0
 
+# Reset footer
+sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...INITIALIZING SYSTEM, PLEASE WAIT... ';" /var/www/html/mailscanner/functions.php
+
 # Do we have Internet access?
 wget -q --tries=3 --timeout=20 --spider https://mirrors.efa-project.org
 if [[ $? -ne 0 ]]; then
   logger -p user.warn "eFa Post Init: No Internet access detected!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+	sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK INTERNET ACCESS... ';" /var/www/html/mailscanner/functions.php
   exit 1
 fi
 
 touch /var/run/eFa-Post-Init.lock
 
 # Remove eFaInit config
-rm -f /etc/httpd/conf.d/eFaInit.conf
+[[ -f /etc/httpd/conf.d/eFaInit.conf ]] && rm -f /etc/httpd/conf.d/eFaInit.conf
 
-freshclam
-
+# Asynchronous tasks first
 /etc/cron.daily/mailscanner &
 
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php &
 
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php &
 
-openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
-postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
-cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
+/usr/sbin/clamav-unofficial-sigs.sh &
+
+# Synchronous tasks
+freshclam
+
+if [[ ! -f /etc/postfix/ssl/dhparam.pem ]]; then
+  openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
+  postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
+  cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
+fi
 
 # Reload daemons
 systemctl reload postfix
 if [[ $? -ne 0 ]]; then
   # Error!  Try again...
   logger -p user.warn "eFa Post Init: Postfix reload failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK POSTFIX... ';" /var/www/html/mailscanner/functions.php
   rm -f /var/run/eFa-Post-Init.lock
   exit 1
 fi
@@ -60,6 +71,7 @@ systemctl reload httpd
 if [[ $? -ne 0 ]]; then
   # Error!  Try again...
   logger -p user.warn "eFa Post Init: Apache reload failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK APACHE... ';" /var/www/html/mailscanner/functions.php
   rm -f /var/run/eFa-Post-Init.lock
   exit 1
 fi
@@ -67,6 +79,7 @@ systemctl restart clamd@scan
 if [[ $? -ne 0 ]]; then
   # Error!  Try again...
   logger -p user.warn "eFa Post Init: Clamd restart failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK CLAMD... ';" /var/www/html/mailscanner/functions.php
   rm -f /var/run/eFa-Post-Init.lock
   exit 1
 fi
@@ -74,18 +87,13 @@ systemctl restart sqlgrey
 if [[ $? -ne 0 ]]; then
   # Error!  Try again...
   logger -p user.warn "eFa Post Init: sqlgrey restart failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK SQLGREY... ';" /var/www/html/mailscanner/functions.php
   rm -f /var/run/eFa-Post-Init.lock
   exit 1
 fi
 
 # Spawn mta relay stats watchers
 /etc/cron.hourly/mailwatch_relay.sh
-
-# Update clamav unofficial-sigs
-# This has a little trouble running as a child process
-# and hangs for a while
-# Background it and keep moving
-/usr/sbin/clamav-unofficial-sigs.sh &
 
 systemctl enable msmilter
 systemctl start msmilter
