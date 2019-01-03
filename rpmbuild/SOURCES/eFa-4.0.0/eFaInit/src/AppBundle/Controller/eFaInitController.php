@@ -1109,7 +1109,7 @@ class eFaInitController extends Controller
         try {
             $process = new Process("sudo /usr/sbin/eFa-Commit --configclam");
             $process->setTimeout($this->timeout);
-            $$process->mustRun();
+            $process->mustRun();
             
             $output = '<br/> eFa -- Updated clam<br/>' . $output;
 
