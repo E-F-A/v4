@@ -33,7 +33,8 @@ func_ip-settings(){
                 1)  ipmenu=0
                     echo ""
                     read -p "Enter your new IP: " IP4
-                    if [[ -z "$IP4" || !(checkip4 $IP4) ]]; then echo "ERROR invalid ip address" && pause && menu=1; else
+                    checkip4 $IP4
+                    if [[ -z "$IP4" || $? -eq 1 ]]; then echo "ERROR invalid ip address" && pause && menu=1; else
                       func_setipsettings
                       menu=1
                     fi
@@ -41,7 +42,8 @@ func_ip-settings(){
                 2)  ipmenu=0
                     echo ""
                     read -p "Enter your new netmask: " NM4
-                    if [[ -z "$NM4" || !(checkip4 $NM4) ]]; then echo "ERROR invalid netmask" && pause && menu=1; else
+                    checkip4 $NM4
+                    if [[ -z "$NM4" || $? -eq 1 ]]; then echo "ERROR invalid netmask" && pause && menu=1; else
                       func_setipsettings
                       menu=1
                     fi
@@ -49,7 +51,8 @@ func_ip-settings(){
                 3)  ipmenu=0
                     echo ""
                     read -p "Enter your new gateway: " GW4
-                    if [[ -z "$GW4" || !(checkip4 $GW4) ]]; then echo "ERROR empty value" && pause && menu=1; else
+                    checkip4 $GW4
+                    if [[ -z "$GW4" || $? -eq 1 ]]; then echo "ERROR empty value" && pause && menu=1; else
                       func_setipsettings
                       menu=1
                     fi
@@ -57,7 +60,8 @@ func_ip-settings(){
                 4)  ipmenu=0
                     echo ""
                     read -p "Enter your new IPv6 IP: " IP6
-                    if [[ -z "$IP6" || !(checkip6 $IP6) ]]; then echo "ERROR invalid ip address" && pause && menu=1; else
+                    checkip6 $IP6
+                    if [[ -z "$IP6" || $? -eq 1 ]]; then echo "ERROR invalid ip address" && pause && menu=1; else
                       func_setipsettings
                       menu=1
                     fi
@@ -73,7 +77,8 @@ func_ip-settings(){
                 6)  ipmenu=0
                     echo ""
                     read -p "Enter your new IPv6 Gateway: " GW6
-                    if [[ -z "$GW6" || !(checkip6 $GW6) ]]; then echo "ERROR invalid gateway address" && pause && menu=1; else
+                    checkip6 $GW6
+                    if [[ -z "$GW6" || $? -eq 1 ]]; then echo "ERROR invalid gateway address" && pause && menu=1; else
                       func_setipsettings
                       menu=1
                     fi

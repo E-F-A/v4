@@ -37,17 +37,17 @@ func_setipsettings(){
   fi
 
   if [[ -n $IP4 ]]; then
-    if [[ -z $(grep ^IPADDR) ]]; then
+    if [[ -z $(grep ^IPADDR /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
       echo "IPADDR=\"$IP4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     else
       sed -i "/^IPADDR=/ c\IPADDR=\"$IP4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     fi
-    if [[ -z $(grep ^NETMASK) ]]; then
+    if [[ -z $(grep ^NETMASK /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
       echo "NETMASK=\"$NM4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     else
       sed -i "/^NETMASK=/ c\NETMASK=\"$NM4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     fi
-    if [[ -z $(grep ^GATEWAY) ]]; then
+    if [[ -z $(grep ^GATEWAY /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
       echo "GATEWAY=\"$GW4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     else
       sed -i "/^GATEWAY=/ c\GATEWAY=\"$GW4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
@@ -55,12 +55,12 @@ func_setipsettings(){
   fi
   if [[ -n $IP6 ]]; then
     sed -i '/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF="no"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    if [[ -z $(grep ^IPV6ADDR) ]]; then
+    if [[ -z $(grep ^IPV6ADDR /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
       echo "IPV6ADDR=\"$IP6/$PF6\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     else
       sed -i "/^IPV6ADDR=/ c\IPV6ADDR=\"$IP6/$PF6\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     fi
-    if [[ -z $(grep ^IPV6_DEFAULTGW) ]]; then
+    if [[ -z $(grep ^IPV6_DEFAULTGW /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
       echo "IPV6_DEFAULTGW=\"$GW6\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     else
       sed -i "/^IPV6_DEFAULTGW=/ c\IPV6_DEFAULTGW=\"$GW6\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
