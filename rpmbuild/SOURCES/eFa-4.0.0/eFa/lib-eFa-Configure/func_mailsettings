@@ -88,7 +88,7 @@ func_transport-settings(){
                         DESTCHECK=1
                         while [ $DESTCHECK != 0 ]
                         do
-                          if checkip $DEST
+                          if checkip4 $DEST
                             then
                               # If $DEST looks to be an valid IP we are ok.
                               
