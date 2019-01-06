@@ -386,7 +386,7 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
 mv * $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
-# Install composer for building symfony apps
+# Install composer and build the eFaInit app
 EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
@@ -400,6 +400,9 @@ fi
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
 php composer-setup.php --quiet --install-dir=$RPM_BUILD_ROOT%{_bindir} --filename=composer
 rm composer-setup.php
+
+cd $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit
+composer install --quiet
 
 %pre
 
