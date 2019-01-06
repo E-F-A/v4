@@ -92,13 +92,13 @@ func_transport-settings(){
                             then
                               # If $DEST looks to be an valid IP we are ok.
                               DESTCHECK=0
-						  elif checkip6 $DEST
-						    then
-							  DESTCHECK=0
+                          elif checkip6 $DEST
+                            then
+                                DESTCHECK=0
                           elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
                               # If $DEST looks like an valid domain name we are ok.
                               DESTCHECK=0
-						  else
+                          else
                               echo -e "       $red ERROR: The value $DEST seems to be invalid"
                               echo -e "        ERROR: please re-enter the destination$clean"
                               echo -e ""
@@ -160,7 +160,7 @@ func_transport-settings(){
                             then
                               # If $DEST looks to be an valid IP we are ok.
                               DESTCHECK=0
-						  elif checkip6 $DEST
+                          elif checkip6 $DEST
                             then
                               # If $DEST looks to be an valid IP we are ok.
                               DESTCHECK=0
@@ -244,7 +244,7 @@ func_transport-settings(){
                           then
                             # If $DEST looks to be an valid IP we are ok.
                             DESTCHECK=0
-					    elif checkip6 $DEST
+                        elif checkip6 $DEST
                           then
                             # If $DEST looks to be an valid IP we are ok.
                             DESTCHECK=0

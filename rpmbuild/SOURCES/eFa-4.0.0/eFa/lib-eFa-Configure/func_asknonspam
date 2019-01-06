@@ -55,7 +55,7 @@ function func_ask-nonspam() {
   echo -e "$green[eFa]$clean Non Spam Inline Signature Settings:"
   echo -e ""
   echo -e "$green[eFa]$clean By default, no signature is appended."
-   echo -e "$green[eFa]$clean If enabled, a signature is appended"
+  echo -e "$green[eFa]$clean If enabled, a signature is appended"
   echo -e "$green[eFa]$clean depending on your inline signature rules."
   echo -e ""
   echo -e "$green[eFa]$clean You can choose to disable the signature entirely."
@@ -73,7 +73,7 @@ function func_ask-nonspam() {
         echo -e "$green[eFa]$clean Non spam signatures $green ENABLED $clean"
         spamcheck=0
         sed -i "/^Non Spam Actions =/ c\Non Spam Actions = $STORENSPAM $NSPAMSIG" /etc/MailScanner/MailScanner.conf
-		sed -i "/^Sign Clean Messages =/ c\Sign Clean Messages = Yes" /etc/MailScanner/MailScanner.conf
+        sed -i "/^Sign Clean Messages =/ c\Sign Clean Messages = Yes" /etc/MailScanner/MailScanner.conf
         systemctl restart mailscanner
         pause
       elif [[ "$TMPNSPAMSIG" == "" || "$TMPNSPAMSIG" == "N" || "$TMPNSPAMSIG" == "n" ]]; then 
@@ -81,7 +81,7 @@ function func_ask-nonspam() {
         echo -e "$green[eFa]$clean Non spam signatures $green DISABLED $clean"
         spamcheck=0
         sed -i "/Non Spam Actions =/ c\Non Spam Actions = $STORENSPAM $NSPAMSIG" /etc/MailScanner/MailScanner.conf
-		sed -i "/^Sign Clean Messages =/ c\Sign Clean Messages = No" /etc/MailScanner/MailScanner.conf
+        sed -i "/^Sign Clean Messages =/ c\Sign Clean Messages = No" /etc/MailScanner/MailScanner.conf
         systemctl restart mailscanner
         pause
       elif [[ "$TMPNSPAMSIG" == "C" || "$TMPNSPAMSIG" == "c" ]]; then
