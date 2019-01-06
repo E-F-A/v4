@@ -67,7 +67,7 @@ func_setipsettings(){
     fi
   fi
   
-  systemctl restart networking
+  systemctl restart network
   
   # Write change to EFA-Config
   sed -i "/^IPV4ADDRESS:/ c\IPV4ADDRESS:$IP4" /etc/eFa/eFa-Config
@@ -76,8 +76,8 @@ func_setipsettings(){
   sed -i "/^IPV6ADDRESS:/ c\IPV6ADDRESS:$IP6" /etc/eFa/eFa-Config
   sed -i "/^IPV6MASK:/ c\IPV6MASK:$PF6" /etc/eFa/eFa-Config
   sed -i "/^IPV6GATEWAY:/ c\IPV6GATEWAY:$GW6" /etc/eFa/eFa-Config
-  sed -i "/^DNSIP1:/ c\DNSIP1:$DNS1" /etc/EFA-Config
-  sed -i "/^DNSIP2:/ c\DNSIP2:$DNS2" /etc/EFA-Config
+  sed -i "/^DNSIP1:/ c\DNSIP1:$DNS1" /etc/eFa/eFa-Config
+  sed -i "/^DNSIP2:/ c\DNSIP2:$DNS2" /etc/eFa/eFa-Config
   
   echo -e "All done"
   pause
