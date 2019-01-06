@@ -952,7 +952,7 @@ class eFaInitController extends Controller
         $progress = 0;
         $progressStep = 4;
 
-        $output = '<br/>eFa -- Starting MariaDB...<br/>';
+        $output = '<br/>eFa -- Starting and Configuring MariaDB...<br/>';
         eFaInitController::progressBar($progress, $progress, $output);
 
         // Start MariaDB
@@ -962,12 +962,12 @@ class eFaInitController extends Controller
             $process->setTimeout($this->timeout);
             $process->mustRun();
 
-            $output = '<br/> eFa -- Started MariaDB<br/>' . $output;
+            $output = '<br/> eFa -- Started and Configured MariaDB<br/>' . $output;
             
             eFaInitController::progressBar($progress, $progress + $progressStep, $output);
 
         } catch (ProcessFailedException $exception) {
-             eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error starting MariaDB");
+             eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error starting and configuring MariaDB");
              return;
         }
 
@@ -1016,7 +1016,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring interface...<br/>' . $output;
 
         try {
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Interface configured<br/>' . $output;
@@ -1054,7 +1054,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configtzone --timezone=' . $session->get('timezone') . ' --isutc=' . $session->get('configutc'));
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Timezone configured<br/>' . $output;
@@ -1072,7 +1072,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configiana --ianacode=' . $session->get('ianacode'));
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Wrote IANA code to freshclam config<br/>' . $output;
@@ -1090,7 +1090,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configrazor');
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Configured razor<br/>' . $output;
@@ -1119,24 +1119,6 @@ class eFaInitController extends Controller
             eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error updating AV and SA rules");
             return;
         }
- 
-        $progress += $progressStep;
-
-        $output = '<br/>eFa -- Running GeoIP update...<br/>' . $output;
-
-        try {
-            $process = new Process("sudo /usr/sbin/eFa-Commit --configgeoip");
-			$process->setTimeout($this->timeout);
-            $process->mustRun();
-
-            $output = '<br/> eFa -- GeoIP updated<br/>' . $output;
-
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-        } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error running GeoIP update");
-            return;
-        }
 
         $progress += $progressStep;
 
@@ -1144,7 +1126,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configtransport --domainname=' . $session->get('domainname') . ' --mailserver=' . $session->get('mailserver') . ' --adminemail=' . $session->get('email'));
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Transport configured<br/>' . $output;
@@ -1182,7 +1164,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configmailscanner --orgname=' . $session->get('orgname') . ' --adminemail=' . $session->get('email') . ' --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname'));
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- MailScanner configured<br/>' . $output;
@@ -1203,7 +1185,7 @@ class eFaInitController extends Controller
             # Single quote handling
             $password = preg_replace("/'/", "'\"'\"'", $password);
             $process = new Process("sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=" . $session->get('hostname') . " --domainname=" . $session->get('domainname') . " --timezone=" . $session->get('timezone') . " --username=" . $session->get('webusername') . " --efauserpwd='" . $password . "'");
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- MailWatch configured<br/>' . $output;
@@ -1221,7 +1203,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configsasl');
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- SASL configured<br/>' . $output;
@@ -1239,7 +1221,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configsqlgrey');
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- SQLGrey configured<br/>' . $output;
@@ -1257,7 +1239,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configapache --adminemail=' . $session->get('email'));
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Apache configured<br/>' . $output;
@@ -1275,7 +1257,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configyumcron --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --adminemail=' . $session->get('email'));
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- yum-cron configured<br/>' . $output;
@@ -1293,7 +1275,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configroot');
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Root locked down<br/>' . $output;
@@ -1315,7 +1297,7 @@ class eFaInitController extends Controller
             # Single quote handling
             $password = preg_replace("/'/", "'\"'\"'", $password);
             $process = new Process("sudo /usr/sbin/eFa-Commit --configcli --cliusername=" .  $session->get('cliusername') . " --efaclipwd='" . $password . "'");
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Configured CLI<br/>' . $output;
@@ -1334,7 +1316,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configcert');
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Configured self-signed cert<br/>' . $output;
@@ -1353,7 +1335,7 @@ class eFaInitController extends Controller
 
         try {
             $process = new Process('sudo /usr/sbin/eFa-Commit --configmysql');
-			$process->setTimeout($this->timeout);
+            $process->setTimeout($this->timeout);
             $process->mustRun();
 
             $output = '<br/> eFa -- Locked down mysql<br/>' . $output;

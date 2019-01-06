@@ -112,9 +112,7 @@ configtzone=0
 configiana=0
 configrazor=0
 configclam=0
-updatesa=0
 configsa=0
-configgeoip=0
 configtransport=0
 configmailscanner=0
 configmailwatch=0
@@ -159,11 +157,8 @@ while [ $# -gt 0 ]; do
         configtzone=1
         configiana=1
         configrazor=1
-        configclam=1
-        updatesa=1
         configsa=1
         configip=1
-        configgeoip=1
         configtransport=1
         configmailscanner=1
         configmailwatch=1
@@ -205,20 +200,11 @@ while [ $# -gt 0 ]; do
       --configrazor)
         configrazor=1
     ;;
-      --configclam)
-        configclam=1
-    ;;
       --configsa)
         configsa=1
     ;;
-      --configgeoip)
-        configgeoip=1
-    ;;
       --configtransport)
         configtransport=1
-    ;;
-      --updatesa)
-        updatesa=1
     ;;
       --configmailscanner)
         configmailscanner=1
@@ -647,37 +633,6 @@ if [[ $configrazor -eq 1 ]]; then
   chmod ug+s /var/spool/postfix/.razor
   [ $? -ne 0 ] && exit 1
   chmod ug+rw /var/spool/postfix/.razor/*
-  [ $? -ne 0 ] && exit 1
-fi
-
-if [[ $configclam -eq 1 ]]; then
-  [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Updating AV and SA rules"
-
-  # freshclam # moved to post init
-  # Returns non-zero when up to date
-  #[ $? -ne 0 ] && exit 1
-
-  #/usr/sbin/clamav-unofficial-sigs.sh
-  # Retuns non-zero when up to date
-  #[ $? -ne 0 ] && exit 1
-fi
-
-if [[ $updatesa -eq 1 ]]; then
-  # sa-update
-  # Returns non-zero when up to date
-  #[ $? -ne 0 ] && exit 1
-  # sa-compile # moved to post init
-
-  # Add example spam to db
-  # source: http://spamassassin.apache.org/gtube/gtube.txt
-  /usr/bin/sa-learn --spam /usr/src/eFa/spamassassin/gtube.txt
-  [ $? -ne 0 ] && exit 1
-fi
-
-if [[ $configgeoip -eq 1 ]]; then
-  # Run geoip update
-  # Moved to post init
-  #/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1
   [ $? -ne 0 ] && exit 1
 fi
 
