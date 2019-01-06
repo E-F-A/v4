@@ -1,7 +1,0 @@
-
--- 
-Diese E-Mail wurde auf Viren und gef&auml;hrliche Anh&auml;nge durch
-eFa Project, untersucht und ist wahrscheinlich virenfrei.
-
-Klicken Sie hier, um diese Nachricht als Spam zu melden.
-https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

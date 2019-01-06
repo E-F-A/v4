@@ -1,7 +1,0 @@
-
--- 
-Mae'r neges hon wedi cael ei sganio am firysau a chynnwys peryglus gan
-eFa Project, a chredir ei bod yn lân.
-
-Cliciwch yma i roi gwybod am y neges hon fel sbam.
-https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

@@ -1,7 +1,0 @@
-
--- 
-Tato zprava byla prohledana na vyskyt viru a nebezpecneho obsahu antivirovym systemem
-eFa Project, zda se byt cista.
-
-Klikněte zde nahlásit tuto zprávu jako spam.
-https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token
