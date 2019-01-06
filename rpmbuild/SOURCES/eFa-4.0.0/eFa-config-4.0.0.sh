@@ -35,12 +35,13 @@ mkdir -p /var/eFa/backup/KAM
 # pre-create the EFA lib directory
 mkdir -p /var/eFa/lib
 mkdir -p /var/eFa/lib/selinux
-mkdir -p /var/eFa/lib/eFa-Configure
+#mkdir -p /var/eFa/lib/eFa-Configure
 
 # Copy eFa-Configure
-cp $srcdir/eFa/eFa-Configure /usr/sbin/eFa-Configure
-chmod 755 /usr/sbin/eFa-Configure
-cp $srcdir/eFa/lib-eFa-Configure/* /var/eFa/lib/eFa-Configure
+# Moved to rpm spec
+#cp $srcdir/eFa/eFa-Configure /usr/sbin/eFa-Configure
+#chmod 755 /usr/sbin/eFa-Configure
+#cp $srcdir/eFa/lib-eFa-Configure/* /var/eFa/lib/eFa-Configure
 
 # Copy agent selinux modules rulesets
 cp $srcdir/eFa/eFavmtools.te /var/eFa/lib/selinux/eFavmtools.te
