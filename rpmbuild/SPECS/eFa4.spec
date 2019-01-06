@@ -379,9 +379,6 @@ mkdir -p $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/lib-eFa-Configure/* $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/eFa-Configure
 mv eFa/eFa-Configure $RPM_BUILD_ROOT%{_sbindir}
 
-# Move gtube into position
-mv spamassassin/gtube.txt $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/
-
 # Move selinux modules into position
 # TODO
 #mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
@@ -471,7 +468,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %{_usrsrc}/eFa
 %{_localstatedir}/www/eFaInit
-%{_localstatedir}/eFa/lib/gtube.txt
 %{_localstatedir}/eFa/lib/eFa-Configure
 %attr(0755, root, root) %{_bindir}/composer
 %attr(0755, root, root) %{_sbindir}/eFa-Configure
