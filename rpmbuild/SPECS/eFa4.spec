@@ -406,7 +406,7 @@ php composer-setup.php --quiet --install-dir=$RPM_BUILD_ROOT%{_bindir} --filenam
 rm composer-setup.php
 
 cd $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit
-composer install --quiet
+$RPM_BUILD_ROOT%{_bindir}/composer install --quiet
 
 %pre
 
