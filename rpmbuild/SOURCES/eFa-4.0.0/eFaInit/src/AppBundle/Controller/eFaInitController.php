@@ -1104,24 +1104,6 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $output = '<br/>eFa -- Updating clam...this may take a while...<br/>' . $output;
-
-        try {
-            $process = new Process("sudo /usr/sbin/eFa-Commit --configclam");
-            $process->setTimeout($this->timeout);
-            $process->mustRun();
-            
-            $output = '<br/> eFa -- Updated clam<br/>' . $output;
-
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-        } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error updating AV and SA rules");
-            return;
-        }
-
-        $progress += $progressStep;
-
         $output = '<br/>eFa -- Configure transport<br/>' . $output;
 
         try {
