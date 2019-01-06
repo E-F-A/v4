@@ -430,8 +430,6 @@ if [ "$1" = "1" ]; then
     else
         echo -e "\nPreparing to install eFa"
 
-        /bin/sh %{_usrsrc}/eFa/prepare-os-4.0.0.sh
-        /bin/sh %{_usrsrc}/eFa/mariadb-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/postfix-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/mailscanner-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/clamav-config-4.0.0.sh

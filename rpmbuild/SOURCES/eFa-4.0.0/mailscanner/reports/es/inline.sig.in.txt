@@ -1,7 +1,0 @@
-
--- 
-Este mensaje ha sido analizado en busca de virus y otros contenidos peligrosos por
-eFa Project, y se considera que est&aacute; limpio.
-
-Haga clic aquí para informar este mensaje como spam.
-https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

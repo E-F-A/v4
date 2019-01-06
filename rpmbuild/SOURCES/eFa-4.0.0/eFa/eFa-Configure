@@ -35,7 +35,7 @@ shopt -s extglob
 . /var/eFa/lib/eFa-Configure/func_systemrestore
 . /var/eFa/lib/eFa-Configure/func_recovermariadb
 . /var/eFa/lib/eFa-Configure/func_spamsettings
-. /var/eFa/lib/eFa-Configure/func_trustednetworks
+#. /var/eFa/lib/eFa-Configure/func_trustednetworks
 . /var/eFa/lib/eFa-Configure/func_virussettings
 . /var/eFa/lib/eFa-Configure/func_askcleandeliver
 . /var/eFa/lib/eFa-Configure/func_asksigrules
@@ -86,7 +86,7 @@ show_menu() {
       echo -e "Please choose an option:"
       echo -e " "
       echo -e "0) Logout from ssh                    8)  Spam Settings"
-      echo -e "1) Shell                              9) MariaDB Recovery"
+      echo -e "1) Shell                              9)  MariaDB Recovery"
       echo -e "2) Reboot system                      10) Apache Settings"
       echo -e "3) Halt system                        11) Virus Settings"
       echo -e "4) IP Settings                        12) System Restore"

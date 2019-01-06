@@ -92,7 +92,7 @@ sed -i '/^Include Scores In SpamAssassin Report =/ c\Include Scores In SpamAssas
 sed -i '/^Always Looked Up Last =/ c\Always Looked Up Last = &MailWatchLogging' /etc/MailScanner/MailScanner.conf
 sed -i '/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.scan/clamd.sock' /etc/MailScanner/MailScanner.conf
 sed -i '/^Log SpamAssassin Rule Actions =/ c\Log SpamAssassin Rule Actions = no' /etc/MailScanner/MailScanner.conf
-sed -i "/^Sign Clean Messages =/ c\# eFa Note: CustomAction.pm will Sign Clean Messages instead using the custom(nonspam) action.\nSign Clean Messages = No" /etc/MailScanner/MailScanner.conf
+sed -i "/^Sign Clean Messages =/ c\Sign Clean Messages = No" /etc/MailScanner/MailScanner.conf
 sed -i "/^Deliver Cleaned Messages =/ c\Deliver Cleaned Messages = No" /etc/MailScanner/MailScanner.conf
 sed -i "/^Maximum Processing Attempts =/ c\Maximum Processing Attempts = 2" /etc/MailScanner/MailScanner.conf
 sed -i "/^High SpamAssassin Score =/ c\High SpamAssassin Score = 7" /etc/MailScanner/MailScanner.conf
@@ -112,17 +112,19 @@ echo "none /var/spool/MailScanner/incoming tmpfs noatime 0 0">>/etc/fstab
 mount -a
 
 # Replace reports with eFa versions
-rm -rf /usr/share/MailScanner/reports
-cp -ra $srcdir/mailscanner/reports /usr/share/MailScanner/reports
+#rm -rf /usr/share/MailScanner/reports
+#cp -ra $srcdir/mailscanner/reports /usr/share/MailScanner/reports
 
+# Removed in eFa v4 for now not ipv6 friendly
 # Add CustomAction.pm for token handling
 # Remove as a copy will throw a mailscanner --lint error
-rm -f /usr/share/MailScanner/perl/custom/CustomAction.pm
-cp $srcdir/mailscanner/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
+# rm -f /usr/share/MailScanner/perl/custom/CustomAction.pm
+#cp $srcdir/mailscanner/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
 
+# Removed in eFa v4 for not not ipv6 friendly
 # Add eFa-Tokens-Cron
-cp $srcdir/mailscanner/eFa-Tokens-Cron /etc/cron.daily/eFa-Tokens-Cron
-chmod 700 /etc/cron.daily/eFa-Tokens-Cron
+#cp $srcdir/mailscanner/eFa-Tokens-Cron /etc/cron.daily/eFa-Tokens-Cron
+#chmod 700 /etc/cron.daily/eFa-Tokens-Cron
 
 sed -i "/^run_mailscanner/ c\run_mailscanner=1" /etc/MailScanner/defaults
 sed -i "/^ramdisk_sync/ c\ramdisk_sync=1" /etc/MailScanner/defaults
