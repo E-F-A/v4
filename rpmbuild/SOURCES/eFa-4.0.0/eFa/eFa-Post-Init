@@ -29,7 +29,7 @@
 [[ -f /var/run/eFa-Post-Init.lock ]] && exit 0
 
 # Reset footer
-sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...INITIALIZING SYSTEM, PLEASE WAIT... ';" /var/www/html/mailscanner/functions.php
+sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...INITIALIZING SYSTEM, PLEASE WAIT... ';" /var/www/html/mailscanner/functions.php
 
 # Remove eFaInit config if present
 [[ -f /etc/httpd/conf.d/eFaInit.conf ]] && rm -f /etc/httpd/conf.d/eFaInit.conf
@@ -38,7 +38,7 @@ sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() 
 wget -q --tries=3 --timeout=20 --spider https://mirrors.efa-project.org
 if [[ $? -ne 0 ]]; then
   logger -p user.warn "eFa Post Init: No Internet access detected!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
-  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK INTERNET ACCESS... ';" /var/www/html/mailscanner/functions.php
+  sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK INTERNET ACCESS... ';" /var/www/html/mailscanner/functions.php
   exit 1
 fi
 
@@ -54,7 +54,7 @@ systemctl restart sqlgrey
 if [[ $? -ne 0 ]]; then
   # Error!  Try again...
   logger -p user.warn "eFa Post Init: sqlgrey restart failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
-  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK SQLGREY... ';" /var/www/html/mailscanner/functions.php
+  sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK SQLGREY... ';" /var/www/html/mailscanner/functions.php
   rm -f /var/run/eFa-Post-Init.lock
   exit 1
 fi
@@ -75,7 +75,7 @@ systemctl restart clamd@scan
 if [[ $? -ne 0 ]]; then
   # Error!  Try again...
   logger -p user.warn "eFa Post Init: Clamd restart failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
-  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK CLAMD... ';" /var/www/html/mailscanner/functions.php
+  sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK CLAMD... ';" /var/www/html/mailscanner/functions.php
   rm -f /var/run/eFa-Post-Init.lock
   exit 1
 fi
@@ -90,14 +90,15 @@ systemctl start msmilter
 echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
 
 # Remove INITIALIZING message
-sed -i "/^    echo ' running on '/ c\    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php
+sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php
 
 ############################## LATE PHASE ###################################
 # Tasks that are not needed for email to relay
 #############################################################################
 
 # Late Asynchronous tasks
-/usr/bin/sa-learn --spam /var/lib/eFa/gtube.txt &
+/usr/bin/sa-learn --spam /usr/share/doc/spamassassin-3.4.2/sample-spam.txt &
+/usr/bin/sa-learn --ham /usr/share/doc/spamassassin-3.4.2/sample-nonspam.txt &
 
 # Late Synchronous tasks
 if [[ ! -f /etc/postfix/ssl/dhparam.pem ]]; then
@@ -109,20 +110,13 @@ fi
 # Late Reload daemons
 systemctl reload postfix
 if [[ $? -ne 0 ]]; then
-  # Error!  Try again...
-  logger -p user.warn "eFa Post Init: Postfix reload failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
-  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK POSTFIX... ';" /var/www/html/mailscanner/functions.php
-  rm -f /var/run/eFa-Post-Init.lock
-  exit 1
+  # Postfix error!
+  logger -p user.warn "eFa Post Init: Postfix reload failed!  Please fix me to finish initializing eFa."
 fi
 systemctl reload httpd
 if [[ $? -ne 0 ]]; then
-  # Error!  Try again...
-  logger -p user.warn "eFa Post Init: Apache reload failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
-  # If apache is dead, this won't matter
-  #sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK APACHE... ';" /var/www/html/mailscanner/functions.php
-  rm -f /var/run/eFa-Post-Init.lock
-  exit 1
+  # Apache Error!
+  logger -p user.warn "eFa Post Init: Apache reload failed!  Please fix me to finish initializing eFa."
 fi
 
 rm -f /etc/cron.d/efapostinit
