@@ -375,6 +375,7 @@ mv eFaInit $RPM_BUILD_ROOT%{_localstatedir}/www
 
 # Move eFa-Configure into position
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/eFa-Configure
+mkdir -p $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/lib-eFa-Configure/* $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/eFa-Configure
 mv eFa/eFa-Configure $RPM_BUILD_ROOT%{_sbindir}
 
