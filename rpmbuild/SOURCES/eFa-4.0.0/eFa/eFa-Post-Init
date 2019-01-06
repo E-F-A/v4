@@ -97,8 +97,7 @@ sed -i "/^    echo ' running on '/ c\    echo ' running on ' . efa_version();" /
 #############################################################################
 
 # Late Asynchronous tasks
-# Todo: enable for post init
-# /usr/bin/sa-learn --spam /usr/src/eFa/spamassassin/gtube.txt &
+/usr/bin/sa-learn --spam /var/lib/eFa/gtube.txt &
 
 # Late Synchronous tasks
 if [[ ! -f /etc/postfix/ssl/dhparam.pem ]]; then
