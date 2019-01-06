@@ -91,12 +91,14 @@ func_transport-settings(){
                           if checkip4 $DEST
                             then
                               # If $DEST looks to be an valid IP we are ok.
-                              
                               DESTCHECK=0
-                            elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
+						  elif checkip6 $DEST
+						    then
+							  DESTCHECK=0
+                          elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
                               # If $DEST looks like an valid domain name we are ok.
                               DESTCHECK=0
-                            else
+						  else
                               echo -e "       $red ERROR: The value $DEST seems to be invalid"
                               echo -e "        ERROR: please re-enter the destination$clean"
                               echo -e ""
@@ -154,14 +156,18 @@ func_transport-settings(){
                         DEST=$(echo $DEST | sed -e "s/^\[//" -e "s/\]$//")
                         while [ $DESTCHECK != 0 ]
                         do
-                          if checkip $DEST
+                          if checkip4 $DEST
                             then
                               # If $DEST looks to be an valid IP we are ok.
                               DESTCHECK=0
-                            elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
+						  elif checkip6 $DEST
+                            then
+                              # If $DEST looks to be an valid IP we are ok.
+                              DESTCHECK=0
+                          elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
                               # If $DEST looks like an valid domain name we are ok.
                               DESTCHECK=0
-                            else
+                          else
                               echo -e "       $red ERROR: The value $DEST seems to be invalid"
                               echo -e "        ERROR: please re-enter the destination$clean"
                               echo -e ""
@@ -234,14 +240,18 @@ func_transport-settings(){
                     DEST=$(echo $DEST | sed -e "s/^\[//" -e "s/\]$//")
                     while [ $DESTCHECK != 0 ]
                       do
-                        if checkip $DEST
+                        if checkip4 $DEST
                           then
                             # If $DEST looks to be an valid IP we are ok.
                             DESTCHECK=0
-                          elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
+					    elif checkip6 $DEST
+                          then
+                            # If $DEST looks to be an valid IP we are ok.
+                            DESTCHECK=0
+                        elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
                             # If $DEST looks like an valid domain name we are ok.
                             DESTCHECK=0
-                          else
+                        else
                             echo -e "       $red ERROR: The value $DEST seems to be invalid"
                             echo -e "        ERROR: please re-enter the destination$clean"
                             echo -e ""

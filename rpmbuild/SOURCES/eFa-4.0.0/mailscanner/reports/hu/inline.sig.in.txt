@@ -1,7 +1,0 @@
-
--- 
-Ezt az üzenetet a víruskeresésen és veszélyes tartalmat 
-eFa Project, és úgy vélik, hogy tiszta.
-
-Kattintson ide, hogy jelentse ezt az üzenetet a spam.
-https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

@@ -1,7 +1,0 @@
-
--- 
-Esta mensagem foi verificada pelo sistema de antivírus 
-eFa Project, e acredita-se estar livre de perigo.
-
-Clique aqui para denunciar esta mensagem como spam.
-https://$hostname/cgi-bin/learn-msg.cgi?id=$id&token=$token

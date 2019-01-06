@@ -438,7 +438,8 @@ if [[ $startmariadb -eq 1 ]]; then
   /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/create.sql
 
   # Create and populate efa db
-  /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/efatokens.sql
+  # Removed from eFa4 for now
+  #/usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/efatokens.sql
 
   # Create the users
   /usr/bin/mysql -u root -p"$password" -e "GRANT SELECT,INSERT,UPDATE,DELETE on sa_bayes.* to 'sa_user'@'localhost' identified by '$password'"

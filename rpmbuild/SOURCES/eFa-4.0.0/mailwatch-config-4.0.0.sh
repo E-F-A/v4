@@ -88,16 +88,16 @@ sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() 
 
 usermod apache -G mtagroup
 
-# Place the learn scripts
 # Release script removed in eFa v4 (unless we can figure out a new method)
 # Contains no logic to limit recipient(s) to internal recipients only
 # Superceded for now with autorelease code in MailWatch
 
-cp $srcdir/mailwatch/learn-msg.cgi /var/www/cgi-bin/learn-msg.cgi
-chmod 755 /var/www/cgi-bin/learn-msg.cgi
-cp $srcdir/mailwatch/learned.html /var/www/html/learned.html
-cp $srcdir/mailwatch/notlearned.html /var/www/html/notlearned.html
-cp $srcdir/mailwatch/denylearned.html /var/www/html/denylearned.html
+# Spam submission scripts removed in eFa v4 for now because they are not ipv6 friendly
+#cp $srcdir/mailwatch/learn-msg.cgi /var/www/cgi-bin/learn-msg.cgi
+#chmod 755 /var/www/cgi-bin/learn-msg.cgi
+#cp $srcdir/mailwatch/learned.html /var/www/html/learned.html
+#cp $srcdir/mailwatch/notlearned.html /var/www/html/notlearned.html
+#cp $srcdir/mailwatch/denylearned.html /var/www/html/denylearned.html
 
 # MailWatch requires access to /var/spool/postfix/hold & incoming dir's
 chown -R postfix:mtagroup /var/spool/postfix/hold

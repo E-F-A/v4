@@ -1,3 +1,0 @@
-Waarschuwing: Er zijn 1 of meer bijlagen uit dit bericht verwijderd
-Waarschuwing: ($filename).
-Waarschuwing: Lees de "$viruswarningname" bijlage voor meer informatie.
