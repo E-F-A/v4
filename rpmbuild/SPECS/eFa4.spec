@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2018 https://efa-project.org
+# Copyright (C) 2013~2019 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -373,6 +373,14 @@ mkdir -p $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www
 mv eFaInit $RPM_BUILD_ROOT%{_localstatedir}/www
 
+# Move eFa-Configure into position
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/eFa-Configure
+mv eFa/lib-eFa-Configure/* $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/eFa-Configure
+mv eFa/eFa-Configure $RPM_BUILD_ROOT%{_sbindir}
+
+# Move selinux modules into position
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
+
 # move remaining contents of source straight into rpm
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
 mv * $RPM_BUILD_ROOT%{_usrsrc}/eFa
@@ -448,8 +456,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %{_usrsrc}/eFa
 %{_localstatedir}/www/eFaInit
+%{_localstatedir}/eFa/lib/eFa-Configure
 %{_bindir}/composer
+%{_sbindir}/eFa-Configure
 
 %changelog
-* Tue Dec 25 2018 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
+* Sun Jan 6 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
 - Initial Build for eFa v4 on CentOS7 <https://efa-project.org>
