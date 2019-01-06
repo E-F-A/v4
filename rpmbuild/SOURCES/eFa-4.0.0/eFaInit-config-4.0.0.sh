@@ -31,9 +31,6 @@ source /usr/src/eFa/eFa-settings.inc
 # Copy eFa-Init into apache
 echo "Configuring eFaInit..."
 
-cd /var/www/eFaInit
-composer install --quiet
-
 # Grant apache permissions to cache/logs/sessions
 chown apache /var/www/eFaInit/var/{cache,logs,sessions}
 
