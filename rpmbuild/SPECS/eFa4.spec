@@ -458,8 +458,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_usrsrc}/eFa
 %{_localstatedir}/www/eFaInit
 %{_localstatedir}/eFa/lib/eFa-Configure
-%{_bindir}/composer
-%{_sbindir}/eFa-Configure
+%attr(0755, root, root) %{_bindir}/composer
+%attr(0755, root, root) %{_sbindir}/eFa-Configure
 
 %changelog
 * Sun Jan 6 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
