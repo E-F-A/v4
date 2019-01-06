@@ -410,6 +410,7 @@ $RPM_BUILD_ROOT%{_bindir}/composer install --quiet
 
 # Cleanup composer for rpm build
 sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.xml
+sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.xml.meta
 rm -f $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/logs/*log
 
 %pre
