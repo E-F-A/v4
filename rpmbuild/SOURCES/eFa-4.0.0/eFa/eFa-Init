@@ -394,7 +394,10 @@ function func_ask-webusername() {
    do
      if [[ $USERNAME =~ ^[a-z_][a-z0-9_-]{1,30}+$ ]]
       then
-       uncheck=0
+        uncheck=0
+     elif [[ $USERNAME =~ ^[-_.@Aa-zA-Z0-9]{2,256}+[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,15}$ ]]
+       then
+        uncheck=0
       else
         echo -e "       $red ERROR: The user-name $USERNAME seems to be invalid"
         echo -e "        ERROR: please re-enter the user-name$clean"
