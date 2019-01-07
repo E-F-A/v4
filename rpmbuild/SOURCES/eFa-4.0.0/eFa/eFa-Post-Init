@@ -98,8 +98,8 @@ sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . e
 #############################################################################
 
 # Late Asynchronous tasks
-/usr/bin/sa-learn --spam /usr/share/doc/spamassassin-3.4.2/sample-spam.txt &
-/usr/bin/sa-learn --ham /usr/share/doc/spamassassin-3.4.2/sample-nonspam.txt &
+/usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --spam --file /usr/share/doc/spamassassin-3.4.2/sample-spam.txt &
+/usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --ham --file /usr/share/doc/spamassassin-3.4.2/sample-nonspam.txt &
 
 # Late Synchronous tasks
 if [[ ! -f /etc/postfix/ssl/dhparam.pem ]]; then
