@@ -25,7 +25,7 @@ function func_ask-recursion() {
         sed -i "/^RECURSION:/ c\RECURSION:ENABLED" /etc/eFa/eFa-Config
         sed -i "/^DNS1:/ c\DNSIP1:" /etc/eFa/eFa-Config
         sed -i "/^DNS2:/ c\DNSIP2:" /etc/eFa/eFa-Config
-        systemctl reload unbound
+        systemctl restart unbound
         echo -e "$green[eFa]$clean Recursion is now ENABLED"
       elif [[ $RECURSE =~ ^[Nn]$ ]]; then
         recursecheck=1
