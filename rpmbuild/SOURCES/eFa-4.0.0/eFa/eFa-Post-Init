@@ -64,11 +64,12 @@ fi
 
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php &
 
-/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php &
-
 /usr/sbin/clamav-unofficial-sigs.sh &
 
 # Early synchronous tasks
+
+/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php
+
 freshclam
 
 systemctl restart clamd@scan
