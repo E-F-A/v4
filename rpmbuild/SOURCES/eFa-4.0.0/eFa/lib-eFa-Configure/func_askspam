@@ -45,7 +45,7 @@ function func_ask-spam() {
     echo -e "$green[eFa]$clean Spam Notification Settings:"
     echo -e ""
     echo -e "$green[eFa]$clean By default, eFa does not notify users of lower scoring"
-    echo -e "$green[eFa]$clean spam when spam is stored in quarantine.
+    echo -e "$green[eFa]$clean spam when spam is stored in quarantine."
     echo -e "$green[eFa]$clean You can optionally choose to enable"
     echo -e "$green[eFa]$clean this feature."
     echo -e ""
