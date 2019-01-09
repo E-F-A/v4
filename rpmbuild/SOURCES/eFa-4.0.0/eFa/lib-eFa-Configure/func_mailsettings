@@ -324,7 +324,7 @@ func_outbound-relay(){
   obmrmenu=1
   while [ $obmrmenu == "1" ]
     do
-      RELAYS=`cat /etc/postfix/main.cf | grep "mynetworks = 127.0.0.0/8 \[::1\]/128" | sed 's/^\(.\{35\}\)//'`
+      RELAYS=`cat /etc/postfix/main.cf | grep "mynetworks = 127.0.0.0/8 \[::1\]/128" | sed 's/^\(.\{34\}\)//'`
       func_echo-header
       echo " "
       echo "Description:"
