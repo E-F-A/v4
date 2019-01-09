@@ -213,7 +213,7 @@ function func_system-restore() {
                           # Restore trim-awl
                           cp -f /var/eFa/backup/backup/usr/sbin/trim-awl /usr/sbin
                         fi
-                      else
+
                         cp -rf /var/eFa/backup/backup/etc/* /etc
                         cp -rf /var/eFa/backup/backup/var/* /var
                         cp -rf /usr/eFa/backup/backup/usr/* /usr

@@ -43,7 +43,7 @@ shopt -s extglob
 . /var/eFa/lib/eFa-Configure/func_askspam
 . /var/eFa/lib/eFa-Configure/func_ipsettings
 . /var/eFa/lib/eFa-Configure/func_greylisting
-. /var/eFa/lib/eFa-Configure/func_autoupdates
+#. /var/eFa/lib/eFa-Configure/func_autoupdates
 . /var/eFa/lib/eFa-Configure/func_tunables
 . /var/eFa/lib/eFa-Configure/func_tunables_children
 . /var/eFa/lib/eFa-Configure/func_tunables_procdb
