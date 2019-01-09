@@ -229,7 +229,7 @@ function func_system-restore() {
                       rm -rf /var/eFa/backup/backup
                       
                       # Are hostnames different from original?
-                      if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME ! = $OLDDOMAINNAME ]];
+                      if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME != $OLDDOMAINNAME ]];
                         mysql -u mailwatch --password=$MAILWATCHSQLPWD mailscanner -e "\
                         LOCK TABLES maillog WRITE; \
                         ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \

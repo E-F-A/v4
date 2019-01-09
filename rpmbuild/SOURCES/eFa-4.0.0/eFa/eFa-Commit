@@ -458,11 +458,8 @@ if [[ $startmariadb -eq 1 ]]; then
   # flush
   /usr/bin/mysql -u root -p"$password" -e "FLUSH PRIVILEGES;"
 
-  # populate the sa_bayes DB
+  # populate the sa_bayes DB with txrep table
   /usr/bin/mysql -u root -p"$password" sa_bayes < /usr/src/eFa/mariadb/bayes_mysql.sql
-
-  # add the AWL table to sa_bayes
-  /usr/bin/mysql -u root -p"$password" sa_bayes < /usr/src/eFa/mariadb/awl_mysql.sql
 
   sed -i "/^\[mysqld\]/ a\character-set-server = utf8mb4" /etc/my.cnf.d/mariadb-server.cnf
   sed -i "/^\[mysqld\]/ a\init-connect = 'SET NAMES utf8mb4'" /etc/my.cnf.d/mariadb-server.cnf
@@ -695,7 +692,7 @@ if [[ $configsa -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   sed -i "/bayes_sql_password/ c\bayes_sql_password              $SAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
   [ $? -ne 0 ] && exit 1
-  sed -i "/user_awl_sql_password/ c\user_awl_sql_password           $SAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
+  sed -i "/user_awl_sql_password/ c\    user_awl_sql_password           $SAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
   [ $? -ne 0 ] && exit 1
   sed -i "/\usr\/bin\/mysql -usa_user / c\\/usr\/bin\/mysql -usa_user -p$SAUSERSQLPWD < \/etc\/trim-awl.sql" /usr/sbin/trim-awl
   [ $? -ne 0 ] && exit 1
