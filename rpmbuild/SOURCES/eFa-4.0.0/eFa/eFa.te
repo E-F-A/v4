@@ -96,6 +96,7 @@ require {
     type rngd_t;
     type mscan_exec_t;
     type system_mail_t;
+    type rpcbind_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -265,6 +266,8 @@ dontaudit httpd_sys_script_t sshd_net_t:dir { getattr search };
 dontaudit httpd_sys_script_t sshd_net_t:file { read open };
 dontaudit httpd_sys_script_t rngd_t:dir { getattr search };
 dontaudit httpd_sys_script_t rngd_t:file { read open };
+dontaudit httpd_sys_script_t rpcbind_t:dir { getattr search };
+dontaudit httpd_sys_script_t rpcbind_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
