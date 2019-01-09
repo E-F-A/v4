@@ -54,19 +54,22 @@ echo 'bayes_store_module              Mail::SpamAssassin::BayesStore::SQL' >> /e
 echo 'bayes_sql_dsn                   DBI:mysql:sa_bayes:localhost' >> /etc/MailScanner/spamassassin.conf
 echo 'bayes_sql_username              sa_user' >> /etc/MailScanner/spamassassin.conf
 echo "bayes_sql_password              $password" >> /etc/MailScanner/spamassassin.conf
-echo '' >> /etc/MailScanner/spamassassin.conf
-echo 'ifplugin Mail::SpamAssassin::Plugin::AWL' >> /etc/MailScanner/spamassassin.conf
-echo '    auto_whitelist_factory          Mail::SpamAssassin::SQLBasedAddrList' >> /etc/MailScanner/spamassassin.conf
-echo '    user_awl_dsn                    DBI:mysql:sa_bayes:localhost' >> /etc/MailScanner/spamassassin.conf
-echo '    user_awl_sql_username           sa_user' >> /etc/MailScanner/spamassassin.conf
-echo "    user_awl_sql_password           $password" >> /etc/MailScanner/spamassassin.conf
-echo '    bayes_sql_override_username     mailwatch' >> /etc/MailScanner/spamassassin.conf
-echo 'endif' >> /etc/MailScanner/spamassassin.conf
+echo 'bayes_sql_override_username     postfix' >> /etc/MailScanner/spamassassin.conf
+
+# Use TxRep instead
+#echo '' >> /etc/MailScanner/spamassassin.conf
+#echo 'ifplugin Mail::SpamAssassin::Plugin::AWL' >> /etc/MailScanner/spamassassin.conf
+#echo '    auto_whitelist_factory          Mail::SpamAssassin::SQLBasedAddrList' >> /etc/MailScanner/spamassassin.conf
+#echo '    user_awl_dsn                    DBI:mysql:sa_bayes:localhost' >> /etc/MailScanner/spamassassin.conf
+#echo '    user_awl_sql_username           sa_user' >> /etc/MailScanner/spamassassin.conf
+#echo "    user_awl_sql_password           $password" >> /etc/MailScanner/spamassassin.conf
+#echo 'endif' >> /etc/MailScanner/spamassassin.conf
+
 echo '' >> /etc/MailScanner/spamassassin.conf
 echo 'ifplugin Mail::SpamAssassin::Plugin::TxRep' >> /etc/MailScanner/spamassassin.conf
 echo '    txrep_factory                   Mail::SpamAssassin::SQLBasedAddrList' >> /etc/MailScanner/spamassassin.conf
-echo '    txrep_track_messages            0' >> /etc/MailScanner/spamassassin.conf
-echo '    user_awl_sql_override_username  TxRep' >> /etc/MailScanner/spamassassin.conf
+#echo '    txrep_track_messages            0' >> /etc/MailScanner/spamassassin.conf
+echo '    user_awl_sql_override_username  postfix' >> /etc/MailScanner/spamassassin.conf
 echo '    user_awl_sql_table              txrep' >> /etc/MailScanner/spamassassin.conf
 echo '    use_txrep                       1' >> /etc/MailScanner/spamassassin.conf
 echo 'endif' >> /etc/MailScanner/spamassassin.conf
