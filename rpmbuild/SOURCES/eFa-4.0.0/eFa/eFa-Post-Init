@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 post initial configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2018 https://efa-project.org
+# Copyright (C) 2013~2019 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -60,13 +60,14 @@ if [[ $? -ne 0 ]]; then
 fi
 
 # Early asynchronous tasks
-/etc/cron.daily/mailscanner &
 
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php &
 
 /usr/sbin/clamav-unofficial-sigs.sh &
 
 # Early synchronous tasks
+
+/etc/cron.daily/mailscanner
 
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php
 
