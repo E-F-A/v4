@@ -81,7 +81,7 @@ function start_backup()
   cp -a /etc/postfix/ssl/* $WORKINGDIR/etc/postfix/ssl
 
   # Backup EFA-Config
-  mkdir -p /etc/eFa
+  mkdir -p $WORKINGDIR/etc/eFa
   cp -a /etc/eFa/* $WORKINGDIR/etc/eFa
 
   # Backup sysconfig
@@ -92,20 +92,20 @@ function start_backup()
   cp -a /etc/passwd $WORKINGDIR/etc
   cp -a /etc/fstab $WORKINGDIR/etc
   cp -a /etc/shadow $WORKINGDIR/etc
-  mkdir -p /etc/clamd.d
+  mkdir -p $WORKINGDIR/etc/clamd.d
   cp -a /etc/clamd.d/scan.conf $WORKINGDIR/etc/clamd.d
   cp -a /etc/hosts* $WORKINGDIR/etc
   cp -a /etc/networks $WORKINGDIR/etc
   cp -a /etc/my.cnf $WORKINGDIR/etc
-  mkdir -p /etc/my.cnf.d
-  cp -a /etc/my.cnf.d/* /etc/my.cnf.d
+  mkdir -p $WORKINGDIR/etc/my.cnf.d
+  cp -a /etc/my.cnf.d/* $WORKINGDIR/etc/my.cnf.d
   cp -a /etc/php.ini $WORKINGDIR/etc
   cp -a /etc/php-fpm.conf $WORKINGDIR/etc
-  mkdir -p /etc/php-fpm.d
-  cp -a /etc/php-fpm.d/www.conf /etc/php-fpm.d
+  mkdir -p $WORKINGDIR/etc/php-fpm.d
+  cp -a /etc/php-fpm.d/www.conf $WORKINGDIR/etc/php-fpm.d
   cp -a /etc/resolv* $WORKINGDIR/etc
   cp -a /etc/sudo.conf $WORKINGDIR/etc
-  mkdir -p /etc/sudoers.d
+  mkdir -p $WORKINGDIR/etc/sudoers.d
   cp -a /etc/sudoers.d/* $WORKINGDIR/etc/sudoers.d
 
   # Backup MailScanner settings
@@ -143,10 +143,6 @@ function start_backup()
   mkdir -p $WORKINGDIR/etc/mail/spamassassin
   cp -a /etc/mail/spamassassin/local.cf $WORKINGDIR/etc/mail/spamassassin
   
-  # Issue #395
-  mkdir -p $WORKINGDIR/usr/sbin
-  cp -a /usr/sbin/trim-awl $WORKINGDIR/usr/sbin
-
   # Gzip tarball the collection
   tar -cpzf $TMPDIR/backup-$CDATE-$CTIME.tar.gz -C $TMPDIR/$CDATE$CTIME .
   rm -rf $TMPDIR/$CDATE$CTIME
