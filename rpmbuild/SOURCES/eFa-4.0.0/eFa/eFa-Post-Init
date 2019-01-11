@@ -122,5 +122,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 rm -f /var/run/eFa-Post-Init.lock
-rm -f /etc/cron.d/efapostinit && exit 0
+rm -f /etc/cron.d/efapostinit
+
+exit 0
 
