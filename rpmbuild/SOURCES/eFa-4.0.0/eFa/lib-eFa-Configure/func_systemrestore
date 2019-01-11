@@ -166,7 +166,7 @@ function func_system-restore() {
                           
                           # If hostname is different, database entries must be updated!
                           OLDHOSTNAME="`grep HOSTNAME /var/eFa/backup/backup/etc/eFa/eFa-Config | sed 's/.*://'`"
-                          OLDDOMAINNAME="`grep DOMAINNAME var/eFa/backup/backup/etc/eFa/eFa-Config | sed 's/.*://'`"
+                          OLDDOMAINNAME="`grep DOMAINNAME /var/eFa/backup/backup/etc/eFa/eFa-Config | sed 's/.*://'`"
                           HOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
                           DOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
                         
