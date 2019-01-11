@@ -3,22 +3,22 @@ CREATE TABLE bayes_expire (
   runtime int(11) NOT NULL default '0',
   KEY bayes_expire_idx1 (id)
 ) ENGINE=InnoDB;
-
+ 
 CREATE TABLE bayes_global_vars (
   variable varchar(30) NOT NULL default '',
   value varchar(200) NOT NULL default '',
   PRIMARY KEY  (variable)
 ) ENGINE=InnoDB;
-
+ 
 INSERT INTO bayes_global_vars VALUES ('VERSION','3');
-
+ 
 CREATE TABLE bayes_seen (
   id int(11) NOT NULL default '0',
   msgid varchar(200) binary NOT NULL default '',
   flag char(1) NOT NULL default '',
   PRIMARY KEY  (id,msgid)
 ) ENGINE=InnoDB;
-
+ 
 CREATE TABLE bayes_token (
   id int(11) NOT NULL default '0',
   token binary(5) NOT NULL default '',
@@ -28,7 +28,7 @@ CREATE TABLE bayes_token (
   PRIMARY KEY  (id, token),
   INDEX bayes_token_idx1 (id, atime)
 ) ENGINE=InnoDB;
-
+ 
 CREATE TABLE bayes_vars (
   id int(11) NOT NULL AUTO_INCREMENT,
   username varchar(200) NOT NULL default '',
@@ -44,12 +44,14 @@ CREATE TABLE bayes_vars (
   UNIQUE bayes_vars_idx1 (username)
 ) ENGINE=InnoDB;
 
-CREATE TABLE txrep ( 
+CREATE TABLE txrep (
   username varchar(100) NOT NULL default '',
   email varchar(255) NOT NULL default '',
   ip varchar(40) NOT NULL default '',
   count int(11) NOT NULL default '0',
   totscore float NOT NULL default '0',
   signedby varchar(255) NOT NULL default '',
-  PRIMARY KEY (username,email,signedby,ip)
-  ) ENGINE=InnoDB;
+  last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (username,email,signedby,ip),
+  KEY last_hit (last_hit)
+) ENGINE=InnoDB;
