@@ -83,7 +83,6 @@ function func_system-restore() {
                         RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
                         RESTOREEFASQLPWD="`grep EFASQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
-                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREEFASQLPWD') WHERE User='efa';"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
                         /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
                         MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
@@ -91,7 +90,6 @@ function func_system-restore() {
                         sed -i "/^MAILWATCHSQLPWD:/ c\MAILWATCHSQLPWD:$RESTOREMAILWATCHSQLPWD" /etc/eFa/MailWatch-Config
                         sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
                         sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
-                        sed -i "/^EFASQLPWD:/ c\EFASQLPWD:$RESTOREEFASQLPWD" /etc/eFa/eFaSQL-Config
                         sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
 
                         mv -f /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf.v4
@@ -221,6 +219,9 @@ function func_system-restore() {
                       mysql --user=root --password=$MYSQLROOTPWD < backup.sql
                       rm -rf /var/eFa/backup/backup
                       
+                      # Upgrade database now
+                      /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
+
                       # Are hostnames different from original?
                       if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME != $OLDDOMAINNAME ]]; then
                         mysql -u mailwatch --password=$MYSQLROOTPWD mailscanner -e "\
