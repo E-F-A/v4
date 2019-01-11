@@ -161,8 +161,6 @@ function func_system-restore() {
 
                         cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
                         
-                        # Restore trim-awl
-                        cp -f /var/eFa/backup/backup/usr/sbin/trim-awl /usr/sbin
                       else
                         RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/eFa/backup/backup/etc/eFa/MySQL-Config | sed 's/.*://'`"
                         if [[ "$MYSQLROOTPWD" != "$RESTOREMYSQLROOTPWD" ]]; then
@@ -209,19 +207,17 @@ function func_system-restore() {
                           sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
                           sed -i "/^EFASQLPWD:/ c\EFASQLPWD:$RESTOREEFASQLPWD" /etc/eFa/eFaSQL-Config
                           sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
-
-                          # Restore trim-awl
-                          cp -f /var/eFa/backup/backup/usr/sbin/trim-awl /usr/sbin
+                        else
+                          OLDHOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
+                          OLDDOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
+                          HOSTNAME=$OLDHOSTNAME
+                          DOMAINNAME=$OLDDOMAINNAME
                         fi
 
                         cp -rf /var/eFa/backup/backup/etc/* /etc
                         cp -rf /var/eFa/backup/backup/var/* /var
-                        cp -rf /usr/eFa/backup/backup/usr/* /usr
+                        cp -rf /var/eFa/backup/backup/usr/* /usr
 
-                        OLDHOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
-                        OLDDOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
-                        HOSTNAME=$OLDHOSTNAME
-                        DOMAINNAME=$OLDDOM
                       fi
                       cd /var/eFa/backup/backup/sql
                       # Restore SQL databases
@@ -230,7 +226,7 @@ function func_system-restore() {
                       
                       # Are hostnames different from original?
                       if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME != $OLDDOMAINNAME ]]; then
-                        mysql -u mailwatch --password=$MAILWATCHSQLPWD mailscanner -e "\
+                        mysql -u mailwatch --password=$MYSQLROOTPWD mailscanner -e "\
                         LOCK TABLES maillog WRITE; \
                         ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
                         UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
