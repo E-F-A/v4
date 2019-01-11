@@ -148,12 +148,12 @@ function func_system-restore() {
                         mv -f /etc/postfix/master.cf.v4 /etc/postfix/master.cf
 
                         # Postmaps
-                        postmap /etc/postfix/helo_access.db
-                        postmap /etc/postfix/recipient_access.db
-                        postmap /etc/postfix/sasl_passwd.db
-                        postmap /etc/postfix/sender_access.db
-                        postmap /etc/postfix/transport.db
-                        postmap /etc/postfix/virtual.db
+                        postmap /etc/postfix/helo_access
+                        postmap /etc/postfix/recipient_access
+                        postmap /etc/postfix/sasl_passwd
+                        postmap /etc/postfix/sender_access
+                        postmap /etc/postfix/transport
+                        postmap /etc/postfix/virtual
 
                         cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
 
@@ -176,12 +176,12 @@ function func_system-restore() {
                           cp -rf /var/eFa/backup/backup/etc/postfix/* /etc/postfix
 
                           # Postmaps
-                          postmap /etc/postfix/helo_access.db
-                          postmap /etc/postfix/recipient_access.db
-                          postmap /etc/postfix/sasl_passwd.db
-                          postmap /etc/postfix/sender_access.db
-                          postmap /etc/postfix/transport.db
-                          postmap /etc/postfix/virtual.db
+                          postmap /etc/postfix/helo_access
+                          postmap /etc/postfix/recipient_access
+                          postmap /etc/postfix/sasl_passwd
+                          postmap /etc/postfix/sender_access
+                          postmap /etc/postfix/transport
+                          postmap /etc/postfix/virtual
 
                           cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
                           cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
