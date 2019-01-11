@@ -694,8 +694,6 @@ if [[ $configsa -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   sed -i "/user_awl_sql_password/ c\    user_awl_sql_password           $SAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
   [ $? -ne 0 ] && exit 1
-  sed -i "/\usr\/bin\/mysql -usa_user / c\\/usr\/bin\/mysql -usa_user -p$SAUSERSQLPWD < \/etc\/trim-awl.sql" /usr/sbin/trim-awl
-  [ $? -ne 0 ] && exit 1
   echo "SAUSERSQLPWD:$SAUSERSQLPWD" > /etc/eFa/SA-Config
   [ $? -ne 0 ] && exit 1
   SAUSERSQLPWD=
