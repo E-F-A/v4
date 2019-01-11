@@ -107,11 +107,14 @@ sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::ASM/ c\loadplugin Mail::SpamA
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::AntiVirus/ c\loadplugin Mail::SpamAssassin::Plugin::AntiVirus" /etc/mail/spamassassin/v310.pre
 
 # TxRep cleanup tools
-echo '#!/bin/sh'>/etc/cron.d/trim-txrep
-echo "password=$(grep ^SAUSERSQLPWD /etc/eFa/SA-Config | awk -F':' '{print $2}')" >> /etc/cron.d/trim-txrep
-echo "/usr/bin/mysql -usa_user -p$password -Dsa_bayes -e'DELETE FROM txrep WHERE last_hit <= (now() - INTERVAL 120 day);'" >> /etc/cron.d/trim-txrep
-echo 'exit 0 '>>/etc/cron.d/trim-txrep
-chmod +x /etc/cron.d/trim-txrep
+cat > /etc/cron.daily/trim-txrep << 'EOF'
+#!/bin/sh
+password=$(grep ^SAUSERSQLPWD /etc/eFa/SA-Config | awk -F':' '{print $2}')
+/usr/bin/mysql -usa_user -p$password -Dsa_bayes -e"DELETE FROM txrep WHERE last_hit <= (now() - INTERVAL 120 day);"
+exit 0
+EOF
+
+chmod +x /etc/cron.daily/trim-txrep
 
 # Create .spamassassin directory (error reported in lint test)
 mkdir -p /var/www/.spamassassin
