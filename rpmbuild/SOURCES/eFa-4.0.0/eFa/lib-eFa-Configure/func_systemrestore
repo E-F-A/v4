@@ -213,7 +213,7 @@ function func_system-restore() {
 
                         cp -rf /var/eFa/backup/backup/etc/* /etc
                         cp -rf /var/eFa/backup/backup/var/* /var
-                        cp -rf /var/eFa/backup/backup/usr/* /usr
+                        #cp -rf /var/eFa/backup/backup/usr/* /usr
 
                       fi
                       cd /var/eFa/backup/backup/sql
