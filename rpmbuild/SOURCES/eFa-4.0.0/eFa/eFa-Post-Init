@@ -124,5 +124,8 @@ fi
 rm -f /var/run/eFa-Post-Init.lock
 rm -f /etc/cron.d/efapostinit
 
+# Kill off parent process to prevent zombie state
+kill -9 $PPID
+
 exit 0
 
