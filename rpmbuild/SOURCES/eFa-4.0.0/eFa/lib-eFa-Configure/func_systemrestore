@@ -157,8 +157,6 @@ function func_system-restore() {
 
                         cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
 
-                        cp -f /var/eFa/backup/backup/etc/sysconfig/eFa_trusted_networks /etc/sysconfig/eFa_trusted_networks
-
                         cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
                         
                       else
@@ -176,7 +174,6 @@ function func_system-restore() {
                           cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
                           cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
                           cp -rf /var/eFa/backup/backup/etc/postfix/* /etc/postfix
-                          cp -f /var/eFa/backup/backup/etc/sysconfig/eFa_trusted_networks /etc/sysconfig/eFa_trusted_networks
 
                           # Postmaps
                           postmap /etc/postfix/helo_access.db
