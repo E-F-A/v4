@@ -121,7 +121,7 @@ function func_system-restore() {
                         # MailScanner Conf
                         ms-upgrade-conf /etc/MailScanner/MailScanner.conf.v3 /etc/MailScanner/MailScanner.conf.v4 > /etc/MailScanner/MailScanner.conf
                         rm -f /etc/MailScanner/MailScanner.conf.v4
-                        
+
                         # Force use of the milter
                         sed -i '/^MTA =/ c\MTA = msmail' /etc/MailScanner/MailScanner.conf
                         sed -i '/^Incoming Queue Dir =/ c\Incoming Queue Dir = /var/spool/MailScanner/milterin' /etc/MailScanner/MailScanner.conf
@@ -241,9 +241,6 @@ function func_system-restore() {
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
 
-                      # Upgrade database now
-                      /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
-                      
                       # Ensure txrep table is present
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" sa_bayes -e "CREATE TABLE txrep (username varchar(100) NOT NULL default '', email varchar(255) NOT NULL default '', ip varchar(40) NOT NULL default '', count int(11) NOT NULL default '0', totscore float NOT NULL default '0', signedby varchar(255) NOT NULL default '', last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (username,email,signedby,ip), KEY last_hit (last_hit)) ENGINE=InnoDB;" >/dev/null 2>&1
 
@@ -258,6 +255,9 @@ function func_system-restore() {
                         UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
                         UNLOCK TABLES;" 
                       fi
+
+                      # Upgrade database now
+                      /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
 
                       echo -e "Restore Complete!"
                       echo -e ""
