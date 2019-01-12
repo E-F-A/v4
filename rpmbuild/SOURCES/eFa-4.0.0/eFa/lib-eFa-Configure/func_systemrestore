@@ -71,7 +71,7 @@ function func_system-restore() {
 
                         # If hostname is different, database entries must be updated!
                         OLDHOSTNAME="`grep HOSTNAME /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
-                        OLDDOMAINNAME="`grep DOMAINNAME var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
+                        OLDDOMAINNAME="`grep DOMAINNAME /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         HOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
                         DOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
 
@@ -91,7 +91,7 @@ function func_system-restore() {
                         sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
                         sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
                         sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
-
+                        
                         mv -f /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf.v4
                         cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
 
@@ -114,7 +114,7 @@ function func_system-restore() {
                         mv -f /etc/MailScanner/spamassassin.conf.v4 /etc/MailScanner/spamassassin.conf
 
                         # MailScanner Conf
-                        ms-upgrade-conf /etc/MailScanner/MailScanner.conf.v4 /etc/MailScanner/MailScanner.conf.v3 > /etc/MailScanner/MailScanner.conf
+                        ms-upgrade-conf /etc/MailScanner/MailScanner.conf.v3 /etc/MailScanner/MailScanner.conf.v4 > /etc/MailScanner/MailScanner.conf
                         rm -f /etc/MailScanner/MailScanner.conf.v4
 
                         # MailWatch Conf
