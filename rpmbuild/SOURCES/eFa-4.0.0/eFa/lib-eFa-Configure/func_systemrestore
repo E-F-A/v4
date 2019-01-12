@@ -86,17 +86,14 @@ function func_system-restore() {
                         sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
                         sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
                         sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
-                        
-                        mv -f /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf.v4
-                        cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
+
+                        cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf.v3
 
                         # Keep certain files
                         mv -f /etc/MailScanner/MailScanner.conf /etc/MailScanner/MailScanner.conf.v4
                         mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v4
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v4
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v4
-                        mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.html.rules.v4
-                        mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.text.rules.v4
 
                         cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
 
@@ -106,20 +103,18 @@ function func_system-restore() {
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v3
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v3
                         mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.html.rules.v3
-                        mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.text.rules.v3
+                        mv -f /etc/MailScanner/rules/sig.text.rules /etc/MailScanner/rules/sig.text.rules.v3
 
                         mv -f /etc/MailScanner/defaults.v4 /etc/MailScanner/defaults
                         mv -f /etc/MailScanner/virus.scanners.conf.v4 /etc/MailScanner/virus.scanners.conf
                         mv -f /etc/MailScanner/spamassassin.conf.v4 /etc/MailScanner/spamassassin.conf
-                        mv -f /etc/MailScanner/rules/sig.html.rules.v4 /etc/MailScanner/rules/sig.html.rules
-                        mv -f /etc/MailScanner/rules/sig.html.rules.v4 /etc/MailScanner/rules/sig.text.rules
 
                         # MailScanner Conf
                         ms-upgrade-conf /etc/MailScanner/MailScanner.conf.v3 /etc/MailScanner/MailScanner.conf.v4 > /etc/MailScanner/MailScanner.conf
                         rm -f /etc/MailScanner/MailScanner.conf.v4
 
                         # Adjust envelope_sender_header in spamassassin.conf
-                        ENVELOPE=$(ms-peek envelopefromheader /etc/MailScanner/MailScanner.conf)
+                        ENVELOPE=$(ms-peek envelopefromheader /etc/MailScanner/MailScanner.conf | sed -e 's/://')
                         sed -i "/^envelope_sender_header/ c\envelope_sender_header $ENVELOPE" /etc/MailScanner/spamassassin.conf
 
                         # Fix clam socket
