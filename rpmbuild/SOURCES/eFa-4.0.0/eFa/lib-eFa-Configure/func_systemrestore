@@ -105,16 +105,19 @@ function func_system-restore() {
 
                         # Replace old v3 files with v4 but leave v3 variants for review
                         mv -f /etc/MailScanner/MailScanner.conf /etc/MailScanner/MailScanner.conf.v3
-                        mv -f /etc/MailScanner/defaults /etc/MailScanner/defautls.v3
+                        mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v3
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v3
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v3
 
-                        mv -f /etc/MailScanner/MailScanner.conf.v4 /etc/MailScanner/MailScanner.conf
                         mv -f /etc/MailScanner/defaults.v4 /etc/MailScanner/defaults
                         mv -f /etc/MailScanner/virus.scanners.conf.v4 /etc/MailScanner/virus.scanners.conf
                         mv -f /etc/MailScanner/spamassassin.conf.v4 /etc/MailScanner/spamassassin.conf
 
                         # MailScanner Conf
+                        ms-upgrade-conf /etc/MailScanner/MailScanner.conf.v4 /etc/MailScanner/MailScanner.conf.v3 > /etc/MailScanner/MailScanner.conf
+                        rm -f /etc/MailScanner/MailScanner.conf.v4
+
+                        # MailWatch Conf
                         cp -f /var/eFa/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php.v3
 
                         # Postfix Conf
@@ -154,20 +157,19 @@ function func_system-restore() {
                         postmap /etc/postfix/virtual
 
                         cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
-
                         cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
-                        
+
                       else
                         RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/eFa/backup/backup/etc/eFa/MySQL-Config | sed 's/.*://'`"
                         if [[ "$MYSQLROOTPWD" != "$RESTOREMYSQLROOTPWD" ]]; then
                           echo "Foreign backup detected, performing import..."
-                          
+
                           # If hostname is different, database entries must be updated!
                           OLDHOSTNAME="`grep HOSTNAME /var/eFa/backup/backup/etc/eFa/eFa-Config | sed 's/.*://'`"
                           OLDDOMAINNAME="`grep DOMAINNAME /var/eFa/backup/backup/etc/eFa/eFa-Config | sed 's/.*://'`"
                           HOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
                           DOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
-                        
+
                           # Restore importable configurations
                           cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
                           cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
@@ -184,6 +186,15 @@ function func_system-restore() {
                           cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
                           cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
                           cp -f /var/eFa/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php
+
+                          # MailScanner
+                          mv -f /etc/MailScanner/MailScanner.conf /etc/MailScanner/MailScanner.conf.original
+                          cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
+                          mv -f /etc/MailScanner/MailScanner.conf /etc/MailScanner/MailScanner.conf.restore
+                          ms-upgrade-conf /etc/MailScanner/MailScanner.conf.original /etc/MailScanner/MailScanner.conf.restore > /etc/MailScanner/MailScanner.conf
+                          rm -f /etc/MailScanner/MailScanner.conf.original
+                          rm -f /etc/MailScanner/MailScanner.conf.restore
+
                           # Import database passwords
                           RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
                           /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
@@ -207,18 +218,15 @@ function func_system-restore() {
                           OLDDOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
                           HOSTNAME=$OLDHOSTNAME
                           DOMAINNAME=$OLDDOMAINNAME
+                          cp -rf /var/eFa/backup/backup/etc/* /etc
+                          cp -rf /var/eFa/backup/backup/var/* /var
                         fi
-
-                        cp -rf /var/eFa/backup/backup/etc/* /etc
-                        cp -rf /var/eFa/backup/backup/var/* /var
-                        #cp -rf /var/eFa/backup/backup/usr/* /usr
-
                       fi
                       cd /var/eFa/backup/backup/sql
                       # Restore SQL databases
                       mysql --user=root --password=$MYSQLROOTPWD < backup.sql
                       rm -rf /var/eFa/backup/backup
-                      
+
                       # Upgrade database now
                       /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
 
