@@ -207,6 +207,7 @@ function func_system-restore() {
                           /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
                           /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
                           MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
+                          
                           # Update eFa-Config with imported values
                           sed -i "/^MAILWATCHSQLPWD:/ c\MAILWATCHSQLPWD:$RESTOREMAILWATCHSQLPWD" /etc/eFa/MailWatch-Config
                           sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
@@ -232,7 +233,7 @@ function func_system-restore() {
 
                       # Are hostnames different from original?
                       if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME != $OLDDOMAINNAME ]]; then
-                        mysql -u mailwatch --password=$MYSQLROOTPWD mailscanner -e "\
+                        mysql -u root --password=$MYSQLROOTPWD mailscanner -e "\
                         LOCK TABLES maillog WRITE; \
                         ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
                         UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
