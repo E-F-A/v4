@@ -77,11 +77,8 @@ function func_system-restore() {
 
                         # Import database passwords
                         RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
-                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
                         RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
-                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
                         RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
-                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
                         RESTOREEFASQLPWD="`grep EFASQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
                         /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
@@ -100,22 +97,30 @@ function func_system-restore() {
                         mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v4
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v4
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v4
+                        mv -f /etc/MailScanner/reports /etc/MailScanner/reports.v4
 
                         cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
-
+                        
                         # Replace old v3 files with v4 but leave v3 variants for review
                         mv -f /etc/MailScanner/MailScanner.conf /etc/MailScanner/MailScanner.conf.v3
                         mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v3
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v3
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v3
+                        mv -f /etc//etc/MailScanner/reports /etc/MailScanner/reports.v3
 
                         mv -f /etc/MailScanner/defaults.v4 /etc/MailScanner/defaults
                         mv -f /etc/MailScanner/virus.scanners.conf.v4 /etc/MailScanner/virus.scanners.conf
                         mv -f /etc/MailScanner/spamassassin.conf.v4 /etc/MailScanner/spamassassin.conf
+                        mv -f /etc/MailScanner/reports.v4 /etc/MailScanner/reports.v3
 
                         # MailScanner Conf
                         ms-upgrade-conf /etc/MailScanner/MailScanner.conf.v3 /etc/MailScanner/MailScanner.conf.v4 > /etc/MailScanner/MailScanner.conf
                         rm -f /etc/MailScanner/MailScanner.conf.v4
+                        
+                        # Force use of the milter
+                        sed -i '/^MTA =/ c\MTA = msmail' /etc/MailScanner/MailScanner.conf
+                        sed -i '/^Incoming Queue Dir =/ c\Incoming Queue Dir = /var/spool/MailScanner/milterin' /etc/MailScanner/MailScanner.conf
+                        sed -i '/^Outgoing Queue Dir =/ c\Outgoing Queue Dir = /var/spool/MailScanner/milterout' /etc/MailScanner/MailScanner.conf
 
                         # MailWatch Conf
                         cp -f /var/eFa/backup/backup/var/www/html/mailscanner/conf.php /var/www/html/mailscanner/conf.php.v3
@@ -197,13 +202,8 @@ function func_system-restore() {
 
                           # Import database passwords
                           RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
-                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
                           RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/eFa/MailWatch-Config | sed 's/.*://'`"
-                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
                           RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/eFa/SQLGrey-Config | sed 's/.*://'`"
-                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
-                          RESTOREEFASQLPWD="`grep EFASQLPWD /var/eFa/backup/backup/etc/eFa/eFaSQL-Config | sed 's/.*://'`"
-                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREEFASQLPWD') WHERE User='efa';"
                           /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
                           /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
                           MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
@@ -219,6 +219,9 @@ function func_system-restore() {
                           OLDDOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
                           HOSTNAME=$OLDHOSTNAME
                           DOMAINNAME=$OLDDOMAINNAME
+                          RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
+                          RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/eFa/MailWatch-Config | sed 's/.*://'`"
+                          RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/eFa/SQLGrey-Config | sed 's/.*://'`"
                           cp -rf /var/eFa/backup/backup/etc/* /etc
                           cp -rf /var/eFa/backup/backup/var/* /var
                         fi
@@ -227,9 +230,17 @@ function func_system-restore() {
                       # Restore SQL databases
                       mysql --user=root --password=$MYSQLROOTPWD < backup.sql
                       rm -rf /var/eFa/backup/backup
+                      
+                      # Set passwords
+                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
+                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
+                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
 
                       # Upgrade database now
                       /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
+                      
+                      # Ensure txrep table is present
+                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -E "CREATE TABLE txrep (username varchar(100) NOT NULL default '', email varchar(255) NOT NULL default '', ip varchar(40) NOT NULL default '', count int(11) NOT NULL default '0', totscore float NOT NULL default '0', signedby varchar(255) NOT NULL default '', last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (username,email,signedby,ip), KEY last_hit (last_hit)) ENGINE=InnoDB;
 
                       # Are hostnames different from original?
                       if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME != $OLDDOMAINNAME ]]; then
