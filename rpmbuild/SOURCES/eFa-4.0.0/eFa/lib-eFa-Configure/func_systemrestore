@@ -209,7 +209,6 @@ function func_system-restore() {
                           RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
                           RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/eFa/MailWatch-Config | sed 's/.*://'`"
                           RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/eFa/SQLGrey-Config | sed 's/.*://'`"
-                          /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
                           /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
                           MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
                           
@@ -217,7 +216,6 @@ function func_system-restore() {
                           sed -i "/^MAILWATCHSQLPWD:/ c\MAILWATCHSQLPWD:$RESTOREMAILWATCHSQLPWD" /etc/eFa/MailWatch-Config
                           sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
                           sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
-                          sed -i "/^EFASQLPWD:/ c\EFASQLPWD:$RESTOREEFASQLPWD" /etc/eFa/eFaSQL-Config
                           sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
                         else
                           OLDHOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
@@ -233,13 +231,14 @@ function func_system-restore() {
                       fi
                       cd /var/eFa/backup/backup/sql
                       # Restore SQL databases
-                      mysql --user=root --password=$MYSQLROOTPWD < backup.sql
+                      /usr/bin/mysql --user=root --password=$MYSQLROOTPWD < backup.sql
                       rm -rf /var/eFa/backup/backup
                       
                       # Set passwords
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
+                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
 
                       # Ensure txrep table is present
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" sa_bayes -e "CREATE TABLE txrep (username varchar(100) NOT NULL default '', email varchar(255) NOT NULL default '', ip varchar(40) NOT NULL default '', count int(11) NOT NULL default '0', totscore float NOT NULL default '0', signedby varchar(255) NOT NULL default '', last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (username,email,signedby,ip), KEY last_hit (last_hit)) ENGINE=InnoDB;" >/dev/null 2>&1
