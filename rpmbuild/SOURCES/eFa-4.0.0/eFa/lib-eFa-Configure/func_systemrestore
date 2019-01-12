@@ -79,8 +79,6 @@ function func_system-restore() {
                         RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
                         RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
-                        RESTOREEFASQLPWD="`grep EFASQLPWD /var/eFa/backup/backup/etc/EFA-Config | sed 's/.*://'`"
-                        /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
                         /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
                         MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
                         # Update eFa-Config with imported values
@@ -97,10 +95,8 @@ function func_system-restore() {
                         mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v4
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v4
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v4
-                        mv -f /usr/share/MailScanner/reports /usr/share/MailScanner/reports.v4
-                        rm -f /etc/MailScanner/reports
-                        mkdir -p /usr/share/MailScanner/reports
-                        ln -s /usr/share/MailScanner/reports /etc/MailScanner/reports
+                        mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.html.rules.v4
+                        mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.text.rules.v4
 
                         cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
 
@@ -109,18 +105,25 @@ function func_system-restore() {
                         mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v3
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v3
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v3
-                        mv -f /usr/share/MailScanner/reports /usr/share/MailScanner/reports.v3
-                        rm -f /etc/MailScanner/reports
-                        mv /usr/share/MailScanner/reports.v4 /usr/share/MailScanner/reports
-                        ln -s /usr/share/MailScanner/reports /etc/MailScanner/reports
+                        mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.html.rules.v3
+                        mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.text.rules.v3
 
                         mv -f /etc/MailScanner/defaults.v4 /etc/MailScanner/defaults
                         mv -f /etc/MailScanner/virus.scanners.conf.v4 /etc/MailScanner/virus.scanners.conf
                         mv -f /etc/MailScanner/spamassassin.conf.v4 /etc/MailScanner/spamassassin.conf
+                        mv -f /etc/MailScanner/rules/sig.html.rules.v4 /etc/MailScanner/rules/sig.html.rules
+                        mv -f /etc/MailScanner/rules/sig.html.rules.v4 /etc/MailScanner/rules/sig.text.rules
 
                         # MailScanner Conf
                         ms-upgrade-conf /etc/MailScanner/MailScanner.conf.v3 /etc/MailScanner/MailScanner.conf.v4 > /etc/MailScanner/MailScanner.conf
                         rm -f /etc/MailScanner/MailScanner.conf.v4
+
+                        # Adjust envelope_sender_header in spamassassin.conf
+                        ENVELOPE=$(ms-peek envelopefromheader /etc/MailScanner/MailScanner.conf)
+                        sed -i "/^envelope_sender_header/ c\envelope_sender_header $ENVELOPE" /etc/MailScanner/spamassassin.conf
+
+                        # Fix clam socket
+                        sed -i "/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.scan/clamd.sock" /etc/MailScanner/MailScanner.conf
 
                         # Force use of the milter
                         sed -i '/^MTA =/ c\MTA = msmail' /etc/MailScanner/MailScanner.conf
