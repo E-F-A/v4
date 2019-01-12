@@ -97,16 +97,22 @@ function func_system-restore() {
                         mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v4
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v4
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v4
-                        mv -f /etc/MailScanner/reports /etc/MailScanner/reports.v4
+                        mv -f /usr/share/MailScanner/reports /usr/share/MailScanner/reports.v4
+                        rm -f /etc/MailScanner/reports
+                        mkdir -p /usr/share/MailScanner/reports
+                        ln -s /usr/share/MailScanner/reports /etc/MailScanner/reports
 
                         cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
-                        
+
                         # Replace old v3 files with v4 but leave v3 variants for review
                         mv -f /etc/MailScanner/MailScanner.conf /etc/MailScanner/MailScanner.conf.v3
                         mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v3
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v3
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v3
-                        mv -f /etc//etc/MailScanner/reports /etc/MailScanner/reports.v3
+                        mv -f /usr/share/MailScanner/reports /usr/share/MailScanner/reports.v3
+                        rm -f /etc/MailScanner/reports
+                        mv /usr/share/MailScanner/reports.v4 /usr/share/MailScanner/reports
+                        ln -s /usr/share/MailScanner/reports /etc/MailScanner/reports
 
                         mv -f /etc/MailScanner/defaults.v4 /etc/MailScanner/defaults
                         mv -f /etc/MailScanner/virus.scanners.conf.v4 /etc/MailScanner/virus.scanners.conf
@@ -240,7 +246,7 @@ function func_system-restore() {
                       /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
                       
                       # Ensure txrep table is present
-                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -E "CREATE TABLE txrep (username varchar(100) NOT NULL default '', email varchar(255) NOT NULL default '', ip varchar(40) NOT NULL default '', count int(11) NOT NULL default '0', totscore float NOT NULL default '0', signedby varchar(255) NOT NULL default '', last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (username,email,signedby,ip), KEY last_hit (last_hit)) ENGINE=InnoDB;" >/dev/null 2>&1
+                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" sa_bayes -e "CREATE TABLE txrep (username varchar(100) NOT NULL default '', email varchar(255) NOT NULL default '', ip varchar(40) NOT NULL default '', count int(11) NOT NULL default '0', totscore float NOT NULL default '0', signedby varchar(255) NOT NULL default '', last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (username,email,signedby,ip), KEY last_hit (last_hit)) ENGINE=InnoDB;" >/dev/null 2>&1
 
                       # Are hostnames different from original?
                       if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME != $OLDDOMAINNAME ]]; then
