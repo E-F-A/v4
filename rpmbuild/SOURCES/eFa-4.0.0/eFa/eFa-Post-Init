@@ -44,8 +44,8 @@ sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . e
 [[ -f /etc/httpd/conf.d/eFaInit.conf ]] && rm -f /etc/httpd/conf.d/eFaInit.conf
 
 # Retrieve gateways for ipv4 and ipv6
-IPV4GATEWAY=$(route -n | grep ^0\.0\.0\.0 | awk '{print $2}')
-IPV6GATEWAY=$(route -n -6 | grep UG | grep ::/0 | awk '{print $2}')
+IPV4GATEWAY=$(/usr/sbin/route -n | grep ^0\.0\.0\.0 | awk '{print $2}')
+IPV6GATEWAY=$(/usr/sbin/route -n -6 | grep UG | grep ::/0 | awk '{print $2}')
 
 # Do we have Internet access?
 
@@ -69,8 +69,8 @@ fi
 
 if [[ -z $IPV4GATEWAY && -z $IPV6GATEWAY ]]; then
   logger -p user.warn "eFa Post Init: No Internet access detected because no gateway is set!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
-    sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK INTERNET ACCESS GATEWAYS... ';" /var/www/html/mailscanner/functions.php
-    exit 1
+  sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK INTERNET ACCESS GATEWAYS... ';" /var/www/html/mailscanner/functions.php
+  exit 1
 fi
 
 # Precheck passes, create lock file
