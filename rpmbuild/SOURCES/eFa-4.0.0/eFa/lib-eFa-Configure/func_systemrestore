@@ -94,6 +94,8 @@ function func_system-restore() {
                         mv -f /etc/MailScanner/defaults /etc/MailScanner/defaults.v4
                         mv -f /etc/MailScanner/virus.scanners.conf /etc/MailScanner/virus.scanners.conf.v4
                         mv -f /etc/MailScanner/spamassassin.conf /etc/MailScanner/spamassassin.conf.v4
+                        mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.html.rules.v4
+                        mv -f /etc/MailScanner/rules/sig.text.rules /etc/MailScanner/rules/sig.text.rules.v4
 
                         cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
 
@@ -105,9 +107,12 @@ function func_system-restore() {
                         mv -f /etc/MailScanner/rules/sig.html.rules /etc/MailScanner/rules/sig.html.rules.v3
                         mv -f /etc/MailScanner/rules/sig.text.rules /etc/MailScanner/rules/sig.text.rules.v3
 
+                        # Move v4 files back in place
                         mv -f /etc/MailScanner/defaults.v4 /etc/MailScanner/defaults
                         mv -f /etc/MailScanner/virus.scanners.conf.v4 /etc/MailScanner/virus.scanners.conf
                         mv -f /etc/MailScanner/spamassassin.conf.v4 /etc/MailScanner/spamassassin.conf
+                        mv -f /etc/MailScanner/rules/sig.html.rules.v4 /etc/MailScanner/rules/sig.html.rules
+                        mv -f /etc/MailScanner/rules/sig.text.rules.v4 /etc/MailScanner/rules/sig.text.rules
 
                         # MailScanner Conf
                         ms-upgrade-conf /etc/MailScanner/MailScanner.conf.v3 /etc/MailScanner/MailScanner.conf.v4 > /etc/MailScanner/MailScanner.conf
