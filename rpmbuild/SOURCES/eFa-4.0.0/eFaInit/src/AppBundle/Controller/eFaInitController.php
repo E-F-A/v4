@@ -1348,7 +1348,7 @@ class eFaInitController extends Controller
             $process->setTimeout($this->timeout);
             $process->mustRun();
 
-            $output = '<br/> eFa -- Configuration complete, initiating reboot!<br/>' . $output;
+            $output = '<br/> eFa -- Configuration complete, preparing to reboot in 60 seconds!<br/>' . $output;
 
             eFaInitController::progressBar(100, 100, $output);
 
