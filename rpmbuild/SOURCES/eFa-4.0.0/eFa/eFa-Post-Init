@@ -43,12 +43,34 @@ sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . e
 # Remove eFaInit config if present
 [[ -f /etc/httpd/conf.d/eFaInit.conf ]] && rm -f /etc/httpd/conf.d/eFaInit.conf
 
+# Retrieve gateways for ipv4 and ipv6
+IPV4GATEWAY=$(route -n | grep ^0\.0\.0\.0 | awk '{print $2}')
+IPV6GATEWAY=$(route -n -6 | grep UG | grep ::/0 | awk '{print $2}')
+
 # Do we have Internet access?
-wget -q --tries=3 --timeout=20 --spider https://mirrors.efa-project.org
-if [[ $? -ne 0 ]]; then
-  logger -p user.warn "eFa Post Init: No Internet access detected!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
-  sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK INTERNET ACCESS... ';" /var/www/html/mailscanner/functions.php
-  exit 1
+
+if [[ -n $IPV4GATEWAY ]]; then
+  wget -q --tries=3 --timeout=20 --spider https://ipv4.efa-project.org
+  if [[ $? -ne 0 ]]; then
+    logger -p user.warn "eFa Post Init: No Internet access detected over IPV4!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+    sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING IPV4, CHECK INTERNET ACCESS... ';" /var/www/html/mailscanner/functions.php
+    exit 1
+  fi
+fi
+
+if [[ -n $IPV6GATEWAY ]]; then
+  wget -q --tries=3 --timeout=20 --spider https://ipv6.efa-project.org
+  if [[ $? -ne 0 ]]; then
+    logger -p user.warn "eFa Post Init: No Internet access detected over IPV6!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+    sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING IPV6, CHECK INTERNET ACCESS... ';" /var/www/html/mailscanner/functions.php
+    exit 1
+  fi
+fi
+
+if [[ -z $IPV4GATEWAY && -z $IPV6GATEWAY ]]; then
+  logger -p user.warn "eFa Post Init: No Internet access detected because no gateway is set!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+    sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK INTERNET ACCESS GATEWAYS... ';" /var/www/html/mailscanner/functions.php
+    exit 1
 fi
 
 # Precheck passes, create lock file
