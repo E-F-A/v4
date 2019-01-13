@@ -6,7 +6,15 @@ func_setipsettings(){
   # Grab current FQDN
   HOSTNAME="`cat /etc/eFa/eFa-Config | grep HOSTNAME | sed 's/.*://'`"
   DOMAINNAME="`cat /etc/eFa/eFa-Config | grep DOMAINNAME | sed 's/.*://'`"
-    
+
+  # Back up hosts file, just in case
+  if [[ -f /etc/hosts.bak ]]; then
+    rm -f /etc/host.bak
+    cp -f /etc/hosts /etc/hosts.bak
+  else
+    cp -f /etc/hosts /etc/hosts.bak
+  fi
+
   # Write new hosts file
   echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
   echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
@@ -34,6 +42,29 @@ func_setipsettings(){
     cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
   else
     cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak
+  fi
+
+  if [[ "$BOOTPROTO" == "dhcp" ]]; then
+    sed -i "/^BOOTPROTO/ c\BOOTPROTO=dhcp" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^IPADDR/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^NETMASK/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^GATEWAY/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    IP4=""
+    NM4=""
+    GW4=""
+  else
+    sed -i "/^BOOTPROTO/ c\BOOTPROTO=none" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  fi
+  
+  if [[ "$IPV6AUTOCONF" == "yes" ]]; then
+    sed -i "/^IPV6_AUTOCONF/ c\IPV6_AUTOCONF=yes" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^IPV6ADDR/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^IPV6_DEFAULTGW/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    IP6=""
+    PF6=""
+    GW6=""
+  else
+    sed -i "/^IPV6_AUTOCONF/ c\IPV6_AUTOCONF=no" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
   fi
 
   if [[ -n $IP4 ]]; then
