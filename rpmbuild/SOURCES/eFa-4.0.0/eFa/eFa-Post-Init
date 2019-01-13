@@ -26,8 +26,17 @@
 [[ -f /reboot.system ]] && exit 0
 
 # Don't run if lock is present
-[[ -f /var/run/eFa-Post-Init.lock ]] && exit 0
-
+if [[ -f /var/run/eFa-Post-Init.lock ]]; then
+  # Check for running process
+  CHECKPOST=$(ps -ef | grep eFa-Post-Init | wc -l)
+  if [[ $CHECKPOST -eq 1 ]]; then
+     # I am the only copy running, clear lock
+     rm -f /var/run/eFa-Post-Init.lock
+  else
+    # Another post init is running, exit now
+    exit 0
+  fi
+fi
 # Reset footer
 sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...INITIALIZING SYSTEM, PLEASE WAIT... ';" /var/www/html/mailscanner/functions.php
 
