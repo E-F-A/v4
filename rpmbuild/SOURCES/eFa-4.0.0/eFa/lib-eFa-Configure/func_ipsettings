@@ -35,9 +35,9 @@ func_ip-settings(){
                 1)  ipmenu=0
                     echo ""
                     read -p "Do you want to use DHCP? (y/N): " ASKPROTO
-                    if [[ -z $ASKPROTO || $ASKPROTO =~ /^nN$/ ]]; then
+                    if [[ -z $ASKPROTO || $ASKPROTO =~ ^[nN]$ ]]; then
                        BOOTPROTO="none"
-                    elif [[ $ASKPROTO =~ /^yY$/ ]]; then
+                    elif [[ $ASKPROTO =~ ^[yY]$ ]]; then
                        BOOTPROTO="dhcp"
                     else
                       echo "ERROR invalid choice" && pause && menu=1
@@ -46,9 +46,9 @@ func_ip-settings(){
                 2)  ipmenu=0
                     echo ""
                     read -p "Do you want to use IPV6 Auto Configuration? (y/N): " ASKAUTO
-                    if [[ -z $ASKAUTO || $ASKAUTO =~ /^nN$/ ]]; then
+                    if [[ -z $ASKAUTO || $ASKAUTO =~ ^[nN]$ ]]; then
                        IPV6AUTOCONF="no"
-                    elif [[ $ASKAUTO =~ /^yY$/ ]]; then
+                    elif [[ $ASKAUTO =~ ^[yY]$ ]]; then
                        IPV6AUTOCONF="yes"
                     else
                       echo "ERROR invalid choice" && pause && menu=1
