@@ -121,7 +121,7 @@ function func_system-restore() {
                         # Adjust envelope_sender_header in spamassassin.conf
                         ENVELOPE=$(ms-peek envelopefromheader /etc/MailScanner/MailScanner.conf | sed -e 's/://')
                         sed -i "/^envelope_sender_header/ c\envelope_sender_header $ENVELOPE" /etc/MailScanner/spamassassin.conf
-                        
+
                         # Update passwords in spamassassin.conf
                         sed -i "/^bayes_sql_password/ c\bayes_sql_password              $RESTORESAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
                         sed -i "/^    user_awl_sql_password/ c\    user_awl_sql_password           $RESTORESAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
