@@ -45,6 +45,8 @@ function func_getipsettings(){
      else
         INTERFACE=$interf
     fi
+    BOOTPROTO="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep BOOTPROTO | sed 's/BOOTPROTO=//;s/"//g'`"
+    IPV6AUTOCONF="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPV6_AUTOCONF | sed 's/IPV6_AUTOCONF=//;s/"//g'`"
     IP4="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPADDR | sed 's/IPADDR=//;s/"//g'`"
     NM4="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep NETMASK | sed 's/NETMASK=//;s/"//g'`"
     GW4="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep GATEWAY | sed 's/GATEWAY=//;s/"//g'`"
