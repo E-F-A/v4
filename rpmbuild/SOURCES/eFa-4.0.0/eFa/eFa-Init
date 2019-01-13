@@ -877,7 +877,7 @@ function func_configure-system() {
     exit 1
   fi
   
-  echo "Configuration complete, reboot is pending."
+  echo "Configuration complete, preparing to reboot in 60 seconds."
 }
 # +---------------------------------------------------+
 
