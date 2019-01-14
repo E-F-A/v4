@@ -997,9 +997,13 @@ EOF
   touch /reboot.system
 
   # Lock down GUI
-  echo "apache ALL=NOPASSWD: /usr/sbin/MailScanner --lint" > /etc/sudoers.d/eFa-Services
+  cat > /etc/sudoers.d/mailwatch << 'EOF'
+User_Alias MAILSCANNER = apache
+Cmnd_Alias MAILSCANLINT = /usr/sbin/MailScanner --lint
+MAILSCANNER ALL= NOPASSWD: MAILSCANLINT
+EOF
   [ $? -ne 0 ] && exit 1
-  echo "apache ALL=NOPASSWD: /usr/bin/touch /reboot.system" >> /etc/sudoers.d/eFa-Services
+  echo "apache ALL=NOPASSWD: /usr/bin/touch /reboot.system" > /etc/sudoers.d/eFa-Services
   [ $? -ne 0 ] && exit 1
 fi
 
