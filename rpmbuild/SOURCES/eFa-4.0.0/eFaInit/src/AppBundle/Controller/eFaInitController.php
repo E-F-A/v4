@@ -930,7 +930,7 @@ class eFaInitController extends Controller
             'ipv4gateway'     => $session->get('ipv4gateway'), 'ipv4gatewayflag' => $ipv4gatewayflag,
             'configipv6'      => $session->get('configipv6'),
             'ipv6address'     => $session->get('ipv6address'), 'ipv6addressflag' => $ipv6addressflag,
-            'ipv6prefix'      => $session->get('ipv6prefix'),  'ipv6prefixflag'    => $ipv6prefixflag,
+            'ipv6prefix'      => $session->get('ipv6prefix'),  'ipv6prefixflag'  => $ipv6prefixflag,
             'ipv6gateway'     => $session->get('ipv6gateway'), 'ipv6gatewayflag' => $ipv6gatewayflag,
             'configrecursion' => $session->get('configrecursion'),
             'dns1'            => $session->get('dns1'), 'dns1flag' => $dns1flag,
@@ -1011,7 +1011,7 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $process = new Process('sudo /usr/sbin/eFa-Commit --configip --interface=' . $session->get('interface') . ' --ipv4address=' . $session->get('ipv4address') . ' --ipv4netmask=' . $session->get('ipv4netmask') . ' --ipv4gateway=' . $session->get('ipv4gateway') . ' --ipv6address=' . $session->get('ipv6address') . ' --ipv6mask=' . $session->get('ipv6mask') . ' --ipv6gateway=' . $session->get('ipv6gateway') . ' --dnsip1=' . $session->get('dns1') . ' --dnsip2=' . $session->get('dns2'));
+        $process = new Process('sudo /usr/sbin/eFa-Commit --configip --interface=' . $session->get('interface') . ' --ipv4address=' . $session->get('ipv4address') . ' --ipv4netmask=' . $session->get('ipv4netmask') . ' --ipv4gateway=' . $session->get('ipv4gateway') . ' --ipv6address=' . $session->get('ipv6address') . ' --ipv6mask=' . $session->get('ipv6prefix') . ' --ipv6gateway=' . $session->get('ipv6gateway') . ' --dnsip1=' . $session->get('dns1') . ' --dnsip2=' . $session->get('dns2'));
 
         $output = '<br/>eFa -- Configuring interface...<br/>' . $output;
 
