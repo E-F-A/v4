@@ -366,7 +366,7 @@ while [ $# -gt 0 ]; do
           echo "IANA:$IANACODE" >> /etc/eFa/eFa-Config
         else
           sed -i "/^IANA:/ c\IANA:$IANACODE" /etc/eFa/eFa-Config
-        fi  
+        fi
     ;;
       --orgname=*)
         ORGNAME=${1#*=}
@@ -415,7 +415,7 @@ if [[ $startmariadb -eq 1 ]]; then
   # Start mariadb Daemon
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Starting MariaDB and Configuring"
   systemctl start mariadb
-  [ $? -ne 0 ] && exit 1 
+  [ $? -ne 0 ] && exit 1
 
   # remove default security flaws from MySQL.
   password="eFaPr0j3ct"
@@ -539,7 +539,7 @@ if [[ $configip -eq 1 ]]; then
   else
     cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak
     [ $? -ne 0 ] && exit 1
-  fi    
+  fi
 
   sed -i '/^BOOTPROTO=/ c\BOOTPROTO="none"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
   [ $? -ne 0 ] && exit 1
@@ -584,7 +584,7 @@ if [[ $genhostkeys -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519
   [ $? -ne 0 ] && exit 1
-  
+
   #[ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Generating dh key for postfix..."
   #openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
   #[ $? -ne 0 ] && exit 1
@@ -746,7 +746,7 @@ if [[ $configmailwatch -eq 1 ]]; then
 
   # Handle single quotes
   efauserpwd=$(echo $efauserpwd | sed -e "s/'/''/g")
-  
+
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$efauserpwd'), fullname = 'Administrator', type ='A'"
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '127.0.0.1'"
@@ -773,7 +773,7 @@ if [[ $configmailwatch -eq 1 ]]; then
   echo "EFASQLPWD:$EFASQLPWD" > /etc/eFa/eFaSQL-Config
   [ $? -ne 0 ] && exit 1
   EFASQLPWD=
-  
+
   # Upgrade database now
   /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
   [ $? -ne 0 ] && exit 1
@@ -824,13 +824,13 @@ if [[ $configcli -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Creating cli user"
 
   # Cleanup in case of failed run
-  userdel $CLIUSERNAME >/dev/null 2>&1
+  userdel -rf $CLIUSERNAME >/dev/null 2>&1
 
   useradd -m -d /home/$CLIUSERNAME -s /bin/bash -G wheel $CLIUSERNAME
   [ $? -ne 0 ] && exit 1
   echo "$CLIUSERNAME:$efaclipwd" | chpasswd --md5 $CLIUSERNAME
   [ $? -ne 0 ] && exit 1
-  
+
   # Set eFa-Configure to launch
   sed -i "1i\if ! [ -z \"\$PS1\" ]; then\n  sudo \/usr\/sbin\/eFa-Configure\nfi" /home/$CLIUSERNAME/.bashrc
   echo "$CLIUSERNAME ALL=(ALL) NOPASSWD: /usr/sbin/eFa-Configure" >> /etc/sudoers.d/eFa-users
@@ -898,7 +898,7 @@ if [[ $finalize -eq 1 ]]; then
 </html>
 EOF
   [ $? -ne 0 ] && exit 1
-  
+
   chown root:mtagroup /etc/eFa/*
   [ $? -ne 0 ] && exit 1
   chmod 640 /etc/eFa/*
