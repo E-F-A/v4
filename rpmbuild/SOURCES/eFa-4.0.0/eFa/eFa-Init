@@ -873,10 +873,10 @@ function func_configure-system() {
       --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC
 
   if [[ $? -ne 0 ]]; then
-    echo -e "$red[eFa]$clean - Error initializing system!  Pleae try again..."
+    echo -e "$red[eFa]$clean - Error initializing system!  Please try again..."
     exit 1
   fi
-  
+
   echo "Configuration complete, preparing to reboot in 60 seconds."
 }
 # +---------------------------------------------------+
