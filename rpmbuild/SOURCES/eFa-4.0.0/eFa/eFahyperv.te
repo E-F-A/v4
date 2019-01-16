@@ -1,7 +1,7 @@
 module eFahyperv 1.0.0;
 
 require {
-    type httpd_sys_script_t
+    type httpd_sys_script_t;
     type hypervvssd_t;
     type hypervkvp_t;
     class dir { getattr search };
