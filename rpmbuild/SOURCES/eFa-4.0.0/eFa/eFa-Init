@@ -457,7 +457,7 @@ function func_ask-cliusername() {
             uncheck=0
           else
             echo -e "       $yellow WARNING: The user-name $CLIUSERNAME already exists"
-            echo -e -n "$green[eFa]$clean Continue? (y/N): "
+            echo -e -n "$green[eFa]$clean Continue (User data will be removed)? (y/N): "
             read YESNO
             if [[ $YESNO =~ ^[Yy]$ ]]; then
               uncheck=0
@@ -873,10 +873,10 @@ function func_configure-system() {
       --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC
 
   if [[ $? -ne 0 ]]; then
-    echo -e "$red[eFa]$clean - Error initializing system!  Pleae try again..."
+    echo -e "$red[eFa]$clean - Error initializing system!  Please try again..."
     exit 1
   fi
-  
+
   echo "Configuration complete, preparing to reboot in 60 seconds."
 }
 # +---------------------------------------------------+
