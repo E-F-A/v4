@@ -47,7 +47,10 @@ sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::PDFInfo$/ c\loadplugin Mail::
 cp $srcdir/spamassassin/KAM.cf /etc/mail/spamassassin/KAM.cf
 
 # Initialize sa db
-cp -rf $srcdir/spamassassin/spamassassin/* /var/lib/spamassasin
+cp $srcdir/spamassassin/spamassassin.tar.gz /var/lib
+cd /var/lib
+tar xzvf spamassassin.tar.gz
+rm -f spamassassin.tar.gz
 
 # Configure spamassassin bayes and awl DB settings
 echo '' >> /etc/MailScanner/spamassassin.conf
