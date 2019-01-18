@@ -44,5 +44,7 @@ semanage fcontext -a -t antivirus_log_t /var/log/clamd.scan
 chown -R clamscan:mtagroup /var/run/clamd.scan
 echo "d /var/run/clamd.scan 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.scan.conf
 
+freshclam
+
 echo "Configuring clamav...done"
 

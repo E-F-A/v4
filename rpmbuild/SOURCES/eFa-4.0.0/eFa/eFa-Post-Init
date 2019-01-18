@@ -101,7 +101,9 @@ fi
 
 # Early synchronous tasks
 
-freshclam
+if [[ ! -f /var/lib/clamav/main.cvd ]]; then
+  freshclam
+fi
 
 systemctl enable clamd@scan
 systemctl start clamd@scan
