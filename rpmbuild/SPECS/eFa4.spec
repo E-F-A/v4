@@ -379,6 +379,10 @@ mkdir -p $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/lib-eFa-Configure/* $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/eFa-Configure
 mv eFa/eFa-Configure $RPM_BUILD_ROOT%{_sbindir}
 
+# Move spamassassin definitions into position
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/lib/spamassassin
+mv spamassassin/spamassassin/* $RPM_BUILD_ROOT%{_localstatedir}/lib/spamassassin
+
 # Move selinux modules into position
 # TODO
 #mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
@@ -467,6 +471,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_usrsrc}/eFa
 %{_localstatedir}/www/eFaInit
 %{_localstatedir}/eFa/lib/eFa-Configure
+%{_localstatedir}/lib/spamassassin
 %attr(0755, root, root) %{_bindir}/composer
 %attr(0755, root, root) %{_sbindir}/eFa-Configure
 
