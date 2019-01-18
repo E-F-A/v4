@@ -46,6 +46,9 @@ sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::PDFInfo$/ c\loadplugin Mail::
 # Download an initial KAM.cf file updates are handled by EFA-SA-Update.
 cp $srcdir/spamassassin/KAM.cf /etc/mail/spamassassin/KAM.cf
 
+# Initialize sa db
+cp -rf $srcdir/spamassassin/spamassassin/* /var/lib/spamassasin
+
 # Configure spamassassin bayes and awl DB settings
 echo '' >> /etc/MailScanner/spamassassin.conf
 echo '#Begin eFa mods for MySQL' >> /etc/MailScanner/spamassassin.conf
@@ -143,10 +146,5 @@ ln -s /etc/mail/spamassassin/v341.pre /etc/MailScanner/mcp/v341.pre
 ln -s /etc/mail/spamassassin/v342.pre /etc/MailScanner/mcp/v342.pre
 mkdir -p /var/spool/postfix/.spamassassin
 chown postfix:mtagroup /var/spool/postfix/.spamassassin
-
-# not needed during this phase
-# and in the end we run sa-update just for the fun of it..
-# /usr/bin/sa-update --channel updates.spamassassin.org
-# /usr/bin/sa-compile
 
 echo "Configuring spamassassin...done"

@@ -1,0 +1,50 @@
+#HOW TO UPDATE
+#
+# SOURCE: https://svn.apache.org/repos/asf/spamassassin/site/updates/
+#
+# 'svn checkout' the repo, update this file, and commit it
+#
+# A svnpubsub update on spamassassin.apache.org will instantly pull
+# from SVN after the commit.
+#
+# A cron'd update on sa-vm1.apache.org will also automatically pull
+# from SVN to /www/spamassassin.apache.org/updates which is also the
+# [updates] rsync module path the mirrors are syncing from.
+
+# test mirror: zone, cached via Coral
+#http://buildbot.spamassassin.org.nyud.net:8090/updatestage/
+
+#CONTACT: Daryl C. O'Shea
+#Removed on 2012-09-26 per bug 6838
+#http://daryl.dostech.ca/sa-update/asf/ weight=5
+
+#CONTACT: Matthias Leisi
+http://sa-update.dnswl.org/ weight=3
+
+#CONTACT: Kevin A. McGrail
+http://www.sa-update.pccc.com/ weight=5
+
+#CONTACT: Wazir Shpoon and John Meyer - NOTE: Wazir Email Bounces as of 11/13/2017
+http://sa-update.secnap.net/ weight=5
+
+#CONTACT: Rene Schwarz
+http://sa-update.space-pro.be/ weight=1
+
+#CONTACT: Dave Jones
+http://sa-update.ena.com/ weight=5
+
+#CONTACT: Dave Warren
+http://sa-update.razx.cloud/ weight=5
+
+#CONTACT: Jens Schleusener
+http://sa-update.fossies.org/ weight=1
+
+#CONTACT: tobisworld gmail
+#http://sa-update.verein-clean.net/ weight=10
+
+#CONTACT: Jari Fredriksson (jarif)
+http://sa-update.bitwell.fi/ weight=5
+
+#CONTACT: sysadmins@spamassassin.apache.org
+http://sa-update.spamassassin.org/ weight=10
+
