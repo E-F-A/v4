@@ -351,8 +351,7 @@ class eFaInitTask
      * @Assert\NotBlank(
      *    groups={"CLIusername"}
      * )
-     * @Assert\Regex(
-     *    "/^[a-z_][a-z0-9_-]{1,30}+$/",
+     * @eFaInitAssert\CLIUsername(
      *    groups={"CLIusername"}
      * )
      */
