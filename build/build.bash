@@ -55,7 +55,7 @@ else
 fi
 
 # Add eFa Repo
-if [[ "$action" == "testing" || "$action" == "kstesting" ]]; then
+if [[ "$action" == "testing" || "$action" == "kstesting" || "$action"="testingnoefa" ]]; then
   echo "- Adding eFa Testing Repo"
   rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
   /usr/bin/wget -O /etc/yum.repos.d/eFa4-testing.repo $mirror/rpm/eFa4/eFa4-testing.repo
@@ -97,8 +97,10 @@ yum -y remove postfix mariadb-libs
 # Ignore return here 
 
 # install eFa
-yum -y install eFa
-[ $? != 0 ] && exit 1
+if [[ "$action" != "testingnoefa" ]]; then
+  yum -y install eFa
+  [ $? != 0 ] && exit 1
+fi
 
 if [[ "$action" == "kstesting" || "$action" == "ksproduction" ]]; then
   # Set root default pass for kickstart builds
