@@ -81,6 +81,16 @@ fi
 # Tasks that must happen before allowing email to relay
 ##############################################################################
 
+# Early daemon restart
+systemctl restart sqlgrey
+if [[ $? -ne 0 ]]; then
+  # Error!  Try again...
+  logger -p user.warn "eFa Post Init: sqlgrey restart failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+  sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK SQLGREY... ';" /var/www/html/mailscanner/functions.php
+  rm -f /var/run/eFa-Post-Init.lock
+  exit 1
+fi
+
 # Early asynchronous tasks
 
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php &
