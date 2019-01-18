@@ -37,6 +37,9 @@ mkdir -p /var/eFa/lib
 mkdir -p /var/eFa/lib/selinux
 #mkdir -p /var/eFa/lib/eFa-Configure
 
+# Log directory
+mkdir -p /var/log/eFa
+
 # Copy eFa-Configure
 # Moved to rpm spec
 #cp $srcdir/eFa/eFa-Configure /usr/sbin/eFa-Configure
