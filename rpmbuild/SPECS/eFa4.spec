@@ -380,8 +380,8 @@ mv eFa/lib-eFa-Configure/* $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/eFa-Configur
 mv eFa/eFa-Configure $RPM_BUILD_ROOT%{_sbindir}
 
 # Move spamassassin definitions into position
-mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/lib/spamassassin
-mv spamassassin/spamassassin/* $RPM_BUILD_ROOT%{_localstatedir}/lib/spamassassin
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/lib
+mv spamassassin/spamassassin $RPM_BUILD_ROOT%{_localstatedir}/lib
 
 # Move selinux modules into position
 # TODO
