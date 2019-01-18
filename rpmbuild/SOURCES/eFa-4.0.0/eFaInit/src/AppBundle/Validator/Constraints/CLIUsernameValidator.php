@@ -3,6 +3,7 @@
 // src/AppBundle/Validator/Constraints/CLIUsernameValidator.php
 namespace AppBundle\Validator\Constraints;
 
+use Symfony\Component\Process\Process;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
