@@ -27,11 +27,12 @@ class CLIUsernameValidator extends ConstraintValidator
         }
         
         // Test for existing user account
-        $process = new Process("sudo cat /etc/passwd | awk -F\":\" '{print $1}' | grep -e \"^" . $value ."\"");
+        $process = new Process("sudo cat /etc/passwd");
         $process->mustRun();
         $output = $process->getOutput();
-
-        if (!preg_match('/^[a-z_][a-z0-9_-]{1,30}+$/', $value, $matches) || !empty($output)) {
+        $output = preg_replace('/:.*$/', '', $output);
+        
+        if (!preg_match('/^[a-z_][a-z0-9_-]{1,30}+$/', $value, $matches) || preg_match('/' . $value . '/', $output)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ string }}', $value)
                 ->addViolation();
