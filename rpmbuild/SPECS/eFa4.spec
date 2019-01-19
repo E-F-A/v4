@@ -392,7 +392,7 @@ mv eFa/eFa-Post-Init $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Monitor-cron $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Backup-cron $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_etcdir}
-mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_etcdir}/cron.daily
+mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 
 # move remaining contents of source straight into rpm
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
@@ -489,7 +489,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFavmtools.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFahyperv.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFaqemu.te
-%attr(0755, root, root) %{_etcdir}/cron.daily/eFa-Backup.cron
+%attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
 * Sun Jan 6 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
