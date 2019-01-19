@@ -353,6 +353,10 @@ Requires: openssh-server >= 7.4p1-16
     # openssh-server                             # base    # eFa
 Requires: sudo >= 1.8.23-3
     # sudo                                       # base    # eFa
+Requires: chrony >= 3.2-2
+    # chrony                                     # base    # eFa
+Requires: firewalld >= 0.5.3-5
+    # firewalld                                  # base    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -464,8 +468,6 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFaInit-config-4.0.0.sh
-        # Moved to init phase, items needed during init
-        # [[ -d %{_usrsrc} ]] && /bin/rm -rf %{_usrsrc}/eFa
 
         echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
         echo "Build completed!"
