@@ -57,6 +57,7 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www
 mv eFaInit $RPM_BUILD_ROOT%{_localstatedir}/www
 
 # Move modules into position
+mkdir -p $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Init $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Commit $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Post-Init $RPM_BUILD_ROOT%{_sbindir}
