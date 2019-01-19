@@ -391,7 +391,7 @@ mv eFa/eFa-Commit $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Post-Init $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Monitor-cron $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Backup-cron $RPM_BUILD_ROOT%{_sbindir}
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 
 # move remaining contents of source straight into rpm
