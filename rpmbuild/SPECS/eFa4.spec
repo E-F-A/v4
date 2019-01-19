@@ -347,7 +347,7 @@ Requires: php72u-xml >= 7.2.13-2
     # php72u-xml                                 # IUS     # mailwatch, frontend
 Requires: dovecot >= 1:2.2.36-3
     # clucene-core                               # base    # postfix
-Requires: virt-what >= 1.18.4
+Requires: virt-what >= 1.18-4
     # vrit-what                                  # base    # eFa
 Requires: openssh-server >= 7.4p1-16
     # openssh-server                             # base    # eFa
