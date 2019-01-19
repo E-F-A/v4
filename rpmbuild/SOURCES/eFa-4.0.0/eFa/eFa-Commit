@@ -593,13 +593,18 @@ if [[ $genhostkeys -eq 1 ]]; then
 fi
 
 if [[ $configtzone -eq 1 ]]; then
+  virtplatform=`/usr/sbin/virt-what`
+
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Configure timezone"
-  if [[ $ISUTC -eq true || $ISUTC -eq 1 ]]; then
-    timedatectl set-local-rtc 1
-    [ $? -ne 0 ] && exit 1
-  else
-    timedatectl set-local-rtc 0
-    [ $? -ne 0 ] && exit 1
+  if [[ "$virtplatform" != "lxc" ]]; then
+    if [[ $ISUTC -eq true || $ISUTC -eq 1 ]]; then
+    
+      timedatectl set-local-rtc 1
+      [ $? -ne 0 ] && exit 1
+    else
+      timedatectl set-local-rtc 0
+      [ $? -ne 0 ] && exit 1
+    fi
   fi
   timedatectl set-timezone "$TZONE"
   [ $? -ne 0 ] && exit 1
@@ -861,11 +866,15 @@ if [[ $configmysql -eq 1 ]]; then
 fi
 
 if [[ $finalize -eq 1 ]]; then
-  # Reset selinux labels
-  touch /.autorelabel
-  [ $? -ne 0 ] && exit 1
+  virtplatform=`/usr/sbin/virt-what`
 
-  sed -i "/^SELINUX=/ c\SELINUX=enforcing" /etc/selinux/config
+  if [[ "$virtplatform" != "lxc" ]]; then
+    # Reset selinux labels
+    touch /.autorelabel
+    [ $? -ne 0 ] && exit 1
+
+    sed -i "/^SELINUX=/ c\SELINUX=enforcing" /etc/selinux/config
+  fi
 
   rm -f /etc/issue
   [ $? -ne 0 ] && exit 1
@@ -954,7 +963,6 @@ EOF
   [ $? -ne 0 ] && exit 1
 
   if [[ $configvirtual -eq 1 ]]; then
-    virtplatform=`/usr/sbin/virt-what`
     if [[ $virtplatform == "vmware"  ]]; then
       func_Install-OpenVMTools
     elif [[ $virtplatform == "kvm" ]]; then
