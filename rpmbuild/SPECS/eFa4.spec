@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   2.eFa%{?dist}
+Release:   3.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -359,6 +359,8 @@ Requires: firewalld >= 0.5.3-5
     # firewalld                                  # base    # eFa
 Requires: file >= 5.11-35
     # file                                       # base    # MailScanner
+Requires: eFa-base >= 4.0.0-1
+    # eFa-base                                   # eFa     # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -382,10 +384,6 @@ possible but are all updated to the latest version.
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 
-# Move eFaInit into position
-mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www
-mv eFaInit $RPM_BUILD_ROOT%{_localstatedir}/www
-
 # Move eFa-Configure into position
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/eFa-Configure
 mkdir -p $RPM_BUILD_ROOT%{_sbindir}
@@ -397,43 +395,13 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFavmtools.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFahyperv.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFaqemu.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
+mv eFa/eFa.fc $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
+mv eFa/eFa.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFa-SA-Update $RPM_BUILD_ROOT%{_sbindir}
-mv eFa/eFa-Init $RPM_BUILD_ROOT%{_sbindir}
-mv eFa/eFa-Commit $RPM_BUILD_ROOT%{_sbindir}
-mv eFa/eFa-Post-Init $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Monitor-cron $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Backup-cron $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
-
-# move remaining contents of source straight into rpm
-mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
-mv * $RPM_BUILD_ROOT%{_usrsrc}/eFa
-
-# Install composer and build the eFaInit app
-EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
-
-if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; then
-    >&2 echo 'ERROR: Invalid installer signature'
-    rm composer-setup.php
-    exit 1
-fi
-
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-php composer-setup.php --quiet --install-dir=$RPM_BUILD_ROOT%{_bindir} --filename=composer
-rm composer-setup.php
-
-cd $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit
-$RPM_BUILD_ROOT%{_bindir}/composer install --quiet
-
-# Cleanup composer for rpm build
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.xml
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.xml.meta
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.php.meta
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainerDeprecations.log
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/logs/dev.log
 
 %pre
 
@@ -487,23 +455,22 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root, -)
-%{_usrsrc}/eFa
-%{_localstatedir}/www/eFaInit
 %{_localstatedir}/eFa/lib/eFa-Configure
-%attr(0755, root, root) %{_bindir}/composer
 %attr(0755, root, root) %{_sbindir}/eFa-Configure
 %attr(0755, root, root) %{_sbindir}/eFa-SA-Update
-%attr(0755, root, root) %{_sbindir}/eFa-Init
-%attr(0755, root, root) %{_sbindir}/eFa-Commit
-%attr(0755, root, root) %{_sbindir}/eFa-Post-Init
 %attr(0755, root, root) %{_sbindir}/eFa-Monitor-cron
 %attr(0755, root, root) %{_sbindir}/eFa-Backup-cron
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFavmtools.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFahyperv.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFaqemu.te
+%attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.fc
+%attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.te
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Sat Jan 19 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-3
+- Split eFa and eFa-base files <https://efa-project.org>
+
 * Sat Jan 19 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-2
 - Test LXC building and updating on CentOS7 <https://efa-project.org>
 
