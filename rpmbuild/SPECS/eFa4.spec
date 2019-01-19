@@ -357,6 +357,8 @@ Requires: chrony >= 3.2-2
     # chrony                                     # base    # eFa
 Requires: firewalld >= 0.5.3-5
     # firewalld                                  # base    # eFa
+Requires: file >= 5.11-35
+    # file                                       # base    # MailScanner
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
