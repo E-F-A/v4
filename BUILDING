@@ -37,6 +37,14 @@ options:
 inst.ks=http://dl.efa-project.org/build/4/kstesting.cfg
 
 #######################################################################
+# Building on a vps, LXC container, or other existing CentOS instance
+#######################################################################
+
+wget https://dl.efa-project.org/build/4/build.bash
+chmod +x build.bash
+sudo ./build.bash testing
+
+#######################################################################
 # Building using github clone for development
 #######################################################################
 
