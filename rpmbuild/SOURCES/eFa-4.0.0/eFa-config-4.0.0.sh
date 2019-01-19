@@ -78,35 +78,39 @@ sed -i "s/#compress/compress/g" /etc/logrotate.conf
 # eFa selinux policy
 # selinux configuration
 
-# Needed for apache to access postfix
-setsebool -P daemons_enable_cluster_mode 1
+# Is this a full vm or physical and not a container?
+if [[ "$instancetype" != "lxc" ]]; then
 
-# Needed for apache to exec binaries on server side
-setsebool -P httpd_ssi_exec 1
+    # Needed for apache to access postfix
+    setsebool -P daemons_enable_cluster_mode 1
 
-# Needed for clamd to access system
-setsebool -P antivirus_can_scan_system 1
-setsebool -P clamd_use_jit 1
+    # Needed for apache to exec binaries on server side
+    setsebool -P httpd_ssi_exec 1
 
-# Needed for mailscanner to bind to tcp_socket
-setsebool -P nis_enabled 1
+    # Needed for clamd to access system
+    setsebool -P antivirus_can_scan_system 1
+    setsebool -P clamd_use_jit 1
 
-# Needed for mailscanner to preserve tmpfs
-setsebool -P rsync_full_access 1
+    # Needed for mailscanner to bind to tcp_socket
+    setsebool -P nis_enabled 1
 
-# Needed for httpd to connect to razor
-setsebool -P httpd_can_network_connect 1
+    # Needed for mailscanner to preserve tmpfs
+    setsebool -P rsync_full_access 1
 
-# Allow httpd to write content
-setsebool -P httpd_unified 1
+    # Needed for httpd to connect to razor
+    setsebool -P httpd_can_network_connect 1
 
-# Allow httpd to read content
-setsebool -P httpd_read_user_content 1
+    # Allow httpd to write content
+    setsebool -P httpd_unified 1
 
-# eFa policy module
-checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
-semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod -f $srcdir/eFa/eFa.fc
-semodule -i $srcdir/eFa/eFa.pp
+    # Allow httpd to read content
+    setsebool -P httpd_read_user_content 1
+
+    # eFa policy module
+    checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
+    semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod -f $srcdir/eFa/eFa.fc
+    semodule -i $srcdir/eFa/eFa.pp
+fi
 
 # Set eFa-Init to run at first root login:
 # Do not set root default password in rpm phase

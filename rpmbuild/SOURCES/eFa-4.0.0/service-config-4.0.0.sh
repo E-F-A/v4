@@ -58,6 +58,8 @@ systemctl disable dovecot
 #systemctl disable sshd
 
 # Disable selinux for eFaInit phase
-sed -i "/^SELINUX=/ c\SELINUX=permissive" /etc/selinux/config
+if [[ "$instancetype" != "lxc" ]]; then
+  sed -i "/^SELINUX=/ c\SELINUX=permissive" /etc/selinux/config
+fi
 
 echo "Configuring services...done"

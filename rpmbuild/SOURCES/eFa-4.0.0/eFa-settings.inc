@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 variables script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2019 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,4 +24,5 @@
 version="4.0.0"
 srcdir="/usr/src/eFa"
 password="eFaPr0j3ct"
+instancetype=$(virt-what)
 #-----------------------------------------------------------------------------#

@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   1.eFa%{?dist}
+Release:   2.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -347,6 +347,12 @@ Requires: php72u-xml >= 7.2.13-2
     # php72u-xml                                 # IUS     # mailwatch, frontend
 Requires: dovecot >= 1:2.2.36-3
     # clucene-core                               # base    # postfix
+Requires: virt-what >= 1.18.4
+    # vrit-what                                  # base    # eFa
+Requires: openssh-server >= 7.4p1-16
+    # openssh-server                             # base    # eFa
+Requires: sudo >= 1.8.23-3
+    # sudo                                       # base    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -467,7 +473,9 @@ if [ "$1" = "1" ]; then
 
 elif [ "$1" = "2" ]; then
     # Perform Update tasks
-    echo "no update available yet"
+    echo -e "\nPreparing to update eFa..."
+    echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
+    echo "Update completed!"
 fi
 
 %clean
@@ -492,5 +500,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
-* Sun Jan 6 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
+* Sat Jan 19 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-2
+- Test LXC building and updating on CentOS7 <https://efa-project.org>
+
+* Sat Jan 19 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
 - Initial Build for eFa v4 on CentOS7 <https://efa-project.org>
