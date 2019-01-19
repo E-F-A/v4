@@ -65,7 +65,6 @@ Requires:  perl-DBD-MySQL >= 4.023-6
 Requires:  php72u >= 7.2.13-2
     # php72u                                     # IUS     # mailwatch, frontend
     # #     libzip                               #         #
-    # #     php72u-cli                           #         #
     # #     php72u-common                        #         #
 Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
@@ -346,6 +345,8 @@ Requires: php72u-cli >= 7.2.13-2
     # php72u-cli                                 # IUS     # mailwatch, frontend
 Requires: php72u-xml >= 7.2.13-2
     # php72u-xml                                 # IUS     # mailwatch, frontend
+Requires: dovecot >= 1:2.2.36-3
+    # clucene-core                               # base    # postfix
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
