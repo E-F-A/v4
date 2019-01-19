@@ -496,7 +496,7 @@ class eFaInitController extends Controller
         $previousSlug = 'email';
         $previousPage = 'textboxpage';
         try {
-            $process = new Process("ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' | sort | uniq");
+            $process = new Process("ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' -e 's/@.*$//g' | sort | uniq");
             $process->mustRun();
             foreach ( explode("\n",$process->getOutput()) as $var ) 
             {
