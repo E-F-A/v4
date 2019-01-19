@@ -46,35 +46,6 @@ mkdir -p /var/log/eFa
 #chmod 755 /usr/sbin/eFa-Configure
 #cp $srcdir/eFa/lib-eFa-Configure/* /var/eFa/lib/eFa-Configure
 
-# Copy agent selinux modules rulesets
-cp $srcdir/eFa/eFavmtools.te /var/eFa/lib/selinux/eFavmtools.te
-cp $srcdir/eFa/eFahyperv.te /var/eFa/lib/selinux/eFahyperv.te
-cp $srcdir/eFa/eFaqemu.te /var/eFa/lib/selinux/eFaqemu.te
-
-# pre-create the EFA Trusted Networks Config
-touch /etc/sysconfig/eFa_trusted_networks
-
-cp $srcdir/eFa/eFa-SA-Update /usr/sbin/eFa-SA-Update
-chmod 700 /usr/sbin/eFa-SA-Update
-
-cp $srcdir/eFa/eFa-Init /usr/sbin/eFa-Init
-chmod 755 /usr/sbin/eFa-Init
-
-cp $srcdir/eFa/eFa-Commit /usr/sbin/eFa-Commit
-chmod 755 /usr/sbin/eFa-Commit
-
-cp $srcdir/eFa/eFa-Post-Init /usr/sbin/eFa-Post-Init
-chmod 755 /usr/sbin/eFa-Post-Init
-
-cp $srcdir/eFa/eFa-Monitor-cron /usr/sbin/eFa-Monitor-cron
-chmod 755 /usr/sbin/eFa-Monitor-cron
-
-cp $srcdir/eFa/eFa-Backup-cron /usr/sbin/eFa-Backup-cron
-chmod 755 /usr/sbin/eFa-Backup-cron
-
-cp $srcdir/eFa/eFa-Backup.cron /etc/cron.daily
-chmod 755 /etc/cron.daily/eFa-Backup.cron
-
 # Write SSH banner
 sed -i "/^#Banner / c\Banner /etc/banner"  /etc/ssh/sshd_config
 cat > /etc/banner << 'EOF'
