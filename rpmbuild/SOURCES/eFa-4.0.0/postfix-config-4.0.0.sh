@@ -108,7 +108,7 @@ echo "auxprop_plugin: sasldb">>/usr/lib64/sasl2/smtpd.conf
 echo "mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5">>/usr/lib64/sasl2/smtpd.conf
 
 # Dovecot
-mkdir -p /var/spool/postfix/private/auth
+mkdir -p /var/spool/postfix/private
 sed -i "/^  unix_listener auth-userdb {/ c\  unix_listener /var/spool/postfix/private/auth {\n    mode = 0660\n    user = postfix\n    group = postfix" /etc/dovecot/conf.d/10-master.conf
 sed -i "/^auth_mechanisms = plain/ c\auth_mechanisms = plain login" /etc/dovecot/conf.d/10-auth.conf
 
