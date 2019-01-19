@@ -781,7 +781,7 @@ function checkip6()
 # Function to determine the available interfaces.
 # +---------------------------------------------------+
 func_interfaces(){
-  interf=$(ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' | sort | uniq)
+  interf=$(ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' -e 's/@.*$//g' | sort | uniq)
   nrintf=$(echo $interf | wc -w)
 
   if [ $nrintf -gt 1 ]
