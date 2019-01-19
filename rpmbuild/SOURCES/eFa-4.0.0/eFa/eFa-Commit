@@ -950,6 +950,9 @@ EOF
   [ $? -ne 0 ] && exit 1
   systemctl enable php-fpm
   [ $? -ne 0 ] && exit 1
+  systemctl enable dovecot
+  [ $? -ne 0 ] && exit 1
+
   if [[ $configvirtual -eq 1 ]]; then
     virtplatform=`/usr/sbin/virt-what`
     if [[ $virtplatform == "vmware"  ]]; then
