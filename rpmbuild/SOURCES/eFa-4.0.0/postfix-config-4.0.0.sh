@@ -46,15 +46,6 @@ postconf -e "virtual_alias_maps = hash:/etc/postfix/virtual"
 postconf -e "alias_maps = hash:/etc/aliases"
 postconf -e "alias_database = hash:/etc/aliases"
 postconf -e "default_destination_recipient_limit = 1"
-# SASL config
-postconf -e "broken_sasl_auth_clients = yes"
-postconf -e "smtpd_sasl_auth_enable = no"
-postconf -e "smtpd_sasl_local_domain = "
-postconf -e "smtpd_sasl_path = smtpd"
-postconf -e "smtpd_sasl_local_domain = $myhostname"
-postconf -e "smtpd_sasl_security_options = noanonymous"
-postconf -e "smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd"
-postconf -e "smtp_sasl_type = cyrus"
 # tls config
 postconf -e "smtp_use_tls = yes"
 postconf -e "smtpd_use_tls = yes"
@@ -82,7 +73,7 @@ postconf -e "smtpd_helo_restrictions =  check_helo_access hash:/etc/postfix/helo
 postconf -e "smtpd_sender_restrictions = permit_sasl_authenticated, check_sender_access hash:/etc/postfix/sender_access, reject_non_fqdn_sender, reject_unknown_sender_domain"
 postconf -e "smtpd_data_restrictions =  reject_unauth_pipelining"
 postconf -e "smtpd_client_restrictions = permit_sasl_authenticated, reject_rbl_client zen.spamhaus.org"
-postconf -e "smtpd_relay_restrictions = permit_sasl_authenticated, permit_mynetworks, defer_unauth_destination"
+postconf -e "smtpd_relay_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination"
 postconf -e "smtpd_recipient_restrictions = reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
 postconf -e "masquerade_domains = \$mydomain"
 postconf -e "smtpd_milters = inet:127.0.0.1:33333"
@@ -109,13 +100,20 @@ postmap /etc/postfix/helo_access
 postmap /etc/postfix/sender_access
 postmap /etc/postfix/recipient_access
 postmap /etc/postfix/sasl_passwd
-postmap /etc/postfix/header_checks
 
 chmod 0600 /etc/postfix/sasl_passwd
 
 echo "pwcheck_method: auxprop">/usr/lib64/sasl2/smtpd.conf
 echo "auxprop_plugin: sasldb">>/usr/lib64/sasl2/smtpd.conf
 echo "mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5">>/usr/lib64/sasl2/smtpd.conf
+
+# Dovecot
+mkdir -p /var/spool/postfix/private/auth
+sed -i "/^  unix_listener auth-userdb {/ c\  unix_listener /var/spool/postfix/private/auth {\n    mode = 0660\n    user = postfix\n    group = postfix" /etc/dovecot/conf.d/10-master.conf
+sed -i "/^auth_mechanisms = plain/ c\auth_mechanisms = plain login" /etc/dovecot/conf.d/10-auth.conf
+
+# Submission config
+sed -i '/^#submission inet n/ c\submission inet n       -       n       -       -       smtpd\n  -o smtpd_tls_security_level=encrypt\n  -o smtpd_sasl_auth_enable=yes\n  -o smtpd_sasl_type=dovecot\n  -o smtpd_sasl_path=private/auth\n  -o smtpd_sasl_security_options=noanaonymous\n  -o smtpd_sasl_local_domain=$myhostname\n  -o smtpd_client_restrictions=permit_sasl_authenticated,reject\n  -o smtpd_sender_login_maps=hash:/etc/postfix/virtual\n  -o smtpd_sender_restrictions=reject_sender_login_mismatch\n  -o smtpd_recipient_restrictions=reject_non_fqdn_recipient,reject_unknown_recipient_domain,permit_sasl_authenticated,reject' /etc/postfix/master.cf
 
 # Enable QMQP delivery
 sed -i "/^#628 / c\qmqp      unix  n       -       n       -       -       qmqpd" /etc/postfix/master.cf
