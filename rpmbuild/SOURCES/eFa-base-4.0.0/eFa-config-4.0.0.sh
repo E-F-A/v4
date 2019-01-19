@@ -107,9 +107,9 @@ if [[ "$instancetype" != "lxc" ]]; then
     setsebool -P httpd_read_user_content 1
 
     # eFa policy module
-    checkmodule -M -m -o $srcdir/eFa/eFa.mod $srcdir/eFa/eFa.te
-    semodule_package -o $srcdir/eFa/eFa.pp -m $srcdir/eFa/eFa.mod -f $srcdir/eFa/eFa.fc
-    semodule -i $srcdir/eFa/eFa.pp
+    checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te
+    semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc
+    semodule -i /var/eFa/lib/selinux/eFa.pp
 fi
 
 # Set eFa-Init to run at first root login:
