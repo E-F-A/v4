@@ -52,6 +52,7 @@ systemctl disable unbound
 systemctl disable chronyd
 systemctl disable yum-cron
 systemctl disable firewalld
+systemctl disable dovecot
 
 # Moved to build script to allow yum/cloud/remote based installs
 #systemctl disable sshd
