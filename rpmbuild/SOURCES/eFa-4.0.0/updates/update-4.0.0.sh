@@ -82,6 +82,8 @@ if [[ ! -f /root/.my.cnf ]]; then
   [ $? -ne 0 ] && exit 1
   echo "password=$(grep ^MYSQLROOTPWD /etc/eFa/MySQL-Config | sed -e 's/^.*://')" >> /root/.my.cnf
   [ $? -ne 0 ] && exit 1
+  chmod 400 /root/.my.cnf
+  [ $? -ne 0 ] && exit 1
   [[ $instancetype != "lxc" ]] && chcon -t admin_home_t /root/.my.cnf && [[ $? -ne 0 ]] && exit 1
 fi
 
