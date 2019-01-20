@@ -139,5 +139,5 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-base-4.0.0-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba eFa4.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-3.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-4.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
