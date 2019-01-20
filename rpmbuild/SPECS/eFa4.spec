@@ -457,7 +457,7 @@ elif [ "$1" = "2" ]; then
 
     # 4.0.0-x cumulative fixes
    [[ $(head -n 1 %{_sysconfdir}/eFa-Version) == "eFa-4.0.0" ]] && /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
-   [[$? -ne 0 ]] && echo "Error updating eFa, Please visit https://efa-project.org to report the error." && exit 1
+   [[ $? -ne 0 ]] && echo "Error updating eFa, Please visit https://efa-project.org to report the error." && exit 1
 
     # cleanup if sucessful
     rm -rf /usr/src/eFa
