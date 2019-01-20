@@ -44,6 +44,11 @@ sed -i "/^    echo ' running on ' . efa_version()/ c\    echo ' running on ' . e
 # Remove eFaInit config if present
 [[ -f /etc/httpd/conf.d/eFaInit.conf ]] && rm -f /etc/httpd/conf.d/eFaInit.conf
 
+# Cleanup init files
+[[ -d /var/www/eFaInit ]] && rm -rf /var/www/eFaInit
+[[ -f /usr/sbin/eFa-Init ]] && rm -f /usr/sbin/eFa-Init
+[[ -f /usr/sbin/eFa-Commit ]] && rm -f /usr/sbin/eFa-Commit
+
 # Retrieve gateways for ipv4 and ipv6
 IPV4GATEWAY=$(/usr/sbin/route -n | grep ^0\.0\.0\.0 | awk '{print $2}')
 IPV6GATEWAY=$(/usr/sbin/route -n -6 | grep UG | grep ::/0 | awk '{print $2}')
