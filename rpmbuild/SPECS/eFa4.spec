@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   3.eFa%{?dist}
+Release:   4.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -402,12 +402,20 @@ mv eFa/eFa-Monitor-cron $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Backup-cron $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
+mv eFa/mysqltuner.pl $RPM_BUILD_ROOT%{_sbindir}
+# Move update scripts into position
+mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
+mv updates $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
 %pre
 
 %preun
 
+# leave files alone during uninstall (eFa package installs are permanent)
+
 %postun
+
+# leave files alone during uninstall (eFa package installs are permanent)
 
 %post
 
@@ -446,8 +454,16 @@ if [ "$1" = "1" ]; then
 elif [ "$1" = "2" ]; then
     # Perform Update tasks
     echo -e "\nPreparing to update eFa..."
+
+    # 4.0.0-x cumulative fixes
+   [[ $(head -n 1 %{_sysconfdir}/eFa-Version) == "eFa-4.0.0" ]] && /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
+   [[$? -ne 0 ]] && echo "Error updating eFa, Please visit https://efa-project.org to report the error." && exit 1
+
+    # cleanup if sucessful
+    rm -rf /usr/src/eFa
+
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
-    echo "Update completed!"
+    echo "Update completed successfully!"
 fi
 
 %clean
@@ -455,11 +471,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root, -)
+%{_usrsrc}/eFa
 %{_localstatedir}/eFa/lib/eFa-Configure
 %attr(0755, root, root) %{_sbindir}/eFa-Configure
 %attr(0755, root, root) %{_sbindir}/eFa-SA-Update
 %attr(0755, root, root) %{_sbindir}/eFa-Monitor-cron
 %attr(0755, root, root) %{_sbindir}/eFa-Backup-cron
+%attr(0755, root, root) %{_sbindir}/mysqltuner.pl
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFavmtools.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFahyperv.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFaqemu.te
@@ -468,6 +486,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Sun Jan 20 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-4
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Sat Jan 19 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-3
 - Split eFa and eFa-base files <https://efa-project.org>
 

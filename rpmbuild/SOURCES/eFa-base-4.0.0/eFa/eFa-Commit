@@ -465,12 +465,45 @@ if [[ $startmariadb -eq 1 ]]; then
   sed -i "/^\[mysqld\]/ a\init-connect = 'SET NAMES utf8mb4'" /etc/my.cnf.d/mariadb-server.cnf
   sed -i "/^\[mysqld\]/ a\collation-server = utf8mb4_unicode_ci" /etc/my.cnf.d/mariadb-server.cnf
 
+  # Remove limits on mariadb
+  mkdir -p mkdir /etc/systemd/system/mariadb.service.d
+  cat > /etc/systemd/system/mariadb.service.d/limit.conf << 'EOF'
+[Service]
+LimitNOFILE=infinity
+LimitMEMLOCK=infinity
+EOF
+
+  # Performance tweaks
+  sed -i "/^\[mariadb-10.1\]$/ a\bind-address = 127.0.0.1\n \
+innodb-defragment = 1 \n \
+innodb_buffer_pool_instances = 1 \n \
+innodb_buffer_pool_size = 1G \n \
+innodb_file_per_table = 1 \n \
+innodb_log_buffer_size = 32M \n \
+innodb_log_file_size = 125M \n \
+join_buffer_size = 512K \n \
+key_cache_segments = 4 \n \
+max_allowed_packet = 16M \n \
+max_heap_table_size = 32M \n \
+query_cache_size = 0M \n \
+query_cache_type = OFF \n \
+read_buffer_size = 2M \n \
+read_rnd_buffer_size = 1M \n \
+skip-external-locking \n \
+skip-host-cache \n \
+sort_buffer_size = 4M \n \
+thread_cache_size = 16 \n \
+tmp_table_size = 32M \n" /etc/my.cnf.d/mariadb-server.cnf
+
   mkdir /var/lib/mysql/temp
 
   chown mysql:mysql /var/lib/mysql/temp
 
   sed -i "/^\[mysqld\]/ a\tmpdir = /var/lib/mysql/temp" /etc/my.cnf.d/mariadb-server.cnf
-  systemctl reload mariadb
+  systemctl daemon-reload
+  [ $? -ne 0 ] && exit 1
+  systemctl restart mariadb
+  [ $? -ne 0 ] && exit 1
 fi
 
 if [[ $confighost -eq 1 ]]; then
@@ -765,19 +798,8 @@ if [[ $configmailwatch -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
-
-  randompw
-  EFASQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$EFASQLPWD') WHERE User='efa';"
-  [ $? -ne 0 ] && exit 1
-  /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
-  [ $? -ne 0 ] && exit 1
   echo "MAILWATCHSQLPWD:$MAILWATCHSQLPWD" > /etc/eFa/MailWatch-Config
   MAILWATCHSQLPWD=
-  [ $? -ne 0 ] && exit 1
-  echo "EFASQLPWD:$EFASQLPWD" > /etc/eFa/eFaSQL-Config
-  [ $? -ne 0 ] && exit 1
-  EFASQLPWD=
 
   # Upgrade database now
   /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
@@ -862,6 +884,12 @@ if [[ $configmysql -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   echo "MYSQLROOTPWD:$MYSQLROOTPWD" > /etc/eFa/MySQL-Config
   [ $? -ne 0 ] && exit 1
+  echo "[client]" > /root/.my.cnf
+  [ $? -ne 0 ] && exit 1
+  echo "user=root" >> /root/.my.cnf
+  [ $? -ne 0 ] && exit 1
+  echo "password=$MYSQLROOTPWD" >> /root/.my.cnf
+  [ $? -ne 0 ] && exit 1
   MYSQLROOTPWD=
 fi
 
@@ -921,8 +949,6 @@ EOF
   chown apache:mtagroup /var/spool/MailScanner/incoming/clamav-tmp
   [ $? -ne 0 ] && exit 1
   chmod 770 /var/spool/MailScanner/incoming/clamav-tmp
-  [ $? -ne 0 ] && exit 1
-  systemctl stop mailscanner
   [ $? -ne 0 ] && exit 1
 
   systemctl enable mailscanner
@@ -996,14 +1022,21 @@ EOF
   # Schedule post init
   echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
 
-  # Clear Audit log
+  # Clear logs
   echo "" > /var/log/audit/audit.log
+  echo "" > /var/log/messages
+  echo "" > /var/log/maillog
+  echo "" > /var/log/httpd/access_log
+  echo "" > /var/log/httpd/error_log
+  echo "" > /var/log/httpd/ssl_access_log
+  echo "" > /var/log/httpd/ssl_error_log
+  echo "" > /var/log/httpd/ssl_request_log
+  echo "" > /var/log/mariadb/mariadb.log
+  echo "" > /var/log/php-fpm/error.log
+  echo "" > /var/log/yum/yum/yum.log
 
   # Remove source files
   rm -rf /usr/src/eFa
-
-  # Remove build logs
-  rm -f /var/log/eFa/*
 
   touch /reboot.system
 

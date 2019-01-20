@@ -6,6 +6,9 @@ The GNU GPLv3 license applies to the scripts used to build,
 initialize, and extend functionality of components used in EFA.
 Individual licenses are provided thereafter for each major component.
 
+MySQLTuner
+https://github.com/major/MySQLTuner-perl
+
 GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
