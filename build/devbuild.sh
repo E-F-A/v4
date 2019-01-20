@@ -119,6 +119,10 @@ rm -f eFa-4.0.0.tar.gz
 [ $? != 0 ] && exit 1
 tar czvf eFa-4.0.0.tar.gz eFa-4.0.0/
 [ $? != 0 ] && exit 1
+rm -f eFa-base-4.0.0.tar.gz
+[ $? != 0 ] && exit 1
+tar czvf eFa-base-4.0.0.tar.gz eFa-base-4.0.0/
+[ $? != 0 ] && exit 1
 tar xzvf MailScanner-5.1.3-2.rhel.tar.gz
 [ $? != 0 ] && exit 1
 yum -y install MailScanner-5.1.3-2/MailScanner-5.1.3-2.noarch.rpm
@@ -129,7 +133,11 @@ rpmbuild -ba dcc.spec
 [ $? != 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-1.3.163-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
+rpmbuild -ba eFa4-base.spec
+[ $? != 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-base-4.0.0-1.eFa.el7.x86_64.rpm
+[ $? != 0 ] && exit 1
 rpmbuild -ba eFa4.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-3.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
