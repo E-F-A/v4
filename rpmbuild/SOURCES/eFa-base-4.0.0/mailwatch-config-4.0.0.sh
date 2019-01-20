@@ -54,6 +54,7 @@ sed -i "/^define('SHOW_DOC',/ c\define('SHOW_DOC', false);" /var/www/html/mailsc
 sed -i "/^define('HIDE_UNKNOWN',/ c\define('HIDE_UNKNOWN', true);" /var/www/html/mailscanner/conf.php
 sed -i "/^define('SA_PREFS', MS_CONFIG_DIR . 'spam.assassin.prefs.conf');/ c\define('SA_PREFS', MS_CONFIG_DIR . 'spamassassin.conf');" /var/www/html/mailscanner/conf.php
 sed -i "/^define('MAILWATCH_HOME',/ c\define('MAILWATCH_HOME', '/var/www/html/mailscanner');" /var/www/html/mailscanner/conf.php
+sed -i "/^define('SHOW_SFVERSION',/ c\define('SHOW_SFVERSION', true);" /var/www/html/mailscanner/conf.php
 
 # Grabbing an favicon to complete the look
 cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico

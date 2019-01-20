@@ -30,7 +30,7 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring dcc..."
 
 ln -s /var/dcc/libexec/cron-dccd /usr/bin/cron-dccd
-ln -s /var/dcc/libexec/cron-dccd /etc/cron.monthly/cron-dccd
+ln -s /var/dcc/libexec/cron-dccd /etc/cron.daily/cron-dccd
 cat >> /etc/MailScanner/spamassassin.conf << 'EOF'
 
 #Begin eFa mods for dcc
