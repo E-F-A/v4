@@ -30,7 +30,7 @@ class CLIUsernameValidator extends ConstraintValidator
         $process = new Process("sudo cat /etc/passwd");
         $process->mustRun();
         $output = $process->getOutput();
-        $output = preg_replace('/:.*$/', '', $output);
+        $output = preg_replace('/:.*/', '', $output);
         
         if (!preg_match('/^[a-z_][a-z0-9_-]{1,30}+$/', $value, $matches) || preg_match('/' . $value . '/', $output)) {
             $this->context->buildViolation($constraint->message)
