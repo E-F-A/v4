@@ -97,4 +97,49 @@ systemctl daemon-reload
 systemctl restart mariadb
 [ $? -ne 0 ] && exit 1
 
+# Fix menu min-width
+sed -i "/^    min-width: 960px;/ c\    min-width: 1375px;" /var/www/html/mailscanner/style.css
+[ $? -ne 0 ] && exit 1
+
+# Autolearn
+[[ -z $(grep ^bayes_auto_learn /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn                   1' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1
+[[ -z $(grep ^bayes_auto_learn_threshold_nonspam /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn_threshold_nonspam 0.1' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1
+[[ -z $(grep ^bayes_auto_learn_threshold_spam /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn_threshold_spam    6' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1
+
+# Set cron MAILTO
+HOSTNAME=$(hostname) && [[ $? -ne 0 ]] && exit 1
+sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME" /etc/crontab && [[ $? -ne 0 ]] && exit 1
+
+# Set postfix error_notice_recipient
+postconf -e "error_notice_recipient = root@\$myhostname" && [[ $? -ne 0 ]] && exit 1
+
+# Update SELinux
+checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te && [[ $? -ne 0 ]] && exit 1
+semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc && [[ $? -ne 0 ]] && exit 1
+semodule -i /var/eFa/lib/selinux/eFa.pp && [[ $? -ne 0 ]] && exit 1
+
+# Update MailWatch after MailWatch rpm update applies
+sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/MailWatchConf.pm && [[ $? -ne 0 ]] && exit 1
+sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa/MailWatch-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatchConf.pm && [[ $? -ne 0 ]] && exit 1
+cp /usr/src/eFa/mailwatch/favicon.ico /var/www/html/favicon.ico && [[ $? -ne 0 ]] && exit 1
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/ && [[ $? -ne 0 ]] && exit 1
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images && [[ $? -ne 0 ]] && exit 1
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images/favicon.png && [[ $? -ne 0 ]] && exit 1
+mv -f /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.png.orig && [[ $? -ne 0 ]] && exit 1
+cp -f /usr/src/eFa/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.png && [[ $? -ne 0 ]] && exit 1
+cp -f /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.gif && [[ $? -ne 0 ]] && exit 1
+sed -i 's/#f7ce4a/#999999/ig' /var/www/html/mailscanner/style.css && [[ $? -ne 0 ]] && exit 1
+sed -i "/^    min-width: 960px;/ c\    min-width: 1375px;" /var/www/html/mailscanner/style.css && [[ $? -ne 0 ]] && exit 1
+cat >> /var/www/html/mailscanner/functions.php << 'EOF'
+/**
+ * eFa Version
+ */
+function efa_version()
+{
+  return file_get_contents( '/etc/eFa-Version', NULL, NULL, 0, 15 );
+}
+EOF
+[[ $? -ne 0 ]] && exit 1
+sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php && [[ $? -ne 0 ]] && exit 1
+
 exit 0

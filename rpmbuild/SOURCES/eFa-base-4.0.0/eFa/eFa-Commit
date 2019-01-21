@@ -543,6 +543,9 @@ if [[ $confighost -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   postmap /etc/postfix/header_checks
   [ $? -ne 0 ] && exit 1
+  
+  # Set cron MAILTO
+  sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME.$DOMAINNAME" /etc/crontab
 fi
 
 if [[ $configdns -eq 1 ]]; then
@@ -827,6 +830,9 @@ if [[ $configsqlgrey -eq 1 ]]; then
   echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" > /etc/eFa/SQLGrey-Config
   [ $? -ne 0 ] && exit 1
   SQLGREYSQLPWD=
+  # Start sqlgrey to initialize db tables
+  systemctl start sqlgrey
+  [ $? -ne 0 ] && exit 1
 fi
 
 if [[ $configapache -eq 1 ]]; then

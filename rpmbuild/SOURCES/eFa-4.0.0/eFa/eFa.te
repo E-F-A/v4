@@ -1,5 +1,5 @@
 
-module eFa 1.0.0;
+module eFa 1.0.1;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -97,6 +97,7 @@ require {
     type mscan_exec_t;
     type system_mail_t;
     type rpcbind_t;
+    type dovecot_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -111,6 +112,7 @@ require {
     class filesystem getattr;
     class capability2 mac_admin;
     class fifo_file { getattr ioctl write open };
+    class dbus { send_msg };
 }
 
 # Configuration security hardening
@@ -269,6 +271,8 @@ dontaudit httpd_sys_script_t rngd_t:dir { getattr search };
 dontaudit httpd_sys_script_t rngd_t:file { read open };
 dontaudit httpd_sys_script_t rpcbind_t:dir { getattr search };
 dontaudit httpd_sys_script_t rpcbind_t:file { read open };
+dontaudit httpd_sys_script_t dovecot_t:dir { getattr search };
+dontaudit httpd_sys_script_t dovecot_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -312,6 +316,9 @@ allow httpd_sys_script_t httpd_t:file { read open };
 # Allow sa-learn
 allow httpd_sys_script_t spamd_update_t:dir { getattr search };
 allow httpd_sys_script_t mscan_spool_t:file { ioctl };
+
+# Allow dbus
+allow httpd_sys_script_t systemd_logind_t:dbus { send_msg };
 
 #============= spamd_update_t ==============
 allow spamd_update_t self:capability dac_override;
@@ -368,3 +375,6 @@ allow sendmail_t postfix_etc_t:dir read;
 
 #============= named_t ==============
 allow named_t self:capability { net_raw };
+
+#============= systemd_logind_t ===============
+allow systemd_logind_t httpd_sys_script_t:dbus { send_msg };
