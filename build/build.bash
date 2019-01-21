@@ -42,6 +42,13 @@ else
   exit 1
 fi
 
+# Check that SELinux is not disabled (unless it is lxc)
+if [[ -f /etc/selinux/config && -n $(grep -i ^SELINUX=disabled$ /etc/selinux/config)  ]]; then
+  echo "- ERROR: SELinux is disabled and this is not an lxc container"
+  echo "- ERROR: Please enable SELinux and try again."
+  exit 1
+fi
+
 # Check network connectivity
 echo "- Checking network connectivity"
 wget -q --tries=3 --timeout=20 --spider $mirror
