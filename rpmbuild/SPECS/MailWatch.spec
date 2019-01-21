@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.12
 Epoch:         1
-Release:       2.eFa%{?dist}
+Release:       3.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -94,11 +94,11 @@ echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "if ps -C php -o args h | grep mailwatch_postfix_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "then true ## mailwatch_postfix_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php > /dev/null &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php > /dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "if ps -C php -o args h | grep mailwatch_milter_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "then true ## mailwatch_milter_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php > /dev/null &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php > /dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 
 %pre
@@ -118,7 +118,10 @@ echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.monthly/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-%{_datarootdir}/MailScanner/perl/custom/*
+%{_datarootdir}/MailScanner/perl/custom/MailWatchConf.pm
+%{_datarootdir}/MailScanner/perl/custom/MailWatch.pm
+%{_datarootdir}/MailScanner/perl/custom/SQLBlackWhiteList.pm
+%{_datarootdir}/MailScanner/perl/custom/SQLSpamSettings.pm
 %{_bindir}/mailwatch/tools/MailScanner_rule_editor/msre_reload.crontab
 %{_bindir}/mailwatch/tools/MailScanner_rule_editor/INSTALL
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh

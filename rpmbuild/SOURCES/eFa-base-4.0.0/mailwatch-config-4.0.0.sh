@@ -69,6 +69,9 @@ cp /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner
 
 sed -i 's/#f7ce4a/#999999/ig' /var/www/html/mailscanner/style.css
 
+# Adjust menu min-width
+sed -i "/^    min-width: 960px;/ c\    min-width: 1375px;" /var/www/html/mailscanner/style.css
+
 # Add Mailgraph link and remove dnsreport link
 # TODO
 

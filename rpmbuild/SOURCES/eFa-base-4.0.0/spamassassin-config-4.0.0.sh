@@ -85,6 +85,13 @@ echo 'endif' >> /etc/MailScanner/spamassassin.conf
 echo '' >> /etc/MailScanner/spamassassin.conf
 echo '#End eFa mods for MySQL' >> /etc/MailScanner/spamassassin.conf
 
+# Autolearn settings
+echo '' >> /etc/MailScanner/spamassassin.conf
+echo 'bayes_auto_learn                   1' >> /etc/MailScanner/spamassassin.conf
+echo 'bayes_auto_learn_threshold_nonspam 0.1' >> /etc/MailScanner/spamassassin.conf
+echo 'bayes_auto_learn_threshold_spam    6' >> /etc/MailScanner/spamassassin.conf
+
+
 # Enable Auto White Listing
 #sed -i '/^#loadplugin Mail::SpamAssassin::Plugin::AWL/ c\loadplugin Mail::SpamAssassin::Plugin::AWL' /etc/mail/spamassassin/v310.pre
 

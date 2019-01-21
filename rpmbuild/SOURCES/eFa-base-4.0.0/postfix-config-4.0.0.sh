@@ -81,6 +81,8 @@ postconf -e "smtpd_milters = inet:127.0.0.1:33333"
 postconf -e "message_size_limit = 133169152"
 postconf -e "qmqpd_authorized_clients = 127.0.0.1 [::1]"
 postconf -e "enable_long_queue_ids = yes"
+# error_notice_recipient
+postconf -e "error_notice_recipient = root@\$myhostname"
 
 # Hide localhost (moved to init phase)
 #echo '/^Received:.*\(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
