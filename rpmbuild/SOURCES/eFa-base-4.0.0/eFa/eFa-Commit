@@ -1039,7 +1039,7 @@ EOF
   echo "" > /var/log/httpd/ssl_request_log
   echo "" > /var/log/mariadb/mariadb.log
   echo "" > /var/log/php-fpm/error.log
-  echo "" > /var/log/yum/yum/yum.log
+  echo "" > /var/log/yum/yum.log
 
   # Remove source files
   rm -rf /usr/src/eFa
