@@ -97,10 +97,6 @@ systemctl daemon-reload
 systemctl restart mariadb
 [ $? -ne 0 ] && exit 1
 
-# Fix menu min-width
-sed -i "/^    min-width: 960px;/ c\    min-width: 1375px;" /var/www/html/mailscanner/style.css
-[ $? -ne 0 ] && exit 1
-
 # Autolearn
 [[ -z $(grep ^bayes_auto_learn /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn                   1' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^bayes_auto_learn_threshold_nonspam /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn_threshold_nonspam 0.1' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1

@@ -90,6 +90,9 @@ cp -f /etc/hosts /etc/hosts.bak
     LOCK TABLES mtalog WRITE; \
     UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
     UNLOCK TABLES;"
+    
+    sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME.$DOMAINNAME" /etc/crontab
+    postconf -e "error_notice_recipient = root@\$myhostname"
 
     echo -e ""
     echo -e "Hostname changed"
