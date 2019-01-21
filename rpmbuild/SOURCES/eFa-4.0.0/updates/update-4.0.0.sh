@@ -110,9 +110,11 @@ sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME" /etc/crontab && [[ $? -ne 0 ]] &
 postconf -e "error_notice_recipient = root@\$myhostname" && [[ $? -ne 0 ]] && exit 1
 
 # Update SELinux
-checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te && [[ $? -ne 0 ]] && exit 1
-semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc && [[ $? -ne 0 ]] && exit 1
-semodule -i /var/eFa/lib/selinux/eFa.pp && [[ $? -ne 0 ]] && exit 1
+if [[ $instancetype != "lxc" ]]; then
+  checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te && [[ $? -ne 0 ]] && exit 1
+  semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc && [[ $? -ne 0 ]] && exit 1
+  semodule -i /var/eFa/lib/selinux/eFa.pp && [[ $? -ne 0 ]] && exit 1
+fi
 
 # Update MailWatch after MailWatch rpm update applies
 sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/MailWatchConf.pm && [[ $? -ne 0 ]] && exit 1

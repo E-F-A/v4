@@ -39,6 +39,18 @@ else
   exit 1
 fi
 
+if [[ -f /etc/selinux/config && -n $(grep -i ^SELINUX=disabled$ /etc/selinux/config)  ]]; then
+  echo "- ERROR: SELinux is disabled and this is not an lxc container"
+  echo "- ERROR: Please enable SELinux and try again."
+  exit 1
+fi
+
+if [[ ! -d /root/v4 ]]; then
+  echo "- ERROR: git path is incorrect"
+  echo "- ERROR: Please clone to /root/v4 or update GITPATH and try again."
+  exit 1
+fi
+
 yum -y install epel-release
 [ $? != 0 ] && exit 1
 
