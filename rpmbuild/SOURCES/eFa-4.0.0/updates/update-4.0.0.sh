@@ -49,6 +49,28 @@ else
 fi
 
 # Performance tweaks
+# Remove bad entries from a malformed eFa-Base rpm modification
+sed -i "/^\stmp_table_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sthread_cache_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\ssort_buffer_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sskip-host-cache/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sskip-external-locking/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sread_rnd_buffer_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sread_buffer_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\squery_cache_type/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\squery_cache_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\smax_heap_table_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\smax_allowed_packet/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\skey_cache_segments/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sjoin_buffer_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sinnodb_log_file_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sinnodb_log_buffer_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sinnodb_file_per_table/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sinnodb_buffer_pool_size/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sinnodb_buffer_pool_instances/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+sed -i "/^\sinnodb-defragment/d" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
+
+# Ensure tweaks are in place
 [[ -z $(grep ^tmp_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\tmp_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^thread_cache_size /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\thread_cache_size = 16" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^sort_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\sort_buffer_size = 4M" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
@@ -59,7 +81,6 @@ fi
 [[ -z $(grep ^query_cache_type /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\query_cache_type = OFF" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^query_cache_size /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\query_cache_size = 0M" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^max_heap_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\max_heap_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
-[[ -z $(grep ^max_allowed_packet /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\max_allowed_packet = 16M" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^max_allowed_packet /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\max_allowed_packet = 16M" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^key_cache_segments /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\key_cache_segments = 4" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^join_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && sed -i "/^\[mariadb-10.1\]$/ a\join_buffer_size = 512K" /etc/my.cnf.d/mariadb-server.cnf && [[ $? -ne 0 ]] && exit 1
@@ -105,6 +126,7 @@ systemctl restart mariadb
 # Set cron MAILTO
 HOSTNAME=$(hostname) && [[ $? -ne 0 ]] && exit 1
 sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME" /etc/crontab && [[ $? -ne 0 ]] && exit 1
+sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME" /etc/anacrontab && [[ $? -ne 0 ]] && exit 1
 
 # Set postfix error_notice_recipient
 postconf -e "error_notice_recipient = root@\$myhostname" && [[ $? -ne 0 ]] && exit 1
@@ -139,5 +161,19 @@ function efa_version()
 EOF
 [[ $? -ne 0 ]] && exit 1
 sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php && [[ $? -ne 0 ]] && exit 1
+
+sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php && [[ $? -ne 0 ]] && exit 1
+
+ln -s ../../mailscanner/images/mailwatch-logo.png ./images/mailwatch-logo.png && [[ $? -ne 0 ]] && exit 1
+
+# Disable prefork mpm and replace with event mpm
+sed -i 's|^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so|#&|' /etc/httpd/conf.modules.d/00-mpm.conf && [[ $? -ne 0 ]] && exit 1
+sed -i 's|^#LoadModule mpm_event_module modules/mod_mpm_event.so|LoadModule mpm_event_module modules/mod_mpm_event.so|' /etc/httpd/conf.modules.d/00-mpm.conf && [[ $? -ne 0 ]] && exit 1
+
+# Add php-fpm to mtagroup
+usermod -G mtagroup php-fpm
+
+systemctl restart httpd
+systemctl restart php-fpm
 
 exit 0
