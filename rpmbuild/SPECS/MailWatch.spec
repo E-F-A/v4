@@ -219,7 +219,7 @@ echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
-* Mon Jan 21 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-4
+* Mon Jan 21 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-4
 - Fix mailwatch_relay.sh returning true to cron
 
 * Mon Dec 24 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-2
