@@ -172,8 +172,11 @@ sed -i 's|^#LoadModule mpm_event_module modules/mod_mpm_event.so|LoadModule mpm_
 
 # Add php-fpm to mtagroup
 usermod -G mtagroup php-fpm
+[[ $? -ne 0 ]] && exit 1
 
 systemctl restart httpd
+[[ $? -ne 0 ]] && exit 1
 systemctl restart php-fpm
+[[ $? -ne 0 ]] && exit 1
 
 exit 0
