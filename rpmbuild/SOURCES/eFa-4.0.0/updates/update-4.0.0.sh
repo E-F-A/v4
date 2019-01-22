@@ -164,7 +164,7 @@ sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version();
 
 sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php && [[ $? -ne 0 ]] && exit 1
 
-ln -s ../../mailscanner/images/mailwatch-logo.png ./images/mailwatch-logo.png && [[ $? -ne 0 ]] && exit 1
+cd /var/www/html/sgwi && ln -s ../../mailscanner/images/mailwatch-logo.png ./images/mailwatch-logo.png && [[ $? -ne 0 ]] && exit 1
 
 # Disable prefork mpm and replace with event mpm
 sed -i 's|^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so|#&|' /etc/httpd/conf.modules.d/00-mpm.conf && [[ $? -ne 0 ]] && exit 1
