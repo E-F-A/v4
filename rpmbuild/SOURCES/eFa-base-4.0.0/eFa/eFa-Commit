@@ -474,25 +474,25 @@ LimitMEMLOCK=infinity
 EOF
 
   # Performance tweaks
-  sed -i "/^\[mariadb-10.1\]$/ a\bind-address = 127.0.0.1\n \
-innodb-defragment = 1 \n \
-innodb_buffer_pool_instances = 1 \n \
-innodb_buffer_pool_size = 1G \n \
-innodb_file_per_table = 1 \n \
-innodb_log_buffer_size = 32M \n \
-innodb_log_file_size = 125M \n \
-join_buffer_size = 512K \n \
-key_cache_segments = 4 \n \
-max_allowed_packet = 16M \n \
-max_heap_table_size = 32M \n \
-query_cache_size = 0M \n \
-query_cache_type = OFF \n \
-read_buffer_size = 2M \n \
-read_rnd_buffer_size = 1M \n \
-skip-external-locking \n \
-skip-host-cache \n \
-sort_buffer_size = 4M \n \
-thread_cache_size = 16 \n \
+  sed -i "/^\[mariadb-10.1\]$/ a\bind-address = 127.0.0.1\n\
+innodb-defragment = 1 \n\
+innodb_buffer_pool_instances = 1 \n\
+innodb_buffer_pool_size = 1G \n\
+innodb_file_per_table = 1 \n\
+innodb_log_buffer_size = 32M \n\
+innodb_log_file_size = 125M \n\
+join_buffer_size = 512K \n\
+key_cache_segments = 4 \n\
+max_allowed_packet = 16M \n\
+max_heap_table_size = 32M \n\
+query_cache_size = 0M \n\
+query_cache_type = OFF \n\
+read_buffer_size = 2M \n\
+read_rnd_buffer_size = 1M \n\
+skip-external-locking \n\
+skip-host-cache \n\
+sort_buffer_size = 4M \n\
+thread_cache_size = 16 \n\
 tmp_table_size = 32M \n" /etc/my.cnf.d/mariadb-server.cnf
 
   mkdir /var/lib/mysql/temp
@@ -872,7 +872,7 @@ fi
 if [[ $configcert -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean Generating Apache and postfix self-signed cert"
   cd /etc/pki/tls/certs
-  openssl req -new -x509 -nodes -days 3650 -out localhost.crt -keyout ../private/localhost.key -batch
+  openssl req -newkey rsa:2048 -keyout ../private/localhost.key -nodes -x509 -days 3650 -out localhost.crt -subj "/O=$DOMAINNAME/CN=$HOSTNAME.$DOMAINNAME"
   [ $? -ne 0 ] && exit 1
   cp localhost.crt /etc/postfix/ssl/smtpd.pem
   [ $? -ne 0 ] && exit 1

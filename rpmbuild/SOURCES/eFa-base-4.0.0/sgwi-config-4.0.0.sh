@@ -30,13 +30,13 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring sgwi..."
 
     # add db credential
-    # Issue #66 Grab all passwords from EFA-Config
+    # Issue #66 Grab all passwords from eFa-Config
     sed -i '/^$db_user/ c\$db_user        = "sqlgrey";' /var/www/html/sgwi/includes/config.inc.php
     sed -i "/^\$db_pass/ c\$efa_array = preg_grep('/^SQLGREYSQLPWD/', file('/etc/eFa/SQLGrey-Config'));\nforeach(\$efa_array as \$num => \$line) {\n  if (\$line) {\n    \$db_pass = chop(preg_replace('/^SQLGREYSQLPWD:(.*)/','\$1',\$line));\n  }\n}" /var/www/html/sgwi/includes/config.inc.php
 
     # Add greylist to mailwatch menu
     # hide from non-admins
-    sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin EFA\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End EFA/}" /var/www/html/mailscanner/functions.php
+    sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php
 
     # add SHOW_GREYLIST to conf.php
     echo "" >> /var/www/html/mailscanner/conf.php
@@ -67,11 +67,11 @@ echo "Configuring sgwi..."
     ln -s ../mailscanner/checklogin.php checklogin.php
     ln -s ../mailscanner/conf.php conf.php
     mkdir images
-    ln -s ../../mailscanner/images/EFAlogo-79px.png ./images/mailwatch-logo.png
+    ln -s ../../mailscanner/images/mailwatch-logo.png ./images/mailwatch-logo.png
     cp ../mailscanner/images/favicon.png ./images/favicon.png
-    sed -i "/^<?php/ a\//Begin EFA\nsession_start();\nrequire('login.function.php');\n\nif (\$_SESSION['user_type'] != 'A') die('Access Denied');\n//End EFA" /var/www/html/sgwi/index.php
-    sed -i "/^<?php/ a\//Begin EFA\nsession_start();\nrequire('login.function.php');\n\nif (\$_SESSION['user_type'] != 'A') die('Access Denied');\n//End EFA" /var/www/html/sgwi/awl.php
-    sed -i "/^<?php/ a\//Begin EFA\nsession_start();\nrequire('login.function.php');\n\nif (\$_SESSION['user_type'] != 'A') die('Access Denied');\n//End EFA" /var/www/html/sgwi/connect.php
-    sed -i "/^<?php/ a\//Begin EFA\nsession_start();\nrequire('login.function.php');\n\nif (\$_SESSION['user_type'] != 'A') die('Access Denied');\n//End EFA" /var/www/html/sgwi/opt_in_out.php
+    sed -i "/^<?php/ a\//Begin eFa\nsession_start();\nrequire('login.function.php');\n\nif (\$_SESSION['user_type'] != 'A') die('Access Denied');\n//End eFa" /var/www/html/sgwi/index.php
+    sed -i "/^<?php/ a\//Begin eFa\nsession_start();\nrequire('login.function.php');\n\nif (\$_SESSION['user_type'] != 'A') die('Access Denied');\n//End eFa" /var/www/html/sgwi/awl.php
+    sed -i "/^<?php/ a\//Begin eFa\nsession_start();\nrequire('login.function.php');\n\nif (\$_SESSION['user_type'] != 'A') die('Access Denied');\n//End eFa" /var/www/html/sgwi/connect.php
+    sed -i "/^<?php/ a\//Begin eFa\nsession_start();\nrequire('login.function.php');\n\nif (\$_SESSION['user_type'] != 'A') die('Access Denied');\n//End eFa" /var/www/html/sgwi/opt_in_out.php
 
 echo "Configuring sgwi...done"

@@ -71,6 +71,10 @@ sed -i 's/LoadModule dav_lock_module modules\/mod_dav_lock.so/#&/' /etc/httpd/co
 # Remove not needed modules from Apache config 00-lua.conf
 sed -i 's/LoadModule lua_module modules\/mod_lua.so/#&/' /etc/httpd/conf.modules.d/00-lua.conf
 
+# Disable prefork mpm and replace with event mpm
+sed -i 's|^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so|#&|' /etc/httpd/conf.modules.d/00-mpm.conf
+sed -i 's|^#LoadModule mpm_event_module modules/mod_mpm_event.so|LoadModule mpm_event_module modules/mod_mpm_event.so|' /etc/httpd/conf.modules.d/00-mpm.conf
+
 # We don't use auto index so remove the file
 mv /etc/httpd/conf.d/autoindex.conf /etc/httpd/conf.d/autoindex.conf.orig
 
@@ -121,6 +125,10 @@ cat > /etc/httpd/conf.d/fpm.conf << 'EOF'
 
 Alias / /var/www/html/
 EOF
+
+# Add php-fpm to mtagroup
+usermod -G mtagroup php-fpm
+
 # Pass a PATH environment variable to php-fpm for exec to call binaries
 sed -i '/^;env[PATH] =/ c\env[PATH] = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin' /etc/php-fpm.d/www.conf
 echo "Configuring Apache...Done"
