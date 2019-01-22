@@ -179,4 +179,7 @@ systemctl restart httpd
 systemctl restart php-fpm
 [[ $? -ne 0 ]] && exit 1
 
+# Fix sudoers for php-fpm
+sed -i 's/apache/php-fpm/' /etc/sudoers.d/mailwatch
+
 exit 0
