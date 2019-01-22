@@ -92,6 +92,7 @@ cp -f /etc/hosts /etc/hosts.bak
     UNLOCK TABLES;"
     
     sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME.$DOMAINNAME" /etc/crontab
+    sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME.$DOMAINNAME" /etc/anacrontab
     postconf -e "error_notice_recipient = root@\$myhostname"
 
     echo -e ""

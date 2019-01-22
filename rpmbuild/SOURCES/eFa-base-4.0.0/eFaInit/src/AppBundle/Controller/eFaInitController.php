@@ -1297,7 +1297,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring self-signed cert<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configcert');
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configcert --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname'));
             $process->setTimeout($this->timeout);
             $process->mustRun();
 

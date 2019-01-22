@@ -35,6 +35,7 @@ touch /etc/sqlgrey/clients_fqdn_whitelist.local
 
 # Whitelist localhost
 echo "127.0.0.1" >> /etc/sqlgrey/clients_ip_whitelist.local
+echo "::1" >> /etc/sqlgrey/clients_ip_whitelist.local
 
 # Make the changes to the config file...
 sed -i '/conf_dir =/ c\conf_dir = /etc/sqlgrey' /etc/sqlgrey/sqlgrey.conf

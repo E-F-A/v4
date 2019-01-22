@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.12
 Epoch:         1
-Release:       3.eFa%{?dist}
+Release:       4.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -93,12 +93,12 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.hourly
 echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "if ps -C php -o args h | grep mailwatch_postfix_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "then true ## mailwatch_postfix_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php > /dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "then exit 0 ## mailwatch_postfix_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php >/dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "if ps -C php -o args h | grep mailwatch_milter_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "then true ## mailwatch_milter_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php > /dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "then exit 0 ## mailwatch_milter_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php >/dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 
 %pre
@@ -219,6 +219,9 @@ echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Mon Jan 21 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-4
+- Fix mailwatch_relay.sh returning true to cron
+
 * Mon Dec 24 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-2
 - Remove msre_reload.sh and update
 
