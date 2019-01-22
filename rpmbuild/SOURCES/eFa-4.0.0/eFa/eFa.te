@@ -1,5 +1,5 @@
 
-module eFa 1.0.1;
+module eFa 1.0.2;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -364,7 +364,7 @@ allow mscan_t ldconfig_exec_t:file { getattr execute };
 allow greylist_milter_t self:capability kill;
 allow greylist_milter_t mysqld_port_t:tcp_socket name_connect;
 allow greylist_milter_t tmp_t:dir { add_name write create };
-allow greylist_milter_t tmp_t:file { create };
+allow greylist_milter_t tmp_t:file { create write };
 
 #============= unconfined_t ==============
 allow unconfined_t init_t:service enable;
