@@ -62,12 +62,15 @@ sed -i "/reject_code = dunno/d" /etc/sqlgrey/sqlgrey.conf
 sed -i '/reject_code =/ c\reject_code = 451' /etc/sqlgrey/sqlgrey.conf
 sed -i '/whitelists_host =/ c\whitelists_host = sqlgrey.bouton.name' /etc/sqlgrey/sqlgrey.conf
 sed -i '/optmethod =/ c\optmethod = optout' /etc/sqlgrey/sqlgrey.conf
+sed -i '/# inet = 2501/ a\inet = 127.0.0.1:2501' /etc/sqlgrey/sqlgrey.conf
+sed -i '/# pidfile =/ a\pidfile = /var/run/sqlgrey/sqlgrey.pid' /etc/sqlgrey/sqlgrey.conf
 
-# start and stop sqlgrey (first launch will create all database tables)
-# We give it 15 seconds to populate the database and then stop it again.
-# not needed and cannot be done in chroot anyway
-#systemctl start sqlgrey
-#sleep 15
-#systemctl stop sqlgrey
+echo "d /run/sqlgrey 0755 sqlgrey sqlgrey" > /usr/lib/tmpfiles.d/sqlgrey.conf
+
+mkdir -p /etc/systemd/system/sqlgrey.service.d
+echo "[Unit]" > /etc/systemd/system/sqlgrey.service.d/override.conf
+echo "After=syslog.target network.target mariadb.service" >> /etc/systemd/system/sqlgrey.service.d/override.conf
+echo "[Service]" >> /etc/systemd/system/sqlgrey.service.d/override.conf
+echo "PIDFile=/var/run/sqlgrey/sqlgrey.pid" >> /etc/systemd/system/sqlgrey.service.d/override.conf
 
 echo "Configuring sqlgrey...done"

@@ -1107,7 +1107,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configure transport<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configtransport --domainname=' . $session->get('domainname') . ' --mailserver=' . $session->get('mailserver') . ' --adminemail=' . $session->get('email'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configtransport --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname') . ' --mailserver=' . $session->get('mailserver') . ' --adminemail=' . $session->get('email'));
             $process->setTimeout($this->timeout);
             $process->mustRun();
 

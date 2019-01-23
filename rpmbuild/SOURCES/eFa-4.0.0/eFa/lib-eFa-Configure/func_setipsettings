@@ -37,11 +37,12 @@ func_setipsettings(){
   fi
 
   # Set ip settings
-  if [[ -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak ]]; then
+  mkdir -p /etc/sysconfig/network-scripts.bak
+  if [[ -f /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak ]]; then
     rm -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-    cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    cp -f /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
   else
-    cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak
+    cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak
   fi
 
   if [[ "$BOOTPROTO" == "dhcp" ]]; then

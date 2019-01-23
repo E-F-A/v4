@@ -1,5 +1,5 @@
 
-module eFa 1.0.2;
+module eFa 1.0.3;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -98,6 +98,7 @@ require {
     type system_mail_t;
     type rpcbind_t;
     type dovecot_t;
+    type httpd_var_lib_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -304,6 +305,7 @@ allow httpd_sys_script_t postfix_spool_t:file { unlink ioctl };
 allow httpd_sys_script_t spamd_compiled_t:dir { search getattr read open };
 allow httpd_sys_script_t spamd_compiled_t:file { getattr read open ioctl execute };
 allow httpd_sys_script_t shadow_t:file { read open };
+allow httpd_sys_script_t httpd_var_lib_t:dir { search };
 
 # Allow file release
 allow httpd_sys_script_t postfix_spool_t:file { rename setattr };
