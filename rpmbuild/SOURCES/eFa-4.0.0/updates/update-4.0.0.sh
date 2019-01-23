@@ -119,7 +119,7 @@ fi
 [[ -z $(grep ^bayes_auto_learn_threshold_spam /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn_threshold_spam    6' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1
 
 # Set cron MAILTO
-Hsed -i "/^MAILTO=root/ c\MAILTO=root" /etc/crontab && [[ $? -ne 0 ]] && exit 1
+sed -i "/^MAILTO=root/ c\MAILTO=root" /etc/crontab && [[ $? -ne 0 ]] && exit 1
 [[ -f /etc/anacrontab ]] && sed -i "/^MAILTO=root/ c\MAILTO=root" /etc/anacrontab && [[ $? -ne 0 ]] && exit 1
 
 # Set postfix error_notice_recipient
