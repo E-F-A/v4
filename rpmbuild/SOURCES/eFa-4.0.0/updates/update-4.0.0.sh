@@ -144,7 +144,8 @@ cp -f /usr/src/eFa/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/
 cp -f /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.gif && [[ $? -ne 0 ]] && exit 1
 sed -i 's/#f7ce4a/#999999/ig' /var/www/html/mailscanner/style.css && [[ $? -ne 0 ]] && exit 1
 sed -i "/^    min-width: 960px;/ c\    min-width: 1375px;" /var/www/html/mailscanner/style.css && [[ $? -ne 0 ]] && exit 1
-cat >> /var/www/html/mailscanner/functions.php << 'EOF'
+if [[ -z $(grep efa_version /var/www/html/mailscanner/functions.php) ]]; then
+  cat >> /var/www/html/mailscanner/functions.php << 'EOF'
 /**
  * eFa Version
  */
@@ -153,10 +154,13 @@ function efa_version()
   return file_get_contents( '/etc/eFa-Version', NULL, NULL, 0, 15 );
 }
 EOF
-[[ $? -ne 0 ]] && exit 1
-sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php && [[ $? -ne 0 ]] && exit 1
+  [[ $? -ne 0 ]] && exit 1
+  sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php && [[ $? -ne 0 ]] && exit 1
+fi
 
-sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php && [[ $? -ne 0 ]] && exit 1
+if [[ -z $(grep SHOW_GREYLIST /var/www/html/mailscanner/functions.php) ]]; then
+  sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php && [[ $? -ne 0 ]] && exit 1
+fi
 
 cd /var/www/html/sgwi && rm -f ./images/mailwatch-logo.png && ln -s ../../mailscanner/images/mailwatch-logo.png ./images/mailwatch-logo.png && [[ $? -ne 0 ]] && exit 1
 
