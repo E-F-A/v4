@@ -543,9 +543,7 @@ if [[ $confighost -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   postmap /etc/postfix/header_checks
   [ $? -ne 0 ] && exit 1
-  
-  # Set cron MAILTO
-  sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME.$DOMAINNAME" /etc/crontab
+ 
 fi
 
 if [[ $configdns -eq 1 ]]; then
@@ -567,13 +565,14 @@ fi
 
 if [[ $configip -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Setting IP settings"
-  if [[ -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak ]]; then
+  mkdir -p /etc/sysconfig/network-scripts.bak
+  if [[ -f /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak ]]; then
     rm -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     [ $? -ne 0 ] && exit 1
-    cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    cp -f /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     [ $? -ne 0 ] && exit 1
   else
-    cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts/ifcfg-$INTERFACE.bak
+    cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak
     [ $? -ne 0 ] && exit 1
   fi
 
@@ -699,6 +698,10 @@ if [[ $configtransport -eq 1 ]]; then
 
   echo "root: $ADMINEMAIL" >> /etc/aliases
   [ $? -ne 0 ] && exit 1
+  
+  echo "root@$DOMAINNAME $ADMINEMAIL" > /etc/postfix/recipient_canonical
+  echo "root@$DOMAINNAME root@$HOSTNAME$DOMAINNAME" > /etc/postfix/sender_canonical
+  
 fi
 
 if [[ $configsa -eq 1 ]]; then

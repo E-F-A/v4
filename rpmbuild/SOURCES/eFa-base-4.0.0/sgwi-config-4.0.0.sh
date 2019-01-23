@@ -48,7 +48,7 @@ echo "Configuring sgwi..."
     echo "<?php" > /var/www/html/mailscanner/grey.php
     echo "" >> /var/www/html/mailscanner/grey.php
     echo "require_once(\"./functions.php\");" >> /var/www/html/mailscanner/grey.php
-    echo "session_start();" >> /var/www/html/mailscanner/grey.php
+    #echo "session_start();" >> /var/www/html/mailscanner/grey.php
     echo "require('login.function.php');" >> /var/www/html/mailscanner/grey.php
     echo "\$refresh = html_start(\"greylist\",0,false,false);" >> /var/www/html/mailscanner/grey.php
     echo "?>" >> /var/www/html/mailscanner/grey.php

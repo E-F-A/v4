@@ -130,5 +130,5 @@ EOF
 usermod -G mtagroup php-fpm
 
 # Pass a PATH environment variable to php-fpm for exec to call binaries
-sed -i '/^;env[PATH] =/ c\env[PATH] = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin' /etc/php-fpm.d/www.conf
+sed -i '/^;env\[PATH\] =/ c\env[PATH] = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin' /etc/php-fpm.d/www.conf
 echo "Configuring Apache...Done"
