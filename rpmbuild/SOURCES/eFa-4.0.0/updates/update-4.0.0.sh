@@ -113,23 +113,17 @@ fi
 [[ -f /usr/sbin/eFa-Init ]] && rm -f /usr/sbin/eFa-Init && [ $? -ne 0 ] && exit 1
 [[ -f /usr/sbin/eFa-Commit ]] && rm -f /usr/sbin/eFa-Commit  && [ $? -ne 0 ] && exit 1
 
-systemctl daemon-reload
-[ $? -ne 0 ] && exit 1
-systemctl restart mariadb
-[ $? -ne 0 ] && exit 1
-
 # Autolearn
 [[ -z $(grep ^bayes_auto_learn /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn                   1' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^bayes_auto_learn_threshold_nonspam /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn_threshold_nonspam 0.1' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1
 [[ -z $(grep ^bayes_auto_learn_threshold_spam /etc/MailScanner/spamassassin.conf) ]] && echo 'bayes_auto_learn_threshold_spam    6' >> /etc/MailScanner/spamassassin.conf && [[ $? -ne 0 ]] && exit 1
 
 # Set cron MAILTO
-HOSTNAME=$(hostname) && [[ $? -ne 0 ]] && exit 1
-sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME" /etc/crontab && [[ $? -ne 0 ]] && exit 1
-sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME" /etc/anacrontab && [[ $? -ne 0 ]] && exit 1
+Hsed -i "/^MAILTO=root/ c\MAILTO=root" /etc/crontab && [[ $? -ne 0 ]] && exit 1
+[[ -f /etc/anacrontab ]] && sed -i "/^MAILTO=root/ c\MAILTO=root" /etc/anacrontab && [[ $? -ne 0 ]] && exit 1
 
 # Set postfix error_notice_recipient
-postconf -e "error_notice_recipient = root@\$myhostname" && [[ $? -ne 0 ]] && exit 1
+postconf -e "error_notice_recipient = root" && [[ $? -ne 0 ]] && exit 1
 
 # Update SELinux
 if [[ $instancetype != "lxc" ]]; then
@@ -174,12 +168,82 @@ sed -i 's|^#LoadModule mpm_event_module modules/mod_mpm_event.so|LoadModule mpm_
 usermod -G mtagroup php-fpm
 [[ $? -ne 0 ]] && exit 1
 
+# Fix sudoers for php-fpm
+sed -i 's/apache/php-fpm/' /etc/sudoers.d/mailwatch
+[[ $? -ne 0 ]] && exit 1
+
+# Fix bad sed for earlier base package
+sed -i '/^;env\[PATH\] =/ c\env[PATH] = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin' /etc/php-fpm.d/www.conf
+[[ $? -ne 0 ]] && exit 1
+
+# Fix extraneous session_start in grey.php
+sed -i "/^session_start();$/d" /var/www/html/mailscanner/grey.php
+[[ $? -ne 0 ]] && exit 1
+
+# Add sqlgrey systemd override
+mkdir -p /etc/systemd/system/sqlgrey.service.d
+[[ $? -ne 0 ]] && exit 1
+[[ $instancetype != "lxc" ]] && chcon -t systemd_unit_file_t /etc/systemd/system/sqlgrey.service.d && [[ $? -ne 0 ]] && exit 1
+echo "[Unit]" > /etc/systemd/system/sqlgrey.service.d/override.conf
+echo "After=syslog.target network.target mariadb.service" >> /etc/systemd/system/sqlgrey.service.d/override.conf
+echo "[Service]" >> /etc/systemd/system/sqlgrey.service.d/override.conf
+echo "PIDFile=/var/run/sqlgrey/sqlgrey.pid" >> /etc/systemd/system/sqlgrey.service.d/override.conf
+[[ $? -ne 0 ]] && exit 1
+[[ $instancetype != "lxc" ]] && chcon -t systemd_unit_file_t /etc/systemd/system/sqlgrey.service.d/override.conf && [[ $? -ne 0 ]] && exit 1
+
+# Add msmilter systemd override
+mkdir -p /etc/systemd/system/msmilter.service.d
+[[ $? -ne 0 ]] && exit 1
+[[ $instancetype != "lxc" ]] && chcon -t systemd_unit_file_t /etc/systemd/system/msmilter.service.d && [[ $? -ne 0 ]] && exit 1
+echo "[Unit]" > /etc/systemd/system/msmilter.service.d/override.conf
+echo "After=network-online.target remote-fs.target rsyslog.service mailscanner.service" >> /etc/systemd/system/msmilter.service.d/override.conf
+[[ $? -ne 0 ]] && exit 1
+[[ $instancetype != "lxc" ]] && chcon -t systemd_unit_file_t /etc/systemd/system/msmilter.service.d/override.conf && [[ $? -ne 0 ]] && exit 1
+
+# Set sqlgrey binding and pidfile location
+[[ -z $(grep ^inet /etc/sqlgrey/sqlgrey.conf) ]] && sed -i '/# inet = 2501/ a\inet = 127.0.0.1:2501' /etc/sqlgrey/sqlgrey.conf
+[[ $? -ne 0 ]] && exit 1
+[[ -z $(grep ^pidfile /etc/sqlgrey/sqlgrey.conf) ]] && sed -i '/# pidfile =/ a\pidfile = /var/run/sqlgrey/sqlgrey.pid' /etc/sqlgrey/sqlgrey.conf
+[[ $? -ne 0 ]] && exit 1
+
+# Move sqlgrey pidfile location
+echo "d /run/sqlgrey 0755 sqlgrey sqlgrey" > /usr/lib/tmpfiles.d/sqlgrey.conf
+[[ $? -ne 0 ]] && exit 1
+[[ $instancetype != "lxc" ]] && chcon -t lib_t /usr/lib/tmpfiles.d/sqlgrey.conf && [[ $? -ne 0 ]] && exit 1
+mkdir -p /var/run/sqlgrey
+[[ $? -ne 0 ]] && exit 1
+[[ $instancetype != "lxc" ]] && chcon -t var_run_t /var/run/sqlgrey && [[ $? -ne 0 ]] && exit 1
+chown sqlgrey:sqlgrey /var/run/sqlgrey
+[[ $? -ne 0 ]] && exit 1
+
+# Move interface backups
+mkdir -p /etc/sysconfig/network-scripts.bak
+[[ $? -ne 0 ]] && exit 1
+[[ $instancetype != "lxc" ]] && chcon -t net_conf_t /etc/sysconfig/network-scripts.bak && [[ $? -ne 0 ]] && exit 1
+mv -f /etc/sysconfig/network-scripts/*bak /etc/sysconfig/network-scripts.bak >/dev/null 2>&1
+
+# Build canonical maps
+postconf -e "sender_canonical_maps = hash:/etc/postfix/sender_canonical"
+postconf -e "recipient_canonical_maps = hash:/etc/postfix/recipient_canonical"
+HOSTNAME=$(grep ^HOSTNAME /etc/eFa/eFa-Config | sed s/^.*://)
+DOMAINNAME=$(grep ^DOMAINNAME /etc/eFa/eFa-Config | sed s/^.*://)
+ADMINEMAIL=$(grep ^ADMINEMAIL /etc/eFa/eFa-Config | sed s/^.*://)
+[[ ! -f /etc/postfix/recipient_canonical ]] && echo "root@$DOMAINNAME $ADMINEMAIL" > /etc/postfix/recipient_canonical
+postmap /etc/postfix/recipient_canonical
+[[ ! -f /etc/postfix/sender_canonical ]] && echo "root@$DOMAINNAME root@$HOSTNAME.$DOMAINNAME" > /etc/postfix/sender_canonical
+postmap /etc/postfix/sender_canonical
+
+systemctl daemon-reload
+[ $? -ne 0 ] && exit 1
+systemctl restart mariadb
+[ $? -ne 0 ] && exit 1
 systemctl restart httpd
 [[ $? -ne 0 ]] && exit 1
 systemctl restart php-fpm
 [[ $? -ne 0 ]] && exit 1
-
-# Fix sudoers for php-fpm
-sed -i 's/apache/php-fpm/' /etc/sudoers.d/mailwatch
+systemctl restart sqlgrey
+[[ $? -ne 0 ]] && exit 1
+systemctl restart postfix
+[[ $? -ne 0 ]] && exit 1
 
 exit 0

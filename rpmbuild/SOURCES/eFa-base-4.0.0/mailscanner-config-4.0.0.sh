@@ -159,4 +159,9 @@ sed -i '/^\/usr\/sbin\/ms-cron MAINT/ c\/usr/sbin/ms-cron MAINT >/dev/null 2>&1'
 sed -i '/^BADSRC=/ c\BADSRC="https://dl.efa-project.org/MailScanner/phishing.bad.sites.conf"' /usr/sbin/ms-update-phishing
 sed -i '/^SAFESRC=/ c\SAFESRC="https://dl.efa-project.org/MailScanner/phishing.safe.sites.conf"' /usr/sbin/ms-update-phishing
 
+# Add msmilter override
+mkdir -p /etc/systemd/system/msmilter.service.d
+echo "[Unit]" > /etc/systemd/system/msmilter.service.d/override.conf
+echo "After=network-online.target remote-fs.target rsyslog.service mailscanner.service" >> /etc/systemd/system/msmilter.service.d/override.conf
+
 echo "Configuring MailScanner...done"

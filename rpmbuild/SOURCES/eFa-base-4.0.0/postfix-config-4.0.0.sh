@@ -79,14 +79,14 @@ postconf -e "masquerade_domains = \$mydomain"
 postconf -e "smtpd_milters = inet:127.0.0.1:33333"
 # 128 MB limit
 postconf -e "message_size_limit = 133169152"
+postconf -e "mailbox_size_limit = 133169152"
 postconf -e "qmqpd_authorized_clients = 127.0.0.1 [::1]"
 postconf -e "enable_long_queue_ids = yes"
 # error_notice_recipient
-postconf -e "error_notice_recipient = root@\$myhostname"
-
-# Hide localhost (moved to init phase)
-#echo '/^Received:.*\(localhost\ \[127.0.0.1/ IGNORE' >> /etc/postfix/header_checks
-#echo '/^Received:.*\(localhost\ \[::1/ IGNORE' >> /etc/postfix/header_checks
+postconf -e "error_notice_recipient = root"
+# canonical maps
+postconf -e "sender_canonical_maps = hash:/etc/postfix/sender_canonical"
+postconf -e "recipient_canonical_maps = hash:/etc/postfix/recipient_canonical"
 
 #other configuration files
 newaliases
@@ -96,12 +96,16 @@ touch /etc/postfix/helo_access
 touch /etc/postfix/sender_access
 touch /etc/postfix/recipient_access
 touch /etc/postfix/sasl_passwd
+touch /etc/postfix/sender_canonical
+touch /etc/postfix/recipient_canonical
 postmap /etc/postfix/transport
 postmap /etc/postfix/virtual
 postmap /etc/postfix/helo_access
 postmap /etc/postfix/sender_access
 postmap /etc/postfix/recipient_access
 postmap /etc/postfix/sasl_passwd
+postmap /etc/postfix/sender_canonical
+postmap /etc/postfix/recipient_canonical
 
 chmod 0600 /etc/postfix/sasl_passwd
 
