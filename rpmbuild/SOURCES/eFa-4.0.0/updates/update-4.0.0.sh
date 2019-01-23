@@ -133,7 +133,7 @@ if [[ $instancetype != "lxc" ]]; then
 fi
 
 # Update MailWatch after MailWatch rpm update applies
-if [[ -z $(grep MailWatch-Config /user/share/MailScanner/perl/custom/MailWatchConf.pm) ]]; then
+if [[ -z $(grep MailWatch-Config /usr/share/MailScanner/perl/custom/MailWatchConf.pm) ]]; then
   sed -i "/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';" /usr/share/MailScanner/perl/custom/MailWatchConf.pm && [[ $? -ne 0 ]] && exit 1
   sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa/MailWatch-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatchConf.pm && [[ $? -ne 0 ]] && exit 1
 fi
