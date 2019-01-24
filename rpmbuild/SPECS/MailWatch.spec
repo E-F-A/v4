@@ -214,7 +214,6 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
-%{_localstatedir}/www/html/mailscanner/images/mailwatch-logo.png
 %{_localstatedir}/www/html/favicon.ico
 %{_localstatedir}/www/html/mailscanner/.htaccess
 %{_localstatedir}/www/html/mailscanner/auto-release.php
