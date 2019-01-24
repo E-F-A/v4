@@ -26,7 +26,7 @@ Summary:       clamav-unofficial-sigs Maintained and provided by https://eXtreme
 Name:          clamav-unofficial-sigs
 Version:       5.6.2
 Epoch:         1
-Release:       3.eFa%{?dist}
+Release:       4.eFa%{?dist}
 License:       Copyright (c) Adrian Jon Kriel admin@extremeshok.com
 Group:         Applications/Utilities
 URL:           https://github.com/extremeshok/clamav-unofficial-sigs
@@ -72,10 +72,13 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 %config(noreplace) %{_sysconfdir}/clamav-unofficial-sigs/*
 %dir %{_var}/log/clamav-unofficial-sigs/
 %dir %{_usr}/lib/systemd/system/
-%attr(0755, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.service
-%attr(0755, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.timer
+%attr(0644, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.service
+%attr(0644, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.timer
 
 %changelog
+* Wed Jan 23 2018 Shawn Iverson <shawniverson@efa-project.org> - 5.6.2-4
+- Set proper attributes in systemd
+
 * Sun Jan 14 2018 Shawn Iverson <shawniverson@efa-project.org> - 5.6.2-3
 - Move clamav-unofficial-sigs.sh to /usr/sbin
 

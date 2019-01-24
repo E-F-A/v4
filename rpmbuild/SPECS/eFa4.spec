@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   7.eFa%{?dist}
+Release:   8.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -290,7 +290,7 @@ Requires:  spamassassin >= 3.4.2-1
     # #    perl-Net-Patricia                     #         #
 Requires:  MailScanner >= 5.1.3-2
     # MailScanner                                # eFa     # MailScanner
-Requires:  clamav-unofficial-sigs >= 5.6.2-3
+Requires:  clamav-unofficial-sigs >= 5.6.2-4
     # clamav-unofficial-sigs                     # eFa     # clamav
 Requires:  perl-IP-Country >= 2.28-1
     # perl-IP-Country                            # eFa     # MailScanner, Spamassassin
@@ -302,7 +302,7 @@ Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.12-4
+Requires:  MailWatch >= 1:1.2.12-5
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 1.3.159-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -406,7 +406,6 @@ mv eFa/mysqltuner.pl $RPM_BUILD_ROOT%{_sbindir}
 # Move update scripts into position
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
 mv updates $RPM_BUILD_ROOT%{_usrsrc}/eFa
-mv mailwatch $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
 %pre
 
@@ -459,7 +458,7 @@ elif [ "$1" = "2" ]; then
     # 4.0.0-x cumulative fixes
    if [[ $(head -n 1 %{_sysconfdir}/eFa-Version) == "eFa-4.0.0" ]]; then
      /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
-     [[ $? -ne 0 ]] && echo "Error updating eFa, Please visit https://efa-project.org to report the error." && exit 1
+     [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
    fi
 
     # cleanup if sucessful
@@ -489,6 +488,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Wed Jan 23 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-8
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Tue Jan 22 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-7
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
