@@ -149,8 +149,8 @@ EOF
 # Replace mailwatch_relay.sh with systemd unit
 
 rm -f %{buildroot}%{_localstatedir}/www/html/mailscanner/images/mailwatch-logo.png
-install -m 644 %{Source2} %{buildroot}%{_localstatedir}/www/html/favicon.ico
-install -m 644 %{Source3} %{buildroot}%{_localstatedir}/www/html/mailscanner/images/mailwatch-logo.png
+install -m 644 favicon.ico %{buildroot}%{_localstatedir}/www/html/favicon.ico
+install -m 644 eFa4logo-79px.png %{buildroot}%{_localstatedir}/www/html/mailscanner/images/mailwatch-logo.png
 
 %pre
 # Nothing to do
