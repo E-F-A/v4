@@ -34,7 +34,7 @@ usermod -G mtagroup,virusgroup,clamupdate clamscan
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
 sed -i '/REMOVE ME/d' /etc/sysconfig/freshclam
 sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf
-sed -i '/#LocalSocket/ c\LocalSocket /var/run/clamd.scan/clamd.sock' /etc/clamd.d/scan.conf
+sed -i '/#LocalSocket\s/ c\LocalSocket /var/run/clamd.socket/clamd.sock' /etc/clamd.d/scan.conf
 sed -i '/#LogFile/ c\LogFile /var/log/clamd.scan' /etc/clamd.d/scan.conf
 
 touch /var/log/clamd.scan
@@ -43,8 +43,9 @@ if [[ "$instancetype" != "lxc" ]]; then
   chcon -u system_u -r object_r -t antivirus_log_t /var/log/clamd.scan
   semanage fcontext -a -t antivirus_log_t /var/log/clamd.scan
 fi
-chown -R clamscan:mtagroup /var/run/clamd.scan
-echo "d /var/run/clamd.scan 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.scan.conf
+mkdir -p /var/run/clamd.socket
+chown -R clamscan:mtagroup /var/run/clamd.socket
+echo "d /run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.socket.conf
 
 freshclam
 

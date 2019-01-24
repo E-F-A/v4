@@ -90,7 +90,7 @@ sed -i '/^SpamAssassin User State Dir =/ c\SpamAssassin User State Dir = /var/sp
 sed -i '/^Detailed Spam Report =/ c\Detailed Spam Report = yes' /etc/MailScanner/MailScanner.conf
 sed -i '/^Include Scores In SpamAssassin Report =/ c\Include Scores In SpamAssassin Report = yes' /etc/MailScanner/MailScanner.conf
 sed -i '/^Always Looked Up Last =/ c\Always Looked Up Last = &MailWatchLogging' /etc/MailScanner/MailScanner.conf
-sed -i '/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.scan/clamd.sock' /etc/MailScanner/MailScanner.conf
+sed -i '/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.socket/clamd.sock' /etc/MailScanner/MailScanner.conf
 sed -i '/^Log SpamAssassin Rule Actions =/ c\Log SpamAssassin Rule Actions = no' /etc/MailScanner/MailScanner.conf
 sed -i "/^Sign Clean Messages =/ c\Sign Clean Messages = No" /etc/MailScanner/MailScanner.conf
 sed -i "/^Deliver Cleaned Messages =/ c\Deliver Cleaned Messages = No" /etc/MailScanner/MailScanner.conf
