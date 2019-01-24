@@ -301,6 +301,22 @@ cmd="echo \"root@$DOMAINNAME root@$HOSTNAME.$DOMAINNAME\" > /etc/postfix/sender_
 cmd='postmap /etc/postfix/sender_canonical'
 execcmd
 
+# Fix Socket entries 
+cmd='sed -i "/^LocalSocket/ c\#LocalSocket"' /etc/clamd.d/scan.conf
+execcmd
+cmd='sed -i "/# Path to a local socket file the daemon will listen on./{N;N;s/$/\nLocalSocket /var/run/clam.socket/clamd.sock" /etc/clamd.d/scan.conf'
+execcmd
+
+# Relocate clam socket
+cmd='mkdir -p /run/clamd.socket'
+execcmd
+cmd='chown -R clamscan:mtagroup /run/clamd.socket'
+execcmd
+cmd='echo "d /var/run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.socket.conf'
+execcmd
+cmd='sed -i "/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.socket/clamd.sock" /etc/MailScanner/MailScanner.conf'
+execcmd
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl restart mariadb'
@@ -313,5 +329,10 @@ cmd='systemctl restart sqlgrey'
 execcmd
 cmd='systemctl restart postfix'
 execcmd
+cmd='systemctl restart clamd@scan'
+execcmd
+cmd='systemctl restart mailscanner'
+execcmd
+
 
 exit retval
