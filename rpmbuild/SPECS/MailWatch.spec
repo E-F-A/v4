@@ -26,13 +26,15 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.12
 Epoch:         1
-Release:       4.eFa%{?dist}
+Release:       5.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
 Source:        %{name}-%{version}.tar.gz
+Source2:       favicon.ico
+Source3:       eFa4logo-79px.png
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
-AutoReqProv:   no 
+AutoReqProv:   no
 
 %description
 MailWatch for MailScanner is a web-based front-end to MailScanner written in
@@ -89,23 +91,97 @@ cp -a mailscanner %{buildroot}%{_localstatedir}/www/html/mailscanner
 mv %{buildroot}%{_localstatedir}/www/html/mailscanner/conf.php.example %{buildroot}%{_localstatedir}/www/html/mailscanner/conf.php
 rm -rf %{buildroot}%{_localstatedir}/www/html/mailscanner/docs
 
-mkdir -p %{buildroot}%{_sysconfdir}/cron.hourly
-echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "if ps -C php -o args h | grep mailwatch_postfix_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "then exit 0 ## mailwatch_postfix_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php >/dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "if ps -C php -o args h | grep mailwatch_milter_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "then exit 0 ## mailwatch_milter_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php >/dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
-echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# mkdir -p %{buildroot}%{_sysconfdir}/cron.hourly
+# echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "if ps -C php -o args h | grep mailwatch_postfix_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "then exit 0 ## mailwatch_postfix_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php >/dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "if ps -C php -o args h | grep mailwatch_milter_relay.php" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "then exit 0 ## mailwatch_milter_relay.php running" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php >/dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+# echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+
+cat > %{buildroot}%{_unitdir}/postfix_relay.service << 'EOF'
+[Unit]
+Description=Postfix relay service for MailWatch
+SourcePath=/usr/bin/mailwatch/tools/Postfix_relay
+After=network-online.target remote-fs.target rsyslog.service postfix.service mailscanner.service
+Wants=network-online.target postfix.service mailscanner.service
+
+[Service]
+Type=simple
+Restart=always
+TimeoutSec=1min
+IgnoreSIGPIPE=no
+KillMode=process
+GuessMainPID=no
+RemainAfterExit=no
+ExecStart=/usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_postfix_relay.php
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat > %{buildroot}%{_unitdir}/milter_relay.service << 'EOF'
+[Unit]
+Description=Postfix relay service for MailWatch
+SourcePath=/usr/bin/mailwatch/tools/Postfix_relay
+After=network-online.target remote-fs.target rsyslog.service postfix.service mailscanner.service
+Wants=network-online.target postfix.service mailscanner.service
+
+[Service]
+Type=simple
+Restart=always
+TimeoutSec=1min
+IgnoreSIGPIPE=no
+KillMode=process
+GuessMainPID=no
+RemainAfterExit=no
+ExecStart=/usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Replace mailwatch_relay.sh with systemd unit
+
+rm -f %{buildroot}%{_localstatedir}/www/html/mailscanner/images/mailwatch-logo.png
+install -m 644 %{Source2} %{buildroot}%{_localstatedir}/www/html/favicon.ico
+install -m 644 %{Source3} %{buildroot}%{_localstatedir}/www/html/mailscanner/images/mailwatch-logo.png
 
 %pre
 # Nothing to do
 
 %post
-# Nothing to do
+
+# Grabbing an favicon to complete the look
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images
+/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images/favicon.png
+
+# eFa Branding
+cp /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.gif
+
+sed -i 's/#f7ce4a/#999999/ig' /var/www/html/mailscanner/style.css
+
+# Adjust menu min-width
+sed -i "/^    min-width: 960px;/ c\    min-width: 1375px;" /var/www/html/mailscanner/style.css
+
+cat >> /var/www/html/mailscanner/functions.php << 'EOF'
+/**
+ * eFa Version
+ */
+function efa_version()
+{
+  return file_get_contents( '/etc/eFa-Version', NULL, NULL, 0, 15 );
+}
+EOF
+
+sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php
+
+sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -117,7 +193,9 @@ echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 #%attr(0755, root, root) %{_sysconfdir}/cron.d/msre_reload
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.monthly/mailwatch
-%attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+#%attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
+%attr(0644, root, root) %{_unitdir}/postfix_relay.service
+%attr(0644, root, root) %{_unitdir}/milter_relay.service
 %{_datarootdir}/MailScanner/perl/custom/MailWatchConf.pm
 %{_datarootdir}/MailScanner/perl/custom/MailWatch.pm
 %{_datarootdir}/MailScanner/perl/custom/SQLBlackWhiteList.pm
@@ -135,6 +213,8 @@ echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
+%{_localstatedir}/www/html/mailscanner/images/mailwatch-logo.png
+%{_localstatedir}/www/html/favicon.ico
 %{_localstatedir}/www/html/mailscanner/.htaccess
 %{_localstatedir}/www/html/mailscanner/auto-release.php
 %{_localstatedir}/www/html/mailscanner/bayes_info.php
@@ -219,6 +299,9 @@ echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Wed Jan 23 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-5
+- Refactor package to handle its own files and leave config to eFa
+
 * Mon Jan 21 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-4
 - Fix mailwatch_relay.sh returning true to cron
 
