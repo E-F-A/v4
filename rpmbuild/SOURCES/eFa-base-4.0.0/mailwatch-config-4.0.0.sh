@@ -56,52 +56,7 @@ sed -i "/^define('SA_PREFS', MS_CONFIG_DIR . 'spam.assassin.prefs.conf');/ c\def
 sed -i "/^define('MAILWATCH_HOME',/ c\define('MAILWATCH_HOME', '/var/www/html/mailscanner');" /var/www/html/mailscanner/conf.php
 sed -i "/^define('SHOW_SFVERSION',/ c\define('SHOW_SFVERSION', true);" /var/www/html/mailscanner/conf.php
 
-# Grabbing an favicon to complete the look
-cp $srcdir/mailwatch/favicon.ico /var/www/html/favicon.ico
-/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/
-/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images
-/bin/cp -f /var/www/html/favicon.ico /var/www/html/mailscanner/images/favicon.png
-
-# eFa Branding
-mv /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.png.orig
-cp $srcdir/mailwatch/eFa4logo-79px.png /var/www/html/mailscanner/images/mailwatch-logo.png
-cp /var/www/html/mailscanner/images/mailwatch-logo.png /var/www/html/mailscanner/images/mailwatch-logo.gif
-
-sed -i 's/#f7ce4a/#999999/ig' /var/www/html/mailscanner/style.css
-
-# Adjust menu min-width
-sed -i "/^    min-width: 960px;/ c\    min-width: 1375px;" /var/www/html/mailscanner/style.css
-
-# Add Mailgraph link and remove dnsreport link
-# TODO
-
-# Add munin to mailwatch
-# sed -i "/^    echo '<li><a href=\"geoip_update.php\">/a\    /*Begin eFa*/\n    echo '<li><a href=\"mailgraph.php\">View Mailgraph Statistics</a>';\n    \$hostname = gethostname\(\);\n    echo '<li><a href=\"https://' \. \$hostname \. ':10000\">Webmin</a>';\n    \$efa_config = preg_grep('/^MUNINPWD/', file('/etc/EFA-Config'));\n    foreach(\$efa_config as \$num => \$line) {\n      if (\$line) {\n        \$munin_pass = chop(preg_replace('/^MUNINPWD:(.*)/','\$1', \$line));\n      }\n    }\n    echo '<li><a href=\"https://munin:' . \$munin_pass . '@'  . \$hostname . '/munin\">View Munin Statistics</a>';\n    /*End eFa*/" other.php
-
-cat >> /var/www/html/mailscanner/functions.php << 'EOF'
-/**
- * eFa Version
- */
-function efa_version()
-{
-  return file_get_contents( '/etc/eFa-Version', NULL, NULL, 0, 15 );
-}
-EOF
-
-sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version() . ' ...INITIALIZING SYSTEM, PLEASE WAIT... ';" /var/www/html/mailscanner/functions.php
-
 usermod apache -G mtagroup
-
-# Release script removed in eFa v4 (unless we can figure out a new method)
-# Contains no logic to limit recipient(s) to internal recipients only
-# Superceded for now with autorelease code in MailWatch
-
-# Spam submission scripts removed in eFa v4 for now because they are not ipv6 friendly
-#cp $srcdir/mailwatch/learn-msg.cgi /var/www/cgi-bin/learn-msg.cgi
-#chmod 755 /var/www/cgi-bin/learn-msg.cgi
-#cp $srcdir/mailwatch/learned.html /var/www/html/learned.html
-#cp $srcdir/mailwatch/notlearned.html /var/www/html/notlearned.html
-#cp $srcdir/mailwatch/denylearned.html /var/www/html/denylearned.html
 
 # MailWatch requires access to /var/spool/postfix/hold & incoming dir's
 chown -R postfix:mtagroup /var/spool/postfix/hold
