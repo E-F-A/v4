@@ -103,6 +103,7 @@ rm -rf %{buildroot}%{_localstatedir}/www/html/mailscanner/docs
 # echo "else /usr/bin/php -q /usr/bin/mailwatch/tools/Postfix_relay/mailwatch_milter_relay.php >/dev/null 2>&1 &" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 # echo "fi" >> %{buildroot}%{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 
+mkdir -p %{buildroot}%{_unitdir}
 cat > %{buildroot}%{_unitdir}/postfix_relay.service << 'EOF'
 [Unit]
 Description=Postfix relay service for MailWatch
