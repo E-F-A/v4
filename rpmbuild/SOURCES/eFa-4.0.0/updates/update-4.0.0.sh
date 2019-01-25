@@ -294,9 +294,9 @@ cmd='sed -i "/# Path to a local socket file the daemon will listen on./{N;N;s|$|
 execcmd
 cmd='sed -i "/# Uncomment this option to enable logging./{N;N;s|$|\nLogFile /var/log/clamd.scan|}" /etc/clamd.d/scan.conf'
 execcmd
-cmd='chcon -u system_u -r object_r -t antivirus_var_t /var/run/clamd.socket'
+cmd='chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.socket'
 [[ $instancetype != "lxc" ]] && execcmd
-cmd='semanage fcontext -a -t antivirus_var_t /var/run/clamd.socket'
+cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
 [[ $instancetype != "lxc" ]] && execcmd
 
 # Relocate clam socket
