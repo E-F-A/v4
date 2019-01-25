@@ -39,15 +39,9 @@ sed -i '/#LogFile\s/ c\LogFile /var/log/clamd.scan' /etc/clamd.d/scan.conf
 
 touch /var/log/clamd.scan
 chown clamscan:clamscan /var/log/clamd.scan
-if [[ "$instancetype" != "lxc" ]]; then
-  chcon -u system_u -r object_r -t antivirus_log_t /var/log/clamd.scan
-  semanage fcontext -a -t antivirus_log_t /var/log/clamd.scan
-fi
 mkdir -p /var/run/clamd.socket
 chown -R clamscan:mtagroup /var/run/clamd.socket
 echo "d /run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.socket.conf
-chcon -u system_u -r object_r -t antivirus_var_t /run/clamd.socket
-semanage fcontext -a -t antivirus_var_t /run/clamd.socket
 
 freshclam
 
