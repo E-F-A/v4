@@ -286,7 +286,7 @@ cmd='sed -i "/^LogFile/ c\#LogFile" /etc/clamd.d/scan.conf'
 execcmd
 cmd='sed -i "/# Path to a local socket file the daemon will listen on./{N;N;s|$|\nLocalSocket /var/run/clamd.socket/clamd.sock|}" /etc/clamd.d/scan.conf'
 execcmd
-cmd='sed -i "/# Uncomment this option to enable logging./{N;N;s|$|\nLogFile /var/log/clamd.scan|}" /etc/clamd.d/scan.conf'
+cmd='sed -i "/# Uncomment this option to enable logging./{N;N;N;N;s|$|\nLogFile /var/log/clamd.scan|}" /etc/clamd.d/scan.conf'
 execcmd
 
 # Relocate clam socket
