@@ -26,18 +26,12 @@ function execcmd()
 eval $cmd && [[ $? -ne 0 ]] && echo "$cmd" && retval=1
 }
 
-# label new files
-cmd='chcon -t bin_t /usr/sbin/mysqltuner.pl'
-[[ $instancetype != "lxc" ]] && execcmd
-
 # Move symlink for cron-dccd
 if [[ -e /etc/cron.monthly/cron-dccd ]]; then
   cmd='rm -f /etc/cron.monthly/cron-dccd'
   execcmd
   cmd='ln -s /var/dcc/libexec/cron-dccd /etc/cron.daily/cron-dccd'
   execcmd
-  cmd='chcon -t bin_t /etc/cron.daily/cron-dccd'
-  [[ $instancetype != "lxc" ]] && execcmd
 fi
 
 # Tweak mariadb configuration
@@ -310,6 +304,10 @@ cmd='chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.socket'
 [[ $instancetype != "lxc" ]] && execcmd
 cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
 [[ $instancetype != "lxc" ]] && execcmd
+
+# Fix postfix mailbox size
+cmd='postconf -e "mailbox_size_limit = 133169152"'
+execcmd
 
 cmd='systemctl daemon-reload'
 execcmd
