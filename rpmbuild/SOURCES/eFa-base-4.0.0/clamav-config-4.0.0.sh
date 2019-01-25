@@ -35,7 +35,7 @@ sed -i '/^Example/ c\#Example' /etc/freshclam.conf
 sed -i '/REMOVE ME/d' /etc/sysconfig/freshclam
 sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf
 sed -i '/#LocalSocket\s/ c\LocalSocket /var/run/clamd.socket/clamd.sock' /etc/clamd.d/scan.conf
-sed -i '/#LogFile/ c\LogFile /var/log/clamd.scan' /etc/clamd.d/scan.conf
+sed -i '/#LogFile\s/ c\LogFile /var/log/clamd.scan' /etc/clamd.d/scan.conf
 
 touch /var/log/clamd.scan
 chown clamscan:clamscan /var/log/clamd.scan
@@ -46,6 +46,8 @@ fi
 mkdir -p /var/run/clamd.socket
 chown -R clamscan:mtagroup /var/run/clamd.socket
 echo "d /run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.socket.conf
+chcon -u system_u -r object_r -t antivirus_var_t /run/clamd.socket
+semanage fcontext -a -t antivirus_var_t /run/clamd.socket
 
 freshclam
 
