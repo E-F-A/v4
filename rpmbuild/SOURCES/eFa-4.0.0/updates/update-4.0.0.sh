@@ -23,7 +23,7 @@ retval=0
 
 function execcmd()
 {
-  $($cmd) && [[ $? -ne 0 ]] && echo "$cmd" && retval=1
+eval $cmd && [[ $? -ne 0 ]] && echo "$cmd" && retval=1
 }
 
 # label new files
