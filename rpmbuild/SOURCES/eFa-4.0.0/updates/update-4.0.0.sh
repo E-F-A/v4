@@ -300,7 +300,7 @@ cmd='mkdir -p /var/run/clamd.socket'
 execcmd
 cmd='chown -R clamscan:mtagroup /var/run/clamd.socket'
 execcmd
-cmd='chmod - 0750 /var/run/clamd.socket'
+cmd='chmod 0750 /var/run/clamd.socket'
 execcmd
 cmd='echo "d /var/run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.socket.conf'
 execcmd
