@@ -40,6 +40,9 @@ mkdir -p /var/eFa/lib/selinux
 # Log directory
 mkdir -p /var/log/eFa
 
+# Network backup directory
+mkdir -p /etc/sysconfig/network-scripts.bak
+
 # Copy eFa-Configure
 # Moved to rpm spec
 #cp $srcdir/eFa/eFa-Configure /usr/sbin/eFa-Configure
