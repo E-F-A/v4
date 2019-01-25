@@ -189,7 +189,7 @@ fi
 if [[ -z $(grep MailWatch-Config /usr/share/MailScanner/perl/custom/MailWatchConf.pm) ]]; then
   cmd="sed -i \"/^my (\$db_user) =/ c\my (\$db_user) = 'mailwatch';\" /usr/share/MailScanner/perl/custom/MailWatchConf.pm"
   execcmd
-  cmd="sed -i \"/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa/MailWatch-Config';\nopen(\$fh, \\\"<\\\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\\\"Unable to open %s to retrieve password\\\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);\" /usr/share/MailScanner/perl/custom/MailWatchConf.pm"
+  cmd="sed -i \"/^my (\\\$db_pass) =/ c\my (\\\$fh);\nmy (\\\$pw_config) = '/etc/eFa/MailWatch-Config';\nopen(\\\$fh, \\\"<\\\", \\\$pw_config);\nif(\!\\\$fh) {\n  MailScanner::Log::WarnLog(\\\"Unable to open %s to retrieve password\\\", \\\$pw_config);\n  return;\n}\nmy (\\\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\\\$fh>);\n\\\$db_pass =~ s/MAILWATCHSQLPWD://;\n\\\$db_pass =~ s/\\\n//;\nclose(\\\$fh);\" /usr/share/MailScanner/perl/custom/MailWatchConf.pm"
   execcmd
 fi
 
