@@ -51,10 +51,6 @@ LimitNOFILE=infinity
 LimitMEMLOCK=infinity
 EOF
   [[ $? -ne 0 ]] && echo "cat > /etc/systemd/system/mariadb.service.d/limit.conf" && retval=1
-  cmd='chcon -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d'
-  [[ $instancetype != "lxc" ]] && $(cmd)  && [[ $? -ne 0 ]] && echo "$cmd" && retval=1
-  cmd='chcon -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d/limit.conf'
-  [[ $instancetype != "lxc" ]] && execcmd
 else
   cmd='sed -i "/^\[Service\]$/ a\LimitMEMLOCK=infinity" /etc/systemd/system/mariadb.service.d/limit.conf'
   [[ -z $(grep ^LimitMEMLOCK /etc/systemd/system/mariadb.service.d/limit.conf) ]] && execcmd
@@ -158,8 +154,6 @@ if [[ ! -f /root/.my.cnf ]]; then
   execcmd
   cmd='chmod 400 /root/.my.cnf'
   execcmd
-  cmd='chcon -t admin_home_t /root/.my.cnf'
-  [[ $instancetype != "lxc" ]] && execcmd
 fi
 
 # Cleanup
@@ -233,8 +227,6 @@ execcmd
 # Add sqlgrey systemd override
 cmd='mkdir -p /etc/systemd/system/sqlgrey.service.d'
 execcmd
-cmd='chcon -t systemd_unit_file_t /etc/systemd/system/sqlgrey.service.d'
-[[ $instancetype != "lxc" ]] && execcmd
 cmd='echo "[Unit]" > /etc/systemd/system/sqlgrey.service.d/override.conf'
 execcmd
 cmd='echo "After=syslog.target network.target mariadb.service" >> /etc/systemd/system/sqlgrey.service.d/override.conf'
@@ -243,20 +235,14 @@ cmd='echo "[Service]" >> /etc/systemd/system/sqlgrey.service.d/override.conf'
 execcmd
 cmd='echo "PIDFile=/var/run/sqlgrey/sqlgrey.pid" >> /etc/systemd/system/sqlgrey.service.d/override.conf'
 execcmd
-cmd='chcon -t systemd_unit_file_t /etc/systemd/system/sqlgrey.service.d/override.conf'
-[[ $instancetype != "lxc" ]] && execcmd
 
 # Add msmilter systemd override
 cmd='mkdir -p /etc/systemd/system/msmilter.service.d'
 execcmd
-cmd='chcon -t systemd_unit_file_t /etc/systemd/system/msmilter.service.d'
-[[ $instancetype != "lxc" ]] && execcmd
 cmd='echo "[Unit]" > /etc/systemd/system/msmilter.service.d/override.conf'
 execcmd
 cmd='echo "After=network-online.target remote-fs.target rsyslog.service mailscanner.service" >> /etc/systemd/system/msmilter.service.d/override.conf'
 execcmd
-cmd='chcon -t systemd_unit_file_t /etc/systemd/system/msmilter.service.d/override.conf'
-[[ $instancetype != "lxc" ]] && execcmd
 
 # Set sqlgrey binding and pidfile location
 cmd="sed -i '/# inet = 2501/ a\inet = 127.0.0.1:2501' /etc/sqlgrey/sqlgrey.conf"
@@ -267,12 +253,8 @@ cmd="sed -i '/# pidfile =/ a\pidfile = /var/run/sqlgrey/sqlgrey.pid' /etc/sqlgre
 # Move sqlgrey pidfile location
 cmd='echo "d /run/sqlgrey 0755 sqlgrey sqlgrey" > /usr/lib/tmpfiles.d/sqlgrey.conf'
 execcmd
-cmd='chcon -t lib_t /usr/lib/tmpfiles.d/sqlgrey.conf'
-[[ $instancetype != "lxc" ]] && execcmd
 cmd='mkdir -p /var/run/sqlgrey'
 execcmd
-cmd='chcon -t var_run_t /var/run/sqlgrey'
-[[ $instancetype != "lxc" ]] && execcmd
 cmd='chown sqlgrey:sqlgrey /var/run/sqlgrey'
 execcmd
 
@@ -280,6 +262,8 @@ execcmd
 cmd='mkdir -p /etc/sysconfig/network-scripts.bak'
 execcmd
 cmd='chcon -t net_conf_t /etc/sysconfig/network-scripts.bak'
+[[ $instancetype != "lxc" ]] && execcmd
+cmd='semanage fcontext -a -t net_conf_t /run/clamd.socket'
 [[ $instancetype != "lxc" ]] && execcmd
 
 mv -f /etc/sysconfig/network-scripts/*bak /etc/sysconfig/network-scripts.bak >/dev/null 2>&1
@@ -301,11 +285,19 @@ cmd="echo \"root@$DOMAINNAME root@$HOSTNAME.$DOMAINNAME\" > /etc/postfix/sender_
 cmd='postmap /etc/postfix/sender_canonical'
 execcmd
 
-# Fix Socket entries 
+# Fix Socket entries and Logfile entries
 cmd='sed -i "/^LocalSocket/ c\#LocalSocket" /etc/clamd.d/scan.conf'
+execcmd
+cmd='sed -i "/^LogFile/ c\#LogFile" /etc/clamd.d/scan.conf'
 execcmd
 cmd='sed -i "/# Path to a local socket file the daemon will listen on./{N;N;s|$|\nLocalSocket /var/run/clamd.socket/clamd.sock|}" /etc/clamd.d/scan.conf'
 execcmd
+cmd='sed -i "/# Uncomment this option to enable logging./{N;N;s|$|\nLogFile /var/log/clamd.scan|}" /etc/clamd.d/scan.conf'
+execcmd
+cmd='chcon -u system_u -r object_r -t antivirus_var_t /run/clamd.socket'
+[[ $instancetype != "lxc" ]] && execcmd
+cmd='semanage fcontext -a -t antivirus_var_t /run/clamd.socket'
+[[ $instancetype != "lxc" ]] && execcmd
 
 # Relocate clam socket
 cmd='mkdir -p /run/clamd.socket'
@@ -333,6 +325,5 @@ cmd='systemctl restart clamd@scan'
 execcmd
 cmd='systemctl restart mailscanner'
 execcmd
-
 
 exit $retval
