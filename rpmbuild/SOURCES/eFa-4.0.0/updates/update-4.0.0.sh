@@ -294,15 +294,17 @@ cmd='sed -i "/# Path to a local socket file the daemon will listen on./{N;N;s|$|
 execcmd
 cmd='sed -i "/# Uncomment this option to enable logging./{N;N;s|$|\nLogFile /var/log/clamd.scan|}" /etc/clamd.d/scan.conf'
 execcmd
-cmd='chcon -u system_u -r object_r -t antivirus_var_t /run/clamd.socket'
+cmd='chcon -u system_u -r object_r -t antivirus_var_t /var/run/clamd.socket'
 [[ $instancetype != "lxc" ]] && execcmd
-cmd='semanage fcontext -a -t antivirus_var_t /run/clamd.socket'
+cmd='semanage fcontext -a -t antivirus_var_t /var/run/clamd.socket'
 [[ $instancetype != "lxc" ]] && execcmd
 
 # Relocate clam socket
-cmd='mkdir -p /run/clamd.socket'
+cmd='mkdir -p /var/run/clamd.socket'
 execcmd
-cmd='chown -R clamscan:mtagroup /run/clamd.socket'
+cmd='chown -R clamscan:mtagroup /var/run/clamd.socket'
+execcmd
+cmd='chmod - 0750 /var/run/clamd.socket'
 execcmd
 cmd='echo "d /var/run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.socket.conf'
 execcmd
