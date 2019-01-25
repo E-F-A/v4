@@ -83,7 +83,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix_eFa-3.3.0-1.eFa.el7.x86_64.
 [ $? != 0 ] && exit 1
 rpmbuild -ba clamav-unofficial-sigs.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/clamav-unofficial-sigs-5.6.2-3.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/clamav-unofficial-sigs-*.rpm
 [ $? != 0 ] && exit 1
 echo "n" | rpmbuild -ba perl-libnet.spec
 [ $? != 0 ] && exit 1
@@ -119,7 +119,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sendmail-PMilter-1.00-1.eFa.el
 [ $? != 0 ] && exit 1
 rpmbuild -ba MailWatch.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-1.2.12-2.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-*.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba sqlgreywebinterface.spec
 [ $? != 0 ] && exit 1
@@ -147,9 +147,9 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-1.3.163-1.eFa.el7.x86_64.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba eFa4-base.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-base-4.0.0-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-base-*.rpm
 [ $? != 0 ] && exit 1
 rpmbuild -ba eFa4.spec
 [ $? != 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4.0.0-4.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4*rpm
 [ $? != 0 ] && exit 1
