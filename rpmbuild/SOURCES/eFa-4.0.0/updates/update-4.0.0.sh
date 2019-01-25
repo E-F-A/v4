@@ -263,7 +263,7 @@ cmd='mkdir -p /etc/sysconfig/network-scripts.bak'
 execcmd
 cmd='chcon -t net_conf_t /etc/sysconfig/network-scripts.bak'
 [[ $instancetype != "lxc" ]] && execcmd
-cmd='semanage fcontext -a -t net_conf_t /run/clamd.socket'
+cmd='semanage fcontext -a -t net_conf_t /etc/sysconfig/network-scripts.bak'
 [[ $instancetype != "lxc" ]] && execcmd
 
 mv -f /etc/sysconfig/network-scripts/*bak /etc/sysconfig/network-scripts.bak >/dev/null 2>&1
