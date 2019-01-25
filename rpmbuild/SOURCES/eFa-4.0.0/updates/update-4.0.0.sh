@@ -294,10 +294,6 @@ cmd='sed -i "/# Path to a local socket file the daemon will listen on./{N;N;s|$|
 execcmd
 cmd='sed -i "/# Uncomment this option to enable logging./{N;N;s|$|\nLogFile /var/log/clamd.scan|}" /etc/clamd.d/scan.conf'
 execcmd
-cmd='chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.socket'
-[[ $instancetype != "lxc" ]] && execcmd
-cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
-[[ $instancetype != "lxc" ]] && execcmd
 
 # Relocate clam socket
 cmd='mkdir -p /var/run/clamd.socket'
@@ -310,6 +306,10 @@ cmd='echo "d /var/run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/c
 execcmd
 cmd='sed -i "/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.socket/clamd.sock" /etc/MailScanner/MailScanner.conf'
 execcmd
+cmd='chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.socket'
+[[ $instancetype != "lxc" ]] && execcmd
+cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
+[[ $instancetype != "lxc" ]] && execcmd
 
 cmd='systemctl daemon-reload'
 execcmd
