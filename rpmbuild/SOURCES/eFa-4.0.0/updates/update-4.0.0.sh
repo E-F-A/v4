@@ -302,7 +302,7 @@ cmd='postmap /etc/postfix/sender_canonical'
 execcmd
 
 # Fix Socket entries 
-cmd='sed -i "/^LocalSocket/ c\#LocalSocket"' /etc/clamd.d/scan.conf
+cmd='sed -i "/^LocalSocket/ c\#LocalSocket" /etc/clamd.d/scan.conf'
 execcmd
 cmd='sed -i "/# Path to a local socket file the daemon will listen on./{N;N;s/$/\nLocalSocket /var/run/clam.socket/clamd.sock" /etc/clamd.d/scan.conf'
 execcmd
@@ -335,4 +335,4 @@ cmd='systemctl restart mailscanner'
 execcmd
 
 
-exit retval
+exit $retval
