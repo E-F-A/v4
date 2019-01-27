@@ -312,6 +312,9 @@ execcmd
 # Supress messages from yum cron via crond
 sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf >/dev/null 2>\&1|" /etc/cron.hourly/0yum-hourly.cron
 
+# Fix entry in postfix master.cf
+sed -i "/^  -o smtpd_sasl_security_options=noanaonymous/ c\  -o smtpd_sasl_security_options=noanonymous" /etc/postfix/master.cf
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl restart mariadb'
@@ -327,6 +330,14 @@ execcmd
 cmd='systemctl restart clamd@scan'
 execcmd
 cmd='systemctl restart mailscanner'
+execcmd
+cmd='systemctl enable postfix_relay'
+execcmd
+cmd='systemctl start postfix_relay'
+execcmd
+cmd='systemctl enable milter_relay'
+execcmd
+cmd='systemctl start milter_relay'
 execcmd
 
 exit $retval
