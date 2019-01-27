@@ -1,5 +1,5 @@
 
-module eFa 1.0.3;
+module eFa 1.0.4;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -132,7 +132,7 @@ allow ifconfig_t var_run_t:file { read };
 #============= httpd_t ==============
 # allow httpd access to mailscanner and postfix
 allow httpd_t mscan_etc_t:file { getattr open read };
-allow httpd_t mscan_etc_t:dir { getattr read };
+allow httpd_t mscan_etc_t:dir { getattr read write};
 allow httpd_t postfix_etc_t:file { getattr open read };
 allow httpd_t postfix_etc_t:dir read;
 allow httpd_t postfix_public_t:sock_file write;

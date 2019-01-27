@@ -310,10 +310,12 @@ cmd='postconf -e "mailbox_size_limit = 133169152"'
 execcmd
 
 # Supress messages from yum cron via crond
-sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf >/dev/null 2>\&1|" /etc/cron.hourly/0yum-hourly.cron
+cmd='sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf >/dev/null 2>\&1|" /etc/cron.hourly/0yum-hourly.cron'
+execcmd
 
 # Fix entry in postfix master.cf
-sed -i "/^  -o smtpd_sasl_security_options=noanaonymous/ c\  -o smtpd_sasl_security_options=noanonymous" /etc/postfix/master.cf
+cmd='sed -i "/^  -o smtpd_sasl_security_options=noanaonymous/ c\  -o smtpd_sasl_security_options=noanonymous" /etc/postfix/master.cf'
+execcmd
 
 # Fix outbound relaying
 if [[ -z $(grep ^smtpd_client_restrictions /etc/postfix/main.cf | grep permit_mynetworks) ]]; then
@@ -325,6 +327,10 @@ if [[ -z $(grep ^smtpd_recipient_restrictions /etc/postfix/main.cf | grep permit
   cmd='sed -i "s/^smtpd_recipient_restrictions = \(.*\)$/smtpd_recipient_restrictions = permit_mynetworks, \1/" /etc/postfix/main.cf'
   execcmd
 fi
+
+# Set php-fpm group for MSRE
+cmd='chgrp -R php-fpm /etc/MailScanner/rules'
+execcmd
 
 cmd='systemctl daemon-reload'
 execcmd
