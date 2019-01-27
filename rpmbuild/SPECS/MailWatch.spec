@@ -82,9 +82,9 @@ echo 'sleep $[( $RANDOM % $UPDATEMAXDELAY )+1]s' >> %{buildroot}%{_sysconfdir}/c
 echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 
-#mkdir -p  %{buildroot}%{_sysconfdir}/cron.d
-#echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.d/msre_reload
-#echo "*/5 * * * *   root    /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh" >> %{buildroot}%{_sysconfdir}/cron.d/msre_reload
+mkdir -p  %{buildroot}%{_sysconfdir}/cron.d
+echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.d/msre_reload
+echo "*/5 * * * *   root    /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh" >> %{buildroot}%{_sysconfdir}/cron.d/msre_reload
 
 mkdir -p %{buildroot}%{_localstatedir}/www/html
 cp -a mailscanner %{buildroot}%{_localstatedir}/www/html/mailscanner
@@ -191,7 +191,7 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %defattr(-, root, root)
 %doc CHANGELOG.md CONTRIBUTING.md LICENSE.md README.md
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/Cron_jobs/*
-#%attr(0755, root, root) %{_sysconfdir}/cron.d/msre_reload
+%attr(0755, root, root) %{_sysconfdir}/cron.d/msre_reload
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.monthly/mailwatch
 #%attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
