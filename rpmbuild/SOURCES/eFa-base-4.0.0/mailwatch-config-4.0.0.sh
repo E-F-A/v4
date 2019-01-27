@@ -57,6 +57,7 @@ sed -i "/^define('MAILWATCH_HOME',/ c\define('MAILWATCH_HOME', '/var/www/html/ma
 sed -i "/^define('SHOW_SFVERSION',/ c\define('SHOW_SFVERSION', true);" /var/www/html/mailscanner/conf.php
 
 usermod apache -G mtagroup
+usermod php-fpm -G mtagroup
 
 # MailWatch requires access to /var/spool/postfix/hold & incoming dir's
 chown -R postfix:mtagroup /var/spool/postfix/hold
@@ -66,7 +67,7 @@ chmod -R 750 /var/spool/postfix/incoming
 
 # EFA MSRE Support
 sed -i "/^define('MSRE'/ c\define('MSRE', true);" /var/www/html/mailscanner/conf.php
-chgrp -R apache /etc/MailScanner/rules
+chgrp -R php-fpm /etc/MailScanner/rules
 chmod g+rwxs /etc/MailScanner/rules
 chmod g+rw /etc/MailScanner/rules/*.rules
 
