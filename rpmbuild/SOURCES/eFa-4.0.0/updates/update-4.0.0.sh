@@ -309,6 +309,9 @@ cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
 cmd='postconf -e "mailbox_size_limit = 133169152"'
 execcmd
 
+# Supress messages from yum cron via crond
+sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf >/dev/null 2>\&1|" /etc/cron.hourly/0yum-hourly.cron
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl restart mariadb'
