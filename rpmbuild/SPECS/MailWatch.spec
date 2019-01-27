@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2018 https://efa-project.org
+# Copyright (C) 2013~2019 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.12
 Epoch:         1
-Release:       5.eFa%{?dist}
+Release:       6.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -299,6 +299,9 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sun Jan 27 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-6
+- Modify sf_version.php to show postfix version
+
 * Wed Jan 23 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-5
 - Refactor package to handle its own files and leave config to eFa
 
