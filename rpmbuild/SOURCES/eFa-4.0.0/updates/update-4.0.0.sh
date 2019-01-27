@@ -315,6 +315,17 @@ sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin
 # Fix entry in postfix master.cf
 sed -i "/^  -o smtpd_sasl_security_options=noanaonymous/ c\  -o smtpd_sasl_security_options=noanonymous" /etc/postfix/master.cf
 
+# Fix outbound relaying
+if [[ -z $(grep ^smtpd_client_restrictions /etc/postfix/main.cf | grep permit_mynetworks) ]]; then
+  cmd='sed -i "s/^smtpd_client_restrictions = \(.*\)$/smtpd_client_restrictions = permit_mynetworks, \1/" /etc/postfix/main.cf'
+  execcmd
+fi
+
+if [[ -z $(grep ^smtpd_recipient_restrictions /etc/postfix/main.cf | grep permit_mynetworks) ]]; then
+  cmd='sed -i "s/^smtpd_recipient_restrictions = \(.*\)$/smtpd_recipient_restrictions = permit_mynetworks, \1/" /etc/postfix/main.cf'
+  execcmd
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl restart mariadb'
