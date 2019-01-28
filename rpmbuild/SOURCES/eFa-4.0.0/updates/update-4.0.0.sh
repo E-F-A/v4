@@ -314,7 +314,7 @@ cmd='sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr
 execcmd
 
 # Fix entry in postfix master.cf
-cmd='sed -i "/^  -o smtpd_sasl_security_options=noanaonymous/ c\  -o smtpd_sasl_security_options=noanonymous" /etc/postfix/master.cf'
+cmd='sed -i "/^\s\s-o smtpd_sasl_security_options=noanaonymous/ c\ \ -o smtpd_sasl_security_options=noanonymous" /etc/postfix/master.cf'
 execcmd
 
 # Fix outbound relaying
