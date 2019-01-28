@@ -32,7 +32,7 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring eFaInit..."
 
 # Grant apache permissions to cache/logs/sessions
-chown apache /var/www/eFaInit/var/{cache,logs,sessions}
+chown php-fpm /var/www/eFaInit/var/{cache,logs,sessions}
 
 cat > /etc/httpd/conf.d/eFaInit.conf << 'EOF'
 Alias /eFaInit /var/www/eFaInit/web
