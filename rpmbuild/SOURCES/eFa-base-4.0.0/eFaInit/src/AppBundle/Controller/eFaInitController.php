@@ -248,7 +248,7 @@ class eFaInitController extends Controller
                 }
 
                 $varTitle     = 'IPv4 Gateway';
-                $nextSlug     = 'configipv6';
+                $nextSlug     = 'ipv6dns';
                 $nextPage     = 'yesnopage';
                 $previousSlug = 'ipv4netmask';
                 $previousPage = 'textboxpage';
@@ -572,7 +572,7 @@ class eFaInitController extends Controller
                 $varQuestion  = 'Do you want to set a static IPv4 address?';
                 $yesSlug      = 'ipv4address';
                 $yesPage      = 'textboxpage';
-                $noSlug       = 'configipv6';
+                $noSlug       = 'ipv6dns';
                 $noPage       = 'yesnopage';
                 $previousPage = 'interfacepage';
                 $previousSlug = 'interface';
