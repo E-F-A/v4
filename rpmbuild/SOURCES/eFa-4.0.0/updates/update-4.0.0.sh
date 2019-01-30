@@ -328,6 +328,10 @@ if [[ -z $(grep ^smtpd_recipient_restrictions /etc/postfix/main.cf | grep permit
   execcmd
 fi
 
+# Fix httpd update issue
+cmd='sed -i "s|#LoadModule autoindex_module modules/mod_autoindex.so|LoadModule autoindex_module modules/mod_autoindex.so|" /etc/httpd/conf.modules.d/00-base.conf'
+execcmd
+
 # Set php-fpm group for MSRE
 cmd='chgrp -R php-fpm /etc/MailScanner/rules'
 execcmd
