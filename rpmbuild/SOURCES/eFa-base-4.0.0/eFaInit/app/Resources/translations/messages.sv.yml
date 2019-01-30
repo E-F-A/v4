@@ -81,3 +81,5 @@ Timezone: Tidzon
 'Set IP Mask': 'Ställ in IP-mask'
 'IANA Country Code': 'IANA Lands kod'
 'Verify Settings': '__Verify Settings'
+'Enable IPv6 DNS': '__Enable IPv6 DNS'
+'Do you want to Enable IPv6 DNS?': '__Do you want to Enable IPv6 DNS?'

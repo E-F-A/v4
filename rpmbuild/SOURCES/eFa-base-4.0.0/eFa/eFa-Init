@@ -647,6 +647,24 @@ function func_ask-orgname() {
 # +---------------------------------------------------+
 
 # +---------------------------------------------------+
+function func_ask-ipv6dns() {
+    cipv6dns=1
+    while [ $cipv6dns -ne 0 ]; do
+      func_echo-header
+      echo -e -n "$green[eFa]$clean Enable IPv6 DNS? (Y/n) -> "
+      read askipv6dns
+      if [[ $askipv6dns =~ ^[Yy]$ || -z $askipv6dns ]]; then
+          IPV6DNS=1
+          cipv6dns=0
+      elif [[ $askipv6 =~ ^[Nn]$ ]]; then
+          IPV6DNS=0
+          cipv6dns=0
+      fi
+    done
+ }
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
 # Verify the settings
 # +---------------------------------------------------+
 function func_verify-settings() {
@@ -664,22 +682,23 @@ function func_verify-settings() {
     echo -e "5)  IP v4 Address       : $IPV4ADDRESS"
     echo -e "6)  IP v4 Netmask       : $IPV4NETMASK"
     echo -e "7)  IP v4 Gateway       : $IPV4GATEWAY"
-    echo -e "8)  IP v6 Address       : $IPV6ADDRESS"
-    echo -e "9)  IP v6 Mask          : $IPV6MASK"
-    echo -e "10) IP v6 Gateway       : $IPV6GATEWAY"
-    echo -e -n "11) Use Recursion       : "; [[ "$enablerecursion" -eq 1 ]] && echo "Enabled" || echo "Disabled"
-    echo -e "12) Primary DNS         : $DNS1"
-    echo -e "13) Secondary DNS       : $DNS2"
-    echo -e "14) Web User            : $USERNAME"
-    echo -e "15) Web User PWD        : <hidden>"
-    echo -e "16) CLI User            : $CLIUSERNAME"
-    echo -e "17) CLI User PWD        : <hidden>"
-    echo -e -n "18) Hypervisor Agents   : "; if [[ "$CONFIGUREVIRTUAL" -eq 1 ]]; then echo "Install"; else echo "No"; fi
-    echo -e -n "19) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
-    echo -e "20) Keyboard            : $KEYBOARD"
-    echo -e "21) IANA Code           : $IANACODE"
-    echo -e "22) Mail Server         : $MAILSERVER"
-    echo -e "23) Org. name           : $ORGNAME"
+    echo -e "8)  IP v6 DNS           : "; [[ "$IPV6DNS" -eq 1 ]] && echo "Enabled" || echo "Disabled"
+    echo -e "9)  IP v6 Address       : $IPV6ADDRESS"
+    echo -e "10)  IP v6 Mask          : $IPV6MASK"
+    echo -e "11) IP v6 Gateway       : $IPV6GATEWAY"
+    echo -e -n "12) Use Recursion       : "; [[ "$enablerecursion" -eq 1 ]] && echo "Enabled" || echo "Disabled"
+    echo -e "13) Primary DNS         : $DNS1"
+    echo -e "14) Secondary DNS       : $DNS2"
+    echo -e "15) Web User            : $USERNAME"
+    echo -e "16) Web User PWD        : <hidden>"
+    echo -e "17) CLI User            : $CLIUSERNAME"
+    echo -e "18) CLI User PWD        : <hidden>"
+    echo -e -n "19) Hypervisor Agents   : "; if [[ "$CONFIGUREVIRTUAL" -eq 1 ]]; then echo "Install"; else echo "No"; fi
+    echo -e -n "20) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
+    echo -e "21) Keyboard            : $KEYBOARD"
+    echo -e "22) IANA Code           : $IANACODE"
+    echo -e "23) Mail Server         : $MAILSERVER"
+    echo -e "24) Org. name           : $ORGNAME"
     echo -e "--------------------------------------------------------------"
     echo -e ""
     echo -e "$green[eFa]$clean If these settings are correct type 'OK' to continue."
@@ -702,37 +721,39 @@ function func_verify-settings() {
                         ;;
                 7)        func_ask-ipv4gateway
                         ;;
-                8)        func_ask-ipv6address
+                8)        func_ask-ipv6DNS
                         ;;
-                9)        func_ask-ipv6mask
+                9)        func_ask-ipv6address
                         ;;
-                10)       func_ask-ipv6gateway
+                10)        func_ask-ipv6mask
                         ;;
-                11)        func_ask-recursion
+                11)       func_ask-ipv6gateway
                         ;;
-                12)        func_ask-dns1
+                12)        func_ask-recursion
                         ;;
-                13)        func_ask-dns2
+                13)        func_ask-dns1
                         ;;
-                14)       func_ask-webusername
+                14)        func_ask-dns2
                         ;;
-                15)       func_ask-webuserpassword
+                15)       func_ask-webusername
                         ;;
-                16)       func_ask-cliusername
+                16)       func_ask-webuserpassword
                         ;;
-                17)       func_ask-clipassword
+                17)       func_ask-cliusername
                         ;;
-                18)       func_detect-virtual
+                18)       func_ask-clipassword
                         ;;
-                19)       func_ask-timezone
+                19)       func_detect-virtual
                         ;;
-                20)       func_ask-keyboard
+                20)       func_ask-timezone
                         ;;
-                21)       func_ask-ianacode
+                21)       func_ask-keyboard
                         ;;
-                22)       func_ask-mailserver
+                22)       func_ask-ianacode
                         ;;
-                23)       func_ask-orgname
+                23)       func_ask-mailserver
+                        ;;
+                24)       func_ask-orgname
                         ;;
                 OK)       verifymenu=0
                         ;;
@@ -870,7 +891,7 @@ function func_configure-system() {
       --ipv4gateway=$IPV4GATEWAY --ipv6mask=$IPV6MASK --ipv6gateway=$IPV6GATEWAY --timezone=$TZONE \
       --ianacode=$IANACODE --orgname=$ORGNAME --mailserver=$MAILSERVER --adminemail=$ADMINEMAIL \
       --efauserpwd="$efauserpwd" --username=$USERNAME --cliusername=$CLIUSERNAME --efaclipwd="$efaclipwd" \
-      --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC
+      --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC --ipv6dns=$IPV6DNS
 
   if [[ $? -ne 0 ]]; then
     echo -e "$red[eFa]$clean - Error initializing system!  Please try again..."
@@ -926,6 +947,10 @@ if [ $CONFIGURED == "NO" ]
             checkipv4=0
         fi
       done
+      
+      
+
+      func_ask-ipv6dns
 
       checkipv6=1
       while [ $checkipv6 -ne 0 ]; do

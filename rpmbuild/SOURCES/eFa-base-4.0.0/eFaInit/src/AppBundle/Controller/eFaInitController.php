@@ -548,12 +548,12 @@ class eFaInitController extends Controller
     /**
      * @Route("/{_locale}/{slug}",
      *     name="yesnopage",
-     *     requirements={"slug"="configipv4|configipv6|configrecursion|configvirtual|configutc"},
+     *     requirements={"slug"="configipv4|ipv6dns|configipv6|configrecursion|configvirtual|configutc"},
      *     defaults={"_locale": "en", "edit" = null}
      * )
      * @Route("/{_locale}/{slug}/{edit}",
      *     name="yesnoeditpage",
-     *     requirements={"slug"="configipv4|configipv6|configrecursion|configvirtual|configutc","edit"="edit"},
+     *     requirements={"slug"="configipv4|ipv6dns|configipv6|configrecursion|configvirtual|configutc","edit"="edit"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -577,6 +577,16 @@ class eFaInitController extends Controller
                 $previousPage = 'interfacepage';
                 $previousSlug = 'interface';
             break;
+            case "ipv6dns":
+                $varTitle     = 'Enable IPv6 DNS';
+                $varQuestion  = 'Do you want to Enable IPv6 DNS?';
+                $yesSlug      = 'configipv6';
+                $yesPage      = 'yesnopage';
+                $noSlug       = 'configipv6';
+                $noPage       = 'yesnopage';
+                $previousPage = 'yesnopage';
+                $previousSlug = 'configipv4';
+            break;
             case "configipv6":
                 $varTitle     = 'Configure IPv6';
                 $varQuestion  = 'Do you want to set a static IPv6 address?';
@@ -585,7 +595,7 @@ class eFaInitController extends Controller
                 $noSlug       = 'configrecursion';
                 $noPage       = 'yesnopage';
                 $previousPage = 'yesnopage';
-                $previousSlug = 'configipv4';
+                $previousSlug = 'ipv6dns';
             break;
             case "configrecursion":
                 $varTitle     = 'Configure DNS Recursion';
@@ -992,7 +1002,7 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $process = new Process('sudo /usr/sbin/eFa-Commit --configdns --enablerecursion=' . $session->get('configrecursion') . ' --dnsip1=' . $session->get('dns1') . ' --dnsip2=' . $session->get('dns2'));
+        $process = new Process('sudo /usr/sbin/eFa-Commit --configdns --ipv6dns=' $session->get('ipv6dns') . ' --enablerecursion=' . $session->get('configrecursion') . ' --dnsip1=' . $session->get('dns1') . ' --dnsip2=' . $session->get('dns2'));
 
         $output = '<br/>eFa -- Configuring DNS...<br/>' . $output;
 

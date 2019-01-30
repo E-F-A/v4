@@ -82,3 +82,5 @@
 'Set IP Mask': '設定IP子網路遮罩'
 'IANA Country Code': '國家頂級域名'
 'Verify Settings': '__Verify Settings'
+'Enable IPv6 DNS': '__Enable IPv6 DNS'
+'Do you want to Enable IPv6 DNS?': '__Do you want to Enable IPv6 DNS?'
