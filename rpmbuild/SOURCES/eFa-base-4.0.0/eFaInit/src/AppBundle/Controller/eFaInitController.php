@@ -1002,7 +1002,7 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
-        $process = new Process('sudo /usr/sbin/eFa-Commit --configdns --ipv6dns=' $session->get('ipv6dns') . ' --enablerecursion=' . $session->get('configrecursion') . ' --dnsip1=' . $session->get('dns1') . ' --dnsip2=' . $session->get('dns2'));
+        $process = new Process('sudo /usr/sbin/eFa-Commit --configdns --ipv6dns=' . $session->get('ipv6dns') . ' --enablerecursion=' . $session->get('configrecursion') . ' --dnsip1=' . $session->get('dns1') . ' --dnsip2=' . $session->get('dns2'));
 
         $output = '<br/>eFa -- Configuring DNS...<br/>' . $output;
 
