@@ -152,6 +152,9 @@ if [[ $? -ne 0 ]]; then
   logger -p user.warn "eFa Post Init: Apache reload failed!  Please fix me to finish initializing eFa."
 fi
 
+# No idea how this bak file is appearing in this directory, just purge it if it is present
+rm -f /etc/sysconfig/network-scripts/ifcfg*bak
+
 rm -f /var/run/eFa-Post-Init.lock
 rm -f /etc/cron.d/efapostinit
 

@@ -684,7 +684,7 @@ function func_verify-settings() {
     echo -e "7)  IP v4 Gateway       : $IPV4GATEWAY"
     echo -e -n "8)  IP v6 DNS           : "; [[ "$IPV6DNS" -eq 1 ]] && echo "Enabled" || echo "Disabled"
     echo -e "9)  IP v6 Address       : $IPV6ADDRESS"
-    echo -e "10)  IP v6 Mask          : $IPV6MASK"
+    echo -e "10) IP v6 Mask          : $IPV6MASK"
     echo -e "11) IP v6 Gateway       : $IPV6GATEWAY"
     echo -e -n "12) Use Recursion       : "; [[ "$enablerecursion" -eq 1 ]] && echo "Enabled" || echo "Disabled"
     echo -e "13) Primary DNS         : $DNS1"
