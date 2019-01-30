@@ -14,7 +14,7 @@ func_ip-settings(){
       echo -e " 3) IP                   :  $IP4"
       echo -e " 4) Netmask              :  $NM4"
       echo -e " 5) Gateway              :  $GW4"
-      echo -e " 6) Use IPv6 DNS         :  $IPV6DNS
+      echo -e " 6) Use IPv6 DNS         :  $IPV6DNS"
       echo -e " 7) IPv6 IP              :  $IP6"
       echo -e " 8) IPv6 Prefix          :  $PF6"
       echo -e " 9) IPv6 Gateway         :  $GW6"
