@@ -336,6 +336,10 @@ execcmd
 cmd='chgrp -R php-fpm /etc/MailScanner/rules'
 execcmd
 
+# Clean up root user in mysql
+cmd='/usr/bin/mysql -e "DELETE FROM mysql.user WHERE User=\"root\" AND Host NOT IN (\"localhost\");"'
+execcmd
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl restart mariadb'
