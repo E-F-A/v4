@@ -1,3 +1,3 @@
-'Enter a valid hostname': '__Enter a valid hostname'
-'Passwords do not match': '__Passwords do not match'
-'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': '__Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address'
+'Enter a valid hostname': 'Voer een geldige hostnaam in'
+'Passwords do not match': 'Wachtwoorden komen niet overeen'
+'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': 'Beheerdersinterface gebruikersnaam moet alfanumeriek zijn (tot 30 tekens beginnend met een letter of _) of een geldig e-mailadres'
