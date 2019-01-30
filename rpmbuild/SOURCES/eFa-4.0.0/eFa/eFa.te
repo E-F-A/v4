@@ -1,5 +1,5 @@
 
-module eFa 1.0.4;
+module eFa 1.0.5;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -306,6 +306,7 @@ allow httpd_sys_script_t spamd_compiled_t:dir { search getattr read open };
 allow httpd_sys_script_t spamd_compiled_t:file { getattr read open ioctl execute };
 allow httpd_sys_script_t shadow_t:file { read open };
 allow httpd_sys_script_t httpd_var_lib_t:dir { search };
+allow httpd_sys_script_t system_dbusd_t:unix_stream_socket { connectto };
 
 # Allow file release
 allow httpd_sys_script_t postfix_spool_t:file { rename setattr };

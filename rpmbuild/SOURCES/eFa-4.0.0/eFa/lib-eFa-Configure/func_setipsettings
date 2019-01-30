@@ -24,6 +24,13 @@ func_setipsettings(){
   if [[ -n $IP6 ]]; then
     echo "$IP6    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
   fi
+  
+  # Enable or disable ipv6 dns
+  if [[ "$IPV6DNS" == "yes" ]]; then
+    sed -i '/^\tdo-ip6:/ c\\t# do-ip6: yes' /etc/unbound/unbound.conf
+  else
+    sed -i '/^\t# do-ip6:/ c\\tdo-ip6: no' /etc/unbound/unbound.conf
+  fi
 
   # Write resolv file
   # new unbound stuff... 
@@ -110,6 +117,7 @@ func_setipsettings(){
   sed -i "/^IPV6GATEWAY:/ c\IPV6GATEWAY:$GW6" /etc/eFa/eFa-Config
   sed -i "/^DNSIP1:/ c\DNSIP1:$DNS1" /etc/eFa/eFa-Config
   sed -i "/^DNSIP2:/ c\DNSIP2:$DNS2" /etc/eFa/eFa-Config
+  sed -i "/^IPV6DNS:/ C\IPV6DNS:$IPV6DNS" /etc/eFa/eFa-Config
   
   echo -e "All done"
   pause

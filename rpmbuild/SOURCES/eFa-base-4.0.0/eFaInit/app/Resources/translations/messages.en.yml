@@ -82,3 +82,5 @@ Timezone: Timezone
 'Set IP Mask': 'Set IP Mask'
 'IANA Country Code': 'IANA Country Code'
 'Verify Settings': 'Verify Settings'
+'Enable IPv6 DNS': 'Enable IPv6 DNS'
+'Do you want to Enable IPv6 DNS?': 'Do you want to Enable IPv6 DNS?'

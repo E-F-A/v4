@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   10.eFa%{?dist}
+Release:   11.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -302,7 +302,7 @@ Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.12-6
+Requires:  MailWatch >= 1:1.2.12-7
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 1.3.159-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -488,6 +488,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Tue Jan 29 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-11
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Sun Jan 27 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-10
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 

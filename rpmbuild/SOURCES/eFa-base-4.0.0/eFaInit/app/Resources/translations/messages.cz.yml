@@ -17,14 +17,14 @@
 # End of language selections
 
 'Welcome to': 'Vítejte v'
-Language: Jazyk
-Next: Další
-Hostname: 'Název serveru'
+'Language': 'Jazyk'
+'Next': 'Další'
+'Hostname': 'Název serveru'
 'Please enter a hostname': 'Zadejte název serveru'
-Back: Zpět
+'Back': 'Zpět'
 'Domain Name': 'Název domény'
 'Please enter a domain name': 'Zadejte název domény'
-Email: Email
+'Email': 'Email'
 'Please enter an email address for important notifications': 'Zadejte emailovou adresu pro důležitá upozornění'
 'IPv4 Address': 'IPv4 adresa'
 'Please enter a valid IPv4 address': 'Zadejte IPv4 adresu'
@@ -63,7 +63,7 @@ Email: Email
 'Configure Hypervisor Tools': 'Konfigurovat Hypervisor tools'
 'Is the host set to UTC time?': 'Je server nastaven pro UTC čas?'
 'Configure UTC Time': 'Konfigurovat UTC čas'
-Timezone: 'Časová zóna'
+'Timezone': 'Časová zóna'
 'Timezone Selection': 'Výběr časové zóny'
 'Please enter the IP or hostname of the local mail server': 'Zadejte IP adresu nebo název lokálního mailserveru'
 'Local Mail Server': 'Lokální mailserver'
@@ -82,3 +82,5 @@ Timezone: 'Časová zóna'
 'Set IP Mask': 'Nastavit IP síťovou masku'
 'IANA Country Code': 'IANA kód země'
 'Verify Settings': '__Verify Settings'
+'Enable IPv6 DNS': '__Enable IPv6 DNS'
+'Do you want to Enable IPv6 DNS?': '__Do you want to Enable IPv6 DNS?'
