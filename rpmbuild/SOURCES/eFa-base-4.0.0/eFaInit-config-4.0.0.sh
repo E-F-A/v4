@@ -69,6 +69,6 @@ echo '* * * * * root /usr/sbin/checkreboot.sh' > /etc/cron.d/checkreboot
 
 # Allow apache to sudo for eFaInit phase
 sed -i '/Defaults    requiretty/ c\#Defaults    requiretty' /etc/sudoers
-echo "apache ALL=NOPASSWD: ALL" > /etc/sudoers.d/eFa-Services
+echo "php-fpm ALL=NOPASSWD: ALL" > /etc/sudoers.d/eFa-Services
 
 echo "Configuring eFaInit...done"
