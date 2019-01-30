@@ -340,6 +340,11 @@ execcmd
 cmd='/usr/bin/mysql -e "DELETE FROM mysql.user WHERE User=\"root\" AND Host NOT IN (\"localhost\");"'
 execcmd
 
+# Add config item for IPV6DNS
+if [[ -z $(grep ^IPV6DNS /etc/eFa/eFa-Config) ]]; then
+  [[ -z $(grep 'do-ip6: no' /etc/unbound/unbound.conf) ]] && echo 'IPV6DNS:yes' >> /etc/eFa/eFa-Config || echo 'IPV6DNS:no' >> /etc/eFa/eFa-Config
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl restart mariadb'
