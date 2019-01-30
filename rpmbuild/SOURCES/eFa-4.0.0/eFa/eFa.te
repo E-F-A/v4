@@ -308,7 +308,7 @@ allow httpd_sys_script_t spamd_compiled_t:file { getattr read open ioctl execute
 allow httpd_sys_script_t shadow_t:file { read open };
 allow httpd_sys_script_t httpd_var_lib_t:dir { search };
 allow httpd_sys_script_t system_dbusd_t:unix_stream_socket { connectto };
-allow httpd_sys_script_t initrc_var_run_t:file { read };
+allow httpd_sys_script_t initrc_var_run_t:file { read open };
 allow httpd_sys_script_t shadow_t:file { getattr };
 allow httpd_sys_script_t system_dbusd_t:dbus { send_msg };
 
