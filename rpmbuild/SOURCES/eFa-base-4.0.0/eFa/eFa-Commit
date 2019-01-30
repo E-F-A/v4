@@ -719,7 +719,7 @@ if [[ $configtransport -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   
   echo "root@$DOMAINNAME $ADMINEMAIL" > /etc/postfix/recipient_canonical
-  echo "root@$DOMAINNAME root@$HOSTNAME$DOMAINNAME" > /etc/postfix/sender_canonical
+  echo "root@$DOMAINNAME root@$HOSTNAME.$DOMAINNAME" > /etc/postfix/sender_canonical
   
 fi
 
