@@ -54,7 +54,7 @@ function func_getipsettings(){
     PF6="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPV6ADDR | sed 's/IPV6ADDR=//;s/"//g' | awk -F'/' '{print $2}'`"
     GW6="`cat /etc/sysconfig/network-scripts/ifcfg-$INTERFACE | grep IPV6_DEFAULTGW | sed 's/IPV6_DEFAULTGW=//;s/"//g'`"
     RECURSIVEDNS="`grep RECURSION /etc/eFa/eFa-Config | sed 's/.*://'`"
-    [[ -z $(grep 'do-ip6: no' /etc/unbound/unbound.conf]) ]] && IPV6DNS='yes' || IPV6DNS='no'
+    [[ -z $(grep 'do-ip6: no' /etc/unbound/unbound.conf) ]] && IPV6DNS='yes' || IPV6DNS='no'
     DNS1="`grep forward-addr /etc/unbound/conf.d/forwarders.conf | awk 'NR==1 {print $2}'`"
     DNS2="`grep forward-addr /etc/unbound/conf.d/forwarders.conf | awk 'NR==2 {print $2}'`"
     HOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
