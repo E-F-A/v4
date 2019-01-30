@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.12
 Epoch:         1
-Release:       7.eFa%{?dist}
+Release:       8.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -180,7 +180,7 @@ function efa_version()
 }
 EOF
 
-sed -i "/^    echo mailwatch_version/a \    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php
+sed -i "/^    echo mailwatch_version/ a\    echo ' running on ' . efa_version();" /var/www/html/mailscanner/functions.php
 
 sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php
 
@@ -299,6 +299,9 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Tue Jan 29 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-8
+- Minor spacing fix
+
 * Tue Jan 29 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-7
 - Switch group for temp and images to php-fpm
 
