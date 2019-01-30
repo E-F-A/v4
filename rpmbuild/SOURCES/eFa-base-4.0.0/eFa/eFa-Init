@@ -656,7 +656,7 @@ function func_ask-ipv6dns() {
       if [[ $askipv6dns =~ ^[Yy]$ || -z $askipv6dns ]]; then
           IPV6DNS=1
           cipv6dns=0
-      elif [[ $askipv6 =~ ^[Nn]$ ]]; then
+      elif [[ $askipv6dns =~ ^[Nn]$ ]]; then
           IPV6DNS=0
           cipv6dns=0
       fi
