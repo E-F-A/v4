@@ -17,14 +17,14 @@
 # End of language selections
 
 'Welcome to': 'Willkommen bei'
-Language: Sprache
-Next: Weiter
-Hostname: Hostname
+'Language': 'Sprache'
+'Next': 'Weiter'
+'Hostname': 'Hostname'
 'Please enter a hostname': 'Bitte Hostnamen eingeben'
-Back: Zurück
+'Back': 'Zurück'
 'Domain Name': 'Domäne'
 'Please enter a domain name': 'Bitte Domäne eingeben'
-Email: Email
+'Email': 'Email'
 'Please enter an email address for important notifications': 'Bitte Emailadresse für wichtige Nachrichten eingeben'
 'IPv4 Address': 'IPv4-Adresse'
 'Please enter a valid IPv4 address': 'Bitte eine gültige IPv4-Adresse eingeben'
@@ -62,7 +62,7 @@ Email: Email
 'Configure Hypervisor Tools': 'VM-Tools konfigurieren'
 'Is the host set to UTC time?': 'Benutzt der Host UTC-Zeit?'
 'Configure UTC Time': 'UTC-Zeit konfigurieren'
-Timezone: Zeitzone
+'Timezone': 'Zeitzone'
 'Timezone Selection': 'Auswahl Zeitzone'
 'Please enter the IP or hostname of the local mail server': 'Bitte geben sie den Hostnamen oder die IP-Adresse des lokalen Mailservers an'
 'Local Mail Server': 'Lokaler Mailserver'
@@ -81,3 +81,5 @@ Timezone: Zeitzone
 'Set IP Mask': 'IP-Maske eingeben'
 'IANA Country Code': 'IANA-Ländercode'
 'Verify Settings': '__Verify Settings'
+'Enable IPv6 DNS': '__Enable IPv6 DNS'
+'Do you want to Enable IPv6 DNS?': '__Do you want to Enable IPv6 DNS?'

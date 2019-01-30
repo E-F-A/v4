@@ -82,3 +82,5 @@
 'Set IP Mask': 'Καταχώριση IP Μάσκας'
 'IANA Country Code': 'IANA Κωδικός Χώρας'
 'Verify Settings': '__Verify Settings'
+'Enable IPv6 DNS': '__Enable IPv6 DNS'
+'Do you want to Enable IPv6 DNS?': '__Do you want to Enable IPv6 DNS?'

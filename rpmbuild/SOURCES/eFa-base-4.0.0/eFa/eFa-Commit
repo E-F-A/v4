@@ -134,6 +134,7 @@ DNSIP2=
 INTERFACE=
 IPV4NETMASK=
 IPV4GATEWAY=
+IPV6DNS=
 IPV6MASK=
 IPV6GATEWAY=
 TZONE=
@@ -334,6 +335,22 @@ while [ $# -gt 0 ]; do
           echo "IPV6MASK:$IPV6MASK" >> /etc/eFa/eFa-Config
         else
           sed -i "/^IPV6MASK:/ c\IPV6MASK:$IPV6MASK" /etc/eFa/eFa-Config
+        fi
+    ;;
+      --ipv6dns=*)
+        IPV6DNS=${1#*=}
+        if [[ -z $(grep ^IPV6DNS /etc/eFa/eFa-Config) ]]; then
+          if [[ "$IPV6DNS" -eq 1 ]]; then
+            echo "IPV6DNS:yes" >> /etc/eFa/eFa-Config
+          else
+            echo "IPV6DNS:no" >> /etc/eFa/eFa-Config
+          fi
+        else
+          if [[ "$IPV6DNS" -eq 1 ]]; then
+            sed -i "/^IPV6DNS:/ c\IPV6DNS:yes" /etc/eFa/eFa-Config
+          else
+            sed -i "/^IPV6DNS:/ c\IPV6DNS:no" /etc/eFa/eFa-Config
+          fi
         fi
     ;;
       --ipv6gateway=*)
@@ -548,6 +565,11 @@ fi
 
 if [[ $configdns -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Setting DNS"
+
+  if [[ $IPV6DNS -eq 0 ]]; then 
+    sed -i '/^\t# do-ip6:/ c\\tdo-ip6: no' /etc/unbound/unbound.conf
+  fi 
+
   echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
   [ $? -ne 0 ] && exit 1
   echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf

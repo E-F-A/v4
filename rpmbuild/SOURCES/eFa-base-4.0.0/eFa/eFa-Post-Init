@@ -65,7 +65,7 @@ if [[ -n $IPV4GATEWAY ]]; then
   fi
 fi
 
-if [[ -n $IPV6GATEWAY ]]; then
+if [[ -n $IPV6GATEWAY && -z $(grep 'do-ip6: no' /etc/unbound/unbound.conf) ]]; then
   wget -q --tries=3 --timeout=20 --spider https://ipv6.efa-project.org
   if [[ $? -ne 0 ]]; then
     logger -p user.warn "eFa Post Init: No Internet access detected over IPV6!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."

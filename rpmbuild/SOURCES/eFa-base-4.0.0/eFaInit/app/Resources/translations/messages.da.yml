@@ -17,14 +17,14 @@
 # End of language selections
 
 'Welcome to': 'Velkommen til'
-Language: Sprog
-Next: Næste
-Hostname: Værtsnavn
+'Language': 'Sprog'
+'Next': 'Næste'
+'Hostname': 'Værtsnavn'
 'Please enter a hostname': 'Indtast værtsnavn'
-Back: Tilbage
+'Back': 'Tilbage'
 'Domain Name': 'Domæne navn'
 'Please enter a domain name': 'Indtast domæne navn'
-Email: Email
+'Email': 'Email'
 'Please enter an email address for important notifications': 'Indtast en Email addresse for vigtige beskeder'
 'IPv4 Address': 'IPv4 Adresse'
 'Please enter a valid IPv4 address': 'Indtast gyldig IPv4 addresse'
@@ -63,7 +63,7 @@ Email: Email
 'Configure Hypervisor Tools': 'Konfigure Hypervisor Tools'
 'Is the host set to UTC time?': 'Er hosten sat til UTC tid?'
 'Configure UTC Time': 'Konfigure UTC Tid'
-Timezone: Tidszone
+'Timezone': 'Tidszone'
 'Timezone Selection': 'Vælg tidszone'
 'Please enter the IP or hostname of the local mail server': 'Indtast IP eller værtsnavn for den lokale mail server'
 'Local Mail Server': 'Lokal mail server'
@@ -82,3 +82,5 @@ Timezone: Tidszone
 'Set IP Mask': 'Sæt IP Mask'
 'IANA Country Code': 'IANA landekode'
 'Verify Settings': 'Bekræft Indstillinger'
+'Enable IPv6 DNS': '__Enable IPv6 DNS'
+'Do you want to Enable IPv6 DNS?': '__Do you want to Enable IPv6 DNS?'

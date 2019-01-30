@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.12
 Epoch:         1
-Release:       6.eFa%{?dist}
+Release:       7.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -212,8 +212,8 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %{_bindir}/mailwatch/tools/MailScanner_config/*
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/upgrade.php
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
-%attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/images
-%attr(0775, root, apache) %{_localstatedir}/www/html/mailscanner/temp
+%attr(0775, root, php-fpm) %{_localstatedir}/www/html/mailscanner/images
+%attr(0775, root, php-fpm) %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/favicon.ico
 %{_localstatedir}/www/html/mailscanner/.htaccess
 %{_localstatedir}/www/html/mailscanner/auto-release.php
@@ -299,6 +299,9 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Tue Jan 29 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-7
+- Switch group for temp and images to php-fpm
+
 * Sun Jan 27 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.12-6
 - Modify sf_version.php to show postfix version
 
