@@ -83,5 +83,5 @@
 'Set IP Mask': 'Stel IP-subnetmasker in'
 'IANA Country Code': 'IANA landcode'
 'Verify Settings': 'Controleer instellingen'
-'Enable IPv6 DNS': '__Enable IPv6 DNS'
-'Do you want to Enable IPv6 DNS?': '__Do you want to Enable IPv6 DNS?'
+'Enable IPv6 DNS': 'Schakel IPv6 DNS in'
+'Do you want to Enable IPv6 DNS?': 'Wilt u IPv6 DNS inschakelen?'
