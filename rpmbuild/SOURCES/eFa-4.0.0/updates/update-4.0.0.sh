@@ -272,11 +272,11 @@ DOMAINNAME=$(grep ^DOMAINNAME /etc/eFa/eFa-Config | sed s/^.*://)
 ADMINEMAIL=$(grep ^ADMINEMAIL /etc/eFa/eFa-Config | sed s/^.*://)
 cmd="echo \"root@$DOMAINNAME $ADMINEMAIL\" > /etc/postfix/recipient_canonical" 
 [[ ! -f /etc/postfix/recipient_canonical ]] && execcmd
-cmd='postmap /etc/postfix/recipient_canonical'
+cmd='postmap -r /etc/postfix/recipient_canonical'
 execcmd
 cmd="echo \"root@$DOMAINNAME root@$HOSTNAME.$DOMAINNAME\" > /etc/postfix/sender_canonical"
 [[ ! -f /etc/postfix/sender_canonical ]] && execcmd
-cmd='postmap /etc/postfix/sender_canonical'
+cmd='postmap -r /etc/postfix/sender_canonical'
 execcmd
 
 # Fix Socket entries and Logfile entries
