@@ -1,3 +1,3 @@
-'Enter a valid hostname': '__Enter a valid hostname'
-'Passwords do not match': '__Passwords do not match'
-'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': '__Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address'
+'Enter a valid hostname': '輸入有效的主機名稱'
+'Passwords do not match': '密碼不符'
+'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': '網頁使用者名稱必須是字母 (以字母或底線開始最多30個字) 或是有效的電子郵件位址'
