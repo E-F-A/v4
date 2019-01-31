@@ -323,6 +323,7 @@ allow httpd_sys_script_t httpd_t:file { read open };
 # Allow sa-learn
 allow httpd_sys_script_t spamd_update_t:dir { getattr search };
 allow httpd_sys_script_t mscan_spool_t:file { ioctl };
+allow httpd_sys_script_t httpd_var_lib_t { getattr };
 
 # Allow dbus
 allow httpd_sys_script_t systemd_logind_t:dbus { send_msg };
