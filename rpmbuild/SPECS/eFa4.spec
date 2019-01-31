@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   17.eFa%{?dist}
+Release:   18.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -460,7 +460,7 @@ elif [ "$1" = "2" ]; then
      { 
        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
        [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
-     } | tee -a /var/log/eFa/update.log
+     } 2>&1 | tee -a /var/log/eFa/update.log
    fi
 
     # cleanup if sucessful
@@ -490,6 +490,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Thu Jan 31 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-18
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Thu Jan 31 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-17
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
