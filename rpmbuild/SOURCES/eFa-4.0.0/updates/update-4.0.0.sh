@@ -347,8 +347,6 @@ fi
 
 cmd='systemctl daemon-reload'
 execcmd
-cmd='systemctl restart mariadb'
-execcmd
 cmd='systemctl restart httpd'
 execcmd
 cmd='systemctl restart php-fpm'
@@ -368,6 +366,8 @@ execcmd
 cmd='systemctl enable milter_relay'
 execcmd
 cmd='systemctl start milter_relay'
+execcmd
+cmd='systemctl restart mariadb'
 execcmd
 
 exit $retval
