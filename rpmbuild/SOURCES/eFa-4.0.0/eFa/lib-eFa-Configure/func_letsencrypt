@@ -16,7 +16,7 @@ function func_lets-encrypt() {
   echo -e "$green[eFa]$clean If this is not correct, please update your Hostname and Domain Name within main menu #4."
   echo -e ""
   echo -e "$green[eFa]$clean Please also make sure the name above is externally resolvabe before continuing."
-  echo -e "$green[eFa]$clean Please also make sure that TCP 443 is opened from the WAN to EFA." 
+  echo -e "$green[eFa]$clean Please also make sure that TCP 80 and 443 is opened from the WAN to EFA." 
   echo -e "$green[eFa]$clean By continuing, you agree to the Terms Of Service for Let's Encrypt and EFF."
   echo -e ""
   echo -e ""
