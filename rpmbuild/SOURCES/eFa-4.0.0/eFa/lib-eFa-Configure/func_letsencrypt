@@ -7,11 +7,11 @@ function func_lets-encrypt() {
 
   HOSTNAME=$(grep ^HOSTNAME /etc/eFa/eFa-Config | sed 's/^.*://')
   DOMAINNAME=$(grep ^DOMAINNAME /etc/eFa/eFa-Config | sed 's/^.*://')
-  ADMINEMAIL=$(grep ^ADMINEMAIL /etc/EFA-Config | sed 's/^.*://')
+  ADMINEMAIL=$(grep ^ADMINEMAIL /etc/eFa/eFa-Config | sed 's/^.*://')
 
   echo -e "$green[eFa]$clean This is the current FQDN that will be used for all cert functions:"
   echo -e ""
-  echo -e "$green[eFa]$clean $HOSTNAME.$DOMAINNAME
+  echo -e "$green[eFa]$clean $HOSTNAME.$DOMAINNAME"
   echo -e ""
   echo -e "$green[eFa]$clean If this is not correct, please update your Hostname and Domain Name within main menu #4."
   echo -e ""
