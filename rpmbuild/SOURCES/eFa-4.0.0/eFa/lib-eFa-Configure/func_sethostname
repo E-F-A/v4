@@ -90,13 +90,15 @@ cp -f /etc/hosts /etc/hosts.bak
     LOCK TABLES mtalog WRITE; \
     UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
     UNLOCK TABLES;"
-    
-    sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME.$DOMAINNAME" /etc/crontab
-    sed -i "/^MAILTO=root/ c\MAILTO=root@$HOSTNAME.$DOMAINNAME" /etc/anacrontab
+
     postconf -e "error_notice_recipient = root@\$myhostname"
 
+    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf
+    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
+    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf.d/vhost.conf
+
     echo -e ""
-    echo -e "Hostname changed"
+    echo -e "Hostname changed.  Note that you may need to generate new SSL certificates to match the new hostname"
     echo -e ""
     echo -e "$red [eFa] Your system will now reboot. $clean"
     pause

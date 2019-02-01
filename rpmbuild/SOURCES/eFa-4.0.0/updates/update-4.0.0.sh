@@ -345,6 +345,16 @@ if [[ -z $(grep ^IPV6DNS /etc/eFa/eFa-Config) ]]; then
   [[ -z $(grep 'do-ip6: no' /etc/unbound/unbound.conf) ]] && echo 'IPV6DNS:yes' >> /etc/eFa/eFa-Config || echo 'IPV6DNS:no' >> /etc/eFa/eFa-Config
 fi
 
+# Add fqdns to apache
+sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf
+sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
+
+if [[ ! -f /etc/httpd/conf.d/vhost.conf ]]; then
+  echo "<VirtualHost _default_:80>" > /etc/httpd/conf.d/vhost.conf
+  echo "ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/vhost.conf
+  echo "</VirtualHost>" >> /etc/httpd/conf.d/vhost.conf
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl restart httpd'

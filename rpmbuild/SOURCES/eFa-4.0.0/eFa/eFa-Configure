@@ -58,7 +58,7 @@ shopt -s extglob
 . /var/eFa/lib/eFa-Configure/func_retention
 . /var/eFa/lib/eFa-Configure/func_maintenance
 . /var/eFa/lib/eFa-Configure/func_peruser
-#. /var/eFa/lib/eFa-Configure/func_letsencrypt
+. /var/eFa/lib/eFa-Configure/func_letsencrypt
 . /var/eFa/lib/eFa-Configure/func_askdccservers
 #. /var/eFa/lib/eFa-Configure/func_dkim_dmarc
 
@@ -92,10 +92,8 @@ show_menu() {
       echo -e "4) IP Settings                        12) System Restore"
       echo -e "5) Tunables                           13) Update Now"
       echo -e "6) MailWatch Settings                 14) Maintenance Mode"
-      #echo -e "7)                                    16) Let's Encrypt"
-      #echo -e "7)                                   "
       #echo -e "8) Mail Settings                      17) DKIM and DMARC"
-      echo -e "7) Mail Settings                      "
+      echo -e "7) Mail Settings                      15) Let's Encrypt"
       echo -e ""
       echo -e -n "$green[eFa]$clean : "
       local choice
@@ -116,7 +114,7 @@ show_menu() {
                    12) func_system-restore ;;
                    13) func_update-now ;;
                    14) func_maintenance-mode ;;
-                   #16) func_lets-encrypt ;;
+                   15) func_lets-encrypt ;;
                    #17) func_dkim-dmarc ;;
                     *) echo -e "Error \"$choice\" is not an option..." && sleep 2
       esac
