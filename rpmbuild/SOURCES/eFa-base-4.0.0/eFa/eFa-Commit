@@ -560,7 +560,16 @@ if [[ $confighost -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   postmap /etc/postfix/header_checks
   [ $? -ne 0 ] && exit 1
- 
+
+  # Apache
+  sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf
+  sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
+  
+  # Configure HTTP VirtualHost needed for letsencrypt
+  echo "<VirtualHost _default_:80>" > /etc/httpd/conf.d/vhost.conf
+  echo "ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/vhost.conf
+  echo "</VirtualHost>" >> /etc/httpd/conf.d/vhost.conf
+
 fi
 
 if [[ $configdns -eq 1 ]]; then

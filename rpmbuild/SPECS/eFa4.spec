@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   19.eFa%{?dist}
+Release:   20.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -348,7 +348,7 @@ Requires: php72u-xml >= 7.2.13-2
 Requires: dovecot >= 1:2.2.36-3
     # clucene-core                               # base    # postfix
 Requires: virt-what >= 1.18-4
-    # vrit-what                                  # base    # eFa
+    # virt-what                                  # base    # eFa
 Requires: openssh-server >= 7.4p1-16
     # openssh-server                             # base    # eFa
 Requires: sudo >= 1.8.23-3
@@ -361,6 +361,8 @@ Requires: file >= 5.11-35
     # file                                       # base    # MailScanner
 Requires: eFa-base >= 4.0.0-1
     # eFa-base                                   # eFa     # eFa
+Requires: python2-certbot-apache >= 0.29.1-1
+    #                                            # epel    # mailwatch, frontend
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -490,6 +492,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Thu Jan 31 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-20
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Thu Jan 31 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-19
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
