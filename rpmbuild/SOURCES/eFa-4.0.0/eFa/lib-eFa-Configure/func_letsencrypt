@@ -64,17 +64,22 @@ function func_lets-encrypt() {
     if [[ $TMPLE == "y" || $TMPLE == "Y" ]]; then
       
       certbot --apache --non-interactive --agree-tos -m $ADMINEMAIL --domains $HOSTNAME.$DOMAINNAME
-      systemctl reload httpd
-      # Add a cron job to renew cert
-      if [[ ! -e /etc/cron.d/certbotrenew ]]; then
-        echo "0 0,12 * * * python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew >/dev/null 2>&1" > /etc/cron.d/certbotrenew
-      fi
-
-      echo -e ""
-      echo -e "Let's Encrypt has been enabled"
-      echo -e ""
+      if [[ $? -eq 0 ]]; then
+        systemctl reload httpd
+        # Add a cron job to renew cert
+        if [[ ! -f /etc/cron.d/certbotrenew ]]; then
+          echo "0 0,12 * * * python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew >/dev/null 2>&1" > /etc/cron.d/certbotrenew
+        fi
+        echo -e ""
+        echo -e "Let's Encrypt has been enabled"
+        echo -e ""
       pause
-
+      else
+        echo ""
+        echo "Error running Let's Encrypt, please correct the problem and try again."
+        echo ""
+        pause
+      fi
     elif [[ $TMPLE == "n" || $TMPLE == "N" || $TMPLE == "c" || $TMPLE == "C" ]]; then
       echo -e "No action taken. Exiting."
       pause
