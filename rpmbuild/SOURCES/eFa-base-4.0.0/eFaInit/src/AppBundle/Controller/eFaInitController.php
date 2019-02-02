@@ -1342,13 +1342,16 @@ class eFaInitController extends Controller
         $progress += $progressStep;
 
         $output = '<br/>eFa -- Finalizing configuration and rebooting <br/>' . $output;
-        $buffer = '<br/>eFa -- Please visit after reboot is complete (in a few minutes):<br/><br/>';
+        if ( $session->get('ipv4address') != '' || $session->get('ipvtaddress') != '') {
+            $buffer = '<br/>eFa -- Please visit after reboot is complete (in a few minutes):<br/><br/>';      
+        }
         if ( $session->get('ipv4address') != '' ) {
             $buffer .= '<a href="https://' . $session->get('ipv4address') . '">https://' . $session->get('ipv4address') . '</a><br/><br/>';
         }
         if ( $session->get('ipv6address') != '' ) {
-            $buffer .= '<a href="https://' . $session->get('ipv6address') . '">https://' . $session->get('ipv6address') . '</a><br/>';
+            $buffer .= '<a href="https://' . $session->get('ipv6address') . '">https://' . $session->get('ipv6address') . '</a><br/><br/>';
         }
+
         $output = $buffer . $output;
 
         eFaInitController::progressBar($progress, $progress + $progressStep, $output);
