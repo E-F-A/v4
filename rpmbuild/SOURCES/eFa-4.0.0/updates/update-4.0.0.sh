@@ -346,13 +346,21 @@ if [[ -z $(grep ^IPV6DNS /etc/eFa/eFa-Config) ]]; then
 fi
 
 # Add fqdns to apache
-sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf
-sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
+cmd='sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf'
+execcmd
+cmd='sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf'
+execcmd
 
 if [[ ! -f /etc/httpd/conf.d/vhost.conf ]]; then
   echo "<VirtualHost _default_:80>" > /etc/httpd/conf.d/vhost.conf
   echo "ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/vhost.conf
   echo "</VirtualHost>" >> /etc/httpd/conf.d/vhost.conf
+fi
+
+# Add entry to header_checks
+if [[ -z $(grep '^Received: from localhost' /etc/postfix/header_checks) ]]; then
+  cmd='echo "/^Received:\ from\ localhost\ \(localhost\ \[127.0.0.1\]\)/ IGNORE" >> /etc/postfix/header_checks'
+  execcmd
 fi
 
 cmd='systemctl daemon-reload'

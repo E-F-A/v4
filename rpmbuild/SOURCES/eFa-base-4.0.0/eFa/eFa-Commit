@@ -558,7 +558,7 @@ if [[ $confighost -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   echo '/^Received:\ from\ '$HOSTNAME.$DOMAINNAME'\ \(localhost\ \[::1/ IGNORE' >> /etc/postfix/header_checks
   [ $? -ne 0 ] && exit 1
-  postmap /etc/postfix/header_checks
+  echo '/^Received:\ from\ localhost\ \(localhost\ \[127.0.0.1\]\)/ IGNORE' >> /etc/postfix/header_checks
   [ $? -ne 0 ] && exit 1
 
   # Apache
