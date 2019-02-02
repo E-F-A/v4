@@ -127,7 +127,7 @@ function func_system-restore() {
                         sed -i "/^    user_awl_sql_password/ c\    user_awl_sql_password           $RESTORESAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
 
                         # Fix clam socket
-                        sed -i "/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.scan/clamd.sock" /etc/MailScanner/MailScanner.conf
+                        sed -i "/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.socket/clamd.sock" /etc/MailScanner/MailScanner.conf
 
                         # Force use of the milter
                         sed -i '/^MTA =/ c\MTA = msmail' /etc/MailScanner/MailScanner.conf
