@@ -173,7 +173,10 @@ function func_system-restore() {
                         postmap /etc/postfix/transport
                         postmap /etc/postfix/virtual
 
+                        mv -f /etc/sqlgrey/sqlgrey.conf /etc/sqlgrey/sqlgrey.conf.v4
                         cp -rf /var/eFa/backup/backup/etc/sqlgrey/* /etc/sqlgrey
+                        mv -f /etc/sqlgrey/sqlgrey.conf /etc/sqlgrey/sqlgrey.conf.v3
+                        mv -f /etc/sqlgrey/sqlgrey.conf.v4 /etc/sqlgrey/sqlgrey.conf
                         cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
 
                       else
