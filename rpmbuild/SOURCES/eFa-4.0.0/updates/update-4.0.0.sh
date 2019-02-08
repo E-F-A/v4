@@ -398,8 +398,6 @@ execcmd
 if [[ -f /etc/mail/spamassassin/KAM.cf ]]; then
   cmd='rm -f /etc/mail/spamassassin/KAM.cf'
   execcmd
-  cmd='rm -f /usr/sbin/eFa-SA-Update'
-  execcmd
 fi
 
 cmd='systemctl daemon-reload'
