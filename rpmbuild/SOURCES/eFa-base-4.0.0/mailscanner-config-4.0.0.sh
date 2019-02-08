@@ -169,7 +169,7 @@ fi
 # maintenance
 /usr/sbin/ms-cron MAINT >/dev/null 2>&1
 
-[[ -f /var/eFa/eFa-Monitor.cron ]] && mv -f /var/eFa/eFa-Monitor.cron /etc/cron.d/eFa-Monitor.cron >/dev/null 2>&1
+[[ -f /var/eFa/eFa-Monitor.cron && $moved -eq 1 ]] && mv -f /var/eFa/eFa-Monitor.cron /etc/cron.d/eFa-Monitor.cron >/dev/null 2>&1
 
 exit 0
 
