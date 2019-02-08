@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   23.eFa%{?dist}
+Release:   24.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -399,7 +399,6 @@ mv eFa/eFahyperv.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFaqemu.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFa.fc $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFa.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
-mv eFa/eFa-SA-Update $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Monitor-cron $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Backup-cron $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
@@ -480,7 +479,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_usrsrc}/eFa
 %{_localstatedir}/eFa/lib/eFa-Configure
 %attr(0755, root, root) %{_sbindir}/eFa-Configure
-%attr(0755, root, root) %{_sbindir}/eFa-SA-Update
 %attr(0755, root, root) %{_sbindir}/eFa-Monitor-cron
 %attr(0755, root, root) %{_sbindir}/eFa-Backup-cron
 %attr(0755, root, root) %{_sbindir}/mysqltuner.pl
@@ -492,6 +490,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Sat Feb 07 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-24
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Sat Feb 02 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-23
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
