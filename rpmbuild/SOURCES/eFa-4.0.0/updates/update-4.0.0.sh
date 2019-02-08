@@ -363,6 +363,45 @@ if [[ -z $(grep '^Received: from localhost' /etc/postfix/header_checks) ]]; then
   execcmd
 fi
 
+# Patch mailscanner daily crons
+if [[ -z $(grep eFa-Monitor /etc/cron.daily/mailscanner) ]]; then
+  cat > /etc/cron.daily/mailscanner << 'EOF'
+#!/bin/sh
+#
+moved=0
+if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
+  mv -f /etc/cron.d/eFa-Monitor.cron /var/eFa/eFa-Monitor.cron >/dev/null 2>&1
+  moved=1
+fi
+
+# daily actions
+/usr/sbin/ms-cron DAILY >/dev/null 2>&1
+
+# maintenance
+/usr/sbin/ms-cron MAINT >/dev/null 2>&1
+
+[[ -f /var/eFa/eFa-Monitor.cron && $moved -eq 1 ]] && mv -f /var/eFa/eFa-Monitor.cron /etc/cron.d/eFa-Monitor.cron >/dev/null 2>&1
+
+exit 0
+
+EOF
+  [[ $? -ne 0 ]] && echo "cat > /etc/cron.daily/mailscanner" && retval=1
+fi
+
+# Create .spamassassin directory for php-fpm
+cmd='mkdir -p /var/lib/php/fpm/.spamassassin'
+execcmd
+cmd='chown postfix:mtagroup /var/lib/php/fpm/.spamassassin'
+execcmd
+
+# Remove KAM.cf and eFa-SA-Update
+if [[ -f /etc/mail/spamassassin/KAM.cf ]]; then
+  cmd='rm -f /etc/mail/spamassassin/KAM.cf'
+  execcmd
+  cmd='rm -f /usr/sbin/eFa-SA-Update'
+  execcmd
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl restart httpd'

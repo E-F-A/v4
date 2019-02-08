@@ -178,7 +178,9 @@ function func_system-restore() {
                         mv -f /etc/sqlgrey/sqlgrey.conf /etc/sqlgrey/sqlgrey.conf.v3
                         mv -f /etc/sqlgrey/sqlgrey.conf.v4 /etc/sqlgrey/sqlgrey.conf
                         cp -rf /var/eFa/backup/backup/etc/unbound/conf.d/* /etc/unbound/conf.d
-
+                        
+                        sed -i "/^db_pass =/ c\db_pass = $RESTORESQLGREYSQLPWD" /etc/sqlgrey/sqlgrey.conf
+                        
                       else
                         RESTOREMYSQLROOTPWD="`grep MYSQLROOTPWD /var/eFa/backup/backup/etc/eFa/MySQL-Config | sed 's/.*://'`"
                         if [[ "$MYSQLROOTPWD" != "$RESTOREMYSQLROOTPWD" ]]; then
