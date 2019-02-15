@@ -86,6 +86,7 @@ function func_system-restore() {
                         sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
                         sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
                         sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
+                        sed -i "/^password=/ c\password=$RESTOREMYSQLROOTPWD" /root/.my.cnf
 
                         cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf.v3
 
@@ -255,6 +256,9 @@ function func_system-restore() {
                       # Ensure txrep table is present
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" sa_bayes -e "CREATE TABLE txrep (username varchar(100) NOT NULL default '', email varchar(255) NOT NULL default '', ip varchar(40) NOT NULL default '', count int(11) NOT NULL default '0', totscore float NOT NULL default '0', signedby varchar(255) NOT NULL default '', last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (username,email,signedby,ip), KEY last_hit (last_hit)) ENGINE=InnoDB;" >/dev/null 2>&1
                       
+                      # Ensure txrep table has last_hit field
+                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" sa_bayes -e "ALTER TABLE txrep ADD last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; ALTER TABLE txrep ADD KEY last_hit (last_hit);" >/dev/null 2>&1
+
                       # Make sure user in bayes db is postfix
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" sa_bayes -e "UPDATE bayes_vars SET username = 'postfix' WHERE id = '1';" 
 
