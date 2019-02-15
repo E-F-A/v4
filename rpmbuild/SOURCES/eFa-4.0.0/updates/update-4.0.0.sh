@@ -34,6 +34,11 @@ if [[ -e /etc/cron.monthly/cron-dccd ]]; then
   execcmd
 fi
 
+# Ensure .my.cnf is in sync
+local MYSQLPASS=$(grep ^MYSQLROOTPWD /etc/eFa/MySQL-Config | sed -e 's/^.*://')
+sed -i "/^password=/ c\password=$MYSQLPASS" /root/.my.cnf
+MYSQLPASS=
+
 # Tweak mariadb configuration
 # Remove limits on mariadb
 cmd='mkdir -p /etc/systemd/system/mariadb.service.d'
@@ -399,6 +404,12 @@ if [[ -f /etc/mail/spamassassin/KAM.cf ]]; then
   cmd='rm -f /etc/mail/spamassassin/KAM.cf'
   execcmd
 fi
+
+# Make sure txrep table has last_hit column, ignore failure
+/usr/bin/mysql -e "ALTER TABLE sa_bayes.txrep ADD last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; ALTER TABLE sa_bayes.txrep ADD KEY last_hit (last_hit);" >/dev/null 2>&1
+
+# Suppress permission denied errrors during tmpwatch execution
+sed -i "s|^/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp|/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp >dev/null 2>&1|" /etc/cron.daily/eFa-SAClean
 
 cmd='systemctl daemon-reload'
 execcmd
