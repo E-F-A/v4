@@ -34,11 +34,6 @@ if [[ -e /etc/cron.monthly/cron-dccd ]]; then
   execcmd
 fi
 
-# Ensure .my.cnf is in sync
-local MYSQLPASS=$(grep ^MYSQLROOTPWD /etc/eFa/MySQL-Config | sed -e 's/^.*://')
-sed -i "/^password=/ c\password=$MYSQLPASS" /root/.my.cnf
-MYSQLPASS=
-
 # Tweak mariadb configuration
 # Remove limits on mariadb
 cmd='mkdir -p /etc/systemd/system/mariadb.service.d'
@@ -144,16 +139,15 @@ cmd='sed -i "/^\[mariadb-10.1\]$/ a\bind-address = 127.0.0.1" /etc/my.cnf.d/mari
 cmd="sed -i \"/^define('SHOW_SFVERSION',/ c\define('SHOW_SFVERSION', true);\" /var/www/html/mailscanner/conf.php"
 execcmd
 
-if [[ ! -f /root/.my.cnf ]]; then 
-  cmd='echo "[client]" > /root/.my.cnf'
-  execcmd
-  cmd='echo "user=root" >> /root/.my.cnf'
-  execcmd
-  cmd="echo \"password=$(grep ^MYSQLROOTPWD /etc/eFa/MySQL-Config | sed -e 's/^.*://')\" >> /root/.my.cnf"
-  execcmd
-  cmd='chmod 400 /root/.my.cnf'
-  execcmd
-fi
+# Refresh /root/.my.cnf
+cmd='echo "[client]" > /root/.my.cnf'
+execcmd
+cmd='echo "user=root" >> /root/.my.cnf'
+execcmd
+cmd="echo \"password=$(grep ^MYSQLROOTPWD /etc/eFa/MySQL-Config | sed -e 's/^.*://')\" >> /root/.my.cnf"
+execcmd
+cmd='chmod 400 /root/.my.cnf'
+execcmd
 
 # Cleanup
 cmd='rm -rf /var/www/eFaInit'
