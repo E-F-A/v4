@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   27.eFa%{?dist}
+Release:   28.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -490,6 +490,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Fri Feb 15 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-28
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Fri Feb 15 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-27
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
