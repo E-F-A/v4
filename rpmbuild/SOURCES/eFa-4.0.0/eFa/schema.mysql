@@ -9,12 +9,12 @@ USE opendmarc;
 -- A table for mapping domain names and their DMARC policies to IDs
 CREATE TABLE IF NOT EXISTS domains (
 	id INT NOT NULL AUTO_INCREMENT,
-	name VARCHAR(100) NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	firstseen TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY(id),
 	UNIQUE KEY(name)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- A table for logging reporting requests
 CREATE TABLE IF NOT EXISTS requests (
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS requests (
 	PRIMARY KEY(id),
 	KEY(lastsent),
 	UNIQUE KEY(domain)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- A table for reporting hosts
 CREATE TABLE IF NOT EXISTS reporters (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS reporters (
 
 	PRIMARY KEY(id),
 	UNIQUE KEY(name)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- A table for IP addresses
 CREATE TABLE IF NOT EXISTS ipaddr (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS ipaddr (
 
 	PRIMARY KEY(id),
 	UNIQUE KEY(addr)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- A table for messages
 CREATE TABLE IF NOT EXISTS messages (
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS messages (
 	PRIMARY KEY(id),
 	KEY(date),
 	UNIQUE KEY(reporter, date, jobid)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- A table for signatures
 CREATE TABLE IF NOT EXISTS signatures (
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS signatures (
 
 	PRIMARY KEY(id),
 	KEY(message)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- CREATE USER 'opendmarc'@'localhost' IDENTIFIED BY 'changeme';
 -- GRANT ALL ON opendmarc.* to 'opendmarc'@'localhost';
