@@ -1,5 +1,5 @@
 
-module eFa 1.0.7;
+module eFa 1.0.8;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -7,6 +7,7 @@ type sasql_etc_t;
 type efasql_etc_t;
 type mysqlsql_etc_t;
 type efa_var_t;
+type opendmarcsql_etc_t;
 
 require {
     attribute file_type;
@@ -125,6 +126,7 @@ typeattribute sqlgreysql_etc_t file_type;
 typeattribute efasql_etc_t file_type;
 typeattribute mysqlsql_etc_t file_type;
 typeattribute efa_var_t file_type;
+typeattribute opendmarcsql_etc_t file_type;
 
 #============ ifconfig_t ============
 # allow ifconfig to access /var/run

@@ -113,6 +113,24 @@ if [[ ! -f /var/lib/clamav/main.cvd ]]; then
   fi
 fi
 
+# Fetch the initial public suffix list
+curl -s https://publicsuffix.org/list/public_suffix_list.dat > /etc/opendmarc/public_suffix_list.dat
+if [[ $? -ne 0 ]]; then
+    logger -p user.warn "eFa Post Init: Unable to download the public suffix list!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+    sed -i "/^    echo ' running on ' . efa_version/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK public suffix list... ';" /var/www/html/mailscanner/functions.php
+    rm -f /var/run/eFa-Post-Init.lock
+    exit 1
+fi
+
+systemctl enable opendmarc
+systemctl start opendmarc
+if [[ $? -ne 0 ]]; then
+    logger -p user.warn "eFa Post Init: opendmarc failed to start!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+    sed -i "/^    echo ' running on ' . efa_version/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK opendmarc... ';" /var/www/html/mailscanner/functions.php
+    rm -f /var/run/eFa-Post-Init.lock
+    exit 1
+fi
+
 # Spawn mta relay stats watchers
 /etc/cron.hourly/mailwatch_relay.sh
 
