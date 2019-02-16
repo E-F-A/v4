@@ -14,7 +14,7 @@ function func_dkim-dmarc() {
   echo -e ""
   echo -e "$green[eFa]$clean Welcome to the DKIM and DMARC wizard!"
   echo -e "$green[eFa]$clean This option is enabled by default for new builds"
-  echo -e "$green[eFa]$clean The following questions will be used to
+  echo -e "$green[eFa]$clean The following questions will be used to"
   echo -e "$green[eFa]$clean enable/disable/modify a DKIM and DMARC deployment."
   echo -e ""
 
@@ -39,7 +39,7 @@ function func_dkim-dmarc() {
       milters2=$(grep ^non_smtpd_milters /etc/postfix/main.cf | sed -e 's/^non_smtpd_milters\s\{0,1\}=\s\{0,1\}//')
       if [[ -z $milters2 ]]; then
         # Empty or not present
-        milters=2"inet:127.0.0.1:8891, inet:127.0.0.1:8893"
+        milters2="inet:127.0.0.1:8891, inet:127.0.0.1:8893"
       fi
       if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8891) ]]; then
         milters2="$milters2, inet:127.0.0.1:8891"
