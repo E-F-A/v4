@@ -446,10 +446,10 @@ func_recipient_verification(){
   local restrictions
   func_echo-header
   echo " "
-  echo "Automated recipient address verification"
-  echo "This option allows postfix to send probes to"
-  echo "check that the recipient exists.  This is enabled"
-  echo "by default in new installs."
+  echo "$green[eFa]$clean Automated recipient address verification"
+  echo "$green[eFa]$clean This option allows postfix to send probes to"
+  echo "$green[eFa]$clean check that the recipient exists.  This is enabled"
+  echo "$green[eFa]$clean by default in new installs."
   local choice
   while [ $menu -eq 1 ]
     do
@@ -480,23 +480,25 @@ func_recipient_verification(){
         restrictions=
         local flag=0
         for i in "${array[@]}"; do
-          if [[ $flag -eq 1 ]]; then
+          i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          if [[ $flag -eq 1 && ! $i =~ reject_unverified_recipient ]]; then
             restrictions="$restrictions,"
           else
             flag=1
           fi
           if [[ ! $i =~ reject_unverified_recipient ]]; then
             restrictions="$restrictions $i"
+          else
+            flag=0
           fi
         done
         if [[ -z $restrictions ]]; then
-            # something is wrong, string is empty, reset to default
-            restrictions="smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
-          else
-            restrictions="smtpd_recipient_restrictions = $restrictions"
-          fi
-          postconf -e "$restrictions"
+          # something is wrong, string is empty, reset to default
+          restrictions="smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
+        else
+          restrictions="smtpd_recipient_restrictions = $restrictions"
         fi
+        postconf -e "$restrictions"
       else
         echo "Invalid option..."
         echo read -p "Do you want to enable recipient address verification? (Y/n) : " choice

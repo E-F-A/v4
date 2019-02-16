@@ -40,13 +40,16 @@ func_greylisting(){
           restrictions=
           flag=0
           for i in "${array[@]}"; do
-            if [[ $flag -eq 1 ]]; then
+            i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+            if [[ $flag -eq 1 && ! $i =~ check_policy_service\ inet:127.0.0.1:2501 ]]; then
               restrictions="$restrictions,"
             else
               flag=1
             fi
             if [[ ! $i =~ check_policy_service\ inet:127.0.0.1:2501 ]]; then
               restrictions="$restrictions $i"
+            else
+              flag=0
             fi
           done
 
@@ -101,6 +104,7 @@ func_greylisting(){
           flag=0
           flag2=0
           for i in "${array[@]}"; do
+            i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
             if [[ $flag -eq 1 ]]; then
               restrictions="$restrictions,"
             else
