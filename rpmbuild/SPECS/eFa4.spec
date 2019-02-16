@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   28.eFa%{?dist}
+Release:   29.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -363,6 +363,10 @@ Requires: eFa-base >= 4.0.0-1
     # eFa-base                                   # eFa     # eFa
 Requires: python2-certbot-apache >= 0.29.1-1
     #                                            # epel    # mailwatch, frontend
+Requires: opendkim >= 2.11.0-0.1
+    #                                            # epel    # eFa
+Requires: opendmarc >= 1.3.2-0.12
+    #                                            # epel    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -401,11 +405,14 @@ mv eFa/eFa.fc $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFa.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFa-Monitor-cron $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Backup-cron $RPM_BUILD_ROOT%{_sbindir}
+mv eFa/eFa-Weekly-DMARC $RPM_BUILD_ROOT%{_sbindir}
+mv eFa/eFa-Daily-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/mysqltuner.pl $RPM_BUILD_ROOT%{_sbindir}
+mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa/mariadb
+mv eFa/schema.mysql $RPM_BUILD_ROOT%{_usrsrc}/eFa/mariadb
 # Move update scripts into position
-mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa
 mv updates $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
 %pre
@@ -482,6 +489,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sbindir}/eFa-Monitor-cron
 %attr(0755, root, root) %{_sbindir}/eFa-Backup-cron
 %attr(0755, root, root) %{_sbindir}/mysqltuner.pl
+%attr(0755, root, root) %{_sbindir}/eFa-Weekly-DMARC
+%attr(0755, root, root) %{_sbindir}/eFa-Daily-DMARC
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFavmtools.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFahyperv.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFaqemu.te
@@ -490,6 +499,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 
 %changelog
+* Sat Feb 16 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-29
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Fri Feb 15 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-28
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 

@@ -118,6 +118,7 @@ configmailscanner=0
 configmailwatch=0
 configsasl=0
 configsqlgrey=0
+configdmarc=0
 configmysql=0
 configapache=0
 configyumcron=0
@@ -165,6 +166,7 @@ while [ $# -gt 0 ]; do
         configmailwatch=1
         configsasl=1
         configsqlgrey=1
+        configdmarc=1
         configmysql=1
         configapache=1
         configyumcron=1
@@ -218,6 +220,9 @@ while [ $# -gt 0 ]; do
     ;;
       --configsqlgrey)
         configsqlgrey=1
+    ;;
+      --configdmarc)
+        configdmarc=1
     ;;
       --configmysql)
         configmysql=1
@@ -453,6 +458,9 @@ if [[ $startmariadb -eq 1 ]]; then
 
   # Create and populate the mailscanner db
   /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/create.sql
+  
+  # Create the DMARC db
+  /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/schema.mysql
 
   # Create and populate efa db
   # Removed from eFa4 for now
@@ -470,7 +478,10 @@ if [[ $startmariadb -eq 1 ]]; then
   /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on sqlgrey.* to 'sqlgrey'@'localhost' identified by '$password'"
 
   # efa user for token handling
-  /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$password'"
+  # /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$password'"
+
+  # DMARC user
+  /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on opendmarc.* to 'opendmarc'@'localhost' identified by '$password'"
 
   # flush
   /usr/bin/mysql -u root -p"$password" -e "FLUSH PRIVILEGES;"
@@ -866,6 +877,21 @@ if [[ $configsqlgrey -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
 fi
 
+if [[ $configdmarc -eq 1 ]]; then
+  randompw
+  DMARCSQLPWD=$PASSWD
+  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$DMARCSQLPWD') WHERE User='opendmarc';"
+  [ $? -ne 0 ] && exit 1
+  /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
+  [ $? -ne 0 ] && exit 1
+  #sed -i "/db_pass =/ c\db_pass = $SQLGREYSQLPWD" /etc/sqlgrey/sqlgrey.conf
+  #[ $? -ne 0 ] && exit 1
+  echo "DMARCSQLPWD:$DMARCSQLPWD" > /etc/eFa/openDMARC-Config
+  [ $? -ne 0 ] && exit 1
+  DMARCSQLPWD=
+
+fi
+
 if [[ $configapache -eq 1 ]]; then
   sed -i "/^ServerAdmin/ c\ServerAdmin $ADMINEMAIL" /etc/httpd/conf/httpd.conf
   [ $? -ne 0 ] && exit 1
@@ -1027,6 +1053,8 @@ EOF
   systemctl enable postfix_relay
   [ $? -ne 0 ] && exit 1
   systemctl enable milter_relay
+  [ $? -ne 0 ] && exit 1
+  systemctl enable opendkim
   [ $? -ne 0 ] && exit 1
 
   if [[ $configvirtual -eq 1 ]]; then

@@ -78,7 +78,8 @@ postconf -e "smtpd_recipient_restrictions = permit_sasl_authenticated, permit_my
 postconf -e "unverified_recipient_reject_reason = Address lookup failed"
 postconf -e "unverified_recipient_reject_code = 550"
 postconf -e "masquerade_domains = \$mydomain"
-postconf -e "smtpd_milters = inet:127.0.0.1:33333"
+postconf -e "smtpd_milters = inet:127.0.0.1:33333, inet:localhost:8891, inet:localhost:8893"
+postconf -e "non_smtpd_milters = inet:localhost:8891, inet:localhost:8893"
 # 128 MB limit
 postconf -e "message_size_limit = 133169152"
 postconf -e "mailbox_size_limit = 133169152"

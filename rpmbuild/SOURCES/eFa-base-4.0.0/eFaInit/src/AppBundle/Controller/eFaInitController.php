@@ -1227,6 +1227,24 @@ class eFaInitController extends Controller
 
         $progress += $progressStep;
 
+        $output = '<br/>eFa -- Configuring openDMARC<br/>' . $output;
+
+        try {
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configdmarc');
+            $process->setTimeout($this->timeout);
+            $process->mustRun();
+
+            $output = '<br/> eFa -- openDMARC configured<br/>' . $output;
+
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
+
+        } catch (ProcessFailedException $exception) {
+            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error configuring openDMARC");
+            return;
+        }
+
+        $progress += $progressStep;
+
         $output = '<br/>eFa -- Configuring apache<br/>' . $output;
 
         try {
