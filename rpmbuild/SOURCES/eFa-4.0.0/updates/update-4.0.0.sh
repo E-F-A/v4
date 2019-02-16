@@ -403,7 +403,35 @@ fi
 /usr/bin/mysql -e "ALTER TABLE sa_bayes.txrep ADD last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; ALTER TABLE sa_bayes.txrep ADD KEY last_hit (last_hit);" >/dev/null 2>&1
 
 # Suppress permission denied errrors during tmpwatch execution
-sed -i "s|^/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp|/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp >dev/null 2>\&1|" /etc/cron.daily/eFa-SAClean
+sed -i "/^\/usr\/sbin\/tmpwatch / c\/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp >dev/null 2>\&1|" /etc/cron.daily/eFa-SAClean
+
+# opendmarc and opendkim
+cmd='yum -y install opendmarc opendkim >/dev/null >2&1'
+execcmd
+
+# Configure opendkim for verification only
+cmd='sed -i "s|^KeyFile /etc/opendkim/keys/default.private|#&|" /etc/opendkim.conf'
+execcmd
+
+# Configure opendmarc
+cmd='sed -i "/^# AuthservID / c\AuthservID HOSTNAME" /etc/opendmarc.conf'
+execcmd
+cmd='sed -i "/^# HistoryFile / c\HistoryFile /var/spool/opendmarc/opendmarc.dat" /etc/opendmarc.conf'
+execcmd
+cmd='sed -i "/^# PublicSuffixList / c\PublicSuffixList /etc/opendmarc/public_suffix_list.dat" /etc/opendmarc.conf'
+execcmd
+
+cmd='curl -s https://publicsuffix.org/list/public_suffix_list.dat > /etc/opendmarc/public_suffix_list.dat'
+execcmd
+
+if [[ -z $(grep ^unverified_recipient_reject_reason /etc/postfix/main.cf) ]]; then
+  cmd='postconf -e "unverified_recipient_reject_reason = Address lookup failed"'
+  execcmd
+fi
+if [[ -z $(grep ^unverified_recipient_reject_code /etc/postfix/main.cf) ]]; then
+  cmd='postconf -e "unverified_recipient_reject_code = 550"'
+  execcmd
+fi
 
 cmd='systemctl daemon-reload'
 execcmd

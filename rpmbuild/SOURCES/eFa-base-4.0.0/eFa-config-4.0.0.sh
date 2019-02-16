@@ -134,3 +134,14 @@ chmod +x /etc/rc.d/rc.local
 # Set the system as unconfigured
 mkdir -p /etc/eFa
 echo 'CONFIGURED:NO' > /etc/eFa/eFa-Config
+
+# Configure opendkim for verification only
+sed -i "s|^KeyFile /etc/opendkim/keys/default.private|#&|" /etc/opendkim.conf
+
+# Configure opendmarc
+sed -i "/^# AuthservID / c\AuthservID HOSTNAME" /etc/opendmarc.conf
+sed -i "/^# HistoryFile / c\HistoryFile /var/spool/opendmarc/opendmarc.dat" /etc/opendmarc.conf
+sed -i "/^# PublicSuffixList / c\PublicSuffixList /etc/opendmarc/public_suffix_list.dat" /etc/opendmarc.conf
+
+ln -s /usr/sbin/eFa-Weekly-DMARC /etc/cron.weekly/eFa-Weekly-DMARC
+ln -s /usr/sbin/eFa-Daily-DMARC /etc/cron.daily/eFa-Daily-DMARC

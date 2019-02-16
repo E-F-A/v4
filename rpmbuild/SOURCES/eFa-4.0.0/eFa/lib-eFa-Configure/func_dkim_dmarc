@@ -2,186 +2,135 @@
 # Configure DKIM and DMARC
 # +---------------------------------------------------+
 
-# TODO:  Refactor, disabled for now
-
 function func_dkim-dmarc() {
-func_echo-header
-
+  func_echo-header
+  local TMPOPT
+  local mitlers
+  local milters2
+  local array
+  local flag
+  local menu
 
   echo -e ""
   echo -e "$green[eFa]$clean Welcome to the DKIM and DMARC wizard!"
+  echo -e "$green[eFa]$clean This option is enabled by default for new builds"
   echo -e "$green[eFa]$clean The following questions will be used to enable/disable/modify a DKIM and DMARC deployment."
   echo -e ""
 
-  if [[ -e /etc/opendmarc.conf ]]
-    then
-      echo -e "$green[eFa]$clean DMARC and DKIM are currently $green ENABLED $clean on this appliance."
-      echo -e -n "$green[eFa]$clean Would you like to $red DISABLE $clean DMARC and DKIM functionality? [n/y/c]: "
-      read TMPOPT
+  memu=1
+
+  echo -e -n "$green[eFa]$clean Would you like to enable DMARC and DKIM functionality? [Y/n/c]: "
+  read TMPOPT
+  while [ $menu -eq 1 ]; do
+    if [[ $TMPOPT =~ ^[Yy]$ || -z $TMPOPT ]]; then
+      menu=0
+      milters=$(grep ^smtpd_milters /etc/postfix/main.cf | sed -e 's/^smtpd_milters\s\{0,1\}=\s\{0,1\}//')
+      if [[ -z $milters ]]; then
+        # Something wrong, reset to default
+        milters="inet:127.0.0.1:33333, inet:127.0.0.1:8891, inet:127.0.0.1:8893"
+      fi
+      if [[ -z (echo $milters | grep inet:127.0.0.1:8891) ]]; then
+        milters="$milters, inet:127.0.0.1:8891"
+      fi
+      if [[ -z (echo $milters | grep inet:127.0.0.1:8893) ]]; then
+        milters="$milters, inet:127.0.0.1:8893"
+      fi
+      milters2=$(grep ^non_smtpd_milters /etc/postfix/main.cf | sed -e 's/^non_smtpd_milters\s\{0,1\}=\s\{0,1\}//')
+      if [[ -z $milters2 ]]; then
+        # Empty or not present
+        milters="inet:127.0.0.1:8891, inet:127.0.0.1:8893"
+      fi
+      if [[ -z (echo $milters | grep inet:127.0.0.1:8891) ]]; then
+        milters="$milters, inet:127.0.0.1:8891"
+      fi
+      if [[ -z (echo $milters | grep inet:127.0.0.1:8893) ]]; then
+        milters="$milters, inet:127.0.0.1:8893"
+      fi
+      milters="smtpd_milters = $milters"
+      milters2="non_smtpd_milters = $milters2"
       
-      if [[ $TMPOPT == "y" || $TMPOPT == "Y" ]]
-        then
-          #Remove from Postifx
-          echo -e "Removing Postifx Mods"
-          service postfix stop
-          postconf -e "smtpd_milters = inet:127.0.0.1:33333"
-          sed -i "/^non_smtpd_milters =/d" /etc/postfix/main.cf
-          systemctl reload postfix
+      postconf -e $milters
+      postconf -e $milters2
 
-          echo -e "Removing EFA-Config related items to DKIM/DMARC"
-          sed -i "/^DMARCREPEMAIL:/d" /etc/eFa/eFa-Config
-          sed -i "/^DMARCREPDOMAIN:/d" /etc/eFa/eFa-Config
-          sed -i "/^OPENDMARCSQLPWD:/d" /etc/eFa/DMARC-Config
+      systemctl start opendmarc
+      systemctl enable opendmarc
+      systemctl start opendkim
+      systemctl enable opendkim
+      systemctl reload postfix
 
-          #Remove report task
-          rm -rf /etc/cron.daily/DMARCSendReports
+      ln -s /usr/sbin/eFa-Weekly-DMARC /etc/cron.weekly/eFa-Weekly-DMARC
+      ln -s /usr/sbin/eFa-Daily-DMARC /etc/cron.daily/eFa-Daily-DMARC
 
-          #Remove TLD Suffix task
-          rm -rf /etc/cron.weekly/UpdateDMARCTLD
-
-          #Drop tables
-
-          SQLPWD="`grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/^.*://'`"
-          /usr/bin/mysql -u root -p$SQLPWD -e "DROP DATABASE opendmarc;"
-
-          #Remove DB User
-          /usr/bin/mysql -u root -p"$SQLPWD" -e "DROP USER IF EXISTS opendmarc;"
-
-          #Remove Apps and saved files
-          systemctl stop opendmarc
-          systemctl disable opendmarc
-          systemctl stop opendkim
-          systemctl disable opendkim
-          yum remove -y opendkim opendmarc
-          rm -rf /etc/opendmarc.conf.rpmsave
-          rm -rf /etc/opendkim.conf.rpmsave
-
-          pause
-
-        elif [[ $TMPOPT == "n" || $TMPOPT == "N" || $TMPOPT == "c" || $TMPOPT == "C" ]]; then
-          echo -e "No action taken"
-          pause
+      echo -e "System is ready to use OpenDKIM verification and OpenDMARC verification and reporting"
+      pause
+    elif [[ $TMPOPT =~ ^[Nn]$ ]]; then
+      menu=0  
+      # explode and rebuild without option
+      milters=$(grep ^smtpd_milters /etc/postfix/main.cf | sed -e "s/^smtpd_milters\s\{0,1\}=\s\{0,1\}//")
+      OLDIFS=$IFS
+      IFS=','
+      read -r -a array <<< "$milters"
+      IFS=$OLDIFS
+      milters=
+      flag=0
+      for i in "${array[@]}"; do
+        if [[ $flag -eq 1 ]]; then
+          milters="$milters,"
         else
-          echo -e "$green[eFa]$clean Choice $green\"$TMPOPT\"$clean is not a valid choice."
-          echo -e ""
-          echo -e -n "$green[eFa]$clean Would you like to $red DISABLE $clean DMARC and DKIM functionality? [n/y/c]: "
-          read TMPOPT
+          flag=1
+        fi
+        if [[ ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
+          milters="$milters $i"
+        fi
+      done
+      if [[ -z $milters ]]; then
+        # something is wrong, string is empty, reset to default
+        milters="inet:127.0.0.1:33333"
       fi
+      milters="smtpd_milters = $milters"
+      postconf -e "$milters"
 
+      # explode and rebuild without option
+      milters2=$(grep ^non_smtpd_milters /etc/postfix/main.cf | sed -e "s/^non_smtpd_milters\s\{0,1\}=\s\{0,1\}//")
+      OLDIFS=$IFS
+      IFS=','
+      read -r -a array <<< "$milters2"
+      IFS=$OLDIFS
+      milters2=
+      flag=0
+      for i in "${array[@]}"; do
+        if [[ $flag -eq 1 ]]; then
+          milters2="$milters2,"
+        else
+          flag=1
+        fi
+        if [[ ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
+          milters2="$milters2 $i"
+        fi
+      done
+      milters2="non_smtpd_milters = $milters2"
+      postconf -e "$milters2"
+
+      systemctl stop opendmarc
+      systemctl disable opendmarc
+      systemctl stop opendkim
+      systemctl disable opendkim
+      systemctl reload postfix
+
+      rm -f /etc/cron.weekly/eFa-Weekly-DMARC > /dev/null 2>&1
+      rm -f /etc/cron.daily/eFa-Daily-DMARC > /dev/null 2>&1
+
+      echo "openDKIM and openDMARC are now disabled"
+      pause
+    elif [[ $TMPOPT =~ ^[cC]$ ]]; then
+      menu=0
+      echo "Nothing changed."
+      pause
     else
-      echo -e "$green[eFa]$clean DMARC and DKIM are currently $red DISABLED $clean on this appliance."
-      echo -e -n "$green[eFa]$clean Would you like to $green ENABLE $clean DMARC and DKIM functionality? [y/n/c]: "
+      echo ""
+      echo "Invalid option..."
+      echo -e -n "$green[eFa]$clean Would you like to enable DMARC and DKIM functionality? [Y/n/c]: "
       read TMPOPT
-
-      if [[ $TMPOPT == "y" || $TMPOPT == "Y" ]]
-        then
-          #Install OpenDMARC
-          echo -e "Installing required software now"
-          yum install -y policycoreutils-python opendmarc opendkim
-
-          #Get TLD Extensions
-          echo -e "Fetching TLD Name Suffix lists"
-          /usr/bin/wget -q -N -P /etc/opendmarc https://publicsuffix.org/list/effective_tld_names.dat
-
-          #Create weekly task to get updated lists
-          ln -s /usr/sbin/eFa-Weekly-DMARC /etc/cron.weekly/eFa-Weekly-DMARC
-
-          #Create daily task to send reports
-          ln -s /usr/sbin/eFa-Daily-DMARC /etc/cron.daily/eFa-Daily-DMARC
-
-          #Create OpenDMARC DB for reporting
-          echo -e "Creating OpenDMARC DB for reporting"
-          PASSWD=""
-          PASSWD=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
-          echo "OPENDMARCSQLPWD:$PASSWD" > /etc/eFa/DMARC-Config
-          SQLPWD="`grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/^.*://'`"
-          /usr/bin/mysql -u root -p"$SQLPWD" -e "CREATE DATABASE opendmarc;"
-          /usr/bin/mysql -u root -p"$SQLPWD" -e "GRANT ALL PRIVILEGES ON opendmarc.* TO opendmarc IDENTIFIED BY '$PASSWD';"
-          /usr/bin/mysql -u root -p"$SQLPWD" opendmarc < /usr/eFa/src/DMARC-Schema.sql
-          echo -e "DB created and creds saved
-
-          #Configure OpenDMARC
-          echo -e "Configuring OpenDMARC"
-          mkdir /var/opendmarc
-          chown opendmarc:opendmarc /var/opendmarc
-          sed -i "/^# AuthservID / c\AuthservID HOSTNAME" /etc/opendmarc.conf
-          sed -i "/^# PublicSuffixList / c\PublicSuffixList \/etc\/opendmarc\/effective_tld_names.dat" /etc/opendmarc.conf
-          sed -i "/^# HistoryFile / c\HistoryFile \/var\/opendmarc\/dmarc_msg_history.dat" /etc/opendmarc.conf
-          echo -e "OpenDMARC is configured"
-
-          #Configure OpenDKIM
-          echo -e "Configuring OpenDKIM"
-          sed -i "/^KeyFile/ c\#KeyFile \/etc\/opendkim\/keys\/default\.private" /etc/opendkim.conf
-          sed -i "/^# KeyTable/ c\KeyTable \/etc\/opendkim\/KeyTable" /etc/opendkim.conf
-          echo -e "OpenDKIM is configured for verification only, not signing!!"
-
-          #configure postfix for OpenDMARC and OpenDKIM
-          echo -e "configuring Postfix for OpenDKIM and OpenDMARC"
-          postconf -e "smtpd_milters = inet:127.0.0.1:33333, inet:localhost:8891, inet:localhost:8893"
-          postconf -e "non_smtpd_milters = inet:localhost:8891, inet:localhost:8893"
-          echo -e "Postfix is configured for OpenDKIM and OpenDMARC"
-
-          #Get report domain
-          echo -e "$green[eFa]$clean Please enter the Reporter Domain (org) to be used when sending DMARC reports"
-          read DMARCRepDomain
-            while [ $dncheck != 0 ]
-            do
-                if [[ $DMARCRepDomain =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*\.[a-z]{2,6}$ ]]
-            then
-                dncheck=0
-            else
-                echo -e "$red ERROR: The domain $DMARCRepDomain seems to be invalid"
-                echo -e "ERROR: please re-enter the domain$clean"
-                echo -e "$green[eFa]$clean Please enter the domain name for this machine"
-                echo -e -n "$green[eFa]$clean : "
-                read DMARCRepDomain
-            fi
-            done
-          
-          
-          echo -e "$green[eFa]$clean $DMARCRepDomain will be the organization used to to send reports."
-          echo "DMARCREPDOMAIN:$DMARCRepDomain" >> /etc/eFa/eFa-Config
-
-          #Get dmarc-report-email
-          echo -e "$green[eFa]$clean Please enter the Reporter Email to be used when sending DMARC reports"
-          read DMARCRepEmail
-          dmarcemailcheck=1
-          while [ $dmarcemailcheck != 0 ]
-            do
-              if [[ $DMARCRepEmail =~ ^[-_.@Aa-zA-Z0-9]{2,256}+[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,6}$ ]]
-            then
-              dmarcemailcheck=0
-            else
-              echo -e "       $red ERROR: The address $DMARCRepEmail seems to be invalid"
-              echo -e "        ERROR: please re-enter the DMARC Reporter Email Address$clean"
-              echo -e "$green[eFa]$clean Please enter the Reporter Email to be used when sending DMARC reports"
-              echo -e -n "$green[eFa]$clean : "
-              read DMARCRepEmail
-           fi
-           done
-          echo -e "$green[eFa]$clean $DMARCRepEmail will be the address used to to send reports."
-          echo "DMARCREPEMAIL:$DMARCRepEmail" >> /etc/eFa/eFa-Config
-
-          echo -e "Starting services..."
-          systemctl start opendmarc
-          systemctl enable opendmarc
-          systemctl start opendkim
-          systemctl enable opendkim
-          systemctl reload postfix
-          echo -e "System is ready to use OpenDKIM and OpenDMARC"
-          echo -e "Please see the eFa wiki for more advanced configuration options."
-          pause
-
-      elif [[ $TMPOPT == "n" || $TMPOPT == "N" || $TMPOPT == "c" || $TMPOPT == "C" ]]; then
-        echo -e "No action taken"
-        pause
-        
-      else
-        echo -e "$green[eFa]$clean Choice $green\"$TMPOPT\"$clean is not a valid choice."
-        echo -e ""
-        echo -e -n "$green[eFa]$clean Would you like to $green ENABLE $clean DMARC and DKIM functionality? [n/y/c]"
-        read TMPOPT
-      fi
-      
-fi
+    fi
+  done
 }
