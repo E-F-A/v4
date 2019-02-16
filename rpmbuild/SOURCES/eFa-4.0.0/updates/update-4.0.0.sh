@@ -414,7 +414,7 @@ cmd='sed -i "/^\/usr\/sbin\/tmpwatch / c\/usr/sbin/tmpwatch -u 48 /var/spool/Mai
 execcmd
 
 # Configure opendkim for verification only
-cmd='sed -i "s|^KeyFile /etc/opendkim/keys/default.private|#&|" /etc/opendkim.conf'
+cmd='sed -i "s|^KeyFile\s/etc/opendkim/keys/default.private|#&|" /etc/opendkim.conf'
 execcmd
 
 # Configure opendmarc
