@@ -14,10 +14,11 @@ function func_dkim-dmarc() {
   echo -e ""
   echo -e "$green[eFa]$clean Welcome to the DKIM and DMARC wizard!"
   echo -e "$green[eFa]$clean This option is enabled by default for new builds"
-  echo -e "$green[eFa]$clean The following questions will be used to enable/disable/modify a DKIM and DMARC deployment."
+  echo -e "$green[eFa]$clean The following questions will be used to
+  echo -e "$green[eFa]$clean enable/disable/modify a DKIM and DMARC deployment."
   echo -e ""
 
-  memu=1
+  menu=1
 
   echo -e -n "$green[eFa]$clean Would you like to enable DMARC and DKIM functionality? [Y/n/c]: "
   read TMPOPT
@@ -29,22 +30,22 @@ function func_dkim-dmarc() {
         # Something wrong, reset to default
         milters="inet:127.0.0.1:33333, inet:127.0.0.1:8891, inet:127.0.0.1:8893"
       fi
-      if [[ -z (echo $milters | grep inet:127.0.0.1:8891) ]]; then
+      if [[ -z $(echo $milters | grep inet:127.0.0.1:8891) ]]; then
         milters="$milters, inet:127.0.0.1:8891"
       fi
-      if [[ -z (echo $milters | grep inet:127.0.0.1:8893) ]]; then
+      if [[ -z $(echo $milters | grep inet:127.0.0.1:8893) ]]; then
         milters="$milters, inet:127.0.0.1:8893"
       fi
       milters2=$(grep ^non_smtpd_milters /etc/postfix/main.cf | sed -e 's/^non_smtpd_milters\s\{0,1\}=\s\{0,1\}//')
       if [[ -z $milters2 ]]; then
         # Empty or not present
-        milters="inet:127.0.0.1:8891, inet:127.0.0.1:8893"
+        milters=2"inet:127.0.0.1:8891, inet:127.0.0.1:8893"
       fi
-      if [[ -z (echo $milters | grep inet:127.0.0.1:8891) ]]; then
-        milters="$milters, inet:127.0.0.1:8891"
+      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8891) ]]; then
+        milters2="$milters2, inet:127.0.0.1:8891"
       fi
-      if [[ -z (echo $milters | grep inet:127.0.0.1:8893) ]]; then
-        milters="$milters, inet:127.0.0.1:8893"
+      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8893) ]]; then
+        milters2="$milters2, inet:127.0.0.1:8893"
       fi
       milters="smtpd_milters = $milters"
       milters2="non_smtpd_milters = $milters2"
@@ -58,8 +59,8 @@ function func_dkim-dmarc() {
       systemctl enable opendkim
       systemctl reload postfix
 
-      ln -s /usr/sbin/eFa-Weekly-DMARC /etc/cron.weekly/eFa-Weekly-DMARC
-      ln -s /usr/sbin/eFa-Daily-DMARC /etc/cron.daily/eFa-Daily-DMARC
+      ln -s /usr/sbin/eFa-Weekly-DMARC /etc/cron.weekly/eFa-Weekly-DMARC >/dev/null 2>&1
+      ln -s /usr/sbin/eFa-Daily-DMARC /etc/cron.daily/eFa-Daily-DMARC >/dev/null 2>&1
 
       echo -e "System is ready to use OpenDKIM verification and OpenDMARC verification and reporting"
       pause
@@ -74,13 +75,16 @@ function func_dkim-dmarc() {
       milters=
       flag=0
       for i in "${array[@]}"; do
-        if [[ $flag -eq 1 ]]; then
+        i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        if [[ $flag -eq 1 && ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
           milters="$milters,"
         else
           flag=1
         fi
         if [[ ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
           milters="$milters $i"
+        else
+          flag=0
         fi
       done
       if [[ -z $milters ]]; then
@@ -99,13 +103,16 @@ function func_dkim-dmarc() {
       milters2=
       flag=0
       for i in "${array[@]}"; do
-        if [[ $flag -eq 1 ]]; then
+        i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        if [[ $flag -eq 1 && ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
           milters2="$milters2,"
         else
           flag=1
         fi
         if [[ ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
           milters2="$milters2 $i"
+        else
+          flag=0
         fi
       done
       milters2="non_smtpd_milters = $milters2"
