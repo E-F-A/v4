@@ -50,8 +50,8 @@ function func_dkim-dmarc() {
       milters="smtpd_milters = $milters"
       milters2="non_smtpd_milters = $milters2"
       
-      postconf -e $milters
-      postconf -e $milters2
+      postconf -e "$milters"
+      postconf -e "$milters2"
 
       systemctl start opendmarc
       systemctl enable opendmarc
