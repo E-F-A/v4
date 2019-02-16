@@ -884,8 +884,6 @@ if [[ $configdmarc -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
-  #sed -i "/db_pass =/ c\db_pass = $SQLGREYSQLPWD" /etc/sqlgrey/sqlgrey.conf
-  #[ $? -ne 0 ] && exit 1
   echo "DMARCSQLPWD:$DMARCSQLPWD" > /etc/eFa/openDMARC-Config
   [ $? -ne 0 ] && exit 1
   DMARCSQLPWD=

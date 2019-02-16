@@ -26,6 +26,13 @@ function execcmd()
 eval $cmd && [[ $? -ne 0 ]] && echo "$cmd" && retval=1
 }
 
+function randompw()
+{
+  PASSWD=""
+  PASSWD=`openssl rand -base64 32`
+}
+# +---------------------------------------------------+
+
 # Move symlink for cron-dccd
 if [[ -e /etc/cron.monthly/cron-dccd ]]; then
   cmd='rm -f /etc/cron.monthly/cron-dccd'
@@ -403,10 +410,7 @@ fi
 /usr/bin/mysql -e "ALTER TABLE sa_bayes.txrep ADD last_hit timestamp NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; ALTER TABLE sa_bayes.txrep ADD KEY last_hit (last_hit);" >/dev/null 2>&1
 
 # Suppress permission denied errrors during tmpwatch execution
-sed -i "/^\/usr\/sbin\/tmpwatch / c\/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp >dev/null 2>\&1|" /etc/cron.daily/eFa-SAClean
-
-# opendmarc and opendkim
-cmd='yum -y install opendmarc opendkim >/dev/null >2&1'
+cmd='sed -i "/^\/usr\/sbin\/tmpwatch / c\/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp >dev/null 2>\&1" /etc/cron.daily/eFa-SAClean'
 execcmd
 
 # Configure opendkim for verification only
@@ -420,6 +424,20 @@ cmd='sed -i "/^# HistoryFile / c\HistoryFile /var/spool/opendmarc/opendmarc.dat"
 execcmd
 cmd='sed -i "/^# PublicSuffixList / c\PublicSuffixList /etc/opendmarc/public_suffix_list.dat" /etc/opendmarc.conf'
 execcmd
+
+if [[ ! -f /etc/eFa/openDMARC-Config ]]; then
+  # Set up DB
+  cmd='/usr/bin/mysql < /usr/src/eFa/mariadb/schema.mysql'
+  execcmd
+  randompw
+  DMARCSQLPWD=$PASSWD
+  /usr/bin/mysql -e "UPDATE mysql.user SET Password=PASSWORD('$DMARCSQLPWD') WHERE User='opendmarc'; FLUSH PRIVILEGES;"
+  [ $? -ne 0 ] && exit 1
+  echo "DMARCSQLPWD:$DMARCSQLPWD" > /etc/eFa/openDMARC-Config
+  [ $? -ne 0 ] && exit 1
+  DMARCSQLPWD=
+  PASSWD=
+fi
 
 cmd='curl -s https://publicsuffix.org/list/public_suffix_list.dat > /etc/opendmarc/public_suffix_list.dat'
 execcmd
