@@ -24,9 +24,11 @@ mv -f /etc/opendmarc/public_suffix_list.dat /etc/opendmarc/public_suffix_list.da
 
 curl -s https://publicsuffix.org/list/public_suffix_list.dat > /etc/opendmarc/public_suffix_list.dat
 if [[ $? -ne 0 ]]; then
-  mv -f etc/opendmarc/public_suffix_list.dat.old /etc/opendmarc/public_suffix_list.dat
+  rm -f /etc/opendmarc/public_suffix_list.dat >/dev/null 2>&1
+  mv -f /etc/opendmarc/public_suffix_list.dat.old /etc/opendmarc/public_suffix_list.dat
 elif [[ ! $(tail -n1 /etc/opendmarc/public_suffix_list.dat) =~ END\ PRIVATE\ DOMAINS ]]; then
-  mv -f etc/opendmarc/public_suffix_list.dat.old /etc/opendmarc/public_suffix_list.dat
+  rm -f /etc/opendmarc/public_suffix_list.dat >/dev/null 2>&1
+  mv -f /etc/opendmarc/public_suffix_list.dat.old /etc/opendmarc/public_suffix_list.dat
 fi
 
 systemctl reload opendmarc
