@@ -453,7 +453,8 @@ func_recipient_verification(){
   local choice
   while [ $menu -eq 1 ]
     do
-      read -p "Do you want to enable recipient address verification? (Y/n) : " choice
+      echo -e -n "$green[eFa]$clean Do you want to enable recipient address verification? (Y/n): "
+      read choice
       if [[ $choice =~ ^[Yy]$ || -z $choice ]]; then
         menu=0
         restrictions=$(grep ^smtpd_recipient_restrictions /etc/postfix/main.cf)
@@ -499,7 +500,8 @@ func_recipient_verification(){
         postconf -e "$restrictions"
       else
         echo "Invalid option..."
-        echo read -p "Do you want to enable recipient address verification? (Y/n) : " choice
+        echo -e -n "$green[eFa]$clean Do you want to enable recipient address verification? (Y/n): "
+        read choice
       fi
     done
     
