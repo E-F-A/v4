@@ -369,31 +369,6 @@ if [[ -z $(grep '^Received: from localhost' /etc/postfix/header_checks) ]]; then
   execcmd
 fi
 
-# Patch mailscanner daily crons
-if [[ -z $(grep eFa-Monitor /etc/cron.daily/mailscanner) ]]; then
-  cat > /etc/cron.daily/mailscanner << 'EOF'
-#!/bin/sh
-#
-moved=0
-if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
-  mv -f /etc/cron.d/eFa-Monitor.cron /var/eFa/eFa-Monitor.cron >/dev/null 2>&1
-  moved=1
-fi
-
-# daily actions
-/usr/sbin/ms-cron DAILY >/dev/null 2>&1
-
-# maintenance
-/usr/sbin/ms-cron MAINT >/dev/null 2>&1
-
-[[ -f /var/eFa/eFa-Monitor.cron && $moved -eq 1 ]] && mv -f /var/eFa/eFa-Monitor.cron /etc/cron.d/eFa-Monitor.cron >/dev/null 2>&1
-
-exit 0
-
-EOF
-  [[ $? -ne 0 ]] && echo "cat > /etc/cron.daily/mailscanner" && retval=1
-fi
-
 # Create .spamassassin directory for php-fpm
 cmd='mkdir -p /var/lib/php/fpm/.spamassassin'
 execcmd
@@ -439,17 +414,29 @@ if [[ ! -f /etc/eFa/openDMARC-Config ]]; then
   PASSWD=
 fi
 
-cmd='curl -s https://publicsuffix.org/list/public_suffix_list.dat > /etc/opendmarc/public_suffix_list.dat'
-execcmd
+if [ ! -f /etc/opendmarc/public_suffix_list.dat ]; then
+  cmd='curl -s https://publicsuffix.org/list/public_suffix_list.dat > /etc/opendmarc/public_suffix_list.dat'
+  execcmd
+fi
 
 if [[ -z $(grep ^unverified_recipient_reject_reason /etc/postfix/main.cf) ]]; then
-  cmd='postconf -e "unverified_recipient_reject_reason = Address lookup failed"'
+  cmd='postconf -e "unverified_recipient_reject_reason = No user at this address"'
   execcmd
 fi
 if [[ -z $(grep ^unverified_recipient_reject_code /etc/postfix/main.cf) ]]; then
   cmd='postconf -e "unverified_recipient_reject_code = 550"'
   execcmd
 fi
+
+# Lock down openDMARC-Config
+cmd='chown root:mtagroup /etc/eFa/openDMARC-Config'
+execcmd
+cmd='chmod 640 /etc/eFa/openDMARC-Config'
+execcmd
+cmd='chcon -u system_u -r object_r -t opendmarcsql_etc_t /etc/eFa/openDMARC-Config'
+[[ $instancetype != "lxc" ]] && execcmd
+cmd='semanage fcontext -a -t opendmarcsql_etc_t /etc/eFa/openDMARC-Config'
+[[ $instancetype != "lxc" ]] && execcmd
 
 cmd='systemctl daemon-reload'
 execcmd

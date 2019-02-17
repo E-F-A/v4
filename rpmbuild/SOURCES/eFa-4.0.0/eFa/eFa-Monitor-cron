@@ -33,12 +33,14 @@ MonitoredServices=("mysqld=mysqld" "MailScanner=mailscanner" "master=postfix" "h
 # Enable restart expiry (1 day)
 RestartExpiry=1
 AttemptsFile="/var/eFa/eFamonitor"
-ADMINEMAIL="`cat /etc/eFa/eFa-Config | grep ADMINEMAIL | sed 's/.*://'`"
-MAILFROM="$ADMINEMAIL"
+ADMINEMAIL="`grep ADMINEMAIL /etc/eFa/eFa-Config | sed 's/.*://'`"
+DOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
+MAILFROM="no-reply@$DOMAINNAME"
 MAILTO="$ADMINEMAIL"
 MAILSUBJECT="eFa Monitor ALERT"
 SENDMAIL="/usr/sbin/sendmail"
 TMPMAIL="/tmp/tempmail"
+SKIPTAG="/var/eFa/skipmonitor"
 
 # +--------------------------------------------------------------------+
 
@@ -108,4 +110,9 @@ function AlertOnFailure() {
 # +--------------------------------------------------------------------+
 # Main Function
 # +--------------------------------------------------------------------+
-CheckServices
+if [[ ! -f /var/eFa/skipmonitor ]]; then
+  CheckServices
+else
+  # Processes undergoing temporary maintenance, skip this round
+  rm -f /var/eFa/skipmonitor
+fi

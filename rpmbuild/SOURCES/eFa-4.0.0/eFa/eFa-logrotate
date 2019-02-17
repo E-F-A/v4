@@ -1,0 +1,15 @@
+/var/log/eFa/update.log {
+  monthly
+  rotate 4
+  missingok
+  notifempty
+  compress
+}
+
+/var/log/eFa/eFa-Backup.log {
+  monthly
+  rotate 4
+  missingok
+  notifempty
+  compress
+}
