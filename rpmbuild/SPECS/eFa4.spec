@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   38.eFa%{?dist}
+Release:   39.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -410,7 +410,6 @@ mv eFa/eFa-Daily-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
-mv eFa/mailscanner $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-logrotate $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mv eFa/mysqltuner.pl $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa/mariadb
@@ -500,10 +499,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.fc
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.te
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
-%attr(0755, root, root) %{_sysconfdir}/cron.daily/mailscanner
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Feb 17 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-39
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Sun Feb 17 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-38
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 

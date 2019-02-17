@@ -369,6 +369,27 @@ if [[ -z $(grep '^Received: from localhost' /etc/postfix/header_checks) ]]; then
   execcmd
 fi
 
+# Patch mailscanner daily crons
+if [[ -z $(grep skipmonitor /etc/cron.daily/mailscanner) ]]; then
+  cat > /etc/cron.daily/mailscanner << 'EOF'
+cat > /etc/cron.daily/mailscanner << 'EOF'
+#!/bin/sh
+#
+
+touch /var/eFa/skipmonitor
+
+# daily actions
+/usr/sbin/ms-cron DAILY >/dev/null 2>&1
+
+# maintenance
+/usr/sbin/ms-cron MAINT >/dev/null 2>&1
+
+exit 0
+
+EOF
+  [[ $? -ne 0 ]] && echo "cat > /etc/cron.daily/mailscanner" && retval=1
+fi
+
 # Create .spamassassin directory for php-fpm
 cmd='mkdir -p /var/lib/php/fpm/.spamassassin'
 execcmd
