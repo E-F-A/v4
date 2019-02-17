@@ -372,7 +372,6 @@ fi
 # Patch mailscanner daily crons
 if [[ -z $(grep skipmonitor /etc/cron.daily/mailscanner) ]]; then
   cat > /etc/cron.daily/mailscanner << 'EOF'
-cat > /etc/cron.daily/mailscanner << 'EOF'
 #!/bin/sh
 #
 
