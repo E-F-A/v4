@@ -76,15 +76,13 @@ function func_dkim-dmarc() {
       flag=0
       for i in "${array[@]}"; do
         i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-        if [[ $flag -eq 1 && ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
-          milters="$milters,"
-        else
-          flag=1
-        fi
         if [[ ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
-          milters="$milters $i"
-        else
-          flag=0
+          if [[ $flag -eq 1 ]]; then
+            milters="$milters, $i"
+          else
+            milters="$i"
+            flag=1
+          fi
         fi
       done
       if [[ -z $milters ]]; then
