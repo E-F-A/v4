@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Inform eFa-Monitor to skip a check
+touch /var/eFa/skipmonitor
+
+# daily actions
+/usr/sbin/ms-cron DAILY >/dev/null 2>&1
+
+# maintenance
+/usr/sbin/ms-cron MAINT >/dev/null 2>&1
+
+exit 0
