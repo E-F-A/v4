@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.12
 Epoch:         1
-Release:       8.eFa%{?dist}
+Release:       9.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -83,8 +83,7 @@ echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2
 echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 
 mkdir -p  %{buildroot}%{_sysconfdir}/cron.d
-echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.d/msre_reload
-echo "*/5 * * * *   root    /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh" >> %{buildroot}%{_sysconfdir}/cron.d/msre_reload
+echo "*/5 * * * *   root    /usr/bin/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh" > %{buildroot}%{_sysconfdir}/cron.d/msre_reload
 
 mkdir -p %{buildroot}%{_localstatedir}/www/html
 cp -a mailscanner %{buildroot}%{_localstatedir}/www/html/mailscanner
@@ -191,7 +190,7 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %defattr(-, root, root)
 %doc CHANGELOG.md CONTRIBUTING.md LICENSE.md README.md
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/Cron_jobs/*
-%attr(0755, root, root) %{_sysconfdir}/cron.d/msre_reload
+%attr(0644, root, root) %{_sysconfdir}/cron.d/msre_reload
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.monthly/mailwatch
 #%attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
