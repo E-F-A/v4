@@ -19,7 +19,7 @@
 #-----------------------------------------------------------------------------#
 sleep $[ ( $RANDOM % 3600 )  + 1 ]s
 
-rm -f /etc/opendmarc/public_suffix_list.dat.old > dev/null 2>&1
+rm -f /etc/opendmarc/public_suffix_list.dat.old >/dev/null 2>&1
 mv -f /etc/opendmarc/public_suffix_list.dat /etc/opendmarc/public_suffix_list.dat.old >/dev/null 2>&1
 
 curl -s https://publicsuffix.org/list/public_suffix_list.dat > /etc/opendmarc/public_suffix_list.dat
