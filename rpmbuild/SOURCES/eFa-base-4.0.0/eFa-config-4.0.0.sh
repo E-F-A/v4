@@ -136,7 +136,7 @@ mkdir -p /etc/eFa
 echo 'CONFIGURED:NO' > /etc/eFa/eFa-Config
 
 # Configure opendkim for verification only
-sed -i "s|^KeyFile /etc/opendkim/keys/default.private|#&|" /etc/opendkim.conf
+sed -i "s|^KeyFile\s/etc/opendkim/keys/default.private|#&|" /etc/opendkim.conf
 
 # Configure opendmarc
 sed -i "/^# AuthservID / c\AuthservID HOSTNAME" /etc/opendmarc.conf
