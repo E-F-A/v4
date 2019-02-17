@@ -23,8 +23,8 @@ func_greylisting(){
   echo -e "$green[eFa]$clean greylisting on this system."
   echo ""
   menu=1
-  while [ $menu -eq 1 ]; do
-      if [[ -n $(cat /etc/postfix/main.cf | grep "check_policy_service inet:127.0.0.1:2501") ]]; then
+  if [[ -n $(cat /etc/postfix/main.cf | grep "check_policy_service inet:127.0.0.1:2501") ]]; then
+    while [ $menu -eq 1 ]; do
         # DISABLE greylisting
         echo -e "$green[eFa]$clean Greylisting is currently $green ENABLED $clean"
         echo -e -n "$green[eFa]$clean Would you like to $red DISABLE $clean greylisting? [y/N/c]: "
@@ -41,15 +41,13 @@ func_greylisting(){
           flag=0
           for i in "${array[@]}"; do
             i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-            if [[ $flag -eq 1 && ! $i =~ check_policy_service\ inet:127.0.0.1:2501 ]]; then
-              restrictions="$restrictions,"
-            else
-              flag=1
-            fi
             if [[ ! $i =~ check_policy_service\ inet:127.0.0.1:2501 ]]; then
-              restrictions="$restrictions $i"
-            else
-              flag=0
+              if [[ $flag -eq 1  ]]; then
+                restrictions="$restrictions, $i"
+              else
+                restrictions="$i"
+                flag=1
+              fi
             fi
           done
 
@@ -113,6 +111,8 @@ func_greylisting(){
             if [[ $i =~ reject_unverified_recipient ]]; then
               flag2=1
               restrictions="$restrictions check_policy_service inet:127.0.0.1:2501, $i"
+            else
+              restrictions="$restrictions $i"
             fi
           done
           if [[ $flag2 -eq 0 ]]; then

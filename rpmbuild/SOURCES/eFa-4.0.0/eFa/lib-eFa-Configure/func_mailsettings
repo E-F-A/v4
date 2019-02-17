@@ -466,7 +466,7 @@ func_recipient_verification(){
           fi
         fi
         postconf -e "$restrictions"
-        postconf -e "unverified_recipient_reject_reason = Address lookup failed"
+        postconf -e "unverified_recipient_reject_reason = No user at this address"
         postconf -e "unverified_recipient_reject_code = 550"
       elif [[ $choice =~ ^[nN]$ ]]; then
         menu=0
@@ -481,15 +481,13 @@ func_recipient_verification(){
         local flag=0
         for i in "${array[@]}"; do
           i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-          if [[ $flag -eq 1 && ! $i =~ reject_unverified_recipient ]]; then
-            restrictions="$restrictions,"
-          else
-            flag=1
-          fi
           if [[ ! $i =~ reject_unverified_recipient ]]; then
-            restrictions="$restrictions $i"
-          else
-            flag=0
+            if [[ $flag -eq 1 ]]; then
+              restrictions="$restrictions, $i"
+            else
+              restrictions="$i"
+              flag=1
+            fi
           fi
         done
         if [[ -z $restrictions ]]; then
