@@ -153,6 +153,22 @@ echo -e "From:\t::1\tno" > /etc/MailScanner/numeric.phishing.rules
 echo -e "FromOrTo:\tDefault\tyes" >> /etc/MailScanner/numeric.phishing.rules
 sed -i '/^Also Find Numeric Phishing =/ c\Also Find Numeric Phishing = %etc-dir%/numeric.phishing.rules' /etc/MailScanner/MailScanner.conf
 
+cat > /etc/cron.daily/mailscanner << 'EOF'
+#!/bin/sh
+#
+
+touch /var/eFa/skipmonitor
+
+# daily actions
+/usr/sbin/ms-cron DAILY >/dev/null 2>&1
+
+# maintenance
+/usr/sbin/ms-cron MAINT >/dev/null 2>&1
+
+exit 0
+
+EOF
+
 sed -i '/^\/usr\/sbin\/ms-cron DAILY/ c\/usr/sbin/ms-cron DAILY >/dev/null 2>&1' /etc/cron.daily/mailscanner
 sed -i '/^\/usr\/sbin\/ms-cron MAINT/ c\/usr/sbin/ms-cron MAINT >/dev/null 2>&1' /etc/cron.daily/mailscanner
 
