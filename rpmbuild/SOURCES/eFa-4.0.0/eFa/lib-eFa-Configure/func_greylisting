@@ -115,8 +115,8 @@ func_greylisting(){
               restrictions="$restrictions $i"
             fi
           done
-          if [[ $flag2 -eq 0 ]]; then
-            restrictions="$restrictions check_policy_service inet:127.0.0.1:2501"
+          if [[ $flag2 -eq 0 && $flag -eq 1 ]]; then
+            restrictions="$restrictions, check_policy_service inet:127.0.0.1:2501"
           fi
 
           if [[ -z $restrictions ]]; then
