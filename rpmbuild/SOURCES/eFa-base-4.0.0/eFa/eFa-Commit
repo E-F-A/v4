@@ -893,6 +893,20 @@ fi
 if [[ $configapache -eq 1 ]]; then
   sed -i "/^ServerAdmin/ c\ServerAdmin $ADMINEMAIL" /etc/httpd/conf/httpd.conf
   [ $? -ne 0 ] && exit 1
+  echo '<VirtualHost _default_:80>' > /etc/httpd/conf.d/redirectssl.conf
+  [ $? -ne 0 ] && exit 1
+  echo "  ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/redirectssl.conf
+  [ $? -ne 0 ] && exit 1
+  echo "  RewriteEngine On" >> /etc/httpd/conf.d/redirectssl.conf
+  [ $? -ne 0 ] && exit 1
+  echo '  RewriteCond %{SERVER_PORT} 80' >> /etc/httpd/conf.d/redirectssl.conf
+  [ $? -ne 0 ] && exit 1
+  echo '  RewriteCond %{REQUEST_URI} !^/\.well\-known/acme\-challenge/' >> /etc/httpd/conf.d/redirectssl.conf
+  [ $? -ne 0 ] && exit 1
+  echo '  RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]' >> /etc/httpd/conf.d/redirectssl.conf
+  [ $? -ne 0 ] && exit 1
+  echo '</VirtualHost>' >> /etc/httpd/conf.d/redirectssl.conf
+  [ $? -ne 0 ] && exit 1
 fi
 
 if [[ $configyumcron -eq 1 ]]; then
