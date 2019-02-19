@@ -28,24 +28,24 @@ function func_dkim-dmarc() {
       milters=$(grep ^smtpd_milters /etc/postfix/main.cf | sed -e 's/^smtpd_milters\s\{0,1\}=\s\{0,1\}//')
       if [[ -z $milters ]]; then
         # Something wrong, reset to default
-        milters="inet:127.0.0.1:33333, inet:127.0.0.1:8891, inet:127.0.0.1:8893"
-      fi
-      if [[ -z $(echo $milters | grep inet:127.0.0.1:8891) ]]; then
-        milters="$milters, inet:127.0.0.1:8891"
+        milters="inet:127.0.0.1:8891, inet:127.0.0.1:8893, inet:127.0.0.1:33333"
       fi
       if [[ -z $(echo $milters | grep inet:127.0.0.1:8893) ]]; then
-        milters="$milters, inet:127.0.0.1:8893"
+        milters="inet:127.0.0.1:8893, $milters"
+      fi
+      if [[ -z $(echo $milters | grep inet:127.0.0.1:8891) ]]; then
+        milters="inet:127.0.0.1:8891, $milters"
       fi
       milters2=$(grep ^non_smtpd_milters /etc/postfix/main.cf | sed -e 's/^non_smtpd_milters\s\{0,1\}=\s\{0,1\}//')
       if [[ -z $milters2 ]]; then
         # Empty or not present
         milters2="inet:127.0.0.1:8891, inet:127.0.0.1:8893"
       fi
-      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8891) ]]; then
-        milters2="$milters2, inet:127.0.0.1:8891"
-      fi
       if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8893) ]]; then
-        milters2="$milters2, inet:127.0.0.1:8893"
+        milters2="inet:127.0.0.1:8893, $milters2"
+      fi
+      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8891) ]]; then
+        milters2="inet:127.0.0.1:8891, $milters2"
       fi
       milters="smtpd_milters = $milters"
       milters2="non_smtpd_milters = $milters2"
