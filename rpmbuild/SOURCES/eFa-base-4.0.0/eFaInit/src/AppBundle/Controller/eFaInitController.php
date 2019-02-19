@@ -1248,7 +1248,7 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring apache<br/>' . $output;
 
         try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configapache --adminemail=' . $session->get('email'));
+            $process = new Process('sudo /usr/sbin/eFa-Commit --configapache --adminemail=' . $session->get('email') . ' --hostname=' . $session->get('hostname') . ' --domainname=' . $session->get('domainname'));
             $process->setTimeout($this->timeout);
             $process->mustRun();
 

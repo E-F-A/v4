@@ -103,10 +103,12 @@ sed -i '/    Options Indexes FollowSymLinks/ c\    Options None' /etc/httpd/conf
 # Configure SSL
 sed -i '/^#Listen 443/ c\Listen 443 https' /etc/httpd/conf.d/ssl.conf
 sed -i "/^SSLProtocol/ c\SSLProtocol all -SSLv2 -SSLv3" /etc/httpd/conf.d/ssl.conf
-echo -e "RewriteEngine On" > /etc/httpd/conf.d/redirectssl.conf
-echo -e "RewriteCond %{SERVER_PORT} 80" >> /etc/httpd/conf.d/redirectssl.conf
-echo -e "RewriteCond %{REQUEST_URI} !^/\.well\-known/acme\-challenge/" >> /etc/httpd/conf.d/redirectssl.conf
-echo -e "RewriteRule ^/?(.*) https://%{SERVER_NAME}/\$1 [R,L]" >> /etc/httpd/conf.d/redirectssl.conf
+echo '<VirtualHost _default_:80>' > /etc/httpd/conf.d/redirectssl.conf
+echo "  RewriteEngine On" >> /etc/httpd/conf.d/redirectssl.conf
+echo '  RewriteCond %{SERVER_PORT} 80' >> /etc/httpd/conf.d/redirectssl.conf
+echo '  RewriteCond %{REQUEST_URI} !^/\.well\-known/acme\-challenge/' >> /etc/httpd/conf.d/redirectssl.conf
+echo '  RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]' >> /etc/httpd/conf.d/redirectssl.conf
+echo '</VirtualHost>' >> /etc/httpd/conf.d/redirectssl.conf
 
 # Harden Apache
 sed -i "/^SSLCipherSuite/ c\SSLCipherSuite ECDSA+AESGCM:ECDH+AESGCM:ECDSA+AES:ECDH+AES:RSA+AESGCM:RSA+AES:\!aNULL:\!MD5:\!DSS:\!3DES:\!EXP" /etc/httpd/conf.d/ssl.conf

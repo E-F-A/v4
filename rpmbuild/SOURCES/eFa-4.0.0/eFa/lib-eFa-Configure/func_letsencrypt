@@ -31,8 +31,8 @@ function func_lets-encrypt() {
       echo -e ""
       echo -e "I'm restoring the original self-signed certs back to Apache."
       echo -e ""
-      sed -i "s|^SSLCertificateFile|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|" /etc/httpd/conf.d/ssl.conf
-      sed -i "s|^SSLCertificateKeyFile|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^SSLCertificateFile / c\SSLCertificateFile /etc/pki/tls/certs/localhost.crt" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^SSLCertificateKeyFile / c\SSLCertificateKeyFile /etc/pki/tls/private/localhost.key" /etc/httpd/conf.d/ssl.conf
       sed -i "/^SSLCertificateChainFile/d" /etc/httpd/conf.d/ssl.conf
       sed -i "/^ServerAlias/d" /etc/httpd/conf.d/ssl.conf
 
