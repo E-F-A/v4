@@ -112,7 +112,4 @@ function AlertOnFailure() {
 # +--------------------------------------------------------------------+
 if [[ ! -f /var/eFa/skipmonitor ]]; then
   CheckServices
-else
-  # Processes undergoing temporary maintenance, skip this round
-  rm -f /var/eFa/skipmonitor
 fi
