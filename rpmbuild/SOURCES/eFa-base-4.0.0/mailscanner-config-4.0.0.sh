@@ -165,8 +165,9 @@ touch /var/eFa/skipmonitor
 # maintenance
 /usr/sbin/ms-cron MAINT >/dev/null 2>&1
 
-exit 0
+rm -f /var/eFa/skipmonitor
 
+exit 0
 EOF
 
 sed -i '/^\/usr\/sbin\/ms-cron DAILY/ c\/usr/sbin/ms-cron DAILY >/dev/null 2>&1' /etc/cron.daily/mailscanner
