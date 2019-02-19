@@ -117,7 +117,7 @@ func_setipsettings(){
   sed -i "/^IPV6GATEWAY:/ c\IPV6GATEWAY:$GW6" /etc/eFa/eFa-Config
   sed -i "/^DNSIP1:/ c\DNSIP1:$DNS1" /etc/eFa/eFa-Config
   sed -i "/^DNSIP2:/ c\DNSIP2:$DNS2" /etc/eFa/eFa-Config
-  sed -i "/^IPV6DNS:/ C\IPV6DNS:$IPV6DNS" /etc/eFa/eFa-Config
+  sed -i "/^IPV6DNS:/ c\IPV6DNS:$IPV6DNS" /etc/eFa/eFa-Config
   
   echo -e "All done"
   pause
