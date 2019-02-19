@@ -357,10 +357,28 @@ execcmd
 cmd='sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf'
 execcmd
 
-if [[ ! -f /etc/httpd/conf.d/vhost.conf ]]; then
-  echo "<VirtualHost _default_:80>" > /etc/httpd/conf.d/vhost.conf
-  echo "ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/vhost.conf
-  echo "</VirtualHost>" >> /etc/httpd/conf.d/vhost.conf
+if [[ -f /etc/httpd/conf.d/vhost.conf ]]; then
+  cmd='rm -f /etc/httpd/conf.d/vhost.conf'
+  execcmd
+fi
+
+# Is redirect file present?
+if [[ -f /etc/httpd/conf.d/redirectssl.conf ]]; then
+  # Has it been updated with ServerName?
+  if [[ -z $(grep ServerName /etc/httpd/conf.d/redirectssl.conf) ]]; then
+    echo '<VirtualHost _default_:80>' > /etc/httpd/conf.d/redirectssl.conf
+    echo "  ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/redirectssl.conf
+    echo "  RewriteEngine On" >> /etc/httpd/conf.d/redirectssl.conf
+    echo '  RewriteCond %{SERVER_PORT} 80' >> /etc/httpd/conf.d/redirectssl.conf
+    echo '  RewriteCond %{REQUEST_URI} !^/\.well\-known/acme\-challenge/' >> /etc/httpd/conf.d/redirectssl.conf
+    echo '  RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]' >> /etc/httpd/conf.d/redirectssl.conf
+    echo '</VirtualHost>' >> /etc/httpd/conf.d/redirectssl.conf
+  fi
+else 
+  # File needs to exist with at least the following
+  echo '<VirtualHost _default_:80>' > /etc/httpd/conf.d/redirectssl.conf
+  echo "  ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/redirectssl.conf
+  echo '</VirtualHost>' >> /etc/httpd/conf.d/redirectssl.conf
 fi
 
 # Add entry to header_checks
