@@ -107,6 +107,7 @@ func_setipsettings(){
   fi
   
   systemctl restart network
+  systemctl restart unbound
   
   # Write change to EFA-Config
   sed -i "/^IPV4ADDRESS:/ c\IPV4ADDRESS:$IP4" /etc/eFa/eFa-Config
