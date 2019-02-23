@@ -47,7 +47,7 @@ function func_webmin() {
         done
 
         # set password
-        /usr/libexec/webmin/changepass.pl /etc/webmin root "'"$webminpwd1"'"
+        /usr/libexec/webmin/changepass.pl /etc/webmin root $webminpwd1
         webminpwd1=
         webminpwd2=
 
