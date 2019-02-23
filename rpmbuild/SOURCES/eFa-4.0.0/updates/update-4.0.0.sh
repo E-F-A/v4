@@ -503,7 +503,7 @@ cmd='systemctl enable milter_relay'
 execcmd
 cmd='systemctl start milter_relay'
 execcmd
-#cmd='systemctl restart mariadb'
-#execcmd
+cmd='systemctl restart mariadb'
+execcmd
 
 exit $retval
