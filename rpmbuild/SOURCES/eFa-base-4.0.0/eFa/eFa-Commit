@@ -767,6 +767,9 @@ if [[ $configsa -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   sed -i "/^envelope_sender_header / c\envelope_sender_header X-$ORGNAME-MailScanner-eFa-From" /etc/MailScanner/spamassassin.conf
   [ $? -ne 0 ] && exit 1
+  sed -i "/^header MS_FOUND_SPAMVIRUS / c\header MS_FOUND_SPAMVIRUS exists:X-$ORGNAME-MailScanner-eFa-SpamVirus-Report" /etc/MailScanner/spamassassin.conf
+  [ $? -ne 0 ] && exit 1
+
   randompw
   SAUSERSQLPWD=$PASSWD
   /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$SAUSERSQLPWD') WHERE User='sa_user';"
