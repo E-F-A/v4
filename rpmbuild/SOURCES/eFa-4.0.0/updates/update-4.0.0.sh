@@ -476,17 +476,22 @@ cmd='chcon -u system_u -r object_r -t opendmarcsql_etc_t /etc/eFa/openDMARC-Conf
 cmd='semanage fcontext -a -t opendmarcsql_etc_t /etc/eFa/openDMARC-Config'
 [[ $instancetype != "lxc" ]] && execcmd
 
+# Fix MS_FOUND_SPAMVIRUS header
+ORGNAME=$(grep ^ORGNAME /etc/eFa/eFa-Config | sed -e 's/^.*://')
+sed -i "s/^header MS_FOUND_SPAMVIRUS exists:X-MailScanner-SpamVirus-Report$/header MS_FOUND_SPAMVIRUS exists:X-$ORGNAME-MailScanner-eFa-SpamVirus-Report/" /etc/MailScanner/spamassassin.conf
+[[ $? -ne 0 ]] && echo "sed action on MS_FOUND_SPAMVIRUS failed" && retval=1
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
 execcmd
 cmd='systemctl reload php-fpm'
 execcmd
-cmd='systemctl reload sqlgrey'
-execcmd
 cmd='systemctl reload postfix'
 execcmd
-cmd='systemctl reload clamd@scan'
+cmd='systemctl restart sqlgrey'
+execcmd
+cmd='systemctl restart clamd@scan'
 execcmd
 cmd='systemctl restart mailscanner'
 execcmd
@@ -498,7 +503,7 @@ cmd='systemctl enable milter_relay'
 execcmd
 cmd='systemctl start milter_relay'
 execcmd
-cmd='systemctl reload mariadb'
-execcmd
+#cmd='systemctl restart mariadb'
+#execcmd
 
 exit $retval
