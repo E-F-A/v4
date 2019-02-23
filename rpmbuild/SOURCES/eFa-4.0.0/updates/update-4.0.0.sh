@@ -478,15 +478,15 @@ cmd='semanage fcontext -a -t opendmarcsql_etc_t /etc/eFa/openDMARC-Config'
 
 cmd='systemctl daemon-reload'
 execcmd
-cmd='systemctl restart httpd'
+cmd='systemctl reload httpd'
 execcmd
-cmd='systemctl restart php-fpm'
+cmd='systemctl reload php-fpm'
 execcmd
-cmd='systemctl restart sqlgrey'
+cmd='systemctl reload sqlgrey'
 execcmd
-cmd='systemctl restart postfix'
+cmd='systemctl reload postfix'
 execcmd
-cmd='systemctl restart clamd@scan'
+cmd='systemctl reload clamd@scan'
 execcmd
 cmd='systemctl restart mailscanner'
 execcmd
@@ -498,7 +498,7 @@ cmd='systemctl enable milter_relay'
 execcmd
 cmd='systemctl start milter_relay'
 execcmd
-cmd='systemctl restart mariadb'
+cmd='systemctl reload mariadb'
 execcmd
 
 exit $retval
