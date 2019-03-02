@@ -1,5 +1,5 @@
 
-module eFa 1.0.8;
+module eFa 1.0.9;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -102,6 +102,7 @@ require {
     type httpd_var_lib_t;
     type initrc_var_run_t;
     type proc_net_t;
+    type dkim_milter_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -278,6 +279,8 @@ dontaudit httpd_sys_script_t rpcbind_t:dir { getattr search };
 dontaudit httpd_sys_script_t rpcbind_t:file { read open };
 dontaudit httpd_sys_script_t dovecot_t:dir { getattr search };
 dontaudit httpd_sys_script_t dovecot_t:file { read open };
+dontaudit httpd_sys_script_t dkim_milter_t:dir { getattr search };
+dontaudit httpd_sys_script_t dkim_milter_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -285,7 +288,7 @@ allow httpd_sys_script_t spamd_var_lib_t:dir { getattr search read open };
 allow httpd_sys_script_t etc_mail_t:dir { getattr read open };
 allow httpd_sys_script_t spamd_var_lib_t:file { getattr read open ioctl execute };
 allow httpd_sys_script_t etc_mail_t:file { getattr read open ioctl };
-allow httpd_sys_script_t etc_mail_t:lnk_file read;
+allow httpd_sys_script_t etc_mail_t:lnk_file { getattr read };
 allow httpd_sys_script_t mscan_etc_t:dir { search open read };
 allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl lock };
 allow httpd_sys_script_t mscan_etc_t:lnk_file read;
