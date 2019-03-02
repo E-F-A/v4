@@ -92,11 +92,20 @@ fi
 
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php &
 
-/usr/sbin/clamav-unofficial-sigs.sh &
-
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php &
 
 # Early synchronous tasks
+
+# Initial clamav unofficial sigs download
+sed -i '/^enable_random/ c\enable_random="no"' /etc/clamav-unoffical-sigs/master.conf
+/usr/sbin/clamav-unofficial-sigs.sh
+if [[ $? -ne 0 ]]; then
+    logger -p user.warn "eFa Post Init: ClamAV Unofficial Sigs download failed!  Please fix me to finish initializing eFa.  Retrying in 1 minute..."
+    sed -i "/^    echo ' running on ' . efa_version/ c\    echo ' running on ' . efa_version() . ' ...ERROR INITIALIZATING, CHECK clamav unofficial sigs... ';" /var/www/html/mailscanner/functions.php
+    rm -f /var/run/eFa-Post-Init.lock
+    exit 1
+fi
+sed -i '/^enable_random/ c\enable_random="yes"' /etc/clamav-unoffical-sigs/master.conf
 
 if [[ ! -f /var/lib/clamav/main.cvd ]]; then
   systemctl stop clamd@scan
