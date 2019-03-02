@@ -739,8 +739,15 @@ if [[ $configtransport -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   
   echo "root@$DOMAINNAME $ADMINEMAIL" > /etc/postfix/recipient_canonical
+  [ $? -ne 0 ] && exit 1
   echo "root@$DOMAINNAME root@$HOSTNAME.$DOMAINNAME" > /etc/postfix/sender_canonical
-  
+  [ $? -ne 0 ] && exit 1
+
+  postmap /etc/postfix/recipient_canonical
+  [ $? -ne 0 ] && exit 1
+  postmap /etc/postfix/sender_canonical
+  [ $? -ne 0 ] && exit 1
+
 fi
 
 if [[ $configsa -eq 1 ]]; then
