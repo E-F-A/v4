@@ -481,6 +481,12 @@ ORGNAME=$(grep ^ORGNAME /etc/eFa/eFa-Config | sed -e 's/^.*://')
 sed -i "s/^header MS_FOUND_SPAMVIRUS exists:X-MailScanner-SpamVirus-Report$/header MS_FOUND_SPAMVIRUS exists:X-$ORGNAME-MailScanner-eFa-SpamVirus-Report/" /etc/MailScanner/spamassassin.conf
 [[ $? -ne 0 ]] && echo "sed action on MS_FOUND_SPAMVIRUS failed" && retval=1
 
+# Set milter queue permissions
+cmd='chown postfix:postfix /var/spool/MailScanner/milterin'
+execcmd
+cmd='chown postfix:postfix /var/spool/MailScanner/milterout'
+execcmd
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
