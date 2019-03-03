@@ -495,6 +495,8 @@ cmd='systemctl restart clamd@scan'
 execcmd
 cmd='systemctl restart mailscanner'
 execcmd
+cmd='systemctl restart msmilter'
+execcmd
 cmd='systemctl enable postfix_relay'
 execcmd
 cmd='systemctl start postfix_relay'
