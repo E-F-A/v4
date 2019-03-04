@@ -1,5 +1,5 @@
 
-module eFa 1.0.10;
+module eFa 1.0.11;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -300,7 +300,7 @@ allow httpd_sys_script_t dcc_client_map_t:file { getattr open read write lock };
 allow httpd_sys_script_t self:capability { setgid setuid chown dac_override dac_read_search sys_resource fsetid fowner audit_write };
 allow httpd_sys_script_t self:netlink_audit_socket { create write nlmsg_relay read };
 allow httpd_sys_script_t self:process setrlimit;
-allow httpd_sys_script_t mscan_spool_t:dir { getattr search setattr write };
+allow httpd_sys_script_t mscan_spool_t:dir { getattr search setattr write add_name };
 allow httpd_sys_script_t tmpfs_t:dir { setattr write add_name create read remove_name rmdir };
 allow httpd_sys_script_t tmpfs_t:file { append getattr open ioctl setattr create read write lock unlink };
 allow httpd_sys_script_t tmpfs_t:filesystem getattr;
