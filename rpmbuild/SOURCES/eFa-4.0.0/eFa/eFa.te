@@ -103,6 +103,7 @@ require {
     type initrc_var_run_t;
     type proc_net_t;
     type dkim_milter_t;
+    type ntpd_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -281,6 +282,8 @@ dontaudit httpd_sys_script_t dovecot_t:dir { getattr search };
 dontaudit httpd_sys_script_t dovecot_t:file { read open };
 dontaudit httpd_sys_script_t dkim_milter_t:dir { getattr search };
 dontaudit httpd_sys_script_t dkim_milter_t:file { read open };
+dontaudit httpd_sys_script_t ntpd_t:dir { getattr search };
+dontaudit httpd_sys_script_t ntpd_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
