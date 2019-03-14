@@ -172,8 +172,6 @@ logthis "Updating the OS"
 yum -y update
 if [ $? -eq 0 ]; then
     logthis "System Updated"
-else
-    logthis "+ $?"
 fi
 
 logthis "Removing conflicting packages"
