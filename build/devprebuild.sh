@@ -52,28 +52,28 @@ if [[ ! -d /root/v4 ]]; then
 fi
 
 yum -y install epel-release
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 
 echo "- Adding IUS Repo"
 yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 
 yum -y update
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 
 yum -y remove mariadb-libs
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 
 yum -y install rpm-build
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 
 mkdir -p $GITPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 echo "%_topdir $GITPATH/rpmbuild" > ~/.rpmmacros
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
 yum -y remove postfix postfix32u
-[ $? != 0 ] && exit 1
+[ $? -ne 0 ] && exit 1
