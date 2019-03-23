@@ -1,8 +1,8 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.0 build script version 20190312
+# eFa 4.0.0 build script version 20190323
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2017 https://efa-project.org
+# Copyright (C) 2013~2019 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -200,16 +200,33 @@ if [[ "$action" == "kstesting" || "$action" == "ksproduction" ]]; then
 
   # Disable ssh for kickstart builds
   systemctl disable sshd
+
+fi
+
+if [[ "$action" == "ksproduction" ]]; then
+  # Zero free space in preparation for export
+  logthis "Zeroing free space"
+  dd if=/dev/zero of=/filler bs=4096 >/dev/null 2>&1
+  rm -f /filler
+  dd if=/dev/zero of=/tmp/filler bs=4096 >/dev/null 2>&1
+  rm -f /tmp/filler
+  dd if=/dev/zero of=/boot/filler bs=4096 >/dev/null 2>&1
+  rm -f /boot/filler
+  dd if=/dev/zero of=/var/filler bs=4096 >/dev/null 2>&1
+  rm -f /var/filler
+  logthis "Zeroed free space"
 fi
 
 logthis "============  EFA4 BUILD SCRIPT FINISHED  ============"
 
-while true; do
-    read -p "Do you wish to reboot the system now?" yn
-    case $yn in
-        [Yy]* ) shutdown -r +1 "Installation requires reboot. Restarting in 1 minute"; break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
+if [[ "$action" == "testing" || "$action" == "production" ]]; then
+    while true; do
+        read -p "Do you wish to reboot the system now?" yn
+        case $yn in
+            [Yy]* ) shutdown -r +1 "Installation requires reboot. Restarting in 1 minute"; break;;
+            [Nn]* ) exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+fi
 exit 0
