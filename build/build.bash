@@ -169,7 +169,7 @@ if [ $? -ne 0 ]; then
 fi
 
 logthis "Updating the OS"
-yum -y update
+yum -y update >> $LOGFILE 2>&1
 if [ $? -eq 0 ]; then
     logthis "System Updated"
 fi
@@ -182,7 +182,7 @@ yum -y remove postfix mariadb-libs >/dev/null 2>&1
 rpm -q eFa >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     if [[ "$action" != "testingnoefa" ]]; then
-        yum -y install eFa
+        yum -y install eFa >> $LOGFILE 2>&1
         if [ $? -eq 0 ]; then
             logthis "eFa4 Installed"
         else
