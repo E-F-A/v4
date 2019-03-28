@@ -1,3 +1,3 @@
-'Enter a valid hostname': '__Введите правильное имя хоста'
+'Enter a valid hostname': 'Введите правильное имя хоста'
 'Passwords do not match': 'Пароли не совпадают'
-'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': '__Имя пользователя для Web-доступа должно начинаться с буквы или "_" (до 30 символов), также можно использовать адрес электронной почты'
+'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': 'Имя пользователя для Web-доступа должно начинаться с буквы или "_" (до 30 символов), также можно использовать адрес электронной почты'
