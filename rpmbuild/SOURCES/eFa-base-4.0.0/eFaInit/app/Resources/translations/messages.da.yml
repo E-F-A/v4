@@ -82,5 +82,5 @@
 'Set IP Mask': 'Sæt IP Mask'
 'IANA Country Code': 'IANA landekode'
 'Verify Settings': 'Bekræft Indstillinger'
-'Enable IPv6 DNS': '__Enable IPv6 DNS'
-'Do you want to Enable IPv6 DNS?': '__Do you want to Enable IPv6 DNS?'
+'Enable IPv6 DNS': 'Aktiver IPv6 DNS'
+'Do you want to Enable IPv6 DNS?': 'Vil du aktivere IPv6 DNS?'
