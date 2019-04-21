@@ -91,7 +91,7 @@ func_ip-settings(){
                     fi
                     ;;
                 6)  ipmenu=0
-                    Read -p "use IPv6 dns? (Y/n): " ASKIPV6DNS
+                    read -p "use IPv6 dns? (Y/n): " ASKIPV6DNS
                     if [[ -z $ASKIPV6DNS || $ASKIPV6DNS =~ ^[yY]$ ]]; then
                        IPV6DNS="yes"
                        func_setipsettings
