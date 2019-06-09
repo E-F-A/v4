@@ -21,13 +21,18 @@
 action="$1"
 
 #----------------------------------------------------------------#
-# Variables
+# Configuration
 #----------------------------------------------------------------#
-BACKUPDIR="/var/eFa/backup"
-MYSQLROOTPWD="`grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/.*://'`"
-TMPDIR="/var/eFa/backup/tmp"
-DAYSTOKEEP=5
+CONFIG_FILE=/etc/eFa/Backup-Config
+MYSQL_CONFIG_FILE=/etc/eFa/MySQL-Config
 
+# Read settings from config files or use defaults if not found
+ENABLED="`(grep -e "^ENABLED:" ${CONFIG_FILE} || echo ":YES") | sed 's/^.*://' | awk '{$1=$1};1'`"
+BT_SKIP_DATA="`(grep -e "^BT_SKIP_DATA:" ${CONFIG_FILE} || echo ":NO") | sed 's/^.*://' | awk '{$1=$1};1'`"
+DAYSTOKEEP="`(grep -e "^DAYSTOKEEP:" ${CONFIG_FILE} || echo ":5") | sed 's/^.*://' | awk '{$1=$1};1'`"
+BACKUPDIR="`(grep -e "^BACKUPDIR:" ${CONFIG_FILE} || echo ":/var/eFa/backup") | sed 's/^.*://' | awk '{$1=$1};1'`"
+TMPDIR="`(grep -e "^TMPDIR:" ${CONFIG_FILE} || echo ":/var/eFa/backup/tmp") | sed 's/^.*://' | awk '{$1=$1};1'`"
+MYSQLROOTPWD="`grep -e "^MYSQLROOTPWD:" ${MYSQL_CONFIG_FILE} | sed 's/.*://' | awk '{$1=$1};1'`"
 #----------------------------------------------------------------#
 
 #----------------------------------------------------------------#
@@ -36,10 +41,10 @@ DAYSTOKEEP=5
 function start_purge()
 {
 
-  echo "Purging Backups older than $DAYSTOKEEP..."
+  echo "Purging Backups older than ${DAYSTOKEEP}..."
   # Do not purge if no recent backups are present
-  if [[ -n `find $BACKUPDIR -type f -mtime -$((DAYSTOKEEP+1))` ]]; then
-    find $BACKUPDIR -type f -mtime +$DAYSTOKEEP -exec rm -f {} \;
+  if [[ -n `find ${BACKUPDIR} -type f -mtime -$((DAYSTOKEEP+1))` ]]; then
+    find ${BACKUPDIR} -type f -mtime +${DAYSTOKEEP} -exec rm -f {} \;
     echo "Old backups purged."
   else
     echo "No recent backups are present!  Skipping purge."
@@ -56,98 +61,126 @@ function start_backup()
   CDATE=`date +%Y%m%d`
   CTIME=`date +%H%M%S`
 
-  echo "Beginning System Backup at $CDATE $CTIME"
+  echo "Beginning System Backup at ${CDATE} ${CTIME}"
 
-  WORKINGDIR=$TMPDIR/$CDATE$CTIME/backup
+  WORKINGDIR=${TMPDIR}/${CDATE}${CTIME}/backup
 
-  mkdir -p $WORKINGDIR
+  mkdir -p ${WORKINGDIR}
 
   # Perform SQL Dump
-  mkdir -p $WORKINGDIR/sql
-  mysqldump --user=root --password=$MYSQLROOTPWD --all-databases --events > $WORKINGDIR/sql/backup.sql
+  mkdir -p ${WORKINGDIR}/sql
+
+  DATABASE_LIST=$(mysql --user=root --password=${MYSQLROOTPWD} -NBe 'show schemas' | grep -wv 'mailscanner\|information_schema\|performance_schema')
+  NODATA=""
+  if [[ "${BT_SKIP_DATA}" == "YES" ]]
+  then
+    NODATA="--no-data"
+  fi
+
+  # All databases except specific dumps
+  mysqldump --user=root --password=${MYSQLROOTPWD} --events -B ${DATABASE_LIST} \
+  | xz > $TMPDIR/backup-${CDATE}-${CTIME}-sql-all.xz
+
+  # Specific dump for mailscanner
+  {
+    mysqldump --user=root --password=${MYSQLROOTPWD} \
+    --ignore-table=mailscanner.maillog \
+    --ignore-table=mailscanner.mtalog \
+    --ignore-table=mailscanner.mtalog_ids \
+    mailscanner && \
+    mysqldump --user=root --password=${MYSQLROOTPWD} ${NODATA} mailscanner \
+     maillog \
+     mtalog \
+     mtalog_ids
+  } \
+  | xz > $TMPDIR/backup-${CDATE}-${CTIME}-sql-mailscanner-.xz
+
+  # Move dumps to backup dir
+  mv $TMPDIR/backup-${CDATE}-${CTIME}-sql-*.xz ${BACKUPDIR}
+  chmod 0600 ${BACKUPDIR}/backup-${CDATE}-${CTIME}-sql-*.xz
 
   # Backup Postfix Settings
-  mkdir -p $WORKINGDIR/etc/postfix/ssl
-  cp -a /etc/postfix/*cf $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/*access $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/transport $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/virtual $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/sasl_passwd $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/relocated $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/access $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/canonical $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/generic $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/header_checks $WORKINGDIR/etc/postfix
-  cp -a /etc/postfix/ssl/* $WORKINGDIR/etc/postfix/ssl
+  mkdir -p ${WORKINGDIR}/etc/postfix/ssl
+  cp -a /etc/postfix/*cf ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/*access ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/transport ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/virtual ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/sasl_passwd ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/relocated ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/access ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/canonical ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/generic ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/header_checks ${WORKINGDIR}/etc/postfix
+  cp -a /etc/postfix/ssl/* ${WORKINGDIR}/etc/postfix/ssl
 
   # Backup EFA-Config
-  mkdir -p $WORKINGDIR/etc/eFa
-  cp -a /etc/eFa/* $WORKINGDIR/etc/eFa
+  mkdir -p ${WORKINGDIR}/etc/eFa
+  cp -a /etc/eFa/* ${WORKINGDIR}/etc/eFa
 
   # Backup sysconfig
-  mkdir $WORKINGDIR/etc/sysconfig/
-  cp -ra /etc/sysconfig/* $WORKINGDIR/etc/sysconfig
+  mkdir ${WORKINGDIR}/etc/sysconfig/
+  cp -ra /etc/sysconfig/* ${WORKINGDIR}/etc/sysconfig
 
   # Backup portions of /etc
-  cp -a /etc/passwd $WORKINGDIR/etc
-  cp -a /etc/fstab $WORKINGDIR/etc
-  cp -a /etc/shadow $WORKINGDIR/etc
-  mkdir -p $WORKINGDIR/etc/clamd.d
-  cp -a /etc/clamd.d/scan.conf $WORKINGDIR/etc/clamd.d
-  cp -a /etc/hosts* $WORKINGDIR/etc
-  cp -a /etc/networks $WORKINGDIR/etc
-  cp -a /etc/my.cnf $WORKINGDIR/etc
-  mkdir -p $WORKINGDIR/etc/my.cnf.d
-  cp -a /etc/my.cnf.d/* $WORKINGDIR/etc/my.cnf.d
-  cp -a /etc/php.ini $WORKINGDIR/etc
-  cp -a /etc/php-fpm.conf $WORKINGDIR/etc
-  mkdir -p $WORKINGDIR/etc/php-fpm.d
-  cp -a /etc/php-fpm.d/www.conf $WORKINGDIR/etc/php-fpm.d
-  cp -a /etc/resolv* $WORKINGDIR/etc
-  cp -a /etc/sudo.conf $WORKINGDIR/etc
-  mkdir -p $WORKINGDIR/etc/sudoers.d
-  cp -a /etc/sudoers.d/* $WORKINGDIR/etc/sudoers.d
+  cp -a /etc/passwd ${WORKINGDIR}/etc
+  cp -a /etc/fstab ${WORKINGDIR}/etc
+  cp -a /etc/shadow ${WORKINGDIR}/etc
+  mkdir -p ${WORKINGDIR}/etc/clamd.d
+  cp -a /etc/clamd.d/scan.conf ${WORKINGDIR}/etc/clamd.d
+  cp -a /etc/hosts* ${WORKINGDIR}/etc
+  cp -a /etc/networks ${WORKINGDIR}/etc
+  cp -a /etc/my.cnf ${WORKINGDIR}/etc
+  mkdir -p ${WORKINGDIR}/etc/my.cnf.d
+  cp -a /etc/my.cnf.d/* ${WORKINGDIR}/etc/my.cnf.d
+  cp -a /etc/php.ini ${WORKINGDIR}/etc
+  cp -a /etc/php-fpm.conf ${WORKINGDIR}/etc
+  mkdir -p ${WORKINGDIR}/etc/php-fpm.d
+  cp -a /etc/php-fpm.d/www.conf ${WORKINGDIR}/etc/php-fpm.d
+  cp -a /etc/resolv* ${WORKINGDIR}/etc
+  cp -a /etc/sudo.conf ${WORKINGDIR}/etc
+  mkdir -p ${WORKINGDIR}/etc/sudoers.d
+  cp -a /etc/sudoers.d/* ${WORKINGDIR}/etc/sudoers.d
 
   # Backup MailScanner settings
-  mkdir -p $WORKINGDIR/etc/MailScanner
-  cp -ra /etc/MailScanner/* $WORKINGDIR/etc/MailScanner
+  mkdir -p ${WORKINGDIR}/etc/MailScanner
+  cp -ra /etc/MailScanner/* ${WORKINGDIR}/etc/MailScanner
 
   # Backup Cron
-  cp -ra /etc/cron* $WORKINGDIR/etc
+  cp -ra /etc/cron* ${WORKINGDIR}/etc
 
   # Backup SQLGrey
-  mkdir -p $WORKINGDIR/etc/sqlgrey
-  cp -a /etc/sqlgrey/* $WORKINGDIR/etc/sqlgrey
+  mkdir -p ${WORKINGDIR}/etc/sqlgrey
+  cp -a /etc/sqlgrey/* ${WORKINGDIR}/etc/sqlgrey
 
   # Backup SSH Config
-  mkdir -p $WORKINGDIR/etc/ssh
-  cp -a /etc/ssh/* $WORKINGDIR/etc/ssh
+  mkdir -p ${WORKINGDIR}/etc/ssh
+  cp -a /etc/ssh/* ${WORKINGDIR}/etc/ssh
 
   # Backup pki
-  mkdir -p $WORKINGDIR/etc/pki
-  cp -ra /etc/pki/* $WORKINGDIR/etc/pki
+  mkdir -p ${WORKINGDIR}/etc/pki
+  cp -ra /etc/pki/* ${WORKINGDIR}/etc/pki
 
   # Backup MailWatch Config
-  mkdir -p $WORKINGDIR/var/www/html/mailscanner
-  cp -a /var/www/html/mailscanner/conf.php $WORKINGDIR/var/www/html/mailscanner
+  mkdir -p ${WORKINGDIR}/var/www/html/mailscanner
+  cp -a /var/www/html/mailscanner/conf.php ${WORKINGDIR}/var/www/html/mailscanner
 
   # Backup Apache
-  mkdir -p $WORKINGDIR/etc/httpd
-  cp -ra /etc/httpd/* $WORKINGDIR/etc/httpd
+  mkdir -p ${WORKINGDIR}/etc/httpd
+  cp -ra /etc/httpd/* ${WORKINGDIR}/etc/httpd
   
   # Backup Unbound
-  mkdir -p $WORKINGDIR/etc/unbound
-  cp -ra /etc/unbound/* $WORKINGDIR/etc/unbound
+  mkdir -p ${WORKINGDIR}/etc/unbound
+  cp -ra /etc/unbound/* ${WORKINGDIR}/etc/unbound
   
   # Issue #227 Include local.cf in eFa-Backup
-  mkdir -p $WORKINGDIR/etc/mail/spamassassin
-  cp -a /etc/mail/spamassassin/local.cf $WORKINGDIR/etc/mail/spamassassin
+  mkdir -p ${WORKINGDIR}/etc/mail/spamassassin
+  cp -a /etc/mail/spamassassin/local.cf ${WORKINGDIR}/etc/mail/spamassassin
   
   # Gzip tarball the collection
-  tar -cpzf $TMPDIR/backup-$CDATE-$CTIME.tar.gz -C $TMPDIR/$CDATE$CTIME .
-  rm -rf $TMPDIR/$CDATE$CTIME
-  mv $TMPDIR/backup-$CDATE-$CTIME.tar.gz $BACKUPDIR
-  chmod 0600 $BACKUPDIR/backup-$CDATE-$CTIME.tar.gz
+  tar -cpJf $TMPDIR/backup-${CDATE}-${CTIME}-files.tar.xz -C $TMPDIR/${CDATE}${CTIME} .
+  rm -rf $TMPDIR/${CDATE}${CTIME}
+  mv $TMPDIR/backup-${CDATE}-${CTIME}-files.tar.xz ${BACKUPDIR}
+  chmod 0600 ${BACKUPDIR}/backup-${CDATE}-${CTIME}-files.tar.xz
 
   echo "Backup Completed at `date +%m%d%Y\ %H%M%S`"
 }
@@ -158,7 +191,7 @@ function start_backup()
 #----------------------------------------------------------------#
 function user_check()
 {
-  if [ `whoami` == root ]
+  if [[ `whoami` == root ]]
     then
       echo "[eFa] Good you are root"
       if [[ ${action} == "-backup" ]]; then
@@ -195,7 +228,7 @@ function show_usage()
 #----------------------------------------------------------------#
 function parse_action()
 {
-  case $action in
+  case ${action} in
       -backup)
         user_check
         ;;
@@ -215,7 +248,12 @@ function parse_action()
 #----------------------------------------------------------------#
 function main()
 {
-  if [ "X${action}" == "X" ]
+  if [[ ! "${ENABLED}" == "YES" ]]
+    then
+      echo "[eFa] Backup is disabled. You can enable it in ${CONFIG_FILE}."
+      exit 0
+    fi
+  if [[ "X${action}" == "X" ]]
     then
       show_usage
       exit 0
