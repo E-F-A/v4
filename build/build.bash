@@ -179,6 +179,7 @@ yum -y remove postfix mariadb-libs >/dev/null 2>&1
 # Ignore return here
 
 # install eFa
+logthis "Installing eFa packages"
 rpm -q eFa >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     if [[ "$action" != "testingnoefa" ]]; then
