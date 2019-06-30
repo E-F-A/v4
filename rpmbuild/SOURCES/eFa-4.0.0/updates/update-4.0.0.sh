@@ -101,6 +101,10 @@ cmd='sed -i "/^\sinnodb-defragment/d" /etc/my.cnf.d/mariadb-server.cnf'
 execcmd
 
 # Ensure tweaks are in place
+cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-name-resolve" /etc/my.cnf.d/mariadb-server.cnf'
+[[ -z $(grep ^skip-name-resolve /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
+cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-host-cache" /etc/my.cnf.d/mariadb-server.cnf'
+[[ -z $(grep ^skip-host-cache /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
 cmd='sed -i "/^\[mariadb-10.1\]$/ a\tmp_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
 [[ -z $(grep ^tmp_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
 cmd='sed -i "/^\[mariadb-10.1\]$/ a\thread_cache_size = 16" /etc/my.cnf.d/mariadb-server.cnf'
