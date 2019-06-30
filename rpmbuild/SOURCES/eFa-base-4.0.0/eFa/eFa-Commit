@@ -521,7 +521,9 @@ skip-external-locking \n\
 skip-host-cache \n\
 sort_buffer_size = 4M \n\
 thread_cache_size = 16 \n\
-tmp_table_size = 32M \n" /etc/my.cnf.d/mariadb-server.cnf
+tmp_table_size = 32M \n\
+skip-name-resolve \n\
+skip-host-cache\n" /etc/my.cnf.d/mariadb-server.cnf
 
   mkdir /var/lib/mysql/temp
 
@@ -588,7 +590,7 @@ if [[ $configdns -eq 1 ]]; then
 
   if [[ $IPV6DNS -eq 0 ]]; then 
     sed -i '/^\t# do-ip6:/ c\\tdo-ip6: no' /etc/unbound/unbound.conf
-  fi 
+  fi
 
   echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
   [ $? -ne 0 ] && exit 1
