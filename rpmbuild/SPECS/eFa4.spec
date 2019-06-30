@@ -288,7 +288,7 @@ Requires:  spamassassin >= 3.4.2-1
     # #    procmail                              #         #
     # #    perl-Geo-IP                           #         #
     # #    perl-Net-Patricia                     #         #
-Requires:  MailScanner >= 5.1.3-3
+Requires:  MailScanner >= 5.1.3-2
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-4
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -467,7 +467,7 @@ elif [ "$1" = "2" ]; then
 
     # 4.0.0-x cumulative fixes
    if [[ $(head -n 1 %{_sysconfdir}/eFa-Version) == "eFa-4.0.0" ]]; then
-     { 
+     {
        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
        [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
      } 2>&1 | tee -a /var/log/eFa/update.log

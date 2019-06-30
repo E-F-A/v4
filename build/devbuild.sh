@@ -57,7 +57,7 @@ yum -y install epel-release
 echo "- Adding IUS Repo"
 yum -y install https://centos7.iuscommunity.org/ius-release.rpm
 [ $? -ne 0 ] && exit 1
-rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
 [ $? -ne 0 ] && exit 1
 
 yum -y update
