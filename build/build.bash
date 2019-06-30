@@ -160,7 +160,7 @@ if [ $? -ne 0 ]; then
     yum -y install https://centos7.iuscommunity.org/ius-release.rpm
     if [ $? -eq 0 ]; then
         logthis "IUS repo installed"
-        rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
+        rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
     else
         logthis "ERROR: IUS installation failed"
         logthis "^^^^^^^^^^ SCRIPT ABORTED ^^^^^^^^^^"
@@ -179,6 +179,7 @@ yum -y remove postfix mariadb-libs >/dev/null 2>&1
 # Ignore return here
 
 # install eFa
+logthis "Installing eFa packages"
 rpm -q eFa >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     if [[ "$action" != "testingnoefa" ]]; then

@@ -140,9 +140,6 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 
-# Spawn mta relay stats watchers
-/etc/cron.hourly/mailwatch_relay.sh
-
 systemctl enable msmilter
 systemctl start msmilter
 
@@ -166,7 +163,7 @@ if [[ ! -f /etc/postfix/ssl/dhparam.pem ]]; then
   postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
   cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
 fi
-  
+
 # Late Reload daemons
 systemctl reload postfix
 if [[ $? -ne 0 ]]; then
@@ -189,4 +186,3 @@ rm -f /etc/cron.d/efapostinit
 kill -9 $PPID
 
 exit 0
-
