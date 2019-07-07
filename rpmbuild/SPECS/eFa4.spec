@@ -288,7 +288,7 @@ Requires:  spamassassin >= 3.4.2-1
     # #    procmail                              #         #
     # #    perl-Geo-IP                           #         #
     # #    perl-Net-Patricia                     #         #
-Requires:  MailScanner >= 5.1.3-2
+Requires:  MailScanner >= 5.1.4-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-4
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -502,6 +502,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jul 07 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-62
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Sun Mar 17 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-61
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
