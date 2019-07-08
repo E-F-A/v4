@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   63.eFa%{?dist}
+Release:   64.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -367,6 +367,12 @@ Requires: opendkim >= 2.11.0-0.1
     #                                            # epel    # eFa
 Requires: opendmarc >= 1.3.2-0.12
     #                                            # epel    # eFa
+Requires: cyrus-sasl >= 2.1.26-23
+    #                                            # base    # eFa
+Requires: cyrus-sasl-lib >= 2.1.26-23
+    #                                            # base    # eFa
+Requires: cyrus-sasl-plain >= 2.1.26-23
+    #                                            # base    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -502,6 +508,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Mon Jul 08 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-64
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Sun Jul 07 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-63
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
