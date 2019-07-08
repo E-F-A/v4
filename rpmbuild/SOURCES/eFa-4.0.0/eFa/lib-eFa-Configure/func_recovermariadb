@@ -27,6 +27,8 @@ function func_recover-mariadb() {
         echo -e ""
         echo -e "Beginning recovery..."
 
+        [[ -f /etc/cron.d/eFa-Monitor.cron ]] && rm -f /etc/cron.d/eFa-Monitor.cron 
+
         echo -e ""
         echo -e "Stopping services"
         systemctl stop sqlgrey
@@ -47,6 +49,9 @@ function func_recover-mariadb() {
         systemctl start mailscanner
         systemctl start msmilter
         systemctl start httpd
+
+        echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
+        
         pause
 
         flag=1
