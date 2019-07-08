@@ -68,7 +68,7 @@ function func_lets-encrypt() {
         systemctl reload httpd
         # Add a cron job to renew cert
         if [[ ! -f /etc/cron.d/certbotrenew ]]; then
-          echo "0 0,12 * * * python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew >/dev/null 2>&1" > /etc/cron.d/certbotrenew
+          echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew >/dev/null 2>&1" > /etc/cron.d/certbotrenew
         fi
         echo -e ""
         echo -e "Let's Encrypt has been enabled"
