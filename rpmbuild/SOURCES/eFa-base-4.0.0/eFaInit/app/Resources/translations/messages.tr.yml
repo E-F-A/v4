@@ -20,7 +20,7 @@
 Language: Dil
 Next: Sonraki
 Hostname: Sistem Adı
-'Please enter a hostname': 'Lütfen bir sistem adı giriniz'
+'Please enter a hostname': 'Lütfen bir sunucu adı giriniz'
 Back: Geri
 'Domain Name': 'Alan Adı'
 'Please enter a domain name': 'Lütfen bir alan adı giriniz'
@@ -28,19 +28,19 @@ Email: Eposta
 'Please enter an email address for important notifications': 'Lütfen önemli bildirimlerin gönderileceği bir eposta adresi giriniz'
 'IPv4 Address': 'IPv4 Adresi'
 'Please enter a valid IPv4 address': 'Lütfen geçerli bir IPv4 adresi giriniz'
-'IPv4 Netmask': '__IPv4 Netmask'
+'IPv4 Netmask': '__IPv4 Alt Ağ Maskesi'
 'Please enter a valid IPv4 netmask': '__Please enter a valid IPv4 netmask'
 'Please enter a valid IPv4 gateway': '__Please enter a valid IPv4 gateway'
-'IPv4 Gateway': '__IPv4 Gateway'
+'IPv4 Gateway': '__IPv4 Ağ Geçidi'
 'Do you want to set a static IPv4 address?': '__Do you want to set a static IPv4 address?'
-'Yes': '__Yes'
-'No': '__No'
+'Yes': 'Evet'
+'No': 'Hayır'
 'Do you want to set a static IPv6 address?': '__Do you want to set a static IPv6 address?'
 'Configure IPv6': '__Configure IPv6'
 'Please enter a valid IPv6 address': '__Please enter a valid IPv6 address'
 'IPv6 Address': '__IPv6 Address'
 'Please enter a valid IPv6 prefix': '__Please enter a valid IPv6 prefix'
-'IPv6 Prefix': '__IPv6 Prefix'
+'IPv6 Prefix': 'IPv6 Ön Eki'
 'Please enter a valid IPv6 gateway': '__Please enter a valid IPv6 gateway'
 'IPv6 Gateway': '__IPv6 Gateway'
 'Do you want to enable full DNS Recursion?': '__Do you want to enable full DNS Recursion?'
