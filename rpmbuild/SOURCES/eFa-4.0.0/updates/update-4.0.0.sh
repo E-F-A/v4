@@ -495,8 +495,9 @@ cmd='chown postfix:postfix /var/spool/MailScanner/milterout'
 execcmd
 
 # Fix letsencrypt cron
-cmd="echo \"0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew >/dev/null 2>&1 && systemctl reload httpd\" > /etc/cron.d/certbotrenew"
-[[ -f /etc/cron.d/certbotrenew ]] && execcmd
+if [[ -f /etc/cron.d/certbotrenew ]]; then
+  echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew >/dev/null 2>&1 && systemctl reload httpd' > /etc/cron.d/certbotrenew
+fi
 
 # Make sure temp is present for mariadb
 cmd='mkdir /var/lib/mysql/temp && chown mysql:mysql /var/lib/mysql/temp'
