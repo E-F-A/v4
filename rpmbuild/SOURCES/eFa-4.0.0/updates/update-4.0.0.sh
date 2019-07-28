@@ -496,7 +496,9 @@ execcmd
 
 # Fix letsencrypt cron
 if [[ -f /etc/cron.d/certbotrenew ]]; then
-  echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew >/dev/null 2>&1 && systemctl reload httpd' > /etc/cron.d/certbotrenew
+  echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --post-hook /usr/sbin/certbot-post >/dev/null 2>&1 && systemctl reload httpd' > /etc/cron.d/certbotrenew
+  echo -e "systemctl reload httpd\nsystemctl restart postfix" >/usr/sbin/certbot-post
+  chmod +x /usr/sbin/certbot-post
 fi
 
 # Make sure temp is present for mariadb
@@ -511,13 +513,25 @@ cmd='systemctl reload php-fpm'
 execcmd
 cmd='systemctl reload postfix'
 execcmd
-cmd='systemctl restart sqlgrey'
+cmd='systemctl stop sqlgrey'
 execcmd
-cmd='systemctl restart clamd@scan'
+cmd='systemctl stop msmilter'
 execcmd
-cmd='systemctl restart mailscanner'
+cmd='systemctl stop mailscanner'
 execcmd
-cmd='systemctl restart msmilter'
+cmd='systemctl stop clamd@scan'
+execcmd
+cmd='systemctl stop mariadb'
+execcmd
+cmd='systemctl start mariadb'
+execcmd
+cmd='systemctl start clamd@scan'
+execcmd
+cmd='systemctl start mailscanner'
+execcmd
+cmd='systemctl start msmilter'
+execcmd
+cmd='systemctl start sqlgrey'
 execcmd
 cmd='systemctl enable postfix_relay'
 execcmd
@@ -526,8 +540,6 @@ execcmd
 cmd='systemctl enable milter_relay'
 execcmd
 cmd='systemctl start milter_relay'
-execcmd
-cmd='systemctl restart mariadb'
 execcmd
 
 exit $retval
