@@ -496,7 +496,7 @@ execcmd
 
 # Fix letsencrypt cron
 if [[ -f /etc/cron.d/certbotrenew ]]; then
-  echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --post-hook /usr/sbin/certbot-post >/dev/null 2>&1 && systemctl reload httpd' > /etc/cron.d/certbotrenew
+  echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --post-hook /usr/sbin/certbot-post >/dev/null 2>&1' > /etc/cron.d/certbotrenew
   echo -e "systemctl reload httpd\nsystemctl restart postfix" >/usr/sbin/certbot-post
   chmod +x /usr/sbin/certbot-post
 fi
