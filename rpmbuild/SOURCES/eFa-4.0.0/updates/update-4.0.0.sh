@@ -515,19 +515,17 @@ cmd='systemctl reload php-fpm'
 execcmd
 cmd='systemctl reload postfix'
 execcmd
+cmd='systemctl reload clamd@scan'
+execcmd
 cmd='systemctl stop sqlgrey'
 execcmd
 cmd='systemctl stop msmilter'
 execcmd
 cmd='systemctl stop mailscanner'
 execcmd
-cmd='systemctl stop clamd@scan'
-execcmd
 cmd='systemctl stop mariadb'
 execcmd
 cmd='systemctl start mariadb'
-execcmd
-cmd='systemctl start clamd@scan'
 execcmd
 cmd='systemctl start mailscanner'
 execcmd
