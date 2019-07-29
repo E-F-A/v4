@@ -76,8 +76,10 @@ function func_lets-encrypt() {
         systemctl reload httpd
         # Add a cron job to renew cert
         if [[ ! -f /etc/cron.d/certbotrenew ]]; then
-          echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --post-hook /usr/sbin/certbot-post >/dev/null 2>&1' > /etc/cron.d/certbotrenew
-          echo -e "systemctl reload httpd\nsystemctl restart postfix" >/usr/sbin/certbot-post
+          echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --pre-hook /usr/sbin/certbotpre --post-hook /usr/sbin/certbot-post >/dev/null 2>&1' > /etc/cron.d/certbotrenew
+          echo -e "if [[ -z \$(firewall-cmd --list-ports | grep 80/tcp) && -z \$(firewall-cmd --list-services | grep -e \ http\ )]]; then\n  firewall-cmd --add-service http && touch /httpopen\nfi" >/etc/sbin/certbot-pre
+          echo -e "if [[ -f /httpopen ]]; then\n  rm -f /httpopen\n  firewall-cmd --remove-service http\nfi\nsystemctl reload httpd\nsystemctl restart postfix" >/usr/sbin/certbot-post
+          chmod +x /usr/sbin/certbot-pre
           chmod +x /usr/sbin/certbot-post
         fi
 
