@@ -37,6 +37,17 @@ options:
 inst.ks=http://dl.efa-project.org/build/4/kstesting.cfg
 
 #######################################################################
+# install using install.efa-project.org #1
+#######################################################################
+curl -sSL https://install.efa-project.org | bash
+
+#######################################################################
+# install using install.efa-project.org #2
+#######################################################################
+wget -O build.bash https://install.efa-project.org
+sudo bash build.bash
+
+#######################################################################
 # Building on a vps, LXC container, or other existing CentOS instance
 #######################################################################
 
