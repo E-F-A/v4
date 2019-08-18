@@ -1,3 +1,3 @@
-'Enter a valid hostname': '__Enter a valid hostname'
-'Passwords do not match': '__Passwords do not match'
-'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': '__Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address'
+'Enter a valid hostname': 'Indtast et gyldigt værtsnavn'
+'Passwords do not match': 'Adgangskoder stemmer ikke overens'
+'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': 'Web Brugernavn skal være alfanumerisk (Op til 30 tegn startende med et bogstav eller _) eller en gyldig e-mail-adresse'
