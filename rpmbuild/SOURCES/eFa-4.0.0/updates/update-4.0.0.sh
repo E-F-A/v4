@@ -507,6 +507,26 @@ fi
 cmd='mkdir /var/lib/mysql/temp && chown mysql:mysql /var/lib/mysql/temp'
 [[ ! -d /var/lib/mysql/temp ]] && execcmd
 
+# Increase TimeoutSec for clamd@scan
+if [[ ! -f /etc/systemd/system/clamd@scan.service.d/override.conf ]]; then
+  mkdir -p /etc/systemd/system/clamd@scan.service.d
+  echo -e "[System]\nTimeoutSec=900\n" > /etc/systemd/system/clamd@scan.service.d/override.conf
+  cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/clamd@scan.service.d'
+  [[ $instancetype != "lxc" ]] && execcmd
+  cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/clamd@scan.service.d/override.conf'
+  [[ $instancetype != "lxc" ]] && execcmd
+fi
+
+# Increase TimeoutSec for mariadb
+if [[ ! -f /etc/systemd/system/mariadb.service.d/override.conf ]]; then
+  mkdir -p /etc/systemd/system/mariadb.service.d
+  echo -e "[System]\nTimeoutSec=900\n" > /etc/systemd/system/mariadb.service.d/override.conf
+  cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d'
+  [[ $instancetype != "lxc" ]] && execcmd
+  cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d/override.conf'
+  [[ $instancetype != "lxc" ]] && execcmd
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
