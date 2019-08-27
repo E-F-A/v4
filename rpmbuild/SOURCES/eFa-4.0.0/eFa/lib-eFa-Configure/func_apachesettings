@@ -103,8 +103,8 @@ function func_https() {
         local HOSTNAME
         local DOMAINNAME
 
-        HOSTNAME=$(grep ^HOSTNAME /etc/eFa/eFa-Config | sed -e 's/^.*://)
-        DOMAINNAME=$(grep ^DOMAINNAME /etc/eFa/eFa-Config | sed -e 's/^.*://)
+        HOSTNAME=$(grep ^HOSTNAME /etc/eFa/eFa-Config | sed -e 's/^.*://')
+        DOMAINNAME=$(grep ^DOMAINNAME /etc/eFa/eFa-Config | sed -e 's/^.*://')
 
         echo '<VirtualHost _default_:80>' > /etc/httpd/conf.d/redirectssl.conf
         echo "  ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/redirectssl.conf
