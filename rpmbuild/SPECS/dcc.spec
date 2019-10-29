@@ -68,7 +68,7 @@ make install
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%doc CHANGES LICENSE RESTRICTIONS
+%doc CHANGES LICENSE
 %defattr(-, root, root, -)
 %{_bindir}/*
 %{_mandir}/man8/*
