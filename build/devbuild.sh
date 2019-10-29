@@ -101,9 +101,9 @@ rpmbuild -ba perl-Mail-SPF-Query.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Mail-SPF-Query-1.999.1-1.eFa.el7.x86_64.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba unrar-5.6.1.spec
+rpmbuild -ba unrar-5.8.3.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-5.6.1-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-5.8.3-1.eFa.el7.x86_64.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
@@ -143,7 +143,7 @@ cd $GITPATH/rpmbuild/SPECS
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba dcc.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-1.3.163-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-2.3.167-1.eFa.el7.x86_64.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba eFa4-base.spec
 [ $? -ne 0 ] && exit 1

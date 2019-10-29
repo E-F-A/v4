@@ -267,7 +267,7 @@ Requires:  perl-YAML >= 0.84-5
     # perl-YAML                                  # base    # MailScanner
 Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
-Requires:  unrar >= 5.4.5-1
+Requires:  unrar >= 5.8.3-1
     # unrar                                      # eFa     # MailScanner
 Requires:  postfix_eFa >= 3.3.0-1
     # postfix_eFa                                # eFa     # MTA
@@ -304,7 +304,7 @@ Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
 Requires:  MailWatch >= 1:1.2.12-9
     # MailWatch                                  # eFa     # MailWatch Frontend
-Requires:  dcc >= 1.3.159-1
+Requires:  dcc >= 2.3.167-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
 Requires:  unbound >= 1.4.20-34
     # unbound                                    # base    # DNS

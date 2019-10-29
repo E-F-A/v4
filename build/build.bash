@@ -18,21 +18,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 action=$1
-action="${action:=testing}" # default to testing if no arg supplied
+#action="${action:=testing}" # default to testing if no arg supplied
+action="${action:=production}" # default to prod if no arg supplied
 
 #-----------------------------------------------------------------------------#
 # Install eFa
 #-----------------------------------------------------------------------------#
 mirror="https://mirrors.efa-project.org"
-
 LOGFILE="/var/log/eFa/build.log"
 
-
-#==============================================================================================
-#
+#-----------------------------------------------------------------------------#
 # Set up logging
-#
-
+#-----------------------------------------------------------------------------#
 LOGGER='/usr/bin/logger'
 HEADER='=============  EFA4 BUILD SCRIPT STARTING  ============'
 
@@ -51,8 +48,11 @@ function logthis() {
 }
 
 logthis "$HEADER"
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
 # check if user is root
+#-----------------------------------------------------------------------------#
 if [ `whoami` == root ]; then
   logthis "Good you are root."
 else
@@ -60,8 +60,11 @@ else
   logthis "^^^^^^^^^^ SCRIPT ABORTED ^^^^^^^^^^"
   exit 1
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
 # check if we run CentOS 7
+#-----------------------------------------------------------------------------#
 OSVERSION=`cat /etc/centos-release`
 if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
   logthis "Good you are running CentOS 7"
@@ -71,8 +74,11 @@ else
   logthis "^^^^^^^^^^ SCRIPT ABORTED ^^^^^^^^^^"
   exit 1
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
 # Check that SELinux is not disabled (unless it is lxc)
+#-----------------------------------------------------------------------------#
 if [[ -z $(grep -i 'lxc\|docker' /proc/1/cgroup) ]]; then
     if [[ -f /etc/selinux/config && -n $(grep -i ^SELINUX=disabled$ /etc/selinux/config)  ]]; then
         logthis "ERROR: SELinux is disabled and this is not an lxc container"
@@ -81,8 +87,11 @@ if [[ -z $(grep -i 'lxc\|docker' /proc/1/cgroup) ]]; then
         exit 1
     fi
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
 # Check network connectivity
+#-----------------------------------------------------------------------------#
 logthis "Checking network connectivity"
 # use curl to test in case wget not installed yet.
 curl -s --connect-timeout 3 --max-time 5 --retry 3 --retry-delay 0 --retry-max-time 30 "${mirror}" > /dev/null
@@ -94,8 +103,11 @@ else
   logthis "^^^^^^^^^^ SCRIPT ABORTED ^^^^^^^^^^"
   exit 1
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
 # have network, install wget if missing
+#-----------------------------------------------------------------------------#
 rpm -q wget >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     logthis "Installing wget"
@@ -107,8 +119,11 @@ if [ $? -ne 0 ]; then
         # non-fatal for this script but will cause issues after system configuration
     fi
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
 # Add eFa Repo
+#-----------------------------------------------------------------------------#
 aCTN=(testing kstesting testingnoefa)
 
 case "${aCTN[@]}" in
@@ -127,20 +142,11 @@ case "${aCTN[@]}" in
        fi
        ;;
 esac
+#-----------------------------------------------------------------------------#
 
-
-# echo "- Adding mariadb Repo"
-# cat > /etc/yum.repos.d/mariadb.repo << 'EOF'
-# # MariaDB 10.1 CentOS repository list - created 2017-03-19 11:09 UTC
-# # http://downloads.mariadb.org/mariadb/repositories/
-# [mariadb]
-# name = MariaDB
-# baseurl = http://yum.mariadb.org/10.1/centos7-amd64
-# gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-# gpgcheck=1
-# enabled=1
-# EOF
-
+#-----------------------------------------------------------------------------#
+# epel repo
+#-----------------------------------------------------------------------------#
 rpm -q epel-release >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     logthis "Installing EPEL Repo"
@@ -153,7 +159,11 @@ if [ $? -ne 0 ]; then
         exit 1
     fi
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
+# ius repo
+#-----------------------------------------------------------------------------#
 rpm -q ius-release >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     logthis "Installing IUS Repo"
@@ -167,18 +177,28 @@ if [ $? -ne 0 ]; then
         exit 1
     fi
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
+# Update OS
+#-----------------------------------------------------------------------------#
 logthis "Updating the OS"
 yum -y update >> $LOGFILE 2>&1
 if [ $? -eq 0 ]; then
     logthis "System Updated"
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
+# Remove not needed packages
+#-----------------------------------------------------------------------------#
 logthis "Removing conflicting packages"
 yum -y remove postfix mariadb-libs >/dev/null 2>&1
 # Ignore return here
 
+#-----------------------------------------------------------------------------#
 # install eFa
+#-----------------------------------------------------------------------------#
 logthis "Installing eFa packages"
 rpm -q eFa >/dev/null 2>&1
 if [ $? -ne 0 ]; then
@@ -194,6 +214,9 @@ if [ $? -ne 0 ]; then
     fi
 fi
 
+#-----------------------------------------------------------------------------#
+# kickstart
+#-----------------------------------------------------------------------------#
 if [[ "$action" == "kstesting" || "$action" == "ksproduction" ]]; then
   # Set root default pass for kickstart builds
   echo 'echo "First time login: root/eFaPr0j3ct" >> /etc/issue' >> /etc/rc.d/rc.local
@@ -201,7 +224,6 @@ if [[ "$action" == "kstesting" || "$action" == "ksproduction" ]]; then
 
   # Disable ssh for kickstart builds
   systemctl disable sshd
-
 fi
 
 if [[ "$action" == "ksproduction" ]]; then
@@ -217,7 +239,11 @@ if [[ "$action" == "ksproduction" ]]; then
   rm -f /var/filler
   logthis "Zeroed free space"
 fi
+#-----------------------------------------------------------------------------#
 
+#-----------------------------------------------------------------------------#
+# finalize
+#-----------------------------------------------------------------------------#
 logthis "============  EFA4 BUILD SCRIPT FINISHED  ============"
 
 if [[ "$action" == "testing" || "$action" == "production" ]]; then
@@ -231,3 +257,4 @@ if [[ "$action" == "testing" || "$action" == "production" ]]; then
     done
 fi
 exit 0
+#-----------------------------------------------------------------------------#
