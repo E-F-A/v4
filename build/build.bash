@@ -249,17 +249,13 @@ fi
 logthis "============  EFA4 BUILD SCRIPT FINISHED  ============"
 
 if [[ "$action" == "testing" || "$action" == "production" ]]; then
-    while true; do
-        read -p "Do you wish to reboot the system now? (Y/N): " yn
-        if [[ "$yn" == "y" || "$yn" == "Y" ]]; then
-          shutdown -r +1 "Installation requires reboot. Restarting in 1 minute"
-          exit 0
-        elif [[ "$yn" == "n" || "$yn" == "N" ]]; then
-          exit 0
-        else
-          echo "Please answer yes or no."
-        fi
-    done
+  read -p "Do you wish to reboot the system now? (Y/N): " yn
+  if [[ "$yn" == "y" || "$yn" == "Y" ]]; then
+    shutdown -r +1 "Installation requires reboot. Restarting in 1 minute"
+    exit 0
+  else
+    exit 0
+  fi
 fi
 exit 0
 #-----------------------------------------------------------------------------#
