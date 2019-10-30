@@ -458,7 +458,7 @@ if [[ $startmariadb -eq 1 ]]; then
 
   # Create and populate the mailscanner db
   /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/create.sql
-  
+
   # Create the DMARC db
   /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/schema.mysql
 
@@ -577,7 +577,7 @@ if [[ $confighost -eq 1 ]]; then
   # Apache
   sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf
   sed -i "/^#ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
-  
+
   # Configure HTTP VirtualHost needed for letsencrypt
   echo "<VirtualHost _default_:80>" > /etc/httpd/conf.d/vhost.conf
   echo "ServerName $HOSTNAME.$DOMAINNAME:80" >> /etc/httpd/conf.d/vhost.conf
@@ -588,7 +588,7 @@ fi
 if [[ $configdns -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Setting DNS"
 
-  if [[ $IPV6DNS -eq 0 ]]; then 
+  if [[ $IPV6DNS -eq 0 ]]; then
     sed -i '/^\t# do-ip6:/ c\\tdo-ip6: no' /etc/unbound/unbound.conf
   fi
 
@@ -620,9 +620,9 @@ if [[ $configip -eq 1 ]]; then
     [ $? -ne 0 ] && exit 1
   fi
 
-  sed -i '/^BOOTPROTO=/ c\BOOTPROTO="none"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-  [ $? -ne 0 ] && exit 1
   if [[ -n $IPV4ADDRESS ]]; then
+    sed -i '/^BOOTPROTO=/ c\BOOTPROTO="none"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    [ $? -ne 0 ] && exit 1
     echo "IPADDR=\"$IPV4ADDRESS\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     [ $? -ne 0 ] && exit 1
     echo "NETMASK=\"$IPV4NETMASK\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
@@ -739,7 +739,7 @@ if [[ $configtransport -eq 1 ]]; then
 
   echo "root: $ADMINEMAIL" >> /etc/aliases
   [ $? -ne 0 ] && exit 1
-  
+
   echo "root@$DOMAINNAME $ADMINEMAIL" > /etc/postfix/recipient_canonical
   [ $? -ne 0 ] && exit 1
   echo "root@$DOMAINNAME root@$HOSTNAME.$DOMAINNAME" > /etc/postfix/sender_canonical
