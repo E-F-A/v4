@@ -5,18 +5,17 @@ function func_spam-settings() {
   menu=0
   spammenu=1
   while [ $spammenu == "1" ]
-    do  
+    do
       func_echo-header
       echo -e "Spam settings"
       echo ""
       echo -e "1) Non Spam Settings"
       echo -e "2) Spam Settings"
-      echo -e "3) Inline Signature Rules"
-      echo -e "4) MailScanner Max Message Size"
-      echo -e "5) Mailwatch sa-learn Max Message Size"
-      echo -e "6) Mailwatch hide high spam/mcp"
-      echo -e "7) MalwarePatrol Key Code"
-      echo -e "8) DCC Servers"
+      echo -e "3) MailScanner Max Message Size"
+      echo -e "4) Mailwatch sa-learn Max Message Size"
+      echo -e "5) Mailwatch hide high spam/mcp"
+      echo -e "6) MalwarePatrol Key Code"
+      echo -e "7) DCC Servers"
       echo -e ""
       echo -e "e) Return to main menu"
       echo -e ""
@@ -26,12 +25,11 @@ function func_spam-settings() {
       case $choice in
                 1) func_ask-nonspam;;
                 2) func_ask-spam;;
-                3) func_ask-sigrules;;
-                4) func_ask-maxsize;;
-                5) func_ask-maxsizemailwatch;;
-                6) func_ask-highspammailwatch;;
-                7) func_ask-malwarepatrol;;
-                8) func_ask-dccservers;;
+                3) func_ask-maxsize;;
+                4) func_ask-maxsizemailwatch;;
+                5) func_ask-highspammailwatch;;
+                6) func_ask-malwarepatrol;;
+                7) func_ask-dccservers;;
                 e) menu=1 && return ;;
                 *) echo -e "Error \"$choice\" is not an option..." && pause
       esac
