@@ -5,7 +5,7 @@ func_mail-settings(){
   menu=0
   mailmenu=1
   while [ $mailmenu == "1" ]
-    do  
+    do
       func_echo-header
       echo -e "Mail settings"
       echo ""
@@ -13,7 +13,7 @@ func_mail-settings(){
       echo -e "2) Outbound smarthost"
       echo -e "3) Admin Email"
       echo -e "4) Transport settings"
-      echo -e "5) Automated recipient verfication"
+      echo -e "5) Automated recipient verification"
       echo -e ""
       echo -e "e) Return to main menu"
       echo -e ""
@@ -71,7 +71,7 @@ func_transport-settings(){
                if [[ $choice -gt 0 && $choice -lt $((tLen/2+1)) ]]; then
                  ENTDOMAIN=${RELAYS[$((choice*2-2))]}
                  ENTDEST=${RELAYS[$((choice*2-1))]}
-                 echo -e "Entry Selected: $ENTDOMAIN  $ENTDEST" 
+                 echo -e "Entry Selected: $ENTDOMAIN  $ENTDEST"
                  flag=0
                  while [ $flag == "0" ]
                    do
@@ -188,7 +188,7 @@ func_transport-settings(){
                         flag=1
                       elif [[ $TMPOPTION == "c" || $TMPOPTION == "C" ]]; then
                         flag=1
-                      else 
+                      else
                         echo -e "Error \"$TMPOPTION\" is not an option..." && pause
                       fi
                     done
@@ -273,7 +273,7 @@ func_transport-settings(){
                     echo -e -n "$green[eFa]$clean : "
                     ;;
           esac
-  done 
+  done
 }
 # +---------------------------------------------------+
 
@@ -504,7 +504,7 @@ func_recipient_verification(){
         read choice
       fi
     done
-    
+
   systemctl reload postfix
   echo "Postfix reloaded"
   pause
