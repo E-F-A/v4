@@ -43,6 +43,9 @@ mkdir -p /var/run/clamd.socket
 chown -R clamscan:mtagroup /var/run/clamd.socket
 echo "d /run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/clamd.socket.conf
 
+mkdir -p /etc/systemd/system/clamd@scan.service.d
+echo -e "[System]\nTimeoutSec=900\n" > /etc/systemd/system/clamd@scan.service.d/override.conf
+
 freshclam
 
 echo "Configuring clamav...done"
