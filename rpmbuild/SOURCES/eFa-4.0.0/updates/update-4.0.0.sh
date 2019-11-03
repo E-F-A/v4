@@ -535,7 +535,7 @@ cmd='systemctl reload php-fpm'
 execcmd
 cmd='systemctl reload postfix'
 execcmd
-cmd='systemctl reload clamd@scan'
+cmd='systemctl restart clamd@scan'
 execcmd
 cmd='systemctl stop sqlgrey'
 execcmd
