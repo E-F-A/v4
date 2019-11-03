@@ -511,6 +511,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Nov 03 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-67
+- Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
+
 * Sun Aug 18 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-66
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
