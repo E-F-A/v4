@@ -148,4 +148,4 @@ ln -s /usr/sbin/eFa-Daily-DMARC /etc/cron.daily/eFa-Daily-DMARC
 
 # MariaDB
 mkdir -p /etc/systemd/system/mariadb.service.d
-echo -e "[System]\nTimeoutSec=900\n" > /etc/systemd/system/mariadb.service.d/override.conf
+echo -e "[Service]\nTimeoutSec=900\n" > /etc/systemd/system/mariadb.service.d/override.conf
