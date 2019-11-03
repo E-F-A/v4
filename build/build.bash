@@ -1,6 +1,6 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.0 build script version 20190323
+# eFa 4.0.0 build script version 20191103
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2019 https://efa-project.org
 #
@@ -18,8 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 action=$1
-#action="${action:=testing}" # default to testing if no arg supplied
-action="${action:=production}" # default to prod if no arg supplied
+action="production" # default to prod if no arg supplied
 
 #-----------------------------------------------------------------------------#
 # Install eFa
@@ -117,6 +116,22 @@ if [ $? -ne 0 ]; then
     else
         logthis "ERROR: wget installation failed"
         # non-fatal for this script but will cause issues after system configuration
+    fi
+fi
+#-----------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------#
+# Install perl if missing
+#-----------------------------------------------------------------------------#
+rpm -q perl >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    logthis "Installing perl"
+    yum -y install perl
+    if [ $? -eq 0 ]; then
+        logthis "perl installed"
+    else
+        logthis "ERROR: perl installation failed"
+        exit 1
     fi
 fi
 #-----------------------------------------------------------------------------#
@@ -247,6 +262,7 @@ fi
 # finalize
 #-----------------------------------------------------------------------------#
 logthis "============  EFA4 BUILD SCRIPT FINISHED  ============"
+logthis "============  PLEASE REBOOT YOUR SYSTEM   ============"
 
 if [[ "$action" == "testing" || "$action" == "production" ]]; then
   read -p "Do you wish to reboot the system now? (Y/N): " yn
