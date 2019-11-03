@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.0
-Release:   66.eFa%{?dist}
+Release:   67.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -463,6 +463,9 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFaInit-config-4.0.0.sh
 
+        # run update to bring everything up to date
+        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
+
         echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
         echo "Build completed!"
     fi
@@ -471,7 +474,7 @@ elif [ "$1" = "2" ]; then
     # Perform Update tasks
     echo -e "\nPreparing to update eFa..."
 
-    # 4.0.0-x cumulative fixes
+   # 4.0.0-x cumulative fixes
    if [[ $(head -n 1 %{_sysconfdir}/eFa-Version) == "eFa-4.0.0" ]]; then
      {
        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
