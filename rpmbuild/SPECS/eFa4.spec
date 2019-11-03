@@ -463,9 +463,6 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFaInit-config-4.0.0.sh
 
-        # run update to bring everything up to date
-        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
-
         echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
         echo "Build completed!"
     fi
