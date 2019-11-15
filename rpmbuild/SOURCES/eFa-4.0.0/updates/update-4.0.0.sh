@@ -385,11 +385,10 @@ else
   echo '</VirtualHost>' >> /etc/httpd/conf.d/redirectssl.conf
 fi
 
-# Add entry to header_checks
-if [[ -z $(grep '^Received: from localhost' /etc/postfix/header_checks) ]]; then
-  cmd='echo "/^Received:\ from\ localhost\ \(localhost\ \[127.0.0.1\]\)/ IGNORE" >> /etc/postfix/header_checks'
-  execcmd
-fi
+# Clean up header_checks
+sed -i '/^\/\^Received:\\ from\\ localhost\\ \\(localhost\\ \\\[127\.0\.0\.1\\\]\\)\/ IGNORE$/d' /etc/postfix/header_checks
+cmd='echo "/^Received:\ from\ localhost\ \(localhost\ \[127.0.0.1\]\)/ IGNORE" >> /etc/postfix/header_checks'
+execcmd
 
 # Patch mailscanner daily crons
 cat > /etc/cron.daily/mailscanner << 'EOF'
