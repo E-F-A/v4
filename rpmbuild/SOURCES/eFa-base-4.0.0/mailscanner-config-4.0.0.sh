@@ -102,6 +102,7 @@ sed -i "/^Max Spam Check Size =/ c\Max Spam Check Size = 2048k" /etc/MailScanner
 sed -i "/^Dont Sign HTML If Headers Exist =/ c\Dont Sign HTML If Headers Exist = In-Reply-To: References:" /etc/MailScanner/MailScanner.conf
 sed -i "/^Notify Senders =/ c\Notify Senders = no" /etc/MailScanner/MailScanner.conf
 sed -i '/^envelope_sender_header / c\envelope_sender_header X-yoursite-MailScanner-eFa-From' /etc/MailScanner/spamassassin.conf
+sed -i '/^Allow Password-Protected Archives =/ c\Allow Password-Protected Archives = %rules-dir%/password.rules' /etc/MailScanner/MailScanner.conf
 
 touch /etc/MailScanner/rules/sig.html.rules
 touch /etc/MailScanner/rules/sig.text.rules
@@ -138,18 +139,22 @@ echo -e "From:\t::1\t/etc/MailScanner/filename.rules.allowall.conf" >> /etc/Mail
 echo -e "FromOrTo:\tdefault\t/etc/MailScanner/filename.rules.conf" >> /etc/MailScanner/filename.rules
 
 echo -e "From:\t127.0.0.1\t/etc/MailScanner/filetype.rules.allowall.conf" > /etc/MailScanner/filetype.rules
-echo -e "From:\t::1\t/etc/MailScanner/filetype.rules.allowall.conf" > /etc/MailScanner/filetype.rules
+echo -e "From:\t::1\t/etc/MailScanner/filetype.rules.allowall.conf" >> /etc/MailScanner/filetype.rules
 echo -e "FromOrTo:\tdefault\t/etc/MailScanner/filetype.rules.conf" >> /etc/MailScanner/filetype.rules
 
 echo -e "From:\t127.0.0.1\tno" > /etc/MailScanner/rules/content.scanning.rules
-echo -e "From:\t::1\tno" > /etc/MailScanner/rules/content.scanning.rules
+echo -e "From:\t::1\tno" >> /etc/MailScanner/rules/content.scanning.rules
 echo -e "FromOrTo:\tdefault\tyes" >> /etc/MailScanner/rules/content.scanning.rules
+
+echo -e "From:\t127.0.0.1\tyes" > /etc/MailScanner/rules/password.rules
+echo -e "From:\t::1\tno" >> /etc/MailScanner/rules/password.rules
+echo -e "FromOrTo:\tdefault\tnos" >> /etc/MailScanner/rules/password.rules
 
 echo -e "allow\t.*\t-\t-" > /etc/MailScanner/filename.rules.allowall.conf
 echo -e "allow\t.*\t-\t-" >> /etc/MailScanner/filetype.rules.allowall.conf
 
 echo -e "From:\t127.0.0.1\tno" > /etc/MailScanner/numeric.phishing.rules
-echo -e "From:\t::1\tno" > /etc/MailScanner/numeric.phishing.rules
+echo -e "From:\t::1\tno" >> /etc/MailScanner/numeric.phishing.rules
 echo -e "FromOrTo:\tDefault\tyes" >> /etc/MailScanner/numeric.phishing.rules
 sed -i '/^Also Find Numeric Phishing =/ c\Also Find Numeric Phishing = %etc-dir%/numeric.phishing.rules' /etc/MailScanner/MailScanner.conf
 
