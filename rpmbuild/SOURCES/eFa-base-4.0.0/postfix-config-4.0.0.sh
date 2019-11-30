@@ -122,7 +122,7 @@ sed -i "/^  unix_listener auth-userdb {/ c\  unix_listener /var/spool/postfix/pr
 sed -i "/^auth_mechanisms = plain/ c\auth_mechanisms = plain login" /etc/dovecot/conf.d/10-auth.conf
 
 # Submission config
-sed -i '/^#submission inet n/ c\submission inet n       -       n       -       -       smtpd\n  -o smtpd_tls_security_level=encrypt\n  -o smtpd_sasl_auth_enable=yes\n  -o smtpd_sasl_type=dovecot\n  -o smtpd_sasl_path=private/auth\n  -o smtpd_sasl_security_options=noanonymous\n  -o smtpd_sasl_local_domain=$myhostname\n  -o smtpd_client_restrictions=permit_sasl_authenticated,reject\n  -o smtpd_sender_login_maps=hash:/etc/postfix/virtual\n  -o smtpd_sender_restrictions=reject_sender_login_mismatch\n  -o smtpd_recipient_restrictions=reject_non_fqdn_recipient,reject_unknown_recipient_domain,permit_sasl_authenticated,reject' /etc/postfix/master.cf
+sed -i '/^#submission inet n/ c\submission inet n       -       n       -       -       smtpd\n  -o smtpd_tls_security_level=encrypt\n  -o smtpd_sasl_auth_enable=yes\n  -o smtpd_sasl_type=dovecot\n  -o smtpd_sasl_path=private/auth\n  -o smtpd_sasl_security_options=noanonymous\n  -o smtpd_sasl_local_domain=$myhostname\n  -o smtpd_client_restrictions=permit_sasl_authenticated,reject\n  -o smtpd_sender_login_maps=hash:/etc/postfix/virtual\n  -o smtpd_recipient_restrictions=reject_non_fqdn_recipient,reject_unknown_recipient_domain,permit_sasl_authenticated,reject' /etc/postfix/master.cf
 
 # Enable QMQP delivery
 sed -i "/^#628 / c\qmqp      unix  n       -       n       -       -       qmqpd" /etc/postfix/master.cf
