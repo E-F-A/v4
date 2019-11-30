@@ -38,9 +38,11 @@ cmd='sed -i "/^\s\s-o smtpd_sender_restrictions=reject_sender_login_mismatch/d" 
 execcmd
 
 # Create ruleset for password protected files
-echo -e "From:\t127.0.0.1\tyes" > /etc/MailScanner/rules/password.rules
-echo -e "From:\t::1\tyes" >> /etc/MailScanner/rules/password.rules
-echo -e "FromOrTo:\tdefault\tno" >> /etc/MailScanner/rules/password.rules
+if [ ! -f /etc/MailScanner/rules/password.rules ]; then
+  echo -e "From:\t127.0.0.1\tyes" > /etc/MailScanner/rules/password.rules
+  echo -e "From:\t::1\tyes" >> /etc/MailScanner/rules/password.rules
+  echo -e "FromOrTo:\tdefault\tno" >> /etc/MailScanner/rules/password.rules
+fi
 
 cmd='systemctl daemon-reload'
 execcmd
