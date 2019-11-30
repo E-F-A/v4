@@ -97,6 +97,15 @@ cp -f /etc/hosts /etc/hosts.bak
     sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
     sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf.d/vhost.conf
 
+    # Issue #155 Change domainname in opendmarc reports
+    DBHOST='localhost'
+    DBUSER='opendmarc'
+    DBPASS="`grep ^DMARCSQLPWD /etc/eFa/openDMARC-Config | sed 's/^.*://'`"
+    DBNAME='opendmarc'
+    DMARCRepDomain="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/^.*://'`"
+    DMARCRepEmail="no-reply@$DMARCRepDomain"
+    /usr/sbin/opendmarc-reports -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} -interval=86400 -report-email $DMARCRepEmail -report-org $DMARCRepDomain -smtp-server=127.0.0.1
+
     echo -e ""
     echo -e "Hostname changed.  Note that you may need to generate new SSL certificates to match the new hostname"
     echo -e ""
