@@ -37,6 +37,11 @@ function randompw()
 cmd='sed -i "/^\s\s-o smtpd_sender_restrictions=reject_sender_login_mismatch/d" /etc/postfix/master.cf'
 execcmd
 
+# Create ruleset for password protected files
+echo -e "From:\t127.0.0.1\tyes" > /etc/MailScanner/rules/password.rules
+echo -e "From:\t::1\tyes" >> /etc/MailScanner/rules/password.rules
+echo -e "FromOrTo:\tdefault\tno" >> /etc/MailScanner/rules/password.rules
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
