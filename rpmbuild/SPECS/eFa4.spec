@@ -25,8 +25,8 @@
 
 Name:      eFa
 Summary:   eFa Maintenance rpm
-Version:   4.0.0
-Release:   68.eFa%{?dist}
+Version:   4.0.1
+Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -472,17 +472,21 @@ elif [ "$1" = "2" ]; then
     echo -e "\nPreparing to update eFa..."
 
    # 4.0.0-x cumulative fixes
-   if [[ $(head -n 1 %{_sysconfdir}/eFa-Version) == "eFa-4.0.0" ]]; then
+   if [[ %{version} == "4.0.0" ]]; then
      {
        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
        [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
-     } 2>&1 | tee -a /var/log/eFa/update.log
+     } 2>&1 | tee -a /var/log/eF(head -n 1 %{_sysconfdir}/eFa-Version) == "eFa-4.0.1" ]]; then
+   elif [[ %{version} == "4.0.1" ]]; then
+     {
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.1.sh
+       [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
    fi
 
     # cleanup if sucessful
     rm -rf /usr/src/eFa
-
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
+
     echo "Update completed successfully!"
 fi
 
@@ -508,6 +512,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Fri Dec 27 2019 eFa Project <shawniverson@efa-project.org> - 4.0.1-1
+- Updates and Fixes for eFa 4.0.1 <https://efa-project.org>
+
 * Fri Nov 15 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-68
 - Updates and Fixes for eFa 4.0.0 <https://efa-project.org>
 
