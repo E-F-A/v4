@@ -46,7 +46,7 @@ fi
 
 # add MAXMIND_LICENSE_KEY to conf.php
 if [[ -z $(grep MAXMIND_LICENSE_KEY /var/www/html/mailscanner/conf.php) ]]; then
-  sed -i "/^define('SESSION_TIMEOUT'/ a\\\n// MaxMind License key\n// A free license key from MaxMind is required to download GeoLite2 data\n// https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/\n// define('MAXMIND_LICENSE_KEY', 'mylicensekey');
+  sed -i "/^define('SESSION_TIMEOUT'/ a\\\n// MaxMind License key\n// A free license key from MaxMind is required to download GeoLite2 data\n// https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/\n// define('MAXMIND_LICENSE_KEY', 'mylicensekey');" /var/www/html/mailscanner/conf.php
 fi
 
 cmd='systemctl daemon-reload'
