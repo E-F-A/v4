@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.1
-Release:   5.eFa%{?dist}
+Release:   6.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -513,6 +513,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Dec 29 2019 eFa Project <shawniverson@efa-project.org> - 4.0.1-6
+- Display current maxmind key if present
+
 * Sat Dec 28 2019 eFa Project <shawniverson@efa-project.org> - 4.0.1-5
 - Fix eFa-Configure maxmind key entry
 
