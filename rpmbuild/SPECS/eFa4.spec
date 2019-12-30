@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.1
-Release:   6.eFa%{?dist}
+Release:   7.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -513,6 +513,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Mon Dec 30 2019 eFa Project <shawniverson@efa-project.org> - 4.0.1-7
+- Redefine password in MailWatchConf.pm after update
+
 * Sun Dec 29 2019 eFa Project <shawniverson@efa-project.org> - 4.0.1-6
 - Display current maxmind key if present
 
