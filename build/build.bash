@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 action=$1
-action="production" # default to prod if no arg supplied
+[[ -z $action ]] && action="production" # default to prod if no arg supplied
 
 #-----------------------------------------------------------------------------#
 # Install eFa
