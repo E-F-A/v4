@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.1
-Release:   8.eFa%{?dist}
+Release:   9.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -435,13 +435,15 @@ mv updates $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
 %post
 
+flag=0
 if [ "$1" = "1" ]; then
     # Perform Installation tasks
 
     # Sanity check in case rpm was removed
     if [[ -e %{_sysconfdir}/eFa-Version ]]; then
         echo "Previous eFa install detected."
-        echo "Skipping post phase configuration tasks."
+        echo "Skipping post phase configuration tasks and executing all updates."
+        flag=1
     else
         echo -e "\nPreparing to install eFa"
 
@@ -466,18 +468,19 @@ if [ "$1" = "1" ]; then
         echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
         echo "Build completed!"
     fi
-
-elif [ "$1" = "2" ]; then
+fi
+if [[ "$1" = "2" || "$flag" = "1" ]]; then
     # Perform Update tasks
     echo -e "\nPreparing to update eFa..."
 
    # 4.0.0-x cumulative fixes
-   if [[ %{version} == "4.0.0" ]]; then
+   if [[ %{version} == "4.0.0" || "$flag" == "1" ]]; then
      {
        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.0.sh
        [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
      } 2>&1 | tee -a /var/log/eFa/update.log
-   elif [[ %{version} == "4.0.1" ]]; then
+   fi
+   if [[ %{version} == "4.0.1" || "$flag" == "1" ]]; then
      {
        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.1.sh
        [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
@@ -513,6 +516,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jan 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-9
+- Add logic to implement all updates on reinstall
+
 * Mon Dec 30 2019 eFa Project <shawniverson@efa-project.org> - 4.0.1-8
 - Fix missing ) in update-4.0.1.sh
 
