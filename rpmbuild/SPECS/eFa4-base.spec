@@ -31,6 +31,7 @@ BuildRequires: php72u-cli >= 7.2.13-2
 BuildRequires: wget >= 1.14-18
 BuildRequires: php72u-json >= 7.2.21-1
 BuildRequires: php72u-xml >= 7.2.21-1
+BuildRequires: php72u-pdo >= 7.2.21-1
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
