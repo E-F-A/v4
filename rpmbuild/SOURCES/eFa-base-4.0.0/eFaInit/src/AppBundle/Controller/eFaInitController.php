@@ -1176,7 +1176,7 @@ class eFaInitController extends Controller
             $password = $session->get('webpassword');
             # Hash the password now
             $password = password_hash($password, PASSWORD_DEFAULT);
-            $process = new Process("sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=" . $session->get('hostname') . " --domainname=" . $session->get('domainname') . " --timezone=" . $session->get('timezone') . " --username=" . $session->get('webusername') . " --efauserpwd=" . $password);
+            $process = new Process("sudo /usr/sbin/eFa-Commit --configmailwatch --hostname=" . $session->get('hostname') . " --domainname=" . $session->get('domainname') . " --timezone=" . $session->get('timezone') . " --username=" . $session->get('webusername') . " --efauserpwd='" . $password . "'");
             $process->setTimeout($this->timeout);
             $process->mustRun();
 
@@ -1305,7 +1305,7 @@ class eFaInitController extends Controller
         try {
             $password = $session->get('clipassword');
             $password = md5($password);
-            $process = new Process("sudo /usr/sbin/eFa-Commit --configcli --cliusername=" .  $session->get('cliusername') . " --efaclipwd=" . $password);
+            $process = new Process("sudo /usr/sbin/eFa-Commit --configcli --cliusername=" .  $session->get('cliusername') . " --efaclipwd='" . $password . "'");
             $process->setTimeout($this->timeout);
             $process->mustRun();
 
