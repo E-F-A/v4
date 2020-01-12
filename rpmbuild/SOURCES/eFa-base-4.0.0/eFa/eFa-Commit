@@ -935,7 +935,7 @@ if [[ $configcli -eq 1 ]]; then
 
   useradd -m -d /home/$CLIUSERNAME -s /bin/bash -G wheel $CLIUSERNAME
   [ $? -ne 0 ] && exit 1
-  echo "$CLIUSERNAME:$efaclipwd" | chpasswd -e $CLIUSERNAME
+  echo "$CLIUSERNAME:$efaclipwd" | chpasswd -e
   [ $? -ne 0 ] && exit 1
 
   # Set eFa-Configure to launch
