@@ -1112,7 +1112,9 @@ EOF
   echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
 
   # Clear logs
-  echo "" > /var/log/audit/audit.log
+  if [[ "$virtplatform" != "lxc" ]]; then
+    echo "" > /var/log/audit/audit.log
+  fi
   echo "" > /var/log/messages
   echo "" > /var/log/maillog
   echo "" > /var/log/httpd/access_log
