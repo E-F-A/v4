@@ -1,8 +1,8 @@
 #!/bin/bash
 ######################################################################
-# eFa 4.0.0 Development prebuild environment
+# eFa 4.0.1 Development prebuild environment
 ######################################################################
-# Copyright (C) 2019  https://efa-project.org
+# Copyright (C) 2020  https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

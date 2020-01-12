@@ -1,7 +1,7 @@
 ######################################################################
-# eFa 4.0.0 BUILDING
+# eFa 4.0.1 BUILDING
 ######################################################################
-# Copyright (C) 2018  https://efa-project.org
+# Copyright (C) 2020  https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################
 
-Welcome to eFa Version 4.0.0!
+Welcome to eFa Version 4.0.1!
 
 Many thanks goes to the developers of eFa and maintainers of all
 3rd party packages!
