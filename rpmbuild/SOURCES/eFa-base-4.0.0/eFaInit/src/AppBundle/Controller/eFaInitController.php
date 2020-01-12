@@ -1304,7 +1304,7 @@ class eFaInitController extends Controller
 
         try {
             $password = $session->get('clipassword');
-            $password = md5($password);
+            $password = exec("python -c \"import crypt; print(crypt.crypt('" . $password . "', crypt.mksalt(crypt.METHOD_SHA512)))\"");
             $process = new Process("sudo /usr/sbin/eFa-Commit --configcli --cliusername=" .  $session->get('cliusername') . " --efaclipwd='" . $password . "'");
             $process->setTimeout($this->timeout);
             $process->mustRun();
