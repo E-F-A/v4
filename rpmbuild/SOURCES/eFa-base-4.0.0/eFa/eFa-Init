@@ -886,7 +886,7 @@ func_echo-header(){
 function func_configure-system() {
 
   efauserpwd=$(htpasswd -nbBC 10 "" "$efauserpwd" | tr -d ':\n')
-  efaclipwd=$(echo $efaclipwd | md5sum | awk '{print $1}')
+  efaclipwd=$(python -c "import crypt; print(crypt.crypt('$efaclipwd', crypt.mksalt(crypt.METHOD_SHA512)))")
 
   /usr/sbin/eFa-Commit --commitall --verbose --hostname=$HOSTNAME --domainname=$DOMAINNAME \
       --ipv4address=$IPV4ADDRESS --ipv6address=$IPV6ADDRESS --dnsip1=$DNSIP1 --dnsip2=$DNSIP2 \
