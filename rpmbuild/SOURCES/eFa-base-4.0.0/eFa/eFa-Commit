@@ -834,10 +834,7 @@ if [[ $configmailwatch -eq 1 ]]; then
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "DELETE FROM whitelist where from_address= '127.0.0.1'" >/dev/null 2>&1
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "DELETE FROM whitelist where from_address= '::1'" >/dev/null 2>&1
 
-  # Handle single quotes
-  efauserpwd=$(echo $efauserpwd | sed -e "s/'/''/g")
-
-  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = md5('$efauserpwd'), fullname = 'Administrator', type ='A'"
+  /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO users SET username = '$USERNAME', password = '$efauserpwd', fullname = 'Administrator', type ='A'"
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" mailscanner -e "INSERT INTO whitelist SET to_address = 'default', to_domain = '', from_address = '127.0.0.1'"
   [ $? -ne 0 ] && exit 1
@@ -938,7 +935,7 @@ if [[ $configcli -eq 1 ]]; then
 
   useradd -m -d /home/$CLIUSERNAME -s /bin/bash -G wheel $CLIUSERNAME
   [ $? -ne 0 ] && exit 1
-  echo "$CLIUSERNAME:$efaclipwd" | chpasswd --md5 $CLIUSERNAME
+  echo "$CLIUSERNAME:$efaclipwd" | chpasswd -e $CLIUSERNAME
   [ $? -ne 0 ] && exit 1
 
   # Set eFa-Configure to launch
