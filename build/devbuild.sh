@@ -127,17 +127,15 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/sqlgreywebinterface-1.1.9-2.eFa.el7
 [ $? -ne 0 ] && exit 1
 cd $GITPATH/rpmbuild/SOURCES
 [ $? -ne 0 ] && exit 1
-rm -f eFa-4.0.0.tar.gz
+rm -f eFa-4.0.1.tar.gz
 [ $? -ne 0 ] && exit 1
-tar czvf eFa-4.0.0.tar.gz eFa-4.0.0/
+tar czvf eFa-4.0.1.tar.gz eFa-4.0.1/
 [ $? -ne 0 ] && exit 1
 rm -f eFa-base-4.0.0.tar.gz
 [ $? -ne 0 ] && exit 1
 tar czvf eFa-base-4.0.0.tar.gz eFa-base-4.0.0/
 [ $? -ne 0 ] && exit 1
-tar xzvf MailScanner-5.1.4-1.efa.2.rhel.tar.gz
-[ $? -ne 0 ] && exit 1
-yum -y install MailScanner-5.1.4-1.efa.2/MailScanner-5.1.4-1.efa.2.noarch.rpm
+yum -y install MailScanner-5.2.2-1.efa.1.rhel.noarch.rpm
 [ $? -ne 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
 [ $? -ne 0 ] && exit 1
