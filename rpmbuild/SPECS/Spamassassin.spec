@@ -239,6 +239,9 @@ fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v342.pre ]; then
   mv %{_sysconfdir}/mail/spamassassin/v342.pre %{_sysconfdir}/mail/spamassassin/v342.pre.tmp
 fi
+if [ -f %{_sysconfdir}/mail/spamassassin/v343.pre ]; then
+  mv %{_sysconfdir}/mail/spamassassin/v343.pre %{_sysconfdir}/mail/spamassassin/v343.pre.tmp
+fi
 exit 0
 
 %post
@@ -279,6 +282,10 @@ fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v342.pre.tmp ]; then
   rm -f %{_sysconfdir}/mail/spamassassin/v342.pre
   mv %{_sysconfdir}/mail/spamassassin/v342.pre.tmp %{_sysconfdir}/mail/spamassassin/v342.pre
+fi
+if [ -f %{_sysconfdir}/mail/spamassassin/v343.pre.tmp ]; then
+  rm -f %{_sysconfdir}/mail/spamassassin/v343.pre
+  mv %{_sysconfdir}/mail/spamassassin/v343.pre.tmp %{_sysconfdir}/mail/spamassassin/v343.pre
 fi
 exit 0
 
