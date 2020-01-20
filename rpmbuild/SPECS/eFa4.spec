@@ -269,7 +269,7 @@ Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 5.8.3-1
     # unrar                                      # eFa     # MailScanner
-Requires:  postfix_eFa >= 3.3.0-1
+Requires:  postfix_eFa >= 3.4.8-1
     # postfix_eFa                                # eFa     # MTA
     # #    libicu                                # base    #
     # #    mariadb-libs                          #         #
@@ -517,7 +517,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Sun Jan 19 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-10
-- Add MailScanner Update
+- Add MailScanner, Spamssassin, and postfix updates
 
 * Sun Jan 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-9
 - Add logic to implement all updates on reinstall
