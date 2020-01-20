@@ -551,6 +551,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{postfix_daemon_dir}/postmulti-script
 %attr(0755, root, root) %{postfix_daemon_dir}/postscreen
 %attr(0755, root, root) %{postfix_daemon_dir}/proxymap
+%attr(0755, root, root) %{postfix_daemon_dir}/postlogd
 %attr(0755, root, root) %{postfix_shlib_dir}/libpostfix-*.so
 %{_bindir}/mailq.postfix
 %{_bindir}/newaliases.postfix
