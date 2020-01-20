@@ -71,6 +71,7 @@ Epoch: 2
 Group: System Environment/Daemons
 URL: http://www.postfix.org
 License: IBM and GPLv2+
+BuildRequires: m4
 Requires(post): systemd systemd-sysv
 Requires(post): %{_sbindir}/alternatives
 Requires(pre): %{_sbindir}/groupadd
