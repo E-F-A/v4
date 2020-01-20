@@ -29,7 +29,7 @@
 
 Summary: Spam filter for email which can be invoked from mail delivery agents
 Name:    spamassassin
-Version: 3.4.4-rc1
+Version: 3.4.4.rc1
 Release: 1.eFa%{?dist}
 License: ASL 2.0
 Group:   Applications/Internet
