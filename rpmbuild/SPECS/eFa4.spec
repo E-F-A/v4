@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.1
-Release:   9.eFa%{?dist}
+Release:   10.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -288,7 +288,7 @@ Requires:  spamassassin >= 3.4.2-1
     # #    procmail                              #         #
     # #    perl-Geo-IP                           #         #
     # #    perl-Net-Patricia                     #         #
-Requires:  MailScanner >= 5.1.4-1
+Requires:  MailScanner >= 5.2.2-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-4
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -516,6 +516,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jan 19 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-10
+- Add MailScanner Update
+
 * Sun Jan 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-9
 - Add logic to implement all updates on reinstall
 
