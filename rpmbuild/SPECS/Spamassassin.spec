@@ -29,8 +29,8 @@
 
 Summary: Spam filter for email which can be invoked from mail delivery agents
 Name:    spamassassin
-Version: 3.4.2
-Release: 1.eFa%{?dist}
+Version: 3.4.4
+Release: rc1.eFa%{?dist}
 License: ASL 2.0
 Group:   Applications/Internet
 URL:     http://spamassassin.apache.org/
@@ -39,24 +39,24 @@ Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Buildroot: %{_tmppath}/%{name}-root
 Requires: /sbin/chkconfig /sbin/service
 Requires(post): diffutils
-BuildRequires: perl >= 5.10.1
-BuildRequires: perl(Net::DNS) >= 0.65
-BuildRequires: perl(Time::HiRes) >= 1.9721
+BuildRequires: perl >= 5.16.3
+BuildRequires: perl(Net::DNS) >= 0.72
+BuildRequires: perl(Time::HiRes) >= 1.9725
 BuildRequires: perl(NetAddr::IP) >= 4.069
-BuildRequires: openssl-devel >= 1.0.1e
+BuildRequires: openssl-devel >= 1.0.2k
 BuildRequires: perl(Test::Pod) >= 1.48
-BuildRequires: perl-HTML-Parser >= 3.64
-BuildRequires: perl(Archive::Tar) >= 1.58
-BuildRequires: perl-devel >= 4:5.10.1
-BuildRequires: perl-libwww-perl >= 5.833
+BuildRequires: perl-HTML-Parser >= 3.71
+BuildRequires: perl(Archive::Tar) >= 1.92
+BuildRequires: perl-devel >= 5.16.3
+BuildRequires: perl-libwww-perl >= 6.05
 BuildRequires: perl(DB_File) >= 1.830
-BuildRequires: perl(Mail::SPF)
+BuildRequires: perl(Mail::SPF) >= 2.8.0
 BuildRequires: perl(Encode::Detect) >= 1.01
-BuildRequires: gnupg >= 2.0.14
-BuildRequires: perl(IO::Socket::SSL) >= 1.31
-BuildRequires: perl(IO::Socket::INET6) >= 2.56
-BuildRequires: perl(Mail::DKIM) >= 0.37
-BuildRequires: perl(Crypt::OpenSSL::RSA) >= 0.25
+BuildRequires: gnupg >= 2.0.22
+BuildRequires: perl(IO::Socket::SSL) >= 1.94
+BuildRequires: perl(IO::Socket::INET6) >= 2.69
+BuildRequires: perl(Mail::DKIM) >= 0.39
+BuildRequires: perl(Crypt::OpenSSL::RSA) >= 0.28
 BuildRequires: perl(Digest) >= 1.17
 BuildRequires: perl(Digest::HMAC) >= 1.03
 BuildRequires: perl(Digest::MD5) >= 2.52
@@ -65,49 +65,48 @@ BuildRequires: perl(ExtUtils::Constant) >= 0.23
 BuildRequires: perl(ExtUtils::Install) >= 1.58
 BuildRequires: perl(ExtUtils::MakeMaker) >= 6.68
 BuildRequires: perl-libnet >= 1:3.08
-BuildRequires: perl(Net::DNS::Resolver::Programmable)
+BuildRequires: perl(Net::DNS::Resolver::Programmable) >= 0.003
 BuildRequires: perl(Geo::IP) >= 1.43
 BuildRequires: perl(Socket) >= 2.010
-BuildRequires: perl(Text::Balanced) >= 2.03
-BuildRequires: perl(Parse::RecDescent) >= 1.965001
-BuildRequires: perl(Inline) >= 0.46
-BuildRequires: perl(Test::Harness) >= 3.17
-BuildRequires: perl(Test::Simple) >= 0.92
-#BuildRequires: perl-Mail-ClamAV >= 0.29-2
+BuildRequires: perl(Text::Balanced) >= 2.02
+BuildRequires: perl(Parse::RecDescent) >= 1.967009
+BuildRequires: perl(Inline) >= 0.53
+BuildRequires: perl(Test::Harness) >= 3.28
+BuildRequires: perl(Test::Simple) >= 0.98
 BuildRequires: perl(Net::CIDR::Lite) >= 0.21
-BuildRequires: perl(Test::Manifest) >= 1.22
-BuildRequires: perl(Business::ISBN::Data)
-BuildRequires: perl(Business::ISBN) >= 2.05
-BuildRequires: perl(Sys::Hostname::Long) >= 1.4
-BuildRequires: perl(Net::IP) >= 1.25
-BuildRequires: perl(YAML) >= 0.70
-BuildRequires: perl(ExtUtils::CBuilder) >= 0.27
-BuildRequires: perl(ExtUtils::ParseXS) >= 2.2203
-BuildRequires: perl(version) >= 0.77
-BuildRequires: perl(Module::Build) >= 0.35
-BuildRequires: perl(Error) >= 0.17015
-BuildRequires: perl(URI) >= 1.40
+BuildRequires: perl(Test::Manifest) >= 1.23
+BuildRequires: perl(Business::ISBN::Data) >= 20120719.001
+BuildRequires: perl(Business::ISBN) >= 2.06
+BuildRequires: perl(Sys::Hostname::Long) >= 1.5
+BuildRequires: perl(Net::IP) >= 1.26
+BuildRequires: perl(YAML) >= 0.84
+BuildRequires: perl(ExtUtils::CBuilder) >= 0.28.2.6
+BuildRequires: perl(ExtUtils::ParseXS) >= 3.18
+BuildRequires: perl(version) >= 0.99.07
+BuildRequires: perl(Module::Build) >= 0.40.05
+BuildRequires: perl(Error) >= 0.17020
+BuildRequires: perl(URI) >= 1.60
 BuildRequires: perl(IP::Country) >= 2.27
-BuildRequires: perl(IO::Zlib) >= 1.09
+BuildRequires: perl(IO::Zlib) >= 1.10
 BuildRequires: perl(IO::String) >= 1.08
 BuildRequires: perl(IO::Socket::IP) >= 0.21
 BuildRequires: perl(Socket6) >= 0.23
-BuildRequires: perl(Net::Patricia)
-BuildRequires: perl(Data::Dump) >= 1.15
+BuildRequires: perl(Net::Patricia) >= 1.22
+BuildRequires: perl(Data::Dump) >= 1.22
 BuildRequires: perl(Encode::Detect) >= 1.01
 BuildRequires: perl(Crypt::OpenSSL::Random) >= 0.04
-BuildRequires: perl(Crypt::OpenSSL::RSA) >= 0.25
-Requires: perl(Net::DNS) >= 0.65
-Requires: perl(Time::HiRes) >= 1.9721
+BuildRequires: perl(Crypt::OpenSSL::RSA) >= 0.28
+Requires: perl(Net::DNS) >= 0.72
+Requires: perl(Time::HiRes) >= 1.9725
 Requires: perl(DB_File) >= 1.830
-Requires: perl(Mail::SPF)
+Requires: perl(Mail::SPF) >= 2.8.0
 Requires: perl(Encode::Detect) >= 1.01
-Requires: gnupg >= 2.0.14
-Requires: perl-HTML-Parser >= 3.64
-Requires: perl(IO::Socket::SSL) >= 1.31
-Requires: perl(IO::Socket::INET6) >= 2.56
-Requires: perl(Mail::DKIM) >= 0.37
-Requires: perl(Crypt::OpenSSL::RSA) >= 0.25
+Requires: gnupg >= 2.0.22
+Requires: perl-HTML-Parser >= 3.71
+Requires: perl(IO::Socket::SSL) >= 1.94
+Requires: perl(IO::Socket::INET6) >= 2.69
+Requires: perl(Mail::DKIM) >= 0.39
+Requires: perl(Crypt::OpenSSL::RSA) >= 0.28
 Requires: perl(Digest) >= 1.17
 Requires: perl(Digest::HMAC) >= 1.03
 Requires: perl(Digest::MD5) >= 2.52
@@ -118,34 +117,33 @@ Requires: perl(Net::DNS::Resolver::Programmable)
 Requires: perl(Geo::IP) >= 1.43
 Requires: perl(Socket) >= 2.010
 Requires: perl(Text::Balanced) >= 2.02
-Requires: perl-libwww-perl >= 5.833
-Requires: perl(Parse::RecDescent) >= 1.965001
-Requires: perl(Inline) >= 0.46
-Requires: perl(Test::Harness) >= 3.17
-Requires: perl(Test::Simple) >= 0.92
-#Requires: perl-Mail-ClamAV >= 0.29-2
+Requires: perl-libwww-perl >= 6.05
+Requires: perl(Parse::RecDescent) >= 1.967009
+Requires: perl(Inline) >= 0.53
+Requires: perl(Test::Harness) >= 3.28
+Requires: perl(Test::Simple) >= 0.98
 Requires: perl(Net::CIDR::Lite) >= 0.21
-Requires: perl(Test::Manifest) >= 1.22
-Requires: perl(Business::ISBN::Data)
-Requires: perl(Business::ISBN) >= 2.05
-Requires: perl(Sys::Hostname::Long) >= 1.4
-Requires: perl(Net::IP) >= 1.25
-Requires: perl(YAML) >= 0.70
-Requires: perl(ExtUtils::CBuilder) >= 0.27
-Requires: perl(ExtUtils::ParseXS) >= 2.2203
-Requires: perl(version) >= 0.77
-Requires: perl(Module::Build) >= 0.35
-Requires: perl(Error) >= 0.17015
-Requires: perl(URI) >= 1.40
+Requires: perl(Test::Manifest) >= 1.23
+Requires: perl(Business::ISBN::Data) >= 20120719.001
+Requires: perl(Business::ISBN) >= 2.06
+Requires: perl(Sys::Hostname::Long) >= 1.5
+Requires: perl(Net::IP) >= 1.26
+Requires: perl(YAML) >= 0.84
+Requires: perl(ExtUtils::CBuilder) >= 0.28.2.6
+Requires: perl(ExtUtils::ParseXS) >= 3.18
+Requires: perl(version) >= 0.99.07
+Requires: perl(Module::Build) >= 0.40.05
+Requires: perl(Error) >= 0.17020
+Requires: perl(URI) >= 1.60
 Requires: perl(IP::Country) >= 2.27
 Requires: perl(IO::String) >= 1.08
 Requires: perl(IO::Socket::IP) >= 0.21
 Requires: perl(Socket6) >= 0.23
-Requires: perl(Net::Patricia)
-Requires: perl(Data::Dump) >= 1.15
+Requires: perl(Net::Patricia) >= 1.22
+Requires: perl(Data::Dump) >= 1.22
 Requires: perl(Encode::Detect) >= 1.01
 Requires: perl(Crypt::OpenSSL::Random) >= 0.04
-Requires: perl(Crypt::OpenSSL::RSA) >= 0.25
+Requires: perl(Crypt::OpenSSL::RSA) >= 0.28
 Obsoletes: perl-Mail-SpamAssassin
 
 %description
@@ -298,6 +296,9 @@ fi
 exit 0
 
 %changelog
+* Sun Jan 19 2020 Shawn Iverson <shawniverson@gmail.com> - 3.4.4-rc1
+- Updated and rebuilt for eFa https://efa-project.org
+
 * Sat Oct 27 2018 Shawn Iverson <shawniverson@gmail.com> - 3.4.2-1
 - Updated and rebuilt for eFa https://efa-project.org
 

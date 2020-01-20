@@ -56,6 +56,12 @@ if [[ -z $(grep MAILWATCHSQLPWD /usr/share/MailScanner/perl/custom/MailWatchConf
   /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
 fi 
 
+# Set milter queue permissions
+cmd='chown postfix:postfix /var/spool/MailScanner/milterin'
+execcmd
+cmd='chown postfix:postfix /var/spool/MailScanner/milterout'
+execcmd
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
