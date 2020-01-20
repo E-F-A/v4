@@ -90,7 +90,7 @@
  #qmgr     unix  n       -       n       300     1       oqmgr
  tlsmgr    unix  -       -       n       1000?   1       tlsmgr
  rewrite   unix  -       -       n       -       -       trivial-rewrite
-@@ -96,14 +96,14 @@
+@@ -98,14 +98,14 @@
  # Also specify in main.cf: cyrus_destination_recipient_limit=1
  #
  #cyrus     unix  -       n       n       -       -       pipe

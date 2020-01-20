@@ -1,6 +1,6 @@
---- postfix-3.2.4/conf/post-install	2015-12-28 00:00:45.000000000 +0000
-+++ postfix-3.2.4/conf/post-install2	2018-01-13 19:40:17.250999107 +0000
-@@ -532,6 +532,18 @@
+--- postfix-3.4.8_eFa/conf/post-install	2019-01-29 17:24:42.000000000 -0500
++++ postfix-3.4.8_eFa/conf/post-install2	2020-01-20 09:30:18.273586584 -0500
+@@ -537,6 +537,18 @@
  	    case $path in
  	    no|no/*) continue;;
  	    esac
