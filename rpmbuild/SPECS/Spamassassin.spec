@@ -25,7 +25,7 @@
 # Define variables to use in conditionals
 %define real_name Mail-SpamAssassin
 %{!?perl_vendorlib: %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)}
-%global saversion 3.004001
+%global saversion 3.004004
 
 Summary: Spam filter for email which can be invoked from mail delivery agents
 Name:    spamassassin
