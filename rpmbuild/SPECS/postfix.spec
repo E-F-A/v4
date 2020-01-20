@@ -630,7 +630,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Mon Jan 20 2018 Shawn Iverson <shawniverson@efa-project.org> - 2:3.4.8-1
+* Mon Jan 20 2020 Shawn Iverson <shawniverson@efa-project.org> - 2:3.4.8-1
 - Update package for eFa v4
 
 * Sun Jul 8 2018 Shawn Iverson <shawniverson@efa-project.org> - 2:3.3.0-1
