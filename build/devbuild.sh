@@ -107,7 +107,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-5.8.3-1.eFa.el7.x86_64.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-3.4.2-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-3.4.4-rc1.eFa.el7.x86_64.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Encoding-FixLatin.spec
 [ $? -ne 0 ] && exit 1
