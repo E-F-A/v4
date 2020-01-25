@@ -59,7 +59,6 @@ cp config/packaging/os.centos7.conf %{buildroot}/etc/clamav-unofficial-sigs/os.c
 cp config/user.conf %{buildroot}/etc/clamav-unofficial-sigs
 cp systemd/clamav-unofficial-sigs.service %{buildroot}/usr/lib/systemd/system
 cp systemd/clamav-unofficial-sigs.timer %{buildroot}/usr/lib/systemd/system
-cp systemd/clamd.scan.service %{buildroot}/usr/lib/systemd/system
 mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 
 %post
@@ -68,10 +67,6 @@ sed -i '/^#clamd_socket=/ c\clamd_socket="/var/run/clamd.socket/clamd.sock"' /et
 sed -i '/^clamd_pid=/ c\clamd_pid="/var/run/clamd.socket/clamd.pid"' /etc/clamav-unofficial-sigs/os.conf
 /usr/sbin/clamav-unofficial-sigs.sh --install-logrotate
 /usr/sbin/clamav-unofficial-sigs.sh --install-man
-systemctl daemon-reload
-systemctl enable clamav-unofficial-sigs.service
-systemctl enable clamav-unofficial-sigs.timer
-systemctl enable clamd.scan.service
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -88,7 +83,6 @@ systemctl enable clamd.scan.service
 %dir %{_usr}/lib/systemd/system/
 %attr(0644, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.service
 %attr(0644, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.timer
-%attr(0644, root, root) %{_usr}/lib/systemd/system/clamd.scan.service
 
 %changelog
 * Sat Jan 25 2020 Shawn Iverson <shawniverson@efa-project.org> - 7.0.1-1

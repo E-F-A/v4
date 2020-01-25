@@ -43,6 +43,8 @@ systemctl disable mariadb
 #chkconfig saslauthd off
 systemctl disable crond
 systemctl disable clamd@scan
+systemctl disable clamav-unofficial-sigs.service
+systemctl disable clamav-unofficial-sigs.timer
 systemctl disable sqlgrey
 #chkconfig mailgraph-init off
 chkconfig adcc off
