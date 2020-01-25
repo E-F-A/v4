@@ -68,11 +68,9 @@ sed -i '/^ExecStart=/ c\ExecStart=/usr/sbin/clamav-unofficial-sigs.sh' /usr/lib/
 /usr/sbin/clamav-unofficial-sigs.sh --install-man
 systemctl daemon-reload
 systemctl enable clamav-unofficial-sigs.service
-systemctl restart clamav-unofficial-sigs.service
 systemctl enable clamav-unofficial-sigs.timer
-systemctl restart clamav-unofficial-sigs.service
+systemctl restart clamav-unofficial-sigs.timer
 systemctl enable clamd.scan.service
-systemctl restart clamd.scan.service
 
 %clean
 %{__rm} -rf %{buildroot}
