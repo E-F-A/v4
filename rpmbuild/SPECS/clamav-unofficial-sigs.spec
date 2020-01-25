@@ -24,15 +24,15 @@
 #-----------------------------------------------------------------------------#
 Summary:       clamav-unofficial-sigs Maintained and provided by https://eXtremeSHOK.com
 Name:          clamav-unofficial-sigs
-Version:       5.6.2
+Version:       7.0.1
 Epoch:         1
-Release:       4.eFa%{?dist}
+Release:       1.eFa%{?dist}
 License:       Copyright (c) Adrian Jon Kriel admin@extremeshok.com
 Group:         Applications/Utilities
 URL:           https://github.com/extremeshok/clamav-unofficial-sigs
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
-Requires:      clamav >= 0.99
+Requires:      clamav >= 0.101.0
 Requires:      bind-utils >= 9.9.4
 
 %description
@@ -55,27 +55,46 @@ mkdir -p %{buildroot}/usr/lib/systemd/system
 cp clamav-unofficial-sigs.sh %{buildroot}/usr/sbin
 mkdir %{buildroot}/etc/clamav-unofficial-sigs
 cp config/master.conf %{buildroot}/etc/clamav-unofficial-sigs
-cp config/os.centos7.conf %{buildroot}/etc/clamav-unofficial-sigs/os.conf
+cp config/packaging/os.centos7.conf %{buildroot}/etc/clamav-unofficial-sigs/os.conf
 cp config/user.conf %{buildroot}/etc/clamav-unofficial-sigs
 cp systemd/clamav-unofficial-sigs.service %{buildroot}/usr/lib/systemd/system
 cp systemd/clamav-unofficial-sigs.timer %{buildroot}/usr/lib/systemd/system
+cp systemd/clamd.scan.service %{buildroot}/usr/lib/systemd/system
 mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
+
+%post
+sed -i '/^ExecStart=/ c\ExecStart=/usr/sbin/clamav-unofficial-sigs.sh' /usr/lib/systemd/system/clamav-unofficial-sigs.service
+/usr/sbin/clamav-unofficial-sigs.sh --install-logrotate
+/usr/sbin/clamav-unofficial-sigs.sh --install-man
+systemctl daemon-reload
+systemctl enable clamav-unofficial-sigs.service
+systemctl restart clamav-unofficial-sigs.service
+systemctl enable clamav-unofficial-sigs.timer
+systemctl restart clamav-unofficial-sigs.service
+systemctl enable clamd.scan.service
+systemctl restart clamd.scan.service
 
 %clean
 %{__rm} -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%doc INSTALL LICENSE README.md
+%doc INSTALL.md LICENSE README.md
 %attr(0755, root, root) %{_sbindir}/clamav-unofficial-sigs.sh
 %dir %{_sysconfdir}/clamav-unofficial-sigs/
-%config(noreplace) %{_sysconfdir}/clamav-unofficial-sigs/*
+%config(replace) %{_sysconfdir}/clamav-unofficial-sigs/master.conf
+%config(replace) %{_sysconfdir}/clamav-unofficial-sigs/os.conf
+%config(noreplace) %{_sysconfdir}/clamav-unofficial-sigs/user.conf
 %dir %{_var}/log/clamav-unofficial-sigs/
 %dir %{_usr}/lib/systemd/system/
 %attr(0644, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.service
 %attr(0644, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.timer
+%attr(0644, root, root) %{_usr}/lib/systemd/system/clamd.scan.service
 
 %changelog
+* Sat Jan 25 2020 Shawn Iverson <shawniverson@efa-project.org> - 7.0.1-1
+- Upgrade package for eFa <https://www.efa-project.org>
+
 * Wed Jan 23 2018 Shawn Iverson <shawniverson@efa-project.org> - 5.6.2-4
 - Set proper attributes in systemd
 
