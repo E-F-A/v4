@@ -62,6 +62,11 @@ execcmd
 cmd='chown postfix:postfix /var/spool/MailScanner/milterout'
 execcmd
 
+cmd='systemctl enable clamav-unofficial-sigs.service'
+execcmd
+cmd='systemctl enable clamav-unofficial-sigs.timer'
+execcmd
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
@@ -71,6 +76,8 @@ execcmd
 cmd='systemctl reload postfix'
 execcmd
 cmd='systemctl restart clamd@scan'
+execcmd
+cmd='systemctl restart clamav-unofficial-sigs.timer'
 execcmd
 cmd='systemctl stop sqlgrey'
 execcmd
