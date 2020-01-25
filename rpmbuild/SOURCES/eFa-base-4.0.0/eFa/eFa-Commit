@@ -1048,6 +1048,8 @@ EOF
   [ $? -ne 0 ] && exit 1
   systemctl enable clamav-unofficial-sigs
   [ $? -ne 0 ] && exit 1
+  systemctl enable clamav-unofficial-sigs.timer
+  [ $? -ne 0 ] && exit 1
   systemctl enable sqlgrey
   [ $? -ne 0 ] && exit 1
   #chkconfig mailgraph-init off
