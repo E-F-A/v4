@@ -81,7 +81,7 @@ rpmbuild -ba postfix.spec
 [ $? -ne 0 ] && exit 1
 yum -y remove postfix postfix32u
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix_eFa-3.4.8-1.eFa.el7.x86_64.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix_eFa-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba clamav-unofficial-sigs.spec
 [ $? -ne 0 ] && exit 1
