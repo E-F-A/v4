@@ -123,7 +123,7 @@ cat >> /etc/rc.local << 'EOF'
 IP=$(ip add | grep inet | grep -v inet\ 127. | grep -v inet6\ ::1 | awk '{print $2}' | awk -F'/' '{print $1}')
 echo '' > /etc/issue
 echo '------------------------------' >> /etc/issue
-echo '---  Welcome to eFa-4.0.0  ---' >> /etc/issue
+echo '---  Welcome to eFa-4.0.1  ---' >> /etc/issue
 echo '------------------------------' >> /etc/issue
 echo '-- https://efa-project.org ---' >> /etc/issue
 echo '------------------------------' >> /etc/issue
