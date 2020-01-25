@@ -147,8 +147,8 @@ echo -e "From:\t::1\tno" >> /etc/MailScanner/rules/content.scanning.rules
 echo -e "FromOrTo:\tdefault\tyes" >> /etc/MailScanner/rules/content.scanning.rules
 
 echo -e "From:\t127.0.0.1\tyes" > /etc/MailScanner/rules/password.rules
-echo -e "From:\t::1\tno" >> /etc/MailScanner/rules/password.rules
-echo -e "FromOrTo:\tdefault\tnos" >> /etc/MailScanner/rules/password.rules
+echo -e "From:\t::1\tyes" >> /etc/MailScanner/rules/password.rules
+echo -e "FromOrTo:\tdefault\tno" >> /etc/MailScanner/rules/password.rules
 
 echo -e "allow\t.*\t-\t-" > /etc/MailScanner/filename.rules.allowall.conf
 echo -e "allow\t.*\t-\t-" >> /etc/MailScanner/filetype.rules.allowall.conf
