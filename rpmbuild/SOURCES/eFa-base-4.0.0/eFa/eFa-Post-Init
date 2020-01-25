@@ -92,7 +92,7 @@ fi
 
 # /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php &
 
-/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php &
+/bin/sa-update &
 
 # Early synchronous tasks
 
@@ -160,6 +160,7 @@ sed -i "/^    echo ' running on ' . efa_version/ c\    echo ' running on ' . efa
 # Late Asynchronous tasks
 /usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --spam --file /usr/share/doc/spamassassin-3.4.4.rc1/sample-spam.txt &
 /usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --ham --file /usr/share/doc/spamassassin-3.4.4.rc1/sample-nonspam.txt &
+/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php &
 
 # Late Synchronous tasks
 if [[ ! -f /etc/postfix/ssl/dhparam.pem ]]; then
