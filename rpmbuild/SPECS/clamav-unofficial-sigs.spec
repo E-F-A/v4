@@ -82,8 +82,8 @@ systemctl restart clamd.scan.service
 %doc INSTALL.md LICENSE README.md
 %attr(0755, root, root) %{_sbindir}/clamav-unofficial-sigs.sh
 %dir %{_sysconfdir}/clamav-unofficial-sigs/
-%config(replace) %{_sysconfdir}/clamav-unofficial-sigs/master.conf
-%config(replace) %{_sysconfdir}/clamav-unofficial-sigs/os.conf
+%config %{_sysconfdir}/clamav-unofficial-sigs/master.conf
+%config %{_sysconfdir}/clamav-unofficial-sigs/os.conf
 %config(noreplace) %{_sysconfdir}/clamav-unofficial-sigs/user.conf
 %dir %{_var}/log/clamav-unofficial-sigs/
 %dir %{_usr}/lib/systemd/system/
