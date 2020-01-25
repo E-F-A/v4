@@ -64,12 +64,12 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 
 %post
 sed -i '/^ExecStart=/ c\ExecStart=/usr/sbin/clamav-unofficial-sigs.sh' /usr/lib/systemd/system/clamav-unofficial-sigs.service
+sed -i '/^#clamd_socket=/ c\clamd_socket="/var/run/clamd.socket/clamd.sock"' /etc/clamav-unofficial-sigs/os.conf
 /usr/sbin/clamav-unofficial-sigs.sh --install-logrotate
 /usr/sbin/clamav-unofficial-sigs.sh --install-man
 systemctl daemon-reload
 systemctl enable clamav-unofficial-sigs.service
 systemctl enable clamav-unofficial-sigs.timer
-systemctl restart clamav-unofficial-sigs.timer
 systemctl enable clamd.scan.service
 
 %clean
