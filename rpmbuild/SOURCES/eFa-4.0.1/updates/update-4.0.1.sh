@@ -67,6 +67,7 @@ execcmd
 cmd='chown postfix:postfix /var/spool/MailScanner/milterout'
 execcmd
 
+# Postfix queue permissions
 cmd='chown -R postfix:mtagroup /var/spool/postfix/hold'
 execcmd
 cmd='chown -R postfix:mtagroup /var/spool/postfix/incoming'
@@ -75,6 +76,14 @@ cmd='chmod -R 750 /var/spool/postfix/hold'
 execcmd
 cmd='chmod -R 750 /var/spool/postfix/incoming'
 execcmd
+
+# sa-update, if needed
+if [[ ! -d /var/lib/spamassassin/3.004004 ]]; then
+  cmd='sa-update'
+  execcmd
+  cmd='sa-compile'
+  execcmd
+fi
 
 cmd='systemctl enable clamav-unofficial-sigs.service'
 execcmd
