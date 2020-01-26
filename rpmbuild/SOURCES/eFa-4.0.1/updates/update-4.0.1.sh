@@ -44,7 +44,8 @@ if [ ! -f /etc/MailScanner/rules/password.rules ]; then
   echo -e "FromOrTo:\tdefault\tno" >> /etc/MailScanner/rules/password.rules
 else
   # fixup
-  sed -i "/^FromOrTo:\tdeffault\tnos/ c\FromOrTo:\tdeffault\tno" /etc/MailScanner/rules/password.rules
+  sed -i "/^From:\t::1\tno/ c\From:\t::1\tyes" /etc/MailScanner/rules/password.rules
+  sed -i "/^FromOrTo:\tdefault\tnos/ c\FromOrTo:\tdeffault\tno" /etc/MailScanner/rules/password.rules
 fi
 
 # add MAXMIND_LICENSE_KEY to conf.php
