@@ -197,6 +197,7 @@ function func_system-restore() {
                           cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
                           cp -rf /var/eFa/backup/backup/etc/MailScanner/* /etc/MailScanner
                           cp -rf /var/eFa/backup/backup/etc/postfix/* /etc/postfix
+                          cp -rf /var/eFa/backup/backup/etc/opendkim/* /etc/opendkim
 
                           # Postmaps
                           postmap /etc/postfix/helo_access
