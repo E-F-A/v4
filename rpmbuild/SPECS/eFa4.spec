@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.1
-Release:   12.eFa%{?dist}
+Release:   13.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -516,6 +516,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Jan 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-13
+- Fix password.rules again during update
+
 * Sat Jan 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-12
 - Fix password.rules during update
 
