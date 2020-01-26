@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.1
-Release:   10.eFa%{?dist}
+Release:   11.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -516,6 +516,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jan 19 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-11
+- Fix queue permissions for Mailwatch queue polling
+
 * Sun Jan 19 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-10
 - Add MailScanner, Spamssassin, and postfix updates
 

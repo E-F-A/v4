@@ -42,6 +42,9 @@ if [ ! -f /etc/MailScanner/rules/password.rules ]; then
   echo -e "From:\t127.0.0.1\tyes" > /etc/MailScanner/rules/password.rules
   echo -e "From:\t::1\tyes" >> /etc/MailScanner/rules/password.rules
   echo -e "FromOrTo:\tdefault\tno" >> /etc/MailScanner/rules/password.rules
+else
+  # fixup
+  sed -i "/^FromOrTo:\tdeffault\tnos/ c\FromOrTo:\tdeffault\tno" /etc/MailScanner/rules/password.rules
 fi
 
 # add MAXMIND_LICENSE_KEY to conf.php
@@ -60,6 +63,15 @@ fi
 cmd='chown postfix:postfix /var/spool/MailScanner/milterin'
 execcmd
 cmd='chown postfix:postfix /var/spool/MailScanner/milterout'
+execcmd
+
+cmd='chown -R postfix:mtagroup /var/spool/postfix/hold'
+execcmd
+cmd='chown -R postfix:mtagroup /var/spool/postfix/incoming'
+execcmd
+cmd='chmod -R 750 /var/spool/postfix/hold'
+execcmd
+cmd='chmod -R 750 /var/spool/postfix/incoming'
 execcmd
 
 cmd='systemctl enable clamav-unofficial-sigs.service'
