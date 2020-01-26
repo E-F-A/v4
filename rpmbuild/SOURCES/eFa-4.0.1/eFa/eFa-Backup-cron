@@ -142,6 +142,10 @@ function start_backup()
   # Issue #227 Include local.cf in eFa-Backup
   mkdir -p $WORKINGDIR/etc/mail/spamassassin
   cp -a /etc/mail/spamassassin/local.cf $WORKINGDIR/etc/mail/spamassassin
+
+  # Backup opendkim
+  mkdir -p $WORKINGDIR/etc/opendkim
+  cp -a /etc/opendkim/* $WORKINGDIR/etc/opendkim
   
   # Gzip tarball the collection
   tar -cpzf $TMPDIR/backup-$CDATE-$CTIME.tar.gz -C $TMPDIR/$CDATE$CTIME .
