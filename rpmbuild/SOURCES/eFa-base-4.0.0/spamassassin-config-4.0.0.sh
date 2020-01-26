@@ -42,6 +42,9 @@ ln -s /var/www/html/mailscanner/temp/GeoIP.dat /usr/share/GeoIP/GeoLiteCountry.d
 # PDFInfo (now included in SA 3.4.1)
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::PDFInfo$/ c\loadplugin Mail::SpamAssassin::Plugin::PDFInfo" /etc/mail/spamassassin/v341.pre
 
+# OLEVBMacro
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::OLEVBMacro$/ c\loadplugin Mail::SpamAssassin::Plugin::OLEVBMacro" /etc/mail/spamassassin/v343.pre
+
 # Initialize sa db
 cp $srcdir/spamassassin/spamassassin.tar.gz /var/lib
 cd /var/lib
