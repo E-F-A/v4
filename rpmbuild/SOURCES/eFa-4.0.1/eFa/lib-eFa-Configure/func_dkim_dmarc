@@ -30,26 +30,26 @@ function func_dkim-dmarc() {
         # Something wrong, reset to default
         milters="inet:127.0.0.1:8891, inet:127.0.0.1:8893, inet:127.0.0.1:33333"
       fi
-      if [[ -z $(echo $milters | grep inet:127.0.0.1:8893) ]]; then
+      if [[ -z $(echo $milters | grep inet:127.0.0.1:8893) && -z $(echo $milters | grep inet:localhost:8893) ]]; then
         milters="inet:127.0.0.1:8893, $milters"
       fi
-      if [[ -z $(echo $milters | grep inet:127.0.0.1:8891) ]]; then
+      if [[ -z $(echo $milters | grep inet:127.0.0.1:8891) && -z $(echo $milters | grep inet:localhost:8891) ]]; then
         milters="inet:127.0.0.1:8891, $milters"
       fi
       milters2=$(grep ^non_smtpd_milters /etc/postfix/main.cf | sed -e 's/^non_smtpd_milters\s\{0,1\}=\s\{0,1\}//')
       if [[ -z $milters2 ]]; then
-        # Empty or not present
+        # Empty
         milters2="inet:127.0.0.1:8891, inet:127.0.0.1:8893"
       fi
-      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8893) ]]; then
+      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8893) && -z $(echo $milters2 | grep inet:localhost:8893) ]]; then
         milters2="inet:127.0.0.1:8893, $milters2"
       fi
-      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8891) ]]; then
+      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8891) && -z $(echo $milters2 | grep inet:localhost:8891) ]]; then
         milters2="inet:127.0.0.1:8891, $milters2"
       fi
       milters="smtpd_milters = $milters"
       milters2="non_smtpd_milters = $milters2"
-      
+
       postconf -e "$milters"
       postconf -e "$milters2"
 
@@ -65,7 +65,7 @@ function func_dkim-dmarc() {
       echo -e "System is ready to use OpenDKIM verification and OpenDMARC verification and reporting"
       pause
     elif [[ $TMPOPT =~ ^[Nn]$ ]]; then
-      menu=0  
+      menu=0
       # explode and rebuild without option
       milters=$(grep ^smtpd_milters /etc/postfix/main.cf | sed -e "s/^smtpd_milters\s\{0,1\}=\s\{0,1\}//")
       OLDIFS=$IFS
@@ -76,7 +76,7 @@ function func_dkim-dmarc() {
       flag=0
       for i in "${array[@]}"; do
         i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-        if [[ ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
+        if [[ ! $i =~ (inet:127.0.0.1:8891|inet:localhost:8891) && ! $i =~ (inet:127.0.0.1:8893|inet:localhost:8893) ]]; then
           if [[ $flag -eq 1 ]]; then
             milters="$milters, $i"
           else
@@ -98,16 +98,16 @@ function func_dkim-dmarc() {
       IFS=','
       read -r -a array <<< "$milters2"
       IFS=$OLDIFS
-      milters2=
+    milters2=
       flag=0
       for i in "${array[@]}"; do
         i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-        if [[ $flag -eq 1 && ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
+        if [[ $flag -eq 1 && ! $i =~ (inet:127.0.0.1:8891|inet:localhost:8891) && ! $i =~ (inet:127.0.0.1:8893|inet:localhost:8893) ]]; then
           milters2="$milters2,"
         else
           flag=1
         fi
-        if [[ ! $i =~ inet:127.0.0.1:8891 && ! $i =~ inet:127.0.0.1:8893 ]]; then
+        if [[ ! $i =~ (inet:127.0.0.1:8891|inet:localhost:8891) && ! $i =~ (inet:127.0.0.1:8893|inet:localhost:8893) ]]; then
           milters2="$milters2 $i"
         else
           flag=0
