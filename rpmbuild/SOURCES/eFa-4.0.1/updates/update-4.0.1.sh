@@ -85,6 +85,12 @@ if [[ ! -d /var/lib/spamassassin/3.004004 ]]; then
   execcmd
 fi
 
+# Fix razor reporting
+if [[ ! -L /var/lib/php/fpm/.razor ]]; then
+  rm -rf /var/lib/php/fpm/.razor >/dev/null 2>&1
+  ln -s /var/spool/postfix/.razor /var/lib/php/fpm/.razor
+fi
+
 # Enable new OLEVBMacro plugin
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::OLEVBMacro$/ c\loadplugin Mail::SpamAssassin::Plugin::OLEVBMacro" /etc/mail/spamassassin/v343.pre
 
