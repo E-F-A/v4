@@ -516,7 +516,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
-* Saat Jan 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-12
+* Sat Jan 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-12
 - Fix password.rules during update
 
 * Sun Jan 19 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-11
