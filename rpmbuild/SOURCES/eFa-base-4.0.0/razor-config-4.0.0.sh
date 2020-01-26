@@ -30,6 +30,7 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring razor..."
 mkdir /var/spool/postfix/.razor
 ln -s /var/spool/postfix/.razor /var/www/.razor
+ln -s /var/spool/postfix/.razor /var/lib/php/fpm/.razor
 chown postfix:mtagroup /var/spool/postfix/.razor
 chmod -R ug+rwx /var/spool/postfix/.razor
 
