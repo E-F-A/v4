@@ -85,6 +85,9 @@ if [[ ! -d /var/lib/spamassassin/3.004004 ]]; then
   execcmd
 fi
 
+# Enable new OLEVBMacro plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::OLEVBMacro$/ c\loadplugin Mail::SpamAssassin::Plugin::OLEVBMacro" /etc/mail/spamassassin/v343.pre
+
 cmd='systemctl enable clamav-unofficial-sigs.service'
 execcmd
 cmd='systemctl enable clamav-unofficial-sigs.timer'
