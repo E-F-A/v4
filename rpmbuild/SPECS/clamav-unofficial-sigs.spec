@@ -65,8 +65,6 @@ mkdir -p %{buildroot}/var/log/clamav-unofficial-sigs
 sed -i '/^ExecStart=/ c\ExecStart=/usr/sbin/clamav-unofficial-sigs.sh' /usr/lib/systemd/system/clamav-unofficial-sigs.service
 sed -i '/^#clamd_socket=/ c\clamd_socket="/var/run/clamd.socket/clamd.sock"' /etc/clamav-unofficial-sigs/os.conf
 sed -i '/^clamd_pid=/ c\clamd_pid="/var/run/clamd.socket/clamd.pid"' /etc/clamav-unofficial-sigs/os.conf
-/usr/sbin/clamav-unofficial-sigs.sh --install-logrotate
-/usr/sbin/clamav-unofficial-sigs.sh --install-man
 
 %clean
 %{__rm} -rf %{buildroot}
