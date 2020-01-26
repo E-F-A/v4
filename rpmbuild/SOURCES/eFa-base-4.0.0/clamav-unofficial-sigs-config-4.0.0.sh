@@ -37,5 +37,5 @@ sed -i '/^#user_configuration_complete="yes"/s/^#//g' /etc/clamav-unofficial-sig
 #-----------------------------------------------------------------------------#
 # Finalize the installation
 #-----------------------------------------------------------------------------#
-#/usr/sbin/clamav-unofficial-sigs.sh --install-logrotate
-#/usr/sbin/clamav-unofficial-sigs.sh --install-man
+/usr/sbin/clamav-unofficial-sigs.sh --install-logrotate
+/usr/sbin/clamav-unofficial-sigs.sh --install-man
