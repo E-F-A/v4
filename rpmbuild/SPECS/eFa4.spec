@@ -517,7 +517,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Sun Jan 26 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-14
-- Detect and run sa-update/sa-compile if needed
+- Detect and run sa-update/sa-compile if needed plus other fixes
 
 * Sat Jan 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-13
 - Fix password.rules again during update
