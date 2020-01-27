@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.1
-Release:   14.eFa%{?dist}
+Release:   15.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -516,6 +516,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jan 26 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-15
+- Fix missing rules entries
+
 * Sun Jan 26 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-14
 - Detect and run sa-update/sa-compile if needed plus other fixes
 
