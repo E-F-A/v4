@@ -45,9 +45,22 @@ if [ ! -f /etc/MailScanner/rules/password.rules ]; then
 else
   # fixup
   sed -i "/^From:\t::1\tno/ c\From:\t::1\tyes" /etc/MailScanner/rules/password.rules
+  if [[ -z $(grep ::1 /etc/MailScanner/rules/password.rules) ]]; then
+     sed -i "/^From:\t127.0.0.1\tyes$/ a\From:\t::1\tyes" /etc/MailScanner/rules/password.rules
+  fi
   sed -i "/^FromOrTo:\tdefault\tnos/ c\FromOrTo:\tdefault\tno" /etc/MailScanner/rules/password.rules
   sed -i "/^FromOrTo:\tdeffault\tno/ c\FromOrTo:\tdefault\tno" /etc/MailScanner/rules/password.rules
 fi
+
+# Fix missing ipv6
+if [[ -z $(grep ::1 /etc/MailScanner/rules/content.scanning.rules) ]]; then
+     sed -i "/^From:\t127.0.0.1\tno$/ a\From:\t::1\tno" /etc/MailScanner/rules/content.scanning.rules
+fi
+# Fix missing ipv4
+if [[ -z $(grep 127.0.0.1 /etc/MailScanner/filetype.rules) ]]; then
+     sed -i "/^From:\t::1/ a\From:\t127.0.0.1\t/etc/MailScanner/filetype.rules.allowall.conf" /etc/MailScanner/filetype.rules
+fi
+
 
 # add MAXMIND_LICENSE_KEY to conf.php
 if [[ -z $(grep MAXMIND_LICENSE_KEY /var/www/html/mailscanner/conf.php) ]]; then
