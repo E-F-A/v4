@@ -133,6 +133,8 @@ sed -i "/^ramdisk_sync/ c\ramdisk_sync=1" /etc/MailScanner/defaults
 sed -i "/^Filename Rules =/ c\Filename Rules = %etc-dir%/filename.rules" /etc/MailScanner/MailScanner.conf
 sed -i "/^Filetype Rules =/ c\Filetype Rules = %etc-dir%/filetype.rules" /etc/MailScanner/MailScanner.conf
 sed -i "/^Dangerous Content Scanning =/ c\Dangerous Content Scanning = %rules-dir%/content.scanning.rules" /etc/MailScanner/MailScanner.conf
+sed -i "/^Archives: Filename Rules =/ c\Archives: Filename Rules = %etc-dir%/archives.filename.rules" /etc/MailScanner/MailScanner.conf
+sed -i "/^Archives: Filetype Rules =/ c\Archives: Filetype Rules = %etc-dir%/archives.filetype.rules" /etc/MailScanner/MailScanner.conf
 
 echo -e "From:\t127.0.0.1\t/etc/MailScanner/filename.rules.allowall.conf" > /etc/MailScanner/filename.rules
 echo -e "From:\t::1\t/etc/MailScanner/filename.rules.allowall.conf" >> /etc/MailScanner/filename.rules
@@ -141,6 +143,14 @@ echo -e "FromOrTo:\tdefault\t/etc/MailScanner/filename.rules.conf" >> /etc/MailS
 echo -e "From:\t127.0.0.1\t/etc/MailScanner/filetype.rules.allowall.conf" > /etc/MailScanner/filetype.rules
 echo -e "From:\t::1\t/etc/MailScanner/filetype.rules.allowall.conf" >> /etc/MailScanner/filetype.rules
 echo -e "FromOrTo:\tdefault\t/etc/MailScanner/filetype.rules.conf" >> /etc/MailScanner/filetype.rules
+
+echo -e "From:\t127.0.0.1\t/etc/MailScanner/archives.filename.rules.allowall.conf" > /etc/MailScanner/archives.filename.rules
+echo -e "From:\t::1\t/etc/MailScanner/archives.filename.rules.allowall.conf" >> /etc/MailScanner/archives.filename.rules
+echo -e "FromOrTo:\tdefault\t/etc/MailScanner/archives.filename.rules.conf" >> /etc/MailScanner/archives.filename.rules
+
+echo -e "From:\t127.0.0.1\t/etc/MailScanner/archives.filetype.rules.allowall.conf" > /etc/MailScanner/archives.filetype.rules
+echo -e "From:\t::1\t/etc/MailScanner/archives.filetype.rules.allowall.conf" >> /etc/MailScanner/archives.filetype.rules
+echo -e "FromOrTo:\tdefault\t/etc/MailScanner/archives.filetype.rules.conf" >> /etc/MailScanner/archives.filetype.rules
 
 echo -e "From:\t127.0.0.1\tno" > /etc/MailScanner/rules/content.scanning.rules
 echo -e "From:\t::1\tno" >> /etc/MailScanner/rules/content.scanning.rules
@@ -151,7 +161,9 @@ echo -e "From:\t::1\tyes" >> /etc/MailScanner/rules/password.rules
 echo -e "FromOrTo:\tdefault\tno" >> /etc/MailScanner/rules/password.rules
 
 echo -e "allow\t.*\t-\t-" > /etc/MailScanner/filename.rules.allowall.conf
-echo -e "allow\t.*\t-\t-" >> /etc/MailScanner/filetype.rules.allowall.conf
+echo -e "allow\t.*\t-\t-" > /etc/MailScanner/filetype.rules.allowall.conf
+echo -e "allow\t.*\t-\t-" > /etc/MailScanner/archives.filename.rules.allowall.conf
+echo -e "allow\t.*\t-\t-" > /etc/MailScanner/archives.filetype.rules.allowall.conf
 
 echo -e "From:\t127.0.0.1\tno" > /etc/MailScanner/numeric.phishing.rules
 echo -e "From:\t::1\tno" >> /etc/MailScanner/numeric.phishing.rules
