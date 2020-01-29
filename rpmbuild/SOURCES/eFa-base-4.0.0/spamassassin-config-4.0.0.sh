@@ -37,7 +37,7 @@ sed -i "/^# loadplugin Mail::Spamassassin::Plugin::RelayCountry$/ c\loadplugin M
 
 # Symlink for Geo::IP
 rm -f /usr/share/GeoIP/GeoLiteCountry.dat
-ln -s /var/www/html/mailscanner/temp/GeoIP.dat /usr/share/GeoIP/GeoLiteCountry.dat
+ln -s /var/www/html/mailscanner/temp/GeoLite2-Country.mmdb /usr/share/GeoIP/GeoLite2-Country.mmdb
 
 # PDFInfo (now included in SA 3.4.1)
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::PDFInfo$/ c\loadplugin Mail::SpamAssassin::Plugin::PDFInfo" /etc/mail/spamassassin/v341.pre
@@ -90,6 +90,9 @@ echo 'bayes_auto_learn                   1' >> /etc/MailScanner/spamassassin.con
 echo 'bayes_auto_learn_threshold_nonspam 0.1' >> /etc/MailScanner/spamassassin.conf
 echo 'bayes_auto_learn_threshold_spam    6' >> /etc/MailScanner/spamassassin.conf
 
+# GeoIP2 County path
+echo 'uri_country_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
+echo 'geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
 
 # Enable Auto White Listing
 #sed -i '/^#loadplugin Mail::SpamAssassin::Plugin::AWL/ c\loadplugin Mail::SpamAssassin::Plugin::AWL' /etc/mail/spamassassin/v310.pre
