@@ -147,7 +147,7 @@ fi
 if [[ -z $(grep ^uri_country_db_path /etc/MailScanner/spamassassin.conf) ]]; then
   echo 'uri_country_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
 fi
-if [[ -z $(grep ^geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb) ]]; then
+if [[ -z $(grep ^geoip2_default_db_path /etc/MailScanner/spamassassin.conf) ]]; then
   echo 'geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
 fi
 
