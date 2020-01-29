@@ -131,6 +131,26 @@ execcmd
 cmd='systemctl enable clamav-unofficial-sigs.timer'
 execcmd
 
+# Update txrep table
+/usr/bin/mysql sa_bayes -e "ALTER TABLE txrep CHANGE count msgcount INT(11) NOT NULL DEFAULT '0';" >/dev/null 2>&1
+
+# Fix GeoIP Symlink
+if [[ -L /usr/share/GeoIP/GeoLiteCountry.dat ]]; then
+  rm -f /usr/share/GeoIP/GeoLiteCountry.dat
+fi
+if [[ ! -L /usr/share/GeoIP/GeoLite2-Country.mmdb ]]; then
+  rm -f /usr/share/GeoIP/GeoLite2-Country.mmdb >/dev/null 2>&1
+  ln -s /var/www/html/mailscanner/temp/GeoLite2-Country.mmdb /usr/share/GeoIP/GeoLite2-Country.mmdb
+fi
+
+# Add configuration parameter for GeoIP2
+if [[ -z $(grep ^uri_country_db_path /etc/MailScanner/spamassassin.conf) ]]; then
+  echo 'uri_country_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
+fi
+if [[ -z $(grep ^geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb) ]]; then
+  echo 'geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
