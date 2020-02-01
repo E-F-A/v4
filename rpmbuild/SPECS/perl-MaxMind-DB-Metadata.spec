@@ -38,6 +38,7 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
 BuildRequires:  perl(File::Spec) => 3.40
 BuildRequires:  perl(Test::More) => 0.98
+BuildRequires:  perl-namespace-autoclean => 0.19
 Requires:       perl-Carp >= 1.26
 Requires:       perl(Data::Dumper::Concise)
 Requires:       perl(DateTime)
@@ -51,7 +52,7 @@ Requires:       perl(Scalar::Util) => 1.27
 Requires:       perl(Sub::Quote)
 Requires:       perl(autodie)
 Requires:       perl-constant => 1.27
-Requires:       perl(namespace::autoclean)
+Requires:       perl-namespace-autoclean => 0.19
 Requires:       perl(overload) => 1.18
 Requires:       perl(strict) >= 1.07
 Requires:       perl(warnings) >= 1.13
