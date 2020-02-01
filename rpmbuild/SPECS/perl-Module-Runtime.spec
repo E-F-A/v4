@@ -59,7 +59,7 @@ are applied on any Perl version where the bugs exist, except for a case where
 one of the bugs cannot be adequately worked around in pure Perl.
 
 %prep
-%setup -q -n Moo-%{version}
+%setup -q -n Module-Runtime-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
