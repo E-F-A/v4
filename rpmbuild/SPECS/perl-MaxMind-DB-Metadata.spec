@@ -61,7 +61,7 @@ This class provides an API for representing the metadata of a MaxMind DB databas
 See http://maxmind.github.io/MaxMind-DB/ for the official format spec.
 
 %prep
-%setup -q -n MaxMind-DB-Reader-%{version}
+%setup -q -n MaxMind-DB-Common-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
