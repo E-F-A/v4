@@ -82,7 +82,7 @@ This class provides a reader API for all GeoIP2 databases. Each method returns a
 If the database does not return a particular piece of data for an IP address, the associated attribute is not populated.
 
 %prep
-%setup -q -n GeoIP2-Country-Reader-%{version}
+%setup -q -n GeoIP2-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
