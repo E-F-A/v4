@@ -38,13 +38,7 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
 BuildRequires:  perl(Test::Fatal) => 0.003
 BuildRequires:  perl(Test::More) => 0.98
-Requires:       perl(Class::Method::Modifiers) >= 1.10
-Requires:       perl-Exporter => 5.68
-Requires:       perl-Module-Runtime >= 0.013
-Requires:       perl(Role::Tiny)
 Requires:       perl(Scalar::Util) >= 1.27
-Requires:       perl(Sub::Defer)
-Requires:       perl(Sub::Quote)
 
 %description
 This package provides performant ways to generate subroutines from strings.
