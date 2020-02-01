@@ -68,7 +68,7 @@ yum -y update
 yum -y remove mariadb-libs
 [ $? -ne 0 ] && exit 1
 
-yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod perl-HTML-Parser perl-Archive-Tar perl-devel perl-libwww-perl perl-DB_File perl-Mail-SPF perl-Encode-Detect perl-IO-Socket-INET6 perl-Mail-DKIM perl-Net-DNS-Resolver-Programmable perl-Parse-RecDescent perl-Inline perl-Test-Manifest perl-YAML perl-ExtUtils-CBuilder perl-Module-Build perl-IO-String perl-Geo-IP perl-Net-CIDR-Lite perl-Sys-Hostname-Long perl-Net-IP perl-Net-Patricia perl-Data-Dump perl-generators libicu-devel openldap-devel mysql-devel postgresql-devel sqlite-devel tinycdb-devel perl-Date-Calc perl-Sys-Syslog clamav perl-Geography-Countries php72u mariadb101u-server perl-Digest-SHA1 php72u-gd php72u-ldap php72u-mbstring php72u-mysqlnd php72u-xml perl-Archive-Zip perl-Env perl-Filesys-Df perl-IO-stringy perl-Net-CIDR perl-OLE-Storage_Lite perl-Sys-SigAction perl-MIME-tools wget php72u-json perl-Test-Simple php72u-cli m4 perl-Math-int64 perl-Path-Class perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean
+yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod perl-HTML-Parser perl-Archive-Tar perl-devel perl-libwww-perl perl-DB_File perl-Mail-SPF perl-Encode-Detect perl-IO-Socket-INET6 perl-Mail-DKIM perl-Net-DNS-Resolver-Programmable perl-Parse-RecDescent perl-Inline perl-Test-Manifest perl-YAML perl-ExtUtils-CBuilder perl-Module-Build perl-IO-String perl-Geo-IP perl-Net-CIDR-Lite perl-Sys-Hostname-Long perl-Net-IP perl-Net-Patricia perl-Data-Dump perl-generators libicu-devel openldap-devel mysql-devel postgresql-devel sqlite-devel tinycdb-devel perl-Date-Calc perl-Sys-Syslog clamav perl-Geography-Countries php72u mariadb101u-server perl-Digest-SHA1 php72u-gd php72u-ldap php72u-mbstring php72u-mysqlnd php72u-xml perl-Archive-Zip perl-Env perl-Filesys-Df perl-IO-stringy perl-Net-CIDR perl-OLE-Storage_Lite perl-Sys-SigAction perl-MIME-tools wget php72u-json perl-Test-Simple php72u-cli m4 perl-Math-int64 perl-Path-Class perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny
 [ $? -ne 0 ] && exit 1
 
 mkdir -p $GITPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
@@ -104,12 +104,16 @@ rpmbuild -ba perl-Mail-SPF-Query.spec
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Mail-SPF-Query-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba unrar-5.8.3.spec
-[ $? -ne 0 ] && exit 1
+[ $? -ne 0 ] && exit 1perl-Role-Tiny
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-IP-Country-DB_File.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-IP-Country-DB_File-*.rpm
+[ $? -ne 0 ] && exit 1
+rpmbuild -ba perl-Sub-Quote.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sub-Quote-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
