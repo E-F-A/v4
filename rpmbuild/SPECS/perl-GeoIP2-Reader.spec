@@ -133,7 +133,6 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %{perl_vendorlib}/GeoIP2/Role/Record/*
 %{perl_vendorlib}/GeoIP2/WebService/*
 #%{_mandir}/man3
-
 /usr/bin/web-service-request
 
 %changelog
