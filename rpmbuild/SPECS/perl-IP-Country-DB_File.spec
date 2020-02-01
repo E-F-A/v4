@@ -35,9 +35,10 @@ URL:            https://metacpan.org/pod/IP::Country::DB_File
 Source0:        https://cpan.metacpan.org/authors/id/N/NW/NWELLNHOF/IP-Country-DB_File-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
+BuildRequires:  perl-Math-Int64 >= 0.52
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Requires:       perl-DB_File >= 1.830
-Requires:       perl(Math::Int64)
+Requires:       perl-Math-Int64 >= 0.52
 Requires:       perl(Net::FTP) >= 3.11
 Requires:       perl-Socket >= 2.010
 
@@ -83,13 +84,13 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST LICENSE README
-%{perl_vendorlib}/*
 %dir %{perl_vendorlib}/IP
 %dir %{perl_vendorlib}/IP/Country
 %dir %{perl_vendorlib}/IP/Country/DB_File
 %{perl_vendorlib}/IP/Country/*
 %{perl_vendorlib}/IP/Country/DB_File/*
-#%{_mandir}/man3/*.3pm*
+%{_mandir}/man1/build_ipcc.pl.1.gz
+%{_mandir}/man3/*.3pm*
 /usr/bin/build_ipcc.pl
 
 %changelog
