@@ -25,8 +25,8 @@
 
 Name:      eFa
 Summary:   eFa Maintenance rpm
-Version:   4.0.1
-Release:   15.eFa%{?dist}
+Version:   4.0.2
+Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -373,6 +373,10 @@ Requires: cyrus-sasl-lib >= 2.1.26-23
     #                                            # base    # eFa
 Requires: cyrus-sasl-plain >= 2.1.26-23
     #                                            # base    # eFa
+Requires: perl-Math-Int64 >= 0.52
+    #                                            # epel    # eFa
+Requires: perl-IP-Country-DB_File >= 3.03-1
+    #                                            # eFa     # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -516,6 +520,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Feb 01 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-1
+- Add modules for Spamassassin and GeoIP2
+
 * Sun Jan 26 2020 eFa Project <shawniverson@efa-project.org> - 4.0.1-15
 - Fix missing rules entries
 
