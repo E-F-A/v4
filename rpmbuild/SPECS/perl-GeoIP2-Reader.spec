@@ -42,9 +42,9 @@ BuildRequires:  perl(HTTP::Status) >= 6.03
 BuildRequires:  perl-IO-Compress >= 2.061
 BuildRequires:  perl(MaxMind::DB::Metadata)
 BuildRequires:  perl-Path-Class >= 0.33
-BuildRequires:  perl(Test::Builder) >= 1.302171
+BuildRequires:  perl(Test::Builder) >= 0.98
 BuildRequires:  perl-Test-Fatal >= 0.010
-BuildRequires:  perl(Test::More) >= 1.302171
+BuildRequires:  perl(Test::More) >= 0.98
 BuildRequires:  perl-Test-Number-Delta >= 1.06
 BuildRequires:  perl(base) >= 2.18
 BuildRequires:  perl(utf8) >= 1.09
