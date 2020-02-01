@@ -45,7 +45,7 @@ BuildRequires:  perl-Path-Class >= 0.33
 BuildRequires:  perl(Test::Builder) >= 1.302171
 BuildRequires:  perl-Test-Fatal >= 0.010
 BuildRequires:  perl(Test::More) >= 1.302171
-BuildRequires:  perl(Test::Number::Delta)
+BuildRequires:  perl-Test-Number-Delta >= 1.06
 BuildRequires:  perl(base) >= 2.23
 BuildRequires:  perl(utf8) >= 1.09
 Requires:       perl-ExtUtils-MakeMaker >= 6.68
