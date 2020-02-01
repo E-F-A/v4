@@ -36,7 +36,7 @@ Source0:        https://cpan.metacpan.org/authors/id/M/MA/MAXMIND/GeoIP2-%{versi
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
-BuildRequires:  perl(File::Spec) >= 3.75
+BuildRequires:  perl-PathTools >= 3.40
 BuildRequires:  perl(HTTP::Response) >= 6.04
 BuildRequires:  perl(HTTP::Status) >= 6.03
 BuildRequires:  perl(IO::Compress::Gzip) >= 2.093
