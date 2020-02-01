@@ -39,7 +39,7 @@ BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
 BuildRequires:  perl-PathTools >= 3.40
 BuildRequires:  perl(HTTP::Response) >= 6.04
 BuildRequires:  perl(HTTP::Status) >= 6.03
-BuildRequires:  perl(IO::Compress::Gzip) >= 2.093
+BuildRequires:  perl-IO-Compress >= 2.061
 BuildRequires:  perl(MaxMind::DB::Metadata)
 BuildRequires:  perl-Path-Class >= 0.33
 BuildRequires:  perl(Test::Builder) >= 1.302171
