@@ -41,7 +41,7 @@ BuildRequires:  perl(HTTP::Response) >= 6.04
 BuildRequires:  perl(HTTP::Status) >= 6.03
 BuildRequires:  perl(IO::Compress::Gzip) >= 2.093
 BuildRequires:  perl(MaxMind::DB::Metadata)
-BuildRequires:  perl(Path::Class)
+BuildRequires:  perl-Path-Class >= 0.33
 BuildRequires:  perl(Test::Builder) >= 1.302171
 BuildRequires:  perl(Test::Fatal)
 BuildRequires:  perl(Test::More) >= 1.302171
