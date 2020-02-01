@@ -43,7 +43,7 @@ BuildRequires:  perl(IO::Compress::Gzip) >= 2.093
 BuildRequires:  perl(MaxMind::DB::Metadata)
 BuildRequires:  perl-Path-Class >= 0.33
 BuildRequires:  perl(Test::Builder) >= 1.302171
-BuildRequires:  perl(Test::Fatal)
+BuildRequires:  perl-Test-Fatal >= 0.010
 BuildRequires:  perl(Test::More) >= 1.302171
 BuildRequires:  perl(Test::Number::Delta)
 BuildRequires:  perl(base) >= 2.23
