@@ -136,5 +136,5 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 /usr/bin/web-service-request
 
 %changelog
-* Sat Feb 01 2020 Shawn Iverson <shawniverson@efa-project.org> - 2.006002
+* Sat Feb 01 2020 Shawn Iverson <shawniverson@efa-project.org> - 2.006002-1
 - Built for eFa https://efa-project.org
