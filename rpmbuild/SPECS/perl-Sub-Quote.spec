@@ -75,7 +75,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %doc Changes MANIFEST README LICENSE
 %dir %{perl_vendorlib}/Sub
 %{perl_vendorlib}/Sub/*
-#%{_mandir}/man3
+%{_mandir}/man3/*
 
 %changelog
 * Sat Feb 01 2020 Shawn Iverson <shawniverson@efa-project.org> - 2.006006-1
