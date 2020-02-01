@@ -41,10 +41,10 @@ BuildRequires:  perl(Test::More) => 0.98
 Requires:       perl(Class::Method::Modifiers) >= 1.10
 Requires:       perl-Exporter => 5.68
 Requires:       perl-Module-Runtime >= 0.013
-Requires:       perl(Role::Tiny)
+Requires:       perl(Role::Tiny) >= 1.003003
 Requires:       perl(Scalar::Util) >= 1.27
-Requires:       perl(Sub::Defer)
-Requires:       perl(Sub::Quote)
+Requires:       perl(Sub::Defer) >= 2.006006
+Requires:       perl(Sub::Quote) >= 2.006006
 
 %description
 Moo is an extremely light-weight Object Orientation system. It allows one to concisely define objects and roles with a convenient syntax that avoids the details of Perl's object system. Moo contains a subset of Moose and is optimised for rapid startup.
