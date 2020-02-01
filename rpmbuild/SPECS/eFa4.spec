@@ -374,9 +374,11 @@ Requires: cyrus-sasl-lib >= 2.1.26-23
 Requires: cyrus-sasl-plain >= 2.1.26-23
     #                                            # base    # eFa
 Requires: perl-Math-Int64 >= 0.52
-    #                                            # epel    # eFa
+    #                                            # epel    # spamassassin
 Requires: perl-IP-Country-DB_File >= 3.03-1
-    #                                            # eFa     # eFa
+    #                                            # eFa     # spamassassin
+Requires: perl-namespace-autoclean >= 0.19-1
+    #                                            # epel    # spamassassin
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
