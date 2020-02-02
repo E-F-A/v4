@@ -128,11 +128,16 @@ if [[ ! -L /usr/share/GeoIP/GeoLite2-Country.mmdb ]]; then
 fi
 
 # Add configuration parameter for GeoIP2
-if [[ -z $(grep ^uri_country_db_path /etc/MailScanner/spamassassin.conf) ]]; then
-  echo 'uri_country_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
+if [[ -z $(grep uri_country_db_path /etc/MailScanner/spamassassin.conf) ]]; then
+  echo '' >> etc/MailScanner/spamassassin.conf
+  echo 'ifplugin Mail::SpamAssassin::Plugin::URILocalBL' >> /etc/MailScanner/spamassassin.conf
+  echo '    uri_country_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
+  echo 'endif' >> /etc/MailScanner/spamassassin.conf
 fi
-if [[ -z $(grep ^geoip2_default_db_path /etc/MailScanner/spamassassin.conf) ]]; then
-  echo 'geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
+if [[ -z $(grep geoip2_default_db_path /etc/MailScanner/spamassassin.conf) ]]; then
+  echo 'ifplugin Mail::SpamAssassin::Plugin::RelayCountry' >> /etc/MailScanner/spamassassin.conf
+  echo '    geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
+  echo 'endif' >> /etc/MailScanner/spamassassin.conf
 fi
 
 cmd='systemctl daemon-reload'
