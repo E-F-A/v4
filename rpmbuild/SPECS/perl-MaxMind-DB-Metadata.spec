@@ -40,17 +40,17 @@ BuildRequires:  perl(File::Spec) => 3.40
 BuildRequires:  perl(Test::More) => 0.98
 BuildRequires:  perl-namespace-autoclean => 0.19
 Requires:       perl-Carp >= 1.26
-Requires:       perl(Data::Dumper::Concise)
-Requires:       perl(DateTime)
+Requires:       perl-Data::Dumper::Concise >= 2.020
+Requires:       perl-DateTime >= 1.04
 Requires:       perl-Exporter => 5.68
 Requires:       perl(List::AllUtils)
 Requires:       perl(Math::BigInt) => 1.998
-Requires:       perl(Moo)
-Requires:       perl(Moo:Role)
-Requires:       perl(MooX::StrictConstructor)
+Requires:       perl-Moo >= 2.003006
+Requires:       perl(Moo::Role) >= 2.003006
+Requires:       perl-MooX::StrictConstructor > 0.010
 Requires:       perl(Scalar::Util) => 1.27
 Requires:       perl(Sub::Quote)
-Requires:       perl(autodie)
+Requires:       perl-autodie >= 2.16
 Requires:       perl-constant => 1.27
 Requires:       perl-namespace-autoclean => 0.19
 Requires:       perl(overload) => 1.18
