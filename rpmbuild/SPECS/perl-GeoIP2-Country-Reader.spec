@@ -112,7 +112,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
 %files
 %defattr(-,root,root,-)
-%doc Changes MANIFEST INSTALL README LICENSE
+%doc Changes MANIFEST INSTALL README.md LICENSE
 %{perl_vendorlib}/*
 %dir %{perl_vendorlib}/GeoIP2
 %{perl_vendorlib}/GeoIP2/*
