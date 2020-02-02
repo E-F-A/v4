@@ -48,7 +48,7 @@ BuildRequires:  perl(Test::More) => 0.98
 BuildRequires:  perl-Test-Number-Delta >= 1.06
 BuildRequires:  perl(Test::Requires)
 BuildRequires:  perl(lib) >= 0.63
-BuildRequires:   perl(utf8) >= 1.09
+BuildRequires:  perl(utf8) >= 1.09
 Requires:       perl-Carp >= 1.26
 Requires:       perl(Data::IEEE754)
 Requires:       perl(Data::Validate::IP)
