@@ -46,7 +46,7 @@ BuildRequires:  perl(Test::MaxMind::DB::Common::Data) >= 0.040001
 BuildRequires:  perl(Test::MaxMind::DB::Common::Util) >= 0.040001
 BuildRequires:  perl(Test::More) => 0.98
 BuildRequires:  perl-Test-Number-Delta >= 1.06
-BuildRequires:  perl(Test::Requires)
+BuildRequires:  perl-Test-Requires >= 0.06
 BuildRequires:  perl(lib) >= 0.63
 BuildRequires:  perl(utf8) >= 1.09
 Requires:       perl-Carp >= 1.26
