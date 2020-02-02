@@ -40,7 +40,7 @@ BuildRequires:  perl(File::Spec) >= 3.40
 BuildRequires:  perl(Scalar::Util) >= 1.53
 BuildRequires:  perl-Storable >= 1.53
 BuildRequires:  perl(Test::Builder::Module) >= 0.98
-BuildRequires:  perl(Test::LeakTrace)
+BuildRequires:  perl-Test-LeakTrace >= 0.14
 BuildRequires:  perl(Test::More) >= 0.98
 BuildRequires:  perl(Tie::Array) >= 1.05
 BuildRequires:  perl(base) >= 2.18
