@@ -80,7 +80,7 @@ yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP op
   php72u-json perl-Test-Simple php72u-cli m4 perl-Math-Int64 perl-Path-Class perl-Test-Fatal \
   perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-Data-Dumper-Concise \
   perl-DateTime perl-Test-Warnings perl-autodie perl-Test-Requires perl-Test-Tester perl-Clone-PP \
-  perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS perl-LWP-Protocol-https perl-Test-LeakTrace
+  perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS perl-LWP-Protocol-https perl-Test-LeakTrace \
   perl-Throwable
 [ $? -ne 0 ] && exit 1
 
