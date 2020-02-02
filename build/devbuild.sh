@@ -170,6 +170,10 @@ rpmbuild -ba perl-Maxmind-DB-Metadata.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Maxmind-DB-Metadata-*.rpm
 [ $? -ne 0 ] && exit 1
+rpmbuild -ba perl-Test-Bits.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Test-Bits-*.rpm
+[ $? -ne 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-*.rpm
