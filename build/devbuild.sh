@@ -119,6 +119,7 @@ rpmbuild -ba unrar-5.8.3.spec
 [ $? -ne 0 ] && exit 1perl-Role-Tiny
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-*.rpm
 [ $? -ne 0 ] && exit 1
+# BEGIN: New modules for spamassassin 3.4.4 development builds
 rpmbuild -ba perl-IP-Country-DB_File.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-IP-Country-DB_File-*.rpm
@@ -183,6 +184,15 @@ rpmbuild -ba perl-Data-Printer.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Data-Printer-*.rpm
 [ $? -ne 0 ] && exit 1
+rpmbuild -ba perl-Data-Validate-IP.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Data-Validate-IP-*.rpm
+[ $? -ne 0 ] && exit 1
+rpmbuild -ba perl-Maxmind-DB-Reader.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Maxmind-DB-Reader-*.rpm
+[ $? -ne 0 ] && exit 1
+# END: New modules for spamassassin 3.4.4 development builds
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-*.rpm
