@@ -40,7 +40,7 @@ BuildRequires:  perl(File::Find) >= 1.20
 BuildRequires:  perl-File-Temp >= 0.23.01
 BuildRequires:  perl-Test-Fatal >= 0.010
 BuildRequires:  perl(Test::More) >= 0.98
-BuildRequires:  perl(Test::Tester)
+BuildRequires:  perl-Test-Tester >= 0.109
 Requires:       perl-List-AllUtils >= 0.15
 Requires:       perl(Scalar::Util) >= 1.27
 Requires:       perl(Test::Builder::Module) >= 0.98
