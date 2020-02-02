@@ -96,7 +96,12 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %dir %{perl_vendorlib}/MaxMind/DB/Role
 %{perl_vendorlib}/MaxMind/DB/*
 %{perl_vendorlib}/MaxMind/DB/Role/*
-#%{_mandir}/man3
+%dir %{perl_vendorlib}/Test
+%dir %{perl_vendorlib}/Test/Maxmind
+%dir %{perl_vendorlib}/Test/Maxmind/DB
+%dir %{perl_vendorlib}/Test/Maxmind/DB/Common
+%{perl_vendorlib}/Test/Maxmind/DB/Common/*
+%{_mandir}/man3/*
 
 %changelog
 * Sat Feb 01 2020 Shawn Iverson <shawniverson@efa-project.org> - 0.040001-1
