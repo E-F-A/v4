@@ -179,6 +179,10 @@ rpmbuild -ba perl-Data-IEEE754.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Data-IEEE754-*.rpm
 [ $? -ne 0 ] && exit 1
+rpmbuild -ba perl-Data-Printer.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Data-Printer-*.rpm
+[ $? -ne 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-*.rpm
