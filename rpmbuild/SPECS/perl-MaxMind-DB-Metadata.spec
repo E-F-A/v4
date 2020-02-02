@@ -25,7 +25,7 @@
 %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
 
-Name:           perl-Maxmind-DB-Metadata
+Name:           perl-MaxMind-DB-Metadata
 Version:        0.040001
 Release:        1.eFa%{?dist}
 Summary:        A class for metadata related to a MaxMind DB database
