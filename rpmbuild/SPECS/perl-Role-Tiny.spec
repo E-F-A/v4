@@ -75,7 +75,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %dir %{perl_vendorlib}/Role/Tiny
 %{perl_vendorlib}/Role/*
 %{perl_vendorlib}/Role/Tiny/*
-#%{_mandir}/man3
+%{_mandir}/man3/*
 
 %changelog
 * Sat Feb 01 2020 Shawn Iverson <shawniverson@efa-project.org> -  2.001004-1
