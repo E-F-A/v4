@@ -56,7 +56,7 @@ Requires:       perl-Exporter >= 5.68
 Requires:       perl-Getopt-Long >= 2.40
 Requires:       perl(HTTP::Headers) >= 6.05
 Requires:       perl(HTTP::Request) >= 6.00
-Requires:       perl(JSON::MaybeXS)
+Requires:       perl-JSON-MaybeXS >= 1.003005
 Requires:       perl-LWP-Protocol-https >= 6.04
 Requires:       perl(LWP::UserAgent) >= 6.05
 Requires:       perl-List-SomeUtils >= 0.58
@@ -68,7 +68,7 @@ Requires:       perl(Moo::Role) >= 2.003006
 Requires:       perl-Params-Validate >= 1.08
 Requires:       perl(Scalar::Util) >= 1.53
 Requires:       perl-Sub-Quote >= 2.006006
-Requires:       perl(Throwable::Error)
+Requires:       perl-Throwable => 0.102080
 Requires:       perl-Try-Tiny >= 0.12
 Requires:       perl-URI >= 1.60
 Requires:       perl(lib) >= 0.63
@@ -77,9 +77,11 @@ Requires:       perl(strict) >= 1.07
 Requires:       perl(warnings) >= 1.13
 
 %description
-This class provides a reader API for all GeoIP2 databases. Each method returns a different model class.
+This class provides a reader API for all GeoIP2 databases. Each method returns
+a different model class.
 
-If the database does not return a particular piece of data for an IP address, the associated attribute is not populated.
+If the database does not return a particular piece of data for an IP address,
+the associated attribute is not populated.
 
 %prep
 %setup -q -n GeoIP2-%{version}
