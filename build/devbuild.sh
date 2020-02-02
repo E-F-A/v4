@@ -192,6 +192,10 @@ rpmbuild -ba perl-Maxmind-DB-Reader.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Maxmind-DB-Reader-*.rpm
 [ $? -ne 0 ] && exit 1
+rpmbuild -ba perl-GeoIP2-Country-Reader.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-GeoIP2-Country-Reader-*.rpm
+[ $? -ne 0 ] && exit 1
 # END: New modules for spamassassin 3.4.4 development builds
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
