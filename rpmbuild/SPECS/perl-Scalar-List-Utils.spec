@@ -77,14 +77,14 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST README
-%dir %{perl_vendorlib}/List
-%dir %{perl_vendorlib}/List/Util
-%dir %{perl_vendorlib}/Scalar
-%dir %{perl_vendorlib}/Sub
-%{perl_vendorlib}/List/*
-%{perl_vendorlib}/List/Util/*
-%{perl_vendorlib}/Scalar/*
-%{perl_vendorlib}/Sub/*
+%dir %{perl_vendorarch}/List
+%dir %{perl_vendorarch}/List/Util
+%dir %{perl_vendorarch}/Scalar
+%dir %{perl_vendorarch}/Sub
+%{perl_vendorarch}/List/*
+%{perl_vendorarch}/List/Util/*
+%{perl_vendorarch}/Scalar/*
+%{perl_vendorarch}/Sub/*
 %{_mandir}/man3/*
 
 %changelog
