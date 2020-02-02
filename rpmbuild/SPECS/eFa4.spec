@@ -379,6 +379,40 @@ Requires: perl-IP-Country-DB_File >= 3.03-1
     #                                            # eFa     # spamassassin
 Requires: perl-namespace-autoclean >= 0.19-1
     #                                            # epel    # spamassassin
+Requires: perl-Data-IEEE754 >= 0.02-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Data-Printer >= 0.40-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Data-Validate-IP >= 0.27-1
+    #                                            # eFa     # spamassassin
+Requires: perl-GeoIP2-Country-Reader >= 2.006002-1
+    #                                            # eFa     # spamassassin
+Requires: perl-IP-Country-DB_File >= 3.03-1
+    #                                            # eFa     # spamassassin
+Requires: perl-List-AllUtils >= 0.15-1
+    #                                            # eFa     # spamassassin
+Requires: perl-List-SomeUtils >= 0.58-1
+    #                                            # eFa     # spamassassin
+Requires: perl-List-UtilsBy >= 0.11-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Maxmind-DB-Metadata >= 0.040001-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Maxmind-DB-Reader >= 1.000014-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Module-Runtime >= 0.016-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Moo >= 2.003006-1
+    #                                            # eFa     # spamassassin
+Requires: perl-MooX-StrictConstructor >= 0.010-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Role-Tiny >= 2.001004-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Scalar-List-Utils >= 1.53-1
+    #                                            # eFa     # spamassassin
+Requires: perl-strictures >= 2.000006-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Sub-Quote >= 2.006006-1
+    #                                            # eFa     # spamassassin
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -489,6 +523,13 @@ if [[ "$1" = "2" || "$flag" = "1" ]]; then
    if [[ %{version} == "4.0.1" || "$flag" == "1" ]]; then
      {
        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.1.sh
+       [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
+     } 2>&1 | tee -a /var/log/eFa/update.log
+   fi
+
+   if [[ %{version} == "4.0.2" || "$flag" == "1" ]]; then
+     {
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.2.sh
        [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
      } 2>&1 | tee -a /var/log/eFa/update.log
    fi
