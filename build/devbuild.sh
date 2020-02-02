@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################
 
-VERSION="4.0.1"
+VERSION="4.0.2"
 
 # Git path
 GITPATH="/root/v4"
