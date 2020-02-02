@@ -116,7 +116,7 @@ rpmbuild -ba perl-Mail-SPF-Query.spec
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Mail-SPF-Query-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba unrar-5.8.3.spec
-[ $? -ne 0 ] && exit 1perl-Role-Tiny
+[ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-*.rpm
 [ $? -ne 0 ] && exit 1
 # BEGIN: New modules for spamassassin 3.4.4 development builds
