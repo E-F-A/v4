@@ -127,6 +127,10 @@ rpmbuild -ba perl-Moo.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Role-Moo-*.rpm
 [ $? -ne 0 ] && exit 1
+rpmbuild -ba perl-Scalar-List-Utils.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Scalar-List-Utils-*.rpm
+[ $? -ne 0 ] && exit 1
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-*.rpm
