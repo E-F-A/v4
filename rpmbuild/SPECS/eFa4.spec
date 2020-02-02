@@ -395,9 +395,9 @@ Requires: perl-List-SomeUtils >= 0.58-1
     #                                            # eFa     # spamassassin
 Requires: perl-List-UtilsBy >= 0.11-1
     #                                            # eFa     # spamassassin
-Requires: perl-Maxmind-DB-Metadata >= 0.040001-1
+Requires: perl-MaxMind-DB-Metadata >= 0.040001-1
     #                                            # eFa     # spamassassin
-Requires: perl-Maxmind-DB-Reader >= 1.000014-1
+Requires: perl-MaxMind-DB-Reader >= 1.000014-1
     #                                            # eFa     # spamassassin
 Requires: perl-Module-Runtime >= 0.016-1
     #                                            # eFa     # spamassassin
