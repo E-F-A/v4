@@ -31,8 +31,8 @@ Release:        1.eFa%{?dist}
 Summary:        a nouvelle cuisine portion size slice of Moose
 License:        perl_5
 Group:          Development/Libraries
-URL:            https://metacpan.org/pod/Moo
-Source0:        https://cpan.metacpan.org/authors/id/H/HA/HAARG/Moo-%{version}.tar.gz
+URL:            https://metacpan.org/pod/Role::Tiny
+Source0:        https://cpan.metacpan.org/authors/id/H/HA/HAARG/Role-Tiny-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires:  perl(Test::More) => 0.98
