@@ -103,5 +103,5 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %{_mandir}/man3/*
 
 %changelog
-* sun Feb 02 2020 Shawn Iverson <shawniverson@efa-project.org> - 2.000006-1
+* Sun Feb 02 2020 Shawn Iverson <shawniverson@efa-project.org> - 2.000006-1
 - Built for eFa https://efa-project.org
