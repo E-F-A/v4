@@ -36,13 +36,18 @@ Source0:        https://cpan.metacpan.org/authors/id/G/GA/GARU/Data-Printer-%{ve
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
-BuildRequires:  perl(File::Spec) >= 3.40
-BuildRequires:  perl-Test-Bits >= 0.02
-BuildRequires:  perl(Test::More) >= 0.98
-Requires:       perl-Exporter >= 5.68
-Requires:       perl(strict) >= 1.07
-Requires:       perl(utf8) >= 1.09
-Requires:       perl(warnings) >= 1.13
+Requires:       perl-Carp >= 1.26
+Requires:       perl(Clone::PP)
+Requires:       perl(Fcntl) >= 1.11
+Requires:       perl(File::HomeDir)
+Requires:       perl(File::Spec) >= 3.40
+Requires:       perl-File-Temp >= 0.23.01
+Requires:       perl-Package-Stash >= 0.34
+Requires:       perl(Scalar::Util) >= 1.53
+Requires:       perl(Sort::Naturally)
+Requires:       perl(Term::ANSIColor) >= 3.01
+Requires:       perl(Test::More) >= 0.98
+Requires:       perl(version) >= 0.9907
 
 %description
 Want to see what's inside a variable in a complete, colored and human-friendly way?
