@@ -40,7 +40,7 @@ BuildRequires:  perl-PathTools >= 3.40
 BuildRequires:  perl(HTTP::Response) >= 6.04
 BuildRequires:  perl(HTTP::Status) >= 6.03
 BuildRequires:  perl-IO-Compress >= 2.061
-BuildRequires:  perl(MaxMind::DB::Metadata)
+BuildRequires:  perl-MaxMind-DB-Metadata >= 0.040001
 BuildRequires:  perl-Path-Class >= 0.33
 BuildRequires:  perl(Test::Builder) >= 0.98
 BuildRequires:  perl-Test-Fatal >= 0.010
@@ -59,20 +59,20 @@ Requires:       perl(HTTP::Request) >= 6.00
 Requires:       perl(JSON::MaybeXS)
 Requires:       perl-LWP-Protocol-https >= 6.04
 Requires:       perl(LWP::UserAgent) >= 6.05
-Requires:       perl(List::SomeUtils)
+Requires:       perl-List-SomeUtils >= 0.58
 Requires:       perl(List::Util) >= 1.53
 Requires:       perl(MIME::Base64) >= 3.15
 Requires:       perl(MaxMind::DB::Reader) >= 1.000000
-Requires:       perl(Moo)
-Requires:       perl(Moo:Role)
-Requires:       perl(Params::Validate)
+Requires:       perl-Moo >= 2.003006
+Requires:       perl(Moo::Role) >= 2.003006
+Requires:       perl-Params-Validate >= 1.08
 Requires:       perl(Scalar::Util) >= 1.53
-Requires:       perl(Sub::Quote)
+Requires:       perl-Sub-Quote >= 2.006006
 Requires:       perl(Throwable::Error)
-Requires:       perl(Try::Tiny)
+Requires:       perl-Try-Tiny >= 0.12
 Requires:       perl-URI >= 1.60
 Requires:       perl(lib) >= 0.63
-Requires:       perl(namespace::clean)
+Requires:       perl-namespace-clean >= 0.24
 Requires:       perl(strict) >= 1.07
 Requires:       perl(warnings) >= 1.13
 
