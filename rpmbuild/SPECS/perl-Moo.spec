@@ -40,8 +40,8 @@ BuildRequires:  perl(Test::Fatal) => 0.003
 BuildRequires:  perl(Test::More) => 0.98
 Requires:       perl(Class::Method::Modifiers) >= 1.10
 Requires:       perl-Exporter => 5.68
-Requires:       perl-Module-Runtime >= 0.013
-Requires:       perl(Role::Tiny) >= 1.003003
+Requires:       perl-Module-Runtime >= 0.016
+Requires:       perl(Role::Tiny) >= 2.001004
 Requires:       perl(Scalar::Util) >= 1.27
 Requires:       perl(Sub::Defer) >= 2.006006
 Requires:       perl(Sub::Quote) >= 2.006006
@@ -89,10 +89,11 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %dir %{perl_vendorlib}/Method/Generate
 %dir %{perl_vendorlib}/Moo
 %dir %{perl_vendorlib}/Moo/HandleMoose
+%{perl_vendorlib}/*
 %{perl_vendorlib}/Method/Generate/*
 %{perl_vendorlib}/Moo/*
 %{perl_vendorlib}/Moo/HandleMoose/*
-#%{_mandir}/man3
+%{_mandir}/man3/*
 
 %changelog
 * Sat Feb 01 2020 Shawn Iverson <shawniverson@efa-project.org> - 2.003006-1
