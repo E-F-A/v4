@@ -25,7 +25,7 @@
 %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
 
-Name:           perl-Maxmind-DB-Reader
+Name:           perl-MaxMind-DB-Reader
 Version:        1.000014
 Release:        1.eFa%{?dist}
 Summary:        Read MaxMind DB files and look up IP addresses

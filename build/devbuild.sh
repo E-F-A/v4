@@ -168,9 +168,9 @@ rpmbuild -ba perl-MooX-StrictConstructor.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-MooX-StrictConstructor-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Maxmind-DB-Metadata.spec
+rpmbuild -ba perl-MaxMind-DB-Metadata.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Maxmind-DB-Metadata-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-MaxMind-DB-Metadata-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Test-Bits.spec
 [ $? -ne 0 ] && exit 1
@@ -188,9 +188,9 @@ rpmbuild -ba perl-Data-Validate-IP.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Data-Validate-IP-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Maxmind-DB-Reader.spec
+rpmbuild -ba perl-MaxMind-DB-Reader.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Maxmind-DB-Reader-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-MaxMind-DB-Reader-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-GeoIP2-Country-Reader.spec
 [ $? -ne 0 ] && exit 1
