@@ -47,7 +47,7 @@ Requires:       perl-List-AllUtils >= 0.15
 Requires:       perl(Math::BigInt) => 1.998
 Requires:       perl-Moo >= 2.003006
 Requires:       perl(Moo::Role) >= 2.003006
-Requires:       perl-MooX-StrictConstructor > 0.010
+Requires:       perl-MooX-StrictConstructor >= 0.010
 Requires:       perl(Scalar::Util) => 1.27
 Requires:       perl(Sub::Quote)
 Requires:       perl-autodie >= 2.16
