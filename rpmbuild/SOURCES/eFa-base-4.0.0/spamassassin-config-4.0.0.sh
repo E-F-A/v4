@@ -91,11 +91,11 @@ echo 'bayes_auto_learn_threshold_nonspam 0.1' >> /etc/MailScanner/spamassassin.c
 echo 'bayes_auto_learn_threshold_spam    6' >> /etc/MailScanner/spamassassin.conf
 
 # GeoIP2 County path
-echo '' >> etc/MailScanner/spamassassin.conf
+echo '' >> /etc/MailScanner/spamassassin.conf
 echo 'ifplugin Mail::SpamAssassin::Plugin::URILocalBL' >> /etc/MailScanner/spamassassin.conf
 echo '    uri_country_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
 echo 'endif' >> /etc/MailScanner/spamassassin.conf
-cho 'ifplugin Mail::SpamAssassin::Plugin::RelayCountry' >> /etc/MailScanner/spamassassin.conf
+echo 'ifplugin Mail::SpamAssassin::Plugin::RelayCountry' >> /etc/MailScanner/spamassassin.conf
 echo '    geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
 echo 'endif' >> /etc/MailScanner/spamassassin.conf
 
