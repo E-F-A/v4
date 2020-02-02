@@ -72,7 +72,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %defattr(-,root,root,-)
 %doc Changes MANIFEST README LICENSE
 %dir %{perl_vendorlib}/Role
-dir %{perl_vendorlib}/Role/Tiny
+%dir %{perl_vendorlib}/Role/Tiny
 %{perl_vendorlib}/Role/*
 %{perl_vendorlib}/Role/Tiny/*
 #%{_mandir}/man3
