@@ -96,7 +96,6 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %dir %{perl_vendorlib}/MaxMind/DB/Role
 %{perl_vendorlib}/MaxMind/DB/*
 %{perl_vendorlib}/MaxMind/DB/Role/*
-%{perl_vendorlib}/Test/Maxmind/DB/Common/*
 #%{_mandir}/man3
 
 %changelog
