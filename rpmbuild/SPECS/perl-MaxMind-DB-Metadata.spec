@@ -91,16 +91,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST INSTALL README.md LICENSE
-%dir %{perl_vendorlib}/MaxMind
-%dir %{perl_vendorlib}/MaxMind/DB
-%dir %{perl_vendorlib}/MaxMind/DB/Role
-%{perl_vendorlib}/MaxMind/DB/*
-%{perl_vendorlib}/MaxMind/DB/Role/*
-%dir %{perl_vendorlib}/Test
-%dir %{perl_vendorlib}/Test/MaxMind
-%dir %{perl_vendorlib}/Test/MaxMind/DB
-%dir %{perl_vendorlib}/Test/MaxMind/DB/Common
-%{perl_vendorlib}/Test/MaxMind/DB/Common/*
+%{perl_vendorlib}/*
 %{_mandir}/man3/*
 
 %changelog

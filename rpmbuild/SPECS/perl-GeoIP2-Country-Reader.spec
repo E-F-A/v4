@@ -114,26 +114,6 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %defattr(-,root,root,-)
 %doc Changes MANIFEST INSTALL README.md LICENSE
 %{perl_vendorlib}/*
-%dir %{perl_vendorlib}/GeoIP2
-%{perl_vendorlib}/GeoIP2/*
-%dir %{perl_vendorlib}/GeoIP2/Database
-%dir %{perl_vendorlib}/GeoIP2/Error
-%dir %{perl_vendorlib}/GeoIP2/Model
-%dir %{perl_vendorlib}/GeoIP2/Record
-%dir %{perl_vendorlib}/GeoIP2/Role
-%dir %{perl_vendorlib}/GeoIP2/Role/Error
-%dir %{perl_vendorlib}/GeoIP2/Role/Model
-%dir %{perl_vendorlib}/GeoIP2/Role/Record
-%dir %{perl_vendorlib}/GeoIP2/WebService
-%{perl_vendorlib}/GeoIP2/Database/*
-%{perl_vendorlib}/GeoIP2/Error/*
-%{perl_vendorlib}/GeoIP2/Model/*
-%{perl_vendorlib}/GeoIP2/Record/*
-%{perl_vendorlib}/GeoIP2/Role/*
-%{perl_vendorlib}/GeoIP2/Role/Error/*
-%{perl_vendorlib}/GeoIP2/Role/Model/*
-%{perl_vendorlib}/GeoIP2/Role/Record/*
-%{perl_vendorlib}/GeoIP2/WebService/*
 %{_mandir}/man3/*
 /usr/bin/web-service-request
 
