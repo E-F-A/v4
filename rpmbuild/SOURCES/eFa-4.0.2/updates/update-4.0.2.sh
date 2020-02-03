@@ -129,7 +129,7 @@ fi
 
 # Add configuration parameter for GeoIP2
 if [[ -z $(grep uri_country_db_path /etc/MailScanner/spamassassin.conf) ]]; then
-  echo '' >> etc/MailScanner/spamassassin.conf
+  echo '' >> /etc/MailScanner/spamassassin.conf
   echo 'ifplugin Mail::SpamAssassin::Plugin::URILocalBL' >> /etc/MailScanner/spamassassin.conf
   echo '    uri_country_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
   echo 'endif' >> /etc/MailScanner/spamassassin.conf
