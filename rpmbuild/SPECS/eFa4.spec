@@ -279,7 +279,7 @@ Requires:  postfix_eFa >= 3.4.8-1
     # #    tinycdb                               # epel    #
 Requires:  sqlgrey >= 1.8.0-8
     # sqlgrey                                    # epel    # Greylisting
-Requires:  spamassassin >= 3.4.2-1
+Requires:  spamassassin >= 3.4.4-2
     # spamassassin                               # eFa     # MailScanner
     # #    perl-DB_File                          # base    #
     # #    perl-IO-Socket-INET6                  #         #
