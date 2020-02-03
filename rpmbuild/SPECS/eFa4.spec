@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   3.eFa%{?dist}
+Release:   4.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -509,7 +509,7 @@ if [ "$1" = "1" ]; then
         echo "Build completed!"
     fi
 fi
-if [[ "$1" = "2" || "$flag" = "1" ]]; then
+if [[ "$1" == "2" || "$flag" == "1" ]]; then
     # Perform Update tasks
     echo -e "\nPreparing to update eFa..."
 
@@ -563,6 +563,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Feb 02 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-4
+- Fix missed files in packaging
+
 * Sun Feb 02 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-3
 - Fix new archive rulesets
 
