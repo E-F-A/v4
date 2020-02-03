@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   2.eFa%{?dist}
+Release:   3.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -55,7 +55,7 @@ Requires:  mariadb101u-server >= 1:10.1.35-1
     # #     perl-Data-Dumper                     #         #
     # #     perl-IO-Compress                     #         #
     # #     perl-Net-Daemon                      #         #
-    # #     perl-PlRPC                           #         #
+    # #     perl-PlRPC        Enable RelayCountry plugin for Spamassassin                   #         #
     # #     mariadb101u-client                   #         #
     # #     mariadb101u-shared                   #         #
     # #     galera                               #         #
@@ -563,6 +563,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Feb 02 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-3
+- Fix new archive rulesets
+
 * Sun Feb 02 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-2
 - Enable RelayCountry plugin for Spamassassin
 
