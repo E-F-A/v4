@@ -58,19 +58,19 @@ if [[ -z $(grep 127.0.0.1 /etc/MailScanner/filetype.rules) ]]; then
 fi
 
 # Add new archive rules variants
-if [[ -z /etc/MailScanner/archives.filename.rules.allowall.conf ]]; then
+if [[ ! -f /etc/MailScanner/archives.filename.rules.allowall.conf ]]; then
   echo -e "allow\t.*\t-\t-" > /etc/MailScanner/archives.filename.rules.allowall.conf
 fi
-if [[ -z /etc/MailScanner/archives.filename.rules ]]; then
+if [[ ! -f /etc/MailScanner/archives.filename.rules ]]; then
   sed -i "/^Archives: Filename Rules =/ c\Archives: Filename Rules = %etc-dir%/archives.filename.rules" /etc/MailScanner/MailScanner.conf
   echo -e "From:\t127.0.0.1\t/etc/MailScanner/archives.filename.rules.allowall.conf" > /etc/MailScanner/archives.filename.rules
   echo -e "From:\t::1\t/etc/MailScanner/archives.filename.rules.allowall.conf" >> /etc/MailScanner/archives.filename.rules
   echo -e "FromOrTo:\tdefault\t/etc/MailScanner/archives.filename.rules.conf" >> /etc/MailScanner/archives.filename.rules
 fi
-if [[ -z /etc/MailScanner/archives.filetype.rules.allowall.conf ]]; then
+if [[ ! -f /etc/MailScanner/archives.filetype.rules.allowall.conf ]]; then
   echo -e "allow\t\.\*\t-\t-" > /etc/MailScanner/archives.filetype.rules.allowall.conf
 fi
-if [[ -z /etc/MailScanner/archives.filetype.rules ]]; then
+if [[ ! -f /etc/MailScanner/archives.filetype.rules ]]; then
   sed -i "/^Archives: Filetype Rules =/ c\Archives: Filetype Rules = %etc-dir%/archives.filetype.rules" /etc/MailScanner/MailScanner.conf
   echo -e "From:\t127.0.0.1\t/etc/MailScanner/archives.filetype.rules.allowall.conf" > /etc/MailScanner/archives.filetype.rules
   echo -e "From:\t::1\t/etc/MailScanner/archives.filetype.rules.allowall.conf" >> /etc/MailScanner/archives.filetype.rules
