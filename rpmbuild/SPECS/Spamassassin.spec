@@ -29,8 +29,8 @@
 
 Summary: Spam filter for email which can be invoked from mail delivery agents
 Name:    spamassassin
-Version: 3.4.4.rc1
-Release: 1.eFa%{?dist}
+Version: 3.4.4
+Release: 2.eFa%{?dist}
 License: ASL 2.0
 Group:   Applications/Internet
 URL:     http://spamassassin.apache.org/
@@ -303,6 +303,9 @@ fi
 exit 0
 
 %changelog
+* Sun Feb 02 2020 Shawn Iverson <shawniverson@gmail.com> - 3.4.4-2
+- Updated and rebuilt for eFa https://efa-project.org
+
 * Sun Jan 19 2020 Shawn Iverson <shawniverson@gmail.com> - 3.4.4-rc1
 - Updated and rebuilt for eFa https://efa-project.org
 
