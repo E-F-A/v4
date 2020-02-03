@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   1.eFa%{?dist}
+Release:   2.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -563,6 +563,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Feb 02 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-2
+- Enable RelayCountry plugin for Spamassassin
+
 * Sat Feb 01 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-1
 - Add modules for Spamassassin and GeoIP2
 

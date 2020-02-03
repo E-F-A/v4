@@ -140,6 +140,9 @@ if [[ -z $(grep geoip2_default_db_path /etc/MailScanner/spamassassin.conf) ]]; t
   echo 'endif' >> /etc/MailScanner/spamassassin.conf
 fi
 
+# Enable RelayCountry Plugin
+sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::RelayCountry/ c\loadplugin Mail::SpamAssassin::Plugin::RelayCountry" /etc/mail/spamassassin/init.pre
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
