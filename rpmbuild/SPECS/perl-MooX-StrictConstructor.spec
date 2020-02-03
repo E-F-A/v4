@@ -86,14 +86,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST LICENSE
-%dir %{perl_vendorlib}/Method
-%dir %{perl_vendorlib}/Method/Generate
-%dir %{perl_vendorlib}/Method/Generate/Constructor
-%dir %{perl_vendorlib}/Method/Generate/Constructor/Role
-%dir %{perl_vendorlib}/MooX
 %{perl_vendorlib}/*
-%{perl_vendorlib}/Method/Generate/Constructor/Role/*
-%{perl_vendorlib}/MooX/*
 %{_mandir}/man3/*
 
 %changelog

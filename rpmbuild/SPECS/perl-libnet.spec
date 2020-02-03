@@ -69,7 +69,7 @@ find %{buildroot} -name .packlist -exec %{__rm} {} \;
 %files
 %defattr(-, root, root, 0755)
 %doc Artistic Changes Configure LICENCE README
-%{perl_vendorlib}/Net/
+%{perl_vendorlib}/*
 
 %changelog
 * Sun Mar 20 2018 Shawn Iverson <shawniverson@gmail.com> - 3.11-1

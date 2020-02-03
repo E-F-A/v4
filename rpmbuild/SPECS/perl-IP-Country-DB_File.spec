@@ -84,11 +84,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST LICENSE README
-%dir %{perl_vendorlib}/IP
-%dir %{perl_vendorlib}/IP/Country
-%dir %{perl_vendorlib}/IP/Country/DB_File
-%{perl_vendorlib}/IP/Country/*
-%{perl_vendorlib}/IP/Country/DB_File/*
+%dir %{perl_vendorlib}/*
 %{_mandir}/man1/build_ipcc.pl.1.gz
 %{_mandir}/man3/*.3pm*
 /usr/bin/build_ipcc.pl
