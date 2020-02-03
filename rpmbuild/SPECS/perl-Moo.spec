@@ -85,14 +85,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST README LICENSE
-%dir %{perl_vendorlib}/Method
-%dir %{perl_vendorlib}/Method/Generate
-%dir %{perl_vendorlib}/Moo
-%dir %{perl_vendorlib}/Moo/HandleMoose
 %{perl_vendorlib}/*
-%{perl_vendorlib}/Method/Generate/*
-%{perl_vendorlib}/Moo/*
-%{perl_vendorlib}/Moo/HandleMoose/*
 %{_mandir}/man3/*
 
 %changelog

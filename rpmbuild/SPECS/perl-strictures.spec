@@ -97,9 +97,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST README LICENSE
-%dir %{perl_vendorlib}/strictures
 %{perl_vendorlib}/*
-%{perl_vendorlib}/strictures/*
 %{_mandir}/man3/*
 
 %changelog

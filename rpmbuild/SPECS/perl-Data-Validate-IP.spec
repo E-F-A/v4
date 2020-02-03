@@ -83,10 +83,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST README.md INSTALL LICENSE
-%dir %{perl_vendorlib}/Data
-%dir %{perl_vendorlib}/Data/Validate
-%{perl_vendorlib}/Data/*
-%{perl_vendorlib}/Data/Validate/*
+%{perl_vendorlib}/*
 %{_mandir}/man3/*
 
 %changelog

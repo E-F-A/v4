@@ -95,13 +95,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST README.md LICENSE INSTALL
-%dir %{perl_vendorarch}/List
-%dir %{perl_vendorarch}/auto/List
-%dir %{perl_vendorarch}/List/SomeUtils
-%dir %{perl_vendorarch}/auto/List/SomeUtils
-%dir %{perl_vendorarch}/auto/List/SomeUtils/XS
-%{perl_vendorarch}/List/SomeUtils/*
-%{perl_vendorarch}/auto/List/SomeUtils/XS/*
+%{perl_vendorarch}/*
 %{_mandir}/man3/*
 
 %changelog

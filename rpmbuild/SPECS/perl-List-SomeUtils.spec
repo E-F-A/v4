@@ -95,10 +95,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST README.md LICENSE
-%dir %{perl_vendorlib}/List
-%dir %{perl_vendorlib}/List/SomeUtils
-%{perl_vendorlib}/List/*
-%{perl_vendorlib}/List/SomeUtils/*
+%{perl_vendorlib}/*
 %{_mandir}/man3/*
 
 %changelog
