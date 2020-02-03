@@ -82,14 +82,6 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %defattr(-,root,root,-)
 %doc CHANGES MANIFEST INSTALL README
 %{perl_vendorlib}/*
-%dir %{perl_vendorlib}/IP
-%{perl_vendorlib}/IP/*
-%dir %{perl_vendorlib}/IP/Country
-%dir %{perl_vendorlib}/IP/Authority
-%{perl_vendorlib}/IP/Country/*
-%{perl_vendorlib}/IP/Authority/*
-%dir %{perl_vendorlib}/IP/Country/Fast
-%{perl_vendorlib}/IP/Country/Fast/*
 %{_mandir}/man1/ip2cc.1.gz
 %{_mandir}/man3/*.3pm*
 /usr/bin/ip2cc
