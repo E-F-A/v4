@@ -25,47 +25,53 @@
 %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
 
-Name:           perl-Moo
-Version:        2.003006
+Name:           perl-MaxMind-DB-Reader-XS
+Version:        1.000008
 Release:        1.eFa%{?dist}
-Summary:        Minimalist Object Orientation (with Moose compatibility)
-License:        perl_5
+Summary:        Fast XS implementation of MaxMind DB reader
+License:        artistic_2
 Group:          Development/Libraries
-URL:            https://metacpan.org/pod/Moo
-Source0:        https://cpan.metacpan.org/authors/id/H/HA/HAARG/Moo-%{version}.tar.gz
+URL:            https://metacpan.org/pod/MaxMind::DB::Reader::XS
+Source0:        https://cpan.metacpan.org/authors/id/M/MA/MAXMIND/MaxMind-DB-Reader-XS-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
-BuildRequires:  perl(Test::Fatal) => 0.003
+BuildRequires:  perl(File::Spec) => 3.40
+BuildRequires:  perl-MaxMind-DB-Reader >= 1.000014
+BuildRequires:  perl-Module-Build >= 0.40.05
+BuildRequires:  perl-Module-Implementation >= 0.06
+BuildRequires:  perl(Net::Works::Network) >= 0.21
+BuildRequires:  perl-Path-Class >= 0.33
+BuildRequires:  perl-Test-Fatal >= 0.010
+BuildRequires:  perl(Test::MaxMind::DB::Common::Util) >= 0.040001
 BuildRequires:  perl(Test::More) => 0.98
-Requires:       perl(Class::Method::Modifiers) >= 1.10
-Requires:       perl-Exporter => 5.68
-Requires:       perl-Module-Runtime >= 0.016
-Requires:       perl(Role::Tiny) >= 2.001004
-Requires:       perl(Scalar::Util) >= 1.27
-Requires:       perl(Sub::Defer) >= 2.006006
-Requires:       perl(Sub::Quote) >= 2.006006
+BuildRequires:  perl-Test-Number-Delta >= 1.06
+BuildRequires:  perl-Test-Requires >= 0.06
+BuildRequires:  perl-autodie >= 2.16
+BuildRequires:  perl(lib) >= 0.63
+BuildRequires:  perl(utf8) >= 1.09
+BuildRequires:  perl(version) >= 0.9924
+Requires:       perl(Math::Int128)
+Requires:       perl-Math-Int64 >= 0.52
+Requires:       perl-MaxMind-DB-Metadata >= 0.040001
+Requires:       perl(MaxMind::DB::Reader::Role::HasMetadata) >= 1.000014
+Requires:       perl(MaxMind::DB::Types) >= 0.040001
+Requires:       perl-Moo >= 2.003006
+Requires:       perl(XSLoader) >= 0.01
+Requires:       perl-namespace-autoclean => 0.19
+Requires:       perl(strict) >= 1.07
+Requires:       perl(warnings) >= 1.13
 
 %description
-Moo is an extremely light-weight Object Orientation system. It allows one to
-concisely define objects and roles with a convenient syntax that avoids the
-details of Perl's object system. Moo contains a subset of Moose and is
-optimised for rapid startup.
+Simply installing this module causes MaxMind::DB::Reader to use the XS
+implementation, which is much faster than the Perl implementation.
 
-Moo avoids depending on any XS modules to allow for simple deployments. The
-name Moo is based on the idea that it provides almost -- but not quite -- two
-thirds of Moose. As such, the Moose::Manual can serve as an effective guide
-to Moo aside from the MOP and Types sections.
+The XS implementation links against the libmaxminddb library.
 
-Unlike Mouse this module does not aim at full compatibility with Moose's
-surface syntax, preferring instead to provide full interoperability via the
-metaclass inflation capabilities described in "MOO AND MOOSE".
-
-For a full list of the minor differences between Moose and Moo's surface
-syntax, see "INCOMPATIBILITIES WITH MOOSE".
+See MaxMind::DB::Reader for API details.
 
 %prep
-%setup -q -n Moo-%{version}
+%setup -q -n MaxMind-DB-Reader-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
@@ -84,19 +90,23 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 #%{__rm} -rf %{buildroot}/%{_mandir}/man3
 
 %{_fixperms} %{buildroot}/*
-
-%check
-%{__make} test
+Requires:       perl(Moo::Role) >= 2.003006
+Requires:       perl-MooX-StrictConstructor >= 0.010
+Requires:       perl-Role-Tiny => 2.001004
+Requires:       perl-Socket >= 2.010
+Requires:       perl-autodie >= 2.16
+Requires:       perl(bytes) >= 1.04
+Requires:       perl-constant => 1.27
 
 %clean
 %{__rm} -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc Changes MANIFEST README LICENSE
+%doc Changes MANIFEST INSTALL README.md LICENSE
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 
 %changelog
-* Sat Feb 01 2020 Shawn Iverson <shawniverson@efa-project.org> - 2.003006-1
+* Mon Feb 03 2020 Shawn Iverson <shawniverson@efa-project.org> - 1.000008-1
 - Built for eFa https://efa-project.org
