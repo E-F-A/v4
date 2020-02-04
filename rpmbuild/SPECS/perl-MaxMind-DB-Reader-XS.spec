@@ -50,7 +50,7 @@ BuildRequires:  perl-Test-Requires >= 0.06
 BuildRequires:  perl-autodie >= 2.16
 BuildRequires:  perl(lib) >= 0.63
 BuildRequires:  perl(utf8) >= 1.09
-BuildRequires:  perl(version) >= 0.9924
+BuildRequires:  perl(version) >= 0.9907
 Requires:       perl(Math::Int128)
 Requires:       perl-Math-Int64 >= 0.52
 Requires:       perl-MaxMind-DB-Metadata >= 0.040001
