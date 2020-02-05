@@ -74,7 +74,7 @@ See MaxMind::DB::Reader for API details.
 %setup -q -n MaxMind-DB-Reader-XS-%{version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
+%{__perl} Build.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
 %{__make} %{?_smp_mflags}
 
 %install
