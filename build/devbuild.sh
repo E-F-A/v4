@@ -201,6 +201,10 @@ rpmbuild -ba perl-Math-Int128.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Math-Int128-*.rpm
 [ $? -ne 0 ] && exit 1
+rpmbuild -ba perl-Net-Works-Network.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Net-Works-Network-*.rpm
+[ $? -ne 0 ] && exit 1
 # END: New modules for spamassassin 3.4.4 development builds
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
