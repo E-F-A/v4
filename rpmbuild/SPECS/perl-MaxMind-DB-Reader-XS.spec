@@ -86,7 +86,7 @@ See MaxMind::DB::Reader for API details.
 ### Clean up buildroot
 #find %{buildroot} -name .packlist -exec %{__rm} {} \;
 #find %{buildroot} -name perllocal.pod -exec %{__rm} {} \;
-find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
+#find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
 # Remove man conflict with perl package
 #%{__rm} -rf %{buildroot}/%{_mandir}/man3
