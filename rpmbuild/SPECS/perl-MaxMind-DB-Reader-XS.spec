@@ -75,7 +75,7 @@ See MaxMind::DB::Reader for API details.
 %setup -q -n MaxMind-DB-Reader-XS-%{version}
 
 %build
-%{__perl} Build.PL installdirs="vendor" destdir="%{buildroot}%{_prefix}"
+%{__perl} Build.PL installdirs="vendor" destdir="%{buildroot}}"
 %{__perl} Build 
 %{__perl} Build test
 
