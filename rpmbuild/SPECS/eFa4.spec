@@ -413,6 +413,13 @@ Requires: perl-strictures >= 2.000006-1
     #                                            # eFa     # spamassassin
 Requires: perl-Sub-Quote >= 2.006006-1
     #                                            # eFa     # spamassassin
+Requires: perl-Math-Int128 >= 0.22-1
+    #                                            # eFa     # spamassassin
+Requires: perl-Net-Works-Network >= 0.22-1
+    #                                            # eFa     # spamassassin
+Requires: perl-MaxMind-DB-Reader-XS >= 1.000008-1
+    #                                            # eFa     # spamassassin
+
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -563,6 +570,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Wed Feb 05 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-5
+- Additional modules for MaxMind DB lookup performance
+
 * Sun Feb 02 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-4
 - Fix missed files in packaging
 
