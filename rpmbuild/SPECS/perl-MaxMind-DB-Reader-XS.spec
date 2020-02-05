@@ -75,7 +75,7 @@ See MaxMind::DB::Reader for API details.
 %setup -q -n MaxMind-DB-Reader-XS-%{version}
 
 %build
-%{__perl} Build.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
+%{__perl} Build.PL installdirs="vendor" destdir="%{buildroot}%{_prefix}"
 %{__perl} Build 
 %{__perl} Build test
 
@@ -99,7 +99,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST INSTALL README.md LICENSE
-%{perl_vendorlib}/*
+%{perl_vendorarch}/*
 %{_mandir}/man3/*
 
 %changelog
