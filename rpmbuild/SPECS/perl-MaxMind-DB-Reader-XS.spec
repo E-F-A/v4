@@ -71,7 +71,7 @@ The XS implementation links against the libmaxminddb library.
 See MaxMind::DB::Reader for API details.
 
 %prep
-%setup -q -n MaxMind-DB-Reader-%{version}
+%setup -q -n MaxMind-DB-Reader-XS-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
