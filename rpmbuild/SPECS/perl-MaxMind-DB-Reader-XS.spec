@@ -76,11 +76,12 @@ See MaxMind::DB::Reader for API details.
 
 %build
 %{__perl} Build.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
-%{__make} %{?_smp_mflags}
+%{__perl} Build 
+%{__perl} Build test
 
 %install
 %{__rm} -rf %{buildroot}
-%{__make} install
+%{__perl} Build install
 
 ### Clean up buildroot
 find %{buildroot} -name .packlist -exec %{__rm} {} \;
