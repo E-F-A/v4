@@ -75,7 +75,7 @@ See MaxMind::DB::Reader for API details.
 %setup -q -n MaxMind-DB-Reader-XS-%{version}
 
 %build
-%{__perl} Build.PL installdirs="vendor" destdir="%{buildroot}}"
+%{__perl} Build.PL installdirs="vendor" destdir="%{buildroot}"
 %{__perl} Build 
 %{__perl} Build test
 
@@ -84,9 +84,9 @@ See MaxMind::DB::Reader for API details.
 %{__perl} Build install
 
 ### Clean up buildroot
-#find %{buildroot} -name .packlist -exec %{__rm} {} \;
-#find %{buildroot} -name perllocal.pod -exec %{__rm} {} \;
-#find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
+find %{buildroot} -name .packlist -exec %{__rm} {} \;
+find %{buildroot} -name perllocal.pod -exec %{__rm} {} \;
+find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
 # Remove man conflict with perl package
 #%{__rm} -rf %{buildroot}/%{_mandir}/man3
