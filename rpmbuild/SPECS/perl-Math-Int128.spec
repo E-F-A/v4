@@ -91,7 +91,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 %files
 %defattr(-,root,root,-)
 %doc Changes MANIFEST INSTALL README.md
-%{perl_vendorarh}/*
+%{perl_vendorarch}/*
 %{_mandir}/man3/*
 
 %changelog
