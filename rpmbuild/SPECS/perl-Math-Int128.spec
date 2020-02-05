@@ -25,41 +25,47 @@
 %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
 
-Name:           perl-Net-Works-Network
+Name:           perl-Math-Int128
 Version:        0.22
 Release:        1.eFa%{?dist}
-Summary:        An object representing a single IP address (4 or 6) subnet
+Summary:        Manipulate 128 bits integers in Perl
 License:        perl_5
 Group:          Development/Libraries
-URL:            https://metacpan.org/pod/Net::Works::Network
-Source0:        https://cpan.metacpan.org/authors/id/M/MA/MAXMIND/Net-Works-%{version}.tar.gz
+URL:            https://metacpan.org/pod/Math::Int128
+Source0:        https://cpan.metacpan.org/authors/id/S/SA/SALVA/Math-Int128-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
+BuildRequires:  perl(B) >= 1.35
 BuildRequires:  perl(File::Spec) => 3.40
-BuildRequires:  perl(IO::Handle) >= 1.33
-BuildRequires:  perl(IPC::Open3) >= 1.12
 BuildRequires:  perl(Math::BigInt) >= 1.998
+BuildRequires:  perl-Test-Fatal >= 0.010
 BuildRequires:  perl(Test::More) => 0.98
-BuildRequires:  perl(integer) >= 1.00
+Requires:       perl-Carp >= 1.26
 Requires:       perl-Exporter >= 5.68
 Requires:       perl-List-AllUtils >= 0.15
-Requires:       perl-Math-Int64-0.52 >= 0.52
-Requires:       perl(XSLoader) >= 0.01
-Requires:       perl-constant >= 1.27
+Requires:       perl(Math::Int128)
+Requires:       perl-Moo >= 2.003006
+Requires:       perl(Moo::Role) >= 2.003006
+Requires:       perl(Scalar::Util) >= 1.53
+Requires:       perl-Socket >= 2.010
+Requires:       perl-Sub-Quote >= 2.006006
+Requires:       perl(integer) >= 1.00
+Requires:       perl-namespace-autoclean >= 0.19
 Requires:       perl(overload) >= 1.18
 Requires:       perl(strict) >= 1.07
 Requires:       perl(warnings) >= 1.13
 
 %description
-Objects of this class represent an IP address network. It can handle both IPv4 
-and IPv6 subnets. It provides various methods for getting information about the subnet.
+This module adds support for 128 bit integers, signed and unsigned, to Perl.
 
-For IPv6, it uses 128-bit integers (via Math::Int128) to represent the numeric
-value of an address as needed.
+In order to compile this module, your compiler must support one of either the
+__int128 or int __attribute__ ((__mode__ (TI))) types. Both GCC and Clang have
+supported one or the other type for some time, but they may only do so on
+64-bit platforms.
 
 %prep
-%setup -q -n Net-Works-%{version}
+%setup -q -n Math-Int128-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
@@ -84,7 +90,7 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
 %files
 %defattr(-,root,root,-)
-%doc Changes MANIFEST INSTALL README.md LICENSE
+%doc Changes MANIFEST INSTALL README.md
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 

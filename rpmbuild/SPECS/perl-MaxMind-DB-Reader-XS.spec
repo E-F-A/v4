@@ -90,13 +90,6 @@ find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 #%{__rm} -rf %{buildroot}/%{_mandir}/man3
 
 %{_fixperms} %{buildroot}/*
-Requires:       perl(Moo::Role) >= 2.003006
-Requires:       perl-MooX-StrictConstructor >= 0.010
-Requires:       perl-Role-Tiny => 2.001004
-Requires:       perl-Socket >= 2.010
-Requires:       perl-autodie >= 2.16
-Requires:       perl(bytes) >= 1.04
-Requires:       perl-constant => 1.27
 
 %clean
 %{__rm} -rf %{buildroot}
