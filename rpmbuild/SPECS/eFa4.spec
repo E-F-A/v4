@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   5.eFa%{?dist}
+Release:   6.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -302,7 +302,7 @@ Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.14-1
+Requires:  MailWatch >= 1:1.2.15-1
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 2.3.167-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -570,6 +570,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Feb 08 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-6
+- Updates for MailWatch
+
 * Wed Feb 05 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-5
 - Additional modules for MaxMind DB lookup performance
 
