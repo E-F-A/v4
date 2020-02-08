@@ -140,6 +140,9 @@ if [[ -z $(grep geoip2_default_db_path /etc/MailScanner/spamassassin.conf) ]]; t
   echo 'endif' >> /etc/MailScanner/spamassassin.conf
 fi
 
+# Update MailWatchConf.pm
+sed -i "/^my (\$db_pass) = 'mailwatch';$/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa/MailWatch-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatchConf.pm
+
 # Enable RelayCountry Plugin
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::RelayCountry/ c\loadplugin Mail::SpamAssassin::Plugin::RelayCountry" /etc/mail/spamassassin/init.pre
 

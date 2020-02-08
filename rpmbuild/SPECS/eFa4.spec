@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   6.eFa%{?dist}
+Release:   7.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -570,6 +570,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Feb 08 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-7
+- Update MailWatchConf.pm after updating MailWatch
+
 * Sat Feb 08 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-6
 - Updates for MailWatch
 
