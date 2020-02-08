@@ -24,7 +24,7 @@
 #-----------------------------------------------------------------------------#
 Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
-Version:       1.2.14
+Version:       1.2.15
 Epoch:         1
 Release:       1.eFa%{?dist}
 License:       GNU GPL v2
@@ -298,6 +298,9 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sat Feb 08 2020 Shawn Iverson <shawniverson@efa-project.org> - 1.2.15-1
+- Include spanish translation updates
+
 * Fri Dec 27 2019 Shawn Iverson <shawniverson@efa-project.org> - 1.2.14-1
 - Update MailWatch for MaxMind License Key Support
 
