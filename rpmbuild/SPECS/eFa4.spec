@@ -43,9 +43,8 @@ Requires:  clamav >= 0.101.0-1
     # #     clamav-lib                           #         #
 Requires:  clamav-update >= 0.101.0-1
     # clamav-update                              # epel    # MailScanner
-Requires:  clamav-server >= 0.101.0-1
-    # clamav-server                              # epel    # MailScanner
-    # #     nmap-ncat                            # base    #
+Requires:  clamd >= 0.101.0-1
+    # clamd			                             # epel    # MailScanner
 Requires:  mariadb101u-server >= 1:10.1.35-1
     # mariadb101u-server                         # IUS     # postfix, mailwatch
     # #     mariadb101u-common                   #         #
@@ -55,7 +54,7 @@ Requires:  mariadb101u-server >= 1:10.1.35-1
     # #     perl-Data-Dumper                     #         #
     # #     perl-IO-Compress                     #         #
     # #     perl-Net-Daemon                      #         #
-    # #     perl-PlRPC        Enable RelayCountry plugin for Spamassassin                   #         #
+    # #     perl-PlRPC                           #         #
     # #     mariadb101u-client                   #         #
     # #     mariadb101u-shared                   #         #
     # #     galera                               #         #
