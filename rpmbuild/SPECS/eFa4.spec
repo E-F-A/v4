@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   7.eFa%{?dist}
+Release:   8.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -569,6 +569,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Tue Feb 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-8
+- Fix sudden package name change in epel repo clamav-server to clamd
+
 * Sat Feb 08 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-7
 - Update MailWatchConf.pm after updating MailWatch
 
