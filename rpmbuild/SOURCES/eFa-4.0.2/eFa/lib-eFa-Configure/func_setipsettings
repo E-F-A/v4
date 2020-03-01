@@ -32,6 +32,10 @@ func_setipsettings(){
     sed -i '/^\t# do-ip6:/ c\\tdo-ip6: no' /etc/unbound/unbound.conf
   fi
 
+  if [[ -z $(grep "^dns=none" /etc/NetworkManager/NetworkManager.conf) ]]; then
+    sed -i "/^\[main\]$/ a\dns=none" /etc/NetworkManager/NetworkManager.conf
+  fi
+
   # Write resolv file
   # new unbound stuff... 
   if [[ "$RECURSIVEDNS" == "DISABLED" ]]; then
