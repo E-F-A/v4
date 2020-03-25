@@ -26,7 +26,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.15
 Epoch:         1
-Release:       1.eFa%{?dist}
+Release:       2.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -298,6 +298,9 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Tue Mar 24 2020 Shawn Iverson <shawniverson@efa-project.org> - 1.2.15-2
+- Fix single quote handling in mailwatch_milter_relay
+
 * Sat Feb 08 2020 Shawn Iverson <shawniverson@efa-project.org> - 1.2.15-1
 - Include spanish translation updates
 
