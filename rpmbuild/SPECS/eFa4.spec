@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   9.eFa%{?dist}
+Release:   10.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -287,7 +287,7 @@ Requires:  spamassassin >= 3.4.4-2
     # #    procmail                              #         #
     # #    perl-Geo-IP                           #         #
     # #    perl-Net-Patricia                     #         #
-Requires:  MailScanner >= 5.2.2-1
+Requires:  MailScanner >= 5.3.1-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-4
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -569,6 +569,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Apr 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-10
+- Update for MailScanner
+
 * Sun Mar 01 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-9
 - Disable NetworkManager overriding dns
 
