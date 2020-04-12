@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   11.eFa%{?dist}
+Release:   12.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -569,6 +569,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Apr 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-12
+- Update for MailScanner
+
 * Sun Apr 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-11
 - Fix 1x1 spacer
 
