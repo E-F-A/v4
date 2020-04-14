@@ -149,9 +149,13 @@ sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::RelayCountry/ c\loadplugin Ma
 # Fix nm overriding dns
 if [[ -z $(grep "^dns=none" /etc/NetworkManager/NetworkManager.conf) ]]; then
     sed -i "/^\[main\]$/ a\dns=none" /etc/NetworkManager/NetworkManager.conf
-    # Reset dns
-    echo "nameserver=127.0.0.1" > /etc/resolv.conf
 fi
+
+# Fix dns
+if [[ -n $(grep "nameserver=127.0.0.1" /etc/resolv.conf) ]]; then
+    echo "nameserver 127.0.0.1" > /etc/resolv.conf
+fi
+
 
 # Fix 1x1 spacer
 sed -i "/^Web Bug Replacement = https:\/\/s3.amazonaws.com\/msv5\/images\/spacer.gif/ c\Web Bug Replacement = http://dl.efa-project.org/static/1x1spacer.gif" /etc/MailScanner/MailScanner.conf
