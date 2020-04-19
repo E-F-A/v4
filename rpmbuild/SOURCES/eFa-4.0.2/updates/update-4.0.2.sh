@@ -146,11 +146,6 @@ sed -i "/^my (\$db_pass) = 'mailwatch';$/ c\my (\$fh);\nmy (\$pw_config) = '/etc
 # Enable RelayCountry Plugin
 sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::RelayCountry/ c\loadplugin Mail::SpamAssassin::Plugin::RelayCountry" /etc/mail/spamassassin/init.pre
 
-# Fix nm overriding dns
-if [[ -z $(grep "^dns=none" /etc/NetworkManager/NetworkManager.conf) ]]; then
-    sed -i "/^\[main\]$/ a\dns=none" /etc/NetworkManager/NetworkManager.conf
-fi
-
 # Fix dns
 if [[ -n $(grep "nameserver=127.0.0.1" /etc/resolv.conf) ]]; then
     echo "nameserver 127.0.0.1" > /etc/resolv.conf
