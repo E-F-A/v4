@@ -79,7 +79,10 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.monthly
 echo "#!/bin/bash" > %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 echo "UPDATEMAXDELAY=3600" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
 echo 'sleep $[( $RANDOM % $UPDATEMAXDELAY )+1]s' >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
-echo "/usr/bin/mailwatch/tFix single quote handling in mailwatch_milter_relayFix single quote handling in mailwatch_milter_relay
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_geoip_update.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
+echo "/usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php >/dev/null 2>&1" >> %{buildroot}%{_sysconfdir}/cron.monthly/mailwatch
+
+mkdir -p  %{buildroot}%{_sFix single quote handling in mailwatch_milter_relay
 mkdir -p %{buildroot}%{_localstatedir}/www/html
 cp -a mailscanner %{buildroot}%{_localstatedir}/www/html/mailscanner
 mv %{buildroot}%{_localstatedir}/www/html/mailscanner/conf.php.example %{buildroot}%{_localstatedir}/www/html/mailscanner/conf.php
