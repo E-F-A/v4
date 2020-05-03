@@ -26,8 +26,7 @@ protect it against Denial Of Service attacks.
 
 After installation, you must install one of the supported open source or
 commercial antivirus packa make the rpm backwards compatible
-%define _source_payload w0.gzdio
-%define _binary_payload w0.gzdioges if not installed using the MailScanner
+if not installed using the MailScanner
 configuration script.
 
 This has been tested on Red Hat Linux, but should work on other RPM
