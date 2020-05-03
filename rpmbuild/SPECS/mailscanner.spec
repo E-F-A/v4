@@ -79,7 +79,7 @@ EOF
 
 while read f
 do
-  install /common/etc/MailScanner/$f ${RPM_BUILD_ROOT}/etc/MailScanner/
+  install common/etc/MailScanner/$f ${RPM_BUILD_ROOT}/etc/MailScanner/
 done << EOF
 archives.filename.rules.conf
 archives.filetype.rules.conf
