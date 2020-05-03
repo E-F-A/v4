@@ -41,8 +41,8 @@ rm -rf ${RPM_BUILD_ROOT}
 
 mkdir -p ${RPM_BUILD_ROOT}/{etc,usr/share/MailScanner/doc}
 
-install common/etc/* ${RPM_BUILD_ROOT}/etc
-install rhel/usr/* ${RPM_BUILD_ROOT}/usr
+install -D common/etc ${RPM_BUILD_ROOT}/etc
+install -D rhel/usr ${RPM_BUILD_ROOT}/usr
 install changelog ${RPM_BUILD_ROOT}/usr/share/MailScanner/doc/
 install README ${RPM_BUILD_ROOT}/usr/share/MailScanner/doc/
 install LICENSE ${RPM_BUILD_ROOT}/usr/share/MailScanner/doc/
