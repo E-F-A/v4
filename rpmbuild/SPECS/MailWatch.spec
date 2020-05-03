@@ -205,7 +205,13 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/MailScanner_rule_editor/msre_reload.sh
 %{_bindir}/mailwatch/tools/Postfix_relay/*
 %{_bindir}/mailwatch/tools/Sendmail-Exim_queue/*
-%{_bindir}/mailwatch/toolsFix single quote handling in mailwatch_milter_relay %{_localstatedir}/www/html/mailscanner/images
+%{_bindir}/mailwatch/tools/Sendmail_relay/*
+%{_bindir}/mailwatch/tools/LDAP/*
+%{_bindir}/mailwatch/tools/sudo/*
+%{_bindir}/mailwatch/tools/MailScanner_config/*
+%attr(0755, root, root) %{_bindir}/mailwatch/tools/upgrade.php
+%config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
+%attr(0775, root, php-fpm) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, php-fpm) %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/favicon.ico
 %{_localstatedir}/www/html/mailscanner/.htaccess
