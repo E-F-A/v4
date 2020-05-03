@@ -546,16 +546,6 @@ else
     fi
 fi
 
-echo
-echo To initially configure MailScanner and install necessary modules run:
-echo 
-echo /usr/sbin/ms-configure
-echo
-echo To update MailScanner and necessary modules run:
-echo 
-echo /usr/sbin/ms-configure --update
-echo
-
 exit 0 
 
 %preun
