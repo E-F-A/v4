@@ -113,7 +113,7 @@ install common/usr/sbin/ms-update-phishing                 ${RPM_BUILD_ROOT}/usr
 install common/usr/sbin/ms-update-sa                       ${RPM_BUILD_ROOT}/usr/sbin/ms-update-sa
 install common/usr/sbin/ms-update-vs                       ${RPM_BUILD_ROOT}/usr/sbin/ms-update-vs
 install common/usr/sbin/ms-upgrade-conf                    ${RPM_BUILD_ROOT}/usr/sbin/ms-upgrade-conf
-install rhel/usr/sbin/ms-configure                       ${RPM_BUILD_ROOT}/usr/sbin/ms-configure
+install rhel/usr/sbin/ms-configure                         ${RPM_BUILD_ROOT}/usr/sbin/ms-configure
 
 ### usr/share/MailScanner
 
