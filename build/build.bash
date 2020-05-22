@@ -182,7 +182,7 @@ fi
 rpm -q ius-release >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     logthis "Installing IUS Repo"
-    yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+    yum -y install https://repo.ius.io/ius-release-el7.rpm
     if [ $? -eq 0 ]; then
         logthis "IUS repo installed"
         rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
