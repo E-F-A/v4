@@ -30,7 +30,7 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring unbound..."
 
 # disable validator
-sed -i "/^\t# module-config:/ c\\\tmodule-config: \"iterator\"" /etc/unbound/unbound.conf
+sed -i "/^\tmodule-config:/ c\\\tmodule-config: \"iterator\"" /etc/unbound/unbound.conf
 
 echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
 echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
