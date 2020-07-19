@@ -755,7 +755,7 @@ class eFaInitController extends Controller
                 }
 
                 return $this->redirectToRoute($page, array('_locale' => $request->getLocale(), 'slug' => $action));
-            } elseif (!($form->get('Next')->isClicked || $form->get('NextHidden')->isClicked())) {
+            } elseif (!($form->get('Next')->isClicked() || $form->get('NextHidden')->isClicked())) {
                 return $this->redirectToRoute($previousPage, array('_locale' => $request->getLocale(), 'slug' => $previousSlug));
             } else {
                 if ($edit === 'edit') {
