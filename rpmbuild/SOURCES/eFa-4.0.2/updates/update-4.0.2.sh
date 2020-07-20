@@ -157,6 +157,16 @@ ln -s /etc/MailScanner/spamassassin.conf /etc/mail/spamassassin/mailscanner.cf  
 # Fix 1x1 spacer
 sed -i "/^Web Bug Replacement = https:\/\/s3.amazonaws.com\/msv5\/images\/spacer.gif/ c\Web Bug Replacement = http://dl.efa-project.org/static/1x1spacer.gif" /etc/MailScanner/MailScanner.conf
 
+# Update SELinux
+if [[ $instancetype != "lxc" ]]; then
+  cmd='checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te'
+  execcmd
+  cmd='semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc'
+  execcmd
+  cmd='semodule -i /var/eFa/lib/selinux/eFa.pp'
+  execcmd
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
