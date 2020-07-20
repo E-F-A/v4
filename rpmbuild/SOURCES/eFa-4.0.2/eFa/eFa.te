@@ -1,5 +1,5 @@
 
-module eFa 1.0.19;
+module eFa 1.0.20;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
