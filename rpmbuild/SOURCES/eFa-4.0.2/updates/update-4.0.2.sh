@@ -152,7 +152,7 @@ if [[ -n $(grep "nameserver=127.0.0.1" /etc/resolv.conf) ]]; then
 fi
 
 # Ensure symlink is present
-ln -s /etc/MailScanner/spamassassin.conf /etc/mail/spamassassin/mailscanner.cf
+ln -s /etc/MailScanner/spamassassin.conf /etc/mail/spamassassin/mailscanner.cf  >/dev/null 2>&1
 
 # Fix 1x1 spacer
 sed -i "/^Web Bug Replacement = https:\/\/s3.amazonaws.com\/msv5\/images\/spacer.gif/ c\Web Bug Replacement = http://dl.efa-project.org/static/1x1spacer.gif" /etc/MailScanner/MailScanner.conf
