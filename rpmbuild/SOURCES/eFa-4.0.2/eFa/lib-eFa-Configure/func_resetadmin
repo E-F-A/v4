@@ -93,7 +93,7 @@ func_resetadmin() {
       fi
     done
 
-    $NEWPASS1=$(echo $NEWPASS1 | sed -e "s/'/''/g")
+    NEWPASS1=$(echo $NEWPASS1 | sed -e "s/'/''/g")
 
     /usr/bin/mysql -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "UPDATE users SET password = md5('$NEWPASS1') WHERE username='$ADMINUSER'"
 
