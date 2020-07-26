@@ -36,6 +36,7 @@ URL:            https://metacpan.org/pod/distribution/Inline/lib/Inline.pod
 Source:         https://cpan.metacpan.org/authors/id/I/IN/INGY/Inline-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
+BuildRequires:  perl(Test::Warn)
 
 %description
 Inline - Write Perl Subroutines in Other Programming Languages
