@@ -48,6 +48,7 @@ BuildRequires:  perl(Test::More) >= 0.98
 BuildRequires:  perl-Test-Number-Delta >= 1.06
 BuildRequires:  perl(base) >= 2.18
 BuildRequires:  perl(utf8) >= 1.09
+BuildRequires:  perl(Params::Validate)
 Requires:       perl-ExtUtils-MakeMaker >= 6.68
 Requires:       perl(B) >= 1.35
 Requires:       perl-Data-Dumper >= 2.145
