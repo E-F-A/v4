@@ -105,7 +105,7 @@ else
     perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-DateTime perl-Test-Warnings \
     perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
     perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \ 
-    libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn
+    libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet
     [ $? -ne 0 ] && exit 1
 fi
 
@@ -262,6 +262,10 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-MaxMind-DB-Reader-XS-*.rpm
 [ $RELEASE -eq 8 ] && rpmbuild -ba perl-Inline.spec
 [ $? -ne 0 ] && exit 1
 [ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Inline-*.rpm
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && rpmbuild -ba perl-Net-DNS-Resolver-Programmable.spec
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-DNS-Resolver-Programmable-*.rpm
 [ $? -ne 0 ] && exit 1
 # END: New modules for spamassassin 3.4.4 development builds
 rpmbuild -ba Spamassassin.spec
