@@ -160,9 +160,10 @@ rpmbuild -ba perl-IP-Country-DB_File.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-DB_File-*.rpm
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Sub-Quote.spec
+# Version on CentOS 8 too old
+rpmbuild -ba perl-Sub-Quote.spec
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sub-Quote-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sub-Quote-*.rpm
 [ $? -ne 0 ] && exit 1
 [ $RELEASE -eq 7 ] && rpmbuild -ba perl-Module-Runtime.spec
 [ $? -ne 0 ] && exit 1
