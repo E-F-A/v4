@@ -1,6 +1,6 @@
 #!/bin/bash
 ######################################################################
-# eFa 4.0.1 Development prebuild environment
+# eFa 4.0.2 Development prebuild environment
 ######################################################################
 # Copyright (C) 2020  https://efa-project.org
 #
@@ -29,12 +29,16 @@ else
   exit 1
 fi
 
-# check if we run CentOS 7
+# check if we run CentOS 7 or 8
 OSVERSION=`cat /etc/centos-release`
 if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
+  RELEASE=7
   echo "- Good you are running CentOS 7"
+elif [[ $OSVERSION =~ .*'release 8.'.* ]]; then
+  echo "- Good you are running CentOS 8"
+  RELEASE=8
 else
-  echo "- ERROR: You are not running CentOS 7"
+  echo "- ERROR: You are not running CentOS 7 or 8"
   echo "- ERROR: Unsupported system, stopping now"
   exit 1
 fi
@@ -54,16 +58,21 @@ fi
 yum -y install epel-release
 [ $? -ne 0 ] && exit 1
 
-echo "- Adding IUS Repo"
-yum -y install https://repo.ius.io/ius-release-el7.rpm
-[ $? -ne 0 ] && exit 1
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
-[ $? -ne 0 ] && exit 1
+if [[ $RELEASE -eq 7 ]]; then
+  echo "- Adding IUS Repo"
+  yum -y install https://repo.ius.io/ius-release-el7.rpm
+  [ $? -ne 0 ] && exit 1
+  rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
+  [ $? -ne 0 ] && exit 1
+else
+  yum config-manager --set-enabled PowerTools
+  [ $? -ne 0 ] && exit 1
+fi
 
 yum -y update
 [ $? -ne 0 ] && exit 1
 
-yum -y remove mariadb-libs
+[ $RELEASE -eq 7 ] && yum -y remove mariadb-libs
 [ $? -ne 0 ] && exit 1
 
 yum -y install rpm-build
@@ -75,5 +84,7 @@ echo "%_topdir $GITPATH/rpmbuild" > ~/.rpmmacros
 [ $? -ne 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
 [ $? -ne 0 ] && exit 1
-yum -y remove postfix postfix32u
+[ $RELEASE -eq 7 ] && yum -y remove postfix postfix32u
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y remove postfix
 [ $? -ne 0 ] && exit 1

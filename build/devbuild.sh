@@ -31,12 +31,16 @@ else
   exit 1
 fi
 
-# check if we run CentOS 7
+# check if we run CentOS 7 or 8
 OSVERSION=`cat /etc/centos-release`
 if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
+  RELEASE=7
   echo "- Good you are running CentOS 7"
+elif [[ $OSVERSION =~ .*'release 8.'.* ]]; then
+  echo "- Good you are running CentOS 8"
+  RELEASE=8
 else
-  echo "- ERROR: You are not running CentOS 7"
+  echo "- ERROR: You are not running CentOS 7 or 8"
   echo "- ERROR: Unsupported system, stopping now"
   exit 1
 fi
@@ -56,33 +60,54 @@ fi
 yum -y install epel-release
 [ $? -ne 0 ] && exit 1
 
-echo "- Adding IUS Repo"
-yum -y install https://repo.ius.io/ius-release-el7.rpm
-[ $? -ne 0 ] && exit 1
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
-[ $? -ne 0 ] && exit 1
+if [[ $RELEASE -eq 7 ]]; then
+  echo "- Adding IUS Repo"
+  yum -y install https://repo.ius.io/ius-release-el7.rpm
+  [ $? -ne 0 ] && exit 1
+  rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
+  [ $? -ne 0 ] && exit 1
+else
+  yum config-manager --set-enabled PowerTools
+  [ $? -ne 0 ] && exit 1
+fi
 
 yum -y update
 [ $? -ne 0 ] && exit 1
 
-yum -y remove mariadb-libs
+[ $RELEASE -eq 7 ] && yum -y remove mariadb-libs
 [ $? -ne 0 ] && exit 1
 
-yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod \
-  perl-HTML-Parser perl-Archive-Tar perl-devel perl-libwww-perl perl-DB_File perl-Mail-SPF perl-Encode-Detect \
-  perl-IO-Socket-INET6 perl-Mail-DKIM perl-Net-DNS-Resolver-Programmable perl-Parse-RecDescent perl-Inline \
-  perl-Test-Manifest perl-YAML perl-ExtUtils-CBuilder perl-Module-Build perl-IO-String perl-Geo-IP \
-  perl-Net-CIDR-Lite perl-Sys-Hostname-Long perl-Net-IP perl-Net-Patricia perl-Data-Dump perl-generators \
-  libicu-devel openldap-devel mysql-devel postgresql-devel sqlite-devel tinycdb-devel perl-Date-Calc \
-  perl-Sys-Syslog clamav perl-Geography-Countries php72u mariadb101u-server perl-Digest-SHA1 php72u-gd \
-  php72u-ldap php72u-mbstring php72u-mysqlnd php72u-xml perl-Archive-Zip perl-Env perl-Filesys-Df \
-  perl-IO-stringy perl-Net-CIDR perl-OLE-Storage_Lite perl-Sys-SigAction perl-MIME-tools wget \
-  php72u-json perl-Test-Simple php72u-cli m4 perl-Math-Int64 perl-Path-Class perl-Test-Fatal \
-  perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-Data-Dumper-Concise \
-  perl-DateTime perl-Test-Warnings perl-autodie perl-Test-Requires perl-Test-Tester perl-Clone-PP \
-  perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS perl-LWP-Protocol-https perl-Test-LeakTrace \
-  perl-Throwable libmaxminddb-devel
-[ $? -ne 0 ] && exit 1
+if [[ $RELEASE -eq 7 ]]; then
+  yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod \
+    perl-HTML-Parser perl-Archive-Tar perl-devel perl-libwww-perl perl-DB_File perl-Mail-SPF perl-Encode-Detect \
+    perl-IO-Socket-INET6 perl-Mail-DKIM perl-Net-DNS-Resolver-Programmable perl-Parse-RecDescent perl-Inline \
+    perl-Test-Manifest perl-YAML perl-ExtUtils-CBuilder perl-Module-Build perl-IO-String perl-Geo-IP \
+    perl-Net-CIDR-Lite perl-Sys-Hostname-Long perl-Net-IP perl-Net-Patricia perl-Data-Dump perl-generators \
+    libicu-devel openldap-devel mysql-devel postgresql-devel sqlite-devel tinycdb-devel perl-Date-Calc \
+    perl-Sys-Syslog clamav perl-Geography-Countries php72u mariadb101u-server perl-Digest-SHA1 php72u-gd \
+    php72u-ldap php72u-mbstring php72u-mysqlnd php72u-xml perl-Archive-Zip perl-Env perl-Filesys-Df \
+    perl-IO-stringy perl-Net-CIDR perl-OLE-Storage_Lite perl-Sys-SigAction perl-MIME-tools wget \
+    php72u-json perl-Test-Simple php72u-cli m4 perl-Math-Int64 perl-Path-Class perl-Test-Fatal \
+    perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-Data-Dumper-Concise \
+    perl-DateTime perl-Test-Warnings perl-autodie perl-Test-Requires perl-Test-Tester perl-Clone-PP \
+    perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS perl-LWP-Protocol-https perl-Test-LeakTrace \
+    perl-Throwable libmaxminddb-devel
+    [ $? -ne 0 ] && exit 1
+else
+  yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod \
+    perl-HTML-Parser perl-Archive-Tar perl-devel perl-libwww-perl perl-DB_File perl-Mail-SPF perl-Encode-Detect \
+    perl-IO-Socket-INET6 perl-Mail-DKIM perl-Parse-RecDescent perl-Test-Manifest perl-YAML perl-ExtUtils-CBuilder \
+    perl-Module-Build perl-IO-String perl-Geo-IP perl-Net-CIDR-Lite perl-Net-IP perl-Net-Patricia perl-Data-Dump \
+    perl-generators libicu-devel openldap-devel mysql-devel postgresql-devel sqlite-devel tinycdb-devel \
+    perl-Date-Calc perl-Sys-Syslog clamav perl-Geography-Countries php mariadb-server perl-Digest-SHA1 \
+    php-gd php-ldap php-mbstring php-mysqlnd php-xml perl-Archive-Zip perl-Env perl-Filesys-Df perl-IO-stringy \
+    perl-Net-CIDR perl-OLE-Storage_Lite perl-MIME-tools wget php-json perl-Test-Simple php-cli m4 perl-Path-Class \
+    perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-DateTime perl-Test-Warnings \
+    perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
+    perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \ 
+    libnsl2-devel perl-Test
+    [ $? -ne 0 ] && exit 1
+fi
 
 mkdir -p $GITPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 [ $? -ne 0 ] && exit 1
@@ -92,29 +117,35 @@ cd $GITPATH/rpmbuild/SPECS
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba postfix.spec
 [ $? -ne 0 ] && exit 1
-yum -y remove postfix postfix32u
+[ $RELEASE -eq 7 ] && yum -y remove postfix postfix32u
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y remove postfix
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix_eFa-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba clamav-unofficial-sigs.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/clamav-unofficial-sigs-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/clamav-unofficial-sigs-*.rpm
 [ $? -ne 0 ] && exit 1
-echo "n" | rpmbuild -ba perl-libnet.spec
+[ $RELEASE -eq 7 ] && echo "n" | rpmbuild -ba perl-libnet.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-libnet-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-libnet-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-IP-Country.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-IP-Country-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Text-Balanced.spec
+[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Text-Balanced.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Text-Balanced-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Text-Balanced-*.rpm
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && rpmbuild -ba perl-Sys-Hostname-Long.spec
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-Hostname-Long-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Mail-SPF-Query.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Mail-SPF-Query-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Mail-SPF-Query-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba unrar-5.8.3.spec
 [ $? -ne 0 ] && exit 1

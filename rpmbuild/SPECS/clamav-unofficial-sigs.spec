@@ -32,6 +32,7 @@ Group:         Applications/Utilities
 URL:           https://github.com/extremeshok/clamav-unofficial-sigs
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildArch:     noarch
 Requires:      clamav >= 0.101.0
 Requires:      bind-utils >= 9.9.4
 
