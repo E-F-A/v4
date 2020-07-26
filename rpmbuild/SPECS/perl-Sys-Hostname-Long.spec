@@ -22,33 +22,38 @@
 #-----------------------------------------------------------------------------#
 # yum -y install
 #-----------------------------------------------------------------------------#
-Name:           perl-Mail-SPF-Query
-Version:        1.999.1
+%define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
+%define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
+
+Name:           perl-Sys-Hostname-Long
+Version:        1.5
 Release:        1.eFa%{?dist}
-Summary:        Object-oriented implementation of Sender Policy Framework
-License:        GPL2+ or Artistic
+Summary:        Try every conceivable way to get full hostname
+License:        perl_5
 Group:          Development/Libraries
-URL:            http://search.cpan.org/dist/Mail-SPF-Query/
-Source0:        https://cpan.metacpan.org/authors/id/J/JM/JMEHNLE/mail-spf-query/Mail-SPF-Query-%{version}.tar.gz
+URL:            https://metacpan.org/pod/Sys::Hostname::Long
+Source0:        https://cpan.metacpan.org/authors/id/S/SC/SCOTT/Sys-Hostname-Long-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Requires:       perl(Net::CIDR::Lite) >= 0.21
-Requires:       perl(Net::DNS) >= 0.72
-Requires:       perl(Sys::Hostname::Long) >= 1.5
-Requires:       perl(Socket) >= 2.010
-Requires:       perl(Getopt::Long) >= 2.40
-BuildRequires:  perl(Sys::Hostname::Long) >= 1.5
-BuildRequires:  perl(Net::DNS) >= 0.72
-BuildRequires:  perl(Net::CIDR::Lite) >= 0.21
-BuildRequires:  perl(URI) >= 1.60
 
 %description
-The SPF protocol relies on sender domains to describe their designated outbound mailers in DNS.
-Given an email address, Mail::SPF::Query determines the legitimacy of an SMTP client IP address.
+This is the SECOND release of this code. It has an improved set of tests and improved interfaces
+but it is still often failing to get a full host name. 
+This of course is the reason I wrote the module, it is difficult to get full host names accurately
+on each system. On some systems (eg: Linux) it is dependent on the order of the entries in /etc/hosts.
+
+To make it easier to test I have testall.pl to generate an output list of all methods. Thus even if
+the logic is incorrect, it may be possible to get the full name.
+
+Attempt via many methods to get the systems full name. 
+The Sys::Hostname class is the best and standard way to get the system hostname.
+However it is missing the long hostname.
+
+Special thanks to David Sundstrom and Greg Bacon for the original Sys::Hostname
 
 %prep
-%setup -q -n Mail-SPF-Query-%{version}
+%setup -q -n Sys-Hostname-Long-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS="vendor" PREFIX="%{buildroot}%{_prefix}"
@@ -63,23 +68,23 @@ find %{buildroot} -name .packlist -exec %{__rm} {} \;
 find %{buildroot} -name perllocal.pod -exec %{__rm} {} \;
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
+# Remove man conflict with perl package
+#%{__rm} -rf %{buildroot}/%{_mandir}/man3
+
 %{_fixperms} %{buildroot}/*
 
 %check
-# Tests failing to no longer existant DNS records
-#%{__make} test
+%{__make} test
 
 %clean
 %{__rm} -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGES README MANIFEST
+%doc Changes MANIFEST README
 %{perl_vendorlib}/*
-%{_mandir}/man1/*
-%{_mandir}/man3/*
-/usr/bin/*
+%{_mandir}/man3/*.3pm*
 
 %changelog
-* Sun Jan 15 2017 Shawn Iverson <shawniverson@gmail.com> - 1.999.1-1
-- Created for eFa https://efa-project.org
+* Sun Jul 26 2020 Shawn Iverson <shawniverson@gmail.com> - 1.5-1
+- Built for eFa https://efa-project.org
