@@ -24,6 +24,7 @@
 #-----------------------------------------------------------------------------#
 %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
+%undefine _disable_source_fetch
 
 Name:           perl-Encoding-FixLatin
 Version:        1.04
@@ -32,8 +33,9 @@ Summary:        takes mixed encoding input and produces UTF-8 output
 License:        perl_5
 Group:          Development/Libraries
 URL:            https://metacpan.org/pod/Encoding::FixLatin
-Source0:        https://cpan.metacpan.org/authors/id/G/GR/GRANTM/Encoding-FixLatin-%{version}.tar.gz
+Source:         https://cpan.metacpan.org/authors/id/G/GR/GRANTM/Encoding-FixLatin-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
