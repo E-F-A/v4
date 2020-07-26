@@ -253,6 +253,14 @@ rpmbuild -ba perl-MaxMind-DB-Reader-XS.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-MaxMind-DB-Reader-XS-*.rpm
 [ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && rpmbuild -ba perl-Business-ISBN-Data.spec
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Business-ISBN-Data-*.rpm
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && rpmbuild -ba perl-Business-ISBN.spec
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Business-ISBN-*.rpm
+[ $? -ne 0 ] && exit 1
 # END: New modules for spamassassin 3.4.4 development builds
 rpmbuild -ba Spamassassin.spec
 [ $? -ne 0 ] && exit 1
