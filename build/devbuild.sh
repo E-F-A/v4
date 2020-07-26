@@ -172,9 +172,10 @@ yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-DB_File-*.rpm
 [ $? -ne 0 ] && exit 1
 [ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Role-Tiny-*.rpm
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Moo.spec
+# Version on CentOS 8 too old
+rpmbuild -ba perl-Moo.spec
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Moo-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Moo-*.rpm
 [ $? -ne 0 ] && exit 1
 # Version on CentOS 8 too old
 rpmbuild -ba perl-Scalar-List-Utils.spec
