@@ -208,6 +208,10 @@ rpmbuild -ba perl-MooX-StrictConstructor.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MooX-StrictConstructor-*.rpm
 [ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && rpmbuild -ba perl-Data-Dumper-Concise.spec
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-Dumper-Concise-*.rpm
+[ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-MaxMind-DB-Metadata.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MaxMind-DB-Metadata-*.rpm
