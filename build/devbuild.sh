@@ -105,7 +105,7 @@ else
     perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-DateTime perl-Test-Warnings \
     perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
     perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \ 
-    libnsl2-devel perl-Test perl-List-SomeUtils perl-Params-Validate
+    libnsl2-devel perl-Test perl-Params-Validate
     [ $? -ne 0 ] && exit 1
 fi
 
@@ -184,9 +184,10 @@ rpmbuild -ba perl-Scalar-List-Utils.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Scalar-List-Utils-*.rpm
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && rpmbuild -ba perl-List-SomeUtils.spec
+# Version on CentOS 8 too old
+rpmbuild -ba perl-List-SomeUtils.spec
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-List-SomeUtils-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-SomeUtils-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-List-SomeUtils-XS.spec
 [ $? -ne 0 ] && exit 1
