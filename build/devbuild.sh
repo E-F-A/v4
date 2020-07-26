@@ -238,7 +238,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MaxMind-DB-Reader-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-GeoIP2-Country-Reader.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-GeoIP2-Country-Reader-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-GeoIP2-Country-Reader-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Math-Int128.spec
 [ $? -ne 0 ] && exit 1
