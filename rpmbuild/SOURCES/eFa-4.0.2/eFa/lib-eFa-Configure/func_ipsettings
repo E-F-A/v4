@@ -3,179 +3,191 @@
 # +---------------------------------------------------+
 func_ip-settings(){
   menu=0
-  ipmenu=1
-  while [ $ipmenu == "1" ]
+  func_getipsettings
+  BOOTPROTO1=$BOOTPROTO
+  IPV6AUTOCONF1=$IPV6AUTOCONF
+  IP41=$IP4
+  NM41=$NM4
+  GW41=$GW4
+  IPV6DNS1=$IPV6DNS
+  IP61=$IP6
+  PF61=$PF6
+  GW61=$GW6
+  RECURSIVEDNS1=$RECURSIVEDNS
+  DNS11=$DNS1
+  DNS21=$DNS2
+  HOSTNAME1=$HOSTNAME
+  DOMAINNAME1=$DOMAINNAME
+  padding="                        "
+  while [ "1" == "1" ]
     do
-      func_getipsettings
       func_echo-header
-      echo -e "Current IP settings for $INTERFACE are:"
-      echo -e " 1) BOOTPROTO            :  $BOOTPROTO"
-      echo -e " 2) IPV6_AUTOCONF        :  $IPV6AUTOCONF"
-      echo -e " 3) IP                   :  $IP4"
-      echo -e " 4) Netmask              :  $NM4"
-      echo -e " 5) Gateway              :  $GW4"
-      echo -e " 6) Use IPv6 DNS         :  $IPV6DNS"
-      echo -e " 7) IPv6 IP              :  $IP6"
-      echo -e " 8) IPv6 Prefix          :  $PF6"
-      echo -e " 9) IPv6 Gateway         :  $GW6"
-      echo -e "10) DNS Recursion        :  $RECURSIVEDNS"
-      echo -e "11) Primary DNS          :  $DNS1"
-      echo -e "12) Secondary DNS        :  $DNS2"
-      echo -e "13) Hostname             :  $HOSTNAME"
-      echo -e "14) Domain Name          :  $DOMAINNAME"
+      echo -e "Current and Proposed IP settings for $INTERFACE are:"
+      echo -e "         SETTING         :        CURRENT             :         PROPOSED"
+      echo -e "                         :                            :"
+      echo -e " 1) BOOTPROTO            :  $BOOTPROTO1 ${padding:${#BOOTPROTO1}} :  $BOOTPROTO"
+      echo -e " 2) IPV6_AUTOCONF        :  $IPV6AUTOCONF1 ${padding:${#IPV6AUTOCONF1}} :  $IPV6AUTOCONF"
+      echo -e " 3) IP                   :  $IP41 ${padding:${#IP41}} :  $IP4"
+      echo -e " 4) Netmask              :  $NM41 ${padding:${#NM41}} :  $NM4"
+      echo -e " 5) Gateway              :  $GW41 ${padding:${#GW41}} :  $GW4"
+      echo -e " 6) Use IPv6 DNS         :  $IPV6DNS1 ${padding:${#IPV6DNS1}} :  $IPV6DNS"
+      echo -e " 7) IPv6 IP              :  $IP61 ${padding:${#IP61}} :  $IP6"
+      echo -e " 8) IPv6 Prefix          :  $PF61 ${padding:${#PF61}} :  $PF6"
+      echo -e " 9) IPv6 Gateway         :  $GW61 ${padding:${#GW61}} :  $GW6"
+      echo -e "10) DNS Recursion        :  $RECURSIVEDNS1 ${padding:${#RECURSIVEDNS1}} :  $RECURSIVEDNS"
+      echo -e "11) Primary DNS          :  $DNS11 ${padding:${#DNS11}} :  $DNS1"
+      echo -e "12) Secondary DNS        :  $DNS21 ${padding:${#DNS21}} :  $DNS2"
+      echo -e "13) Hostname             :  $HOSTNAME1 ${padding:${#HOSTNAME1}} :  $HOSTNAME"
+      echo -e "14) Domain Name          :  $DOMAINNAME1 ${padding:${#DOMAINNAME1}} :  $DOMAINNAME"
       echo -e ""
+      echo -e "y) Make changes"
+      echo -e "c) Cancel"
       echo -e "e) Return to main menu"
       echo -e ""
-      echo -e "$red Note: Network will reset when changing values.$clean"
+      echo -e "$red Note: Network will reset when committing values (y).$clean"
       echo -e ""
       echo -e "Enter setting you want to change"
       echo -e -n "$green[eFa]$clean : "
       local choice
       read choice
       case $choice in
-                1)  ipmenu=0
-                    echo ""
+                1)  echo ""
                     read -p "Do you want to use DHCP? (y/N): " ASKPROTO
                     if [[ -z $ASKPROTO || $ASKPROTO =~ ^[nN]$ ]]; then
                        BOOTPROTO="none"
-                       func_setipsettings
-                       menu=1
                     elif [[ $ASKPROTO =~ ^[yY]$ ]]; then
                        BOOTPROTO="dhcp"
-                       func_setipsettings
-                       menu=1
                     else
-                      echo "ERROR invalid choice" && pause && menu=1
+                      echo "ERROR invalid choice" && pause
                     fi
                     ;;
-                2)  ipmenu=0
-                    echo ""
+                2)  echo ""
                     read -p "Do you want to use IPV6 Auto Configuration? (y/N): " ASKAUTO
                     if [[ -z $ASKAUTO || $ASKAUTO =~ ^[nN]$ ]]; then
                        IPV6AUTOCONF="no"
-                       func_setipsettings
-                       menu=1
                     elif [[ $ASKAUTO =~ ^[yY]$ ]]; then
                        IPV6AUTOCONF="yes"
-                       func_setipsettings
-                       menu=1
                     else
-                      echo "ERROR invalid choice" && pause && menu=1
+                      echo "ERROR invalid choice" && pause
                     fi
                     ;;
-                3)  ipmenu=0
-                    echo ""
-                    read -p "Enter your new IP: " IP4
-                    checkip4 $IP4
-                    if [[ -n "$IP4" && $? -eq 1 ]]; then echo "ERROR invalid ip address" && pause && menu=1; else
-                      func_setipsettings
-                      menu=1
+                3)  echo ""
+                    read -p "Enter your new IP: " ASKIP4
+                    checkip4 $ASKIP4
+                    if [[ -n "$ASKIP4" && $? -eq 1 ]]; then echo "ERROR invalid ip address" && pause; else
+                      IP4=$ASKIP4
                     fi
                     ;;
-                4)  ipmenu=0
-                    echo ""
-                    read -p "Enter your new netmask: " NM4
-                    checkip4 $NM4
-                    if [[ -n "$NM4" && $? -eq 1 ]]; then echo "ERROR invalid netmask" && pause && menu=1; else
-                      func_setipsettings
-                      menu=1
+                4)  echo ""
+                    read -p "Enter your new netmask: " ASKNM4
+                    checkip4 $ASKNM4
+                    if [[ -n "$ASKNM4" && $? -eq 1 ]]; then echo "ERROR invalid netmask" && pause; else
+                      NM4=$ASKNM4
                     fi
                     ;;
-                5)  ipmenu=0
-                    echo ""
-                    read -p "Enter your new gateway: " GW4
-                    checkip4 $GW4
-                    if [[ -n "$GW4" && $? -eq 1 ]]; then echo "ERROR empty value" && pause && menu=1; else
-                      func_setipsettings
-                      menu=1
+                5)  echo ""
+                    read -p "Enter your new gateway: " ASKGW4
+                    checkip4 $ASKGW4
+                    if [[ -n "$ASKGW4" && $? -eq 1 ]]; then echo "ERROR empty value" && pause; else
+                      GW4=$ASKGW4
                     fi
                     ;;
-                6)  ipmenu=0
-                    read -p "use IPv6 dns? (Y/n): " ASKIPV6DNS
+                6)  read -p "use IPv6 dns? (Y/n): " ASKIPV6DNS
                     if [[ -z $ASKIPV6DNS || $ASKIPV6DNS =~ ^[yY]$ ]]; then
                        IPV6DNS="yes"
-                       func_setipsettings
-                       menu=1
                     elif [[ $ASKIPV6DNS =~ ^[nN]$ ]]; then
                        IPV6DNS="no"
-                       func_setipsettings
-                       menu=1
                     else
                       echo "ERROR invalid choice" && pause && menu=1
                     fi
                     ;;
-                7)  ipmenu=0
-                    echo ""
-                    read -p "Enter your new IPv6 IP: " IP6
-                    checkip6 $IP6
-                    if [[ -n "$IP6" && $? -eq 1 ]]; then echo "ERROR invalid ip address" && pause && menu=1; else
-                      func_setipsettings
-                      menu=1
+                7)  echo ""
+                    read -p "Enter your new IPv6 IP: " ASKIP6
+                    checkip6 $ASKIP6
+                    if [[ -n "$ASKIP6" && $? -eq 1 ]]; then echo "ERROR invalid ip address" && pause; else
+                      IP6=$ASKIP6
                     fi
                     ;;
-                8)  ipmenu=0
-                    echo ""
-                    read -p "Enter your new IPv6 Prefix: " PF6
-                    if [[ -n "$PF6" && !($PF6 =~ ^[0-9]{1,3}$ && $PF6 -ge 1 && $PF6 -le 128 && $(( $PF6 & ($PF6 - 1) )) -eq 0) ]]; then echo "ERROR invalid ipv6 prefix" && pause && menu=1; else
-                      func_setipsettings
-                      menu=1
+                8)  echo ""
+                    read -p "Enter your new IPv6 Prefix: " ASKPF6
+                    if [[ -z "$ASKPF6" || ($ASKPF6 =~ ^[0-9]{1,3}$ && $ASKPF6 -ge 1 && $ASKPF6 -le 128 && $(( $ASKPF6 % 2 )) -eq 0) ]]; then 
+                      PF6=$ASKPF6
+                    else
+                      echo "ERROR invalid ipv6 prefix" && pause
                     fi
                     ;;
-                9)  ipmenu=0
-                    echo ""
-                    read -p "Enter your new IPv6 Gateway: " GW6
-                    checkip6 $GW6
-                    if [[ -n "$GW6" && $? -eq 1 ]]; then echo "ERROR invalid gateway address" && pause && menu=1; else
-                      func_setipsettings
-                      menu=1
+                9)  echo ""
+                    read -p "Enter your new IPv6 Gateway: " ASKGW6
+                    checkip6 $ASKGW6
+                    if [[ -n "$ASKGW6" && $? -eq 1 ]]; then echo "ERROR invalid gateway address" && pause; else
+                      GW6=$ASKGW6
                     fi
                     ;;
-               10)  ipmenu=0
-                    func_ask-recursion
-                    menu=1
+               10)  echo ""
+                    read -p "Enable full recursive DNS? (Y/n): " ASKRECURSIVEDNS
+                    if [[ -z $ASKRECURSIVEDNS || $ASKRECURSIVEDNS =~ ^[yY]$ ]]; then
+                       RECURSIVEDNS == "ENABLED"
+                       DNS1=
+                       DNS2=
+                    elif [[ $ASKRECURSIVEDNS =~ ^[nN]$ ]]; then
+                       RECURSIVEDNS == "DISABLED"
+                       echo -e "Recursion will be DISABLED.  Please set your DNS entries."
+                    else
+                      echo "ERROR invalid choice" && pause && menu=1
+                    fi
                     ;;
-               11)  ipmenu=0
-                    echo ""
+               11)  echo ""
                     if [ "$RECURSIVEDNS" == "ENABLED" ]; then 
                       echo "ERROR: DNS Recursion is enabled.  Disable recursion to set DNS"
-                      pause && menu=1
+                      pause
                     else
-                      read -p "Enter your new primary DNS: " DNS1
-                      if [ -z "$DNS1" ]; then echo "ERROR empty value" && pause && menu=1; else
-                        func_setipsettings
-                        menu=1
+                      read -p "Enter your new primary DNS: " ASKDNS1
+                      if [ -z "$ASKDNS1" ]; then echo "ERROR empty value" && pause; else
+                        DNS1=$ASKDNS1
                       fi
                     fi
                     ;;
-               12)  ipmenu=0
-                    echo ""
+               12)  echo ""
                     if [ "$RECURSIVEDNS" == "ENABLED" ]; then 
                       echo "ERROR: DNS Recursion is enabled.  Disable recursion to set DNS"
-                      pause && menu=1
+                      pause
                     else
-                      read -p "Enter your new secondary DNS: " DNS2
-                      if [ -z "$DNS2" ]; then echo "ERROR empty value" && pause && menu=1; else
-                        func_setipsettings
-                        menu=1
+                      read -p "Enter your new secondary DNS: " ASKDNS2
+                      if [ -z "$ASKDNS2" ]; then echo "ERROR empty value" && pause; else
+                        DNS2=$ASKDNS2
                       fi
                     fi
                     ;;
-                13) ipmenu=0
-                    echo ""
-                    read -p "Enter your new HOSTNAME: " HOSTNAME
-                    if [ -z "$HOSTNAME" ]; then echo "ERROR empty value" && pause && menu=1; else
-                      func_sethostname
-                      menu=1
+                13) echo ""
+                    read -p "Enter your new HOSTNAME: " ASKHOSTNAME
+                    if [ -z "$ASKHOSTNAME" ]; then echo "ERROR empty value" && pause; else
+                      HOSTNAME=$ASKHOSTNAME
                     fi
                     ;;
-                14) ipmenu=0
-                    echo ""
-                    read -p "Enter your new DOMAIN NAME: " DOMAINNAME
-                    if [ -z "$DOMAINNAME" ]; then echo "ERROR empty value" && pause && menu=1; else
-                      func_sethostname
-                      menu=1
+                14) echo ""
+                    read -p "Enter your new DOMAIN NAME: " ASKDOMAINNAME
+                    if [ -z "$ASKDOMAINNAME" ]; then echo "ERROR empty value" && pause; else
+                      DOMAINNAME=$ASKDOMAINNAME
                     fi
                     ;;
+                y)  func_setipsettings
+                    func_getipsettings
+                    BOOTPROTO1=$BOOTPROTO
+                    IPV6AUTOCONF1=$IPV6AUTOCONF
+                    IP41=$IP4
+                    NM41=$NM4
+                    GW41=$GW4
+                    IPV6DNS1=$IPV6DNS
+                    IP61=$IP6
+                    PF61=$PF6
+                    GW61=$GW6
+                    RECURSIVEDNS1=$RECURSIVEDNS
+                    DNS11=$DNS1
+                    DNS21=$DNS2
+                    HOSTNAME1=$HOSTNAME
+                    DOMAINNAME1=$DOMAINNAME
+                    ;;
+                c) menu=1 && return ;;
                 e) menu=1 && return ;;
                 *) echo -e "Error \"$choice\" is not an option..." && pause
             esac

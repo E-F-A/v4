@@ -44,7 +44,9 @@ func_setipsettings(){
     [[ -n $DNS1 ]] && echo "  forward-addr: $DNS1" >> /etc/unbound/conf.d/forwarders.conf
     [[ -n $DNS2 ]] && echo "  forward-addr: $DNS2" >> /etc/unbound/conf.d/forwarders.conf
   else
-    rm -f /etc/unbound/conf.d/forwarders.conf
+    echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
+    echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
+    echo "  forward-first: yes" >> /etc/unbound/conf.d/forwarders.conf
   fi
 
   # Set ip settings
