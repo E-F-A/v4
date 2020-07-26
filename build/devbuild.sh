@@ -282,7 +282,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sendmail-PMilter-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba MailWatch.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailWatch-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/MailWatch-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba sqlgreywebinterface.spec
 [ $? -ne 0 ] && exit 1
