@@ -34,6 +34,7 @@ Group:          Development/Libraries
 URL:            https://metacpan.org/pod/List::AllUtils
 Source0:        https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/List-AllUtils-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires:  perl(Test::More) => 0.98
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
