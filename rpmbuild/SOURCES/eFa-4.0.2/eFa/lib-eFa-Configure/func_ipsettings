@@ -131,9 +131,9 @@ func_ip-settings(){
                        DNS2=
                     elif [[ $ASKRECURSIVEDNS =~ ^[nN]$ ]]; then
                        RECURSIVEDNS == "DISABLED"
-                       echo -e "Recursion will be DISABLED.  Please set your DNS entries."
+                       echo -e "Recursion will be DISABLED.  Please set your DNS entries." && pause
                     else
-                      echo "ERROR invalid choice" && pause && menu=1
+                      echo "ERROR invalid choice" && pause
                     fi
                     ;;
                11)  echo ""
