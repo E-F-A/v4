@@ -34,6 +34,7 @@ Group:          Development/Libraries
 URL:            https://metacpan.org/pod/Data::Printer
 Source0:        https://cpan.metacpan.org/authors/id/G/GA/GARU/Data-Printer-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
 Requires:       perl-Carp >= 1.26
