@@ -34,6 +34,7 @@ Source:        %{name}-%{version}.tar.gz
 Source2:       favicon.ico
 Source3:       eFa4logo-79px.png
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildArch:     noarch
 AutoReqProv:   no
 
 %description
@@ -193,7 +194,6 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %attr(0644, root, root) %{_sysconfdir}/cron.d/msre_reload
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/mailwatch
 %attr(0755, root, root) %{_sysconfdir}/cron.monthly/mailwatch
-#%attr(0755, root, root) %{_sysconfdir}/cron.hourly/mailwatch_relay.sh
 %attr(0644, root, root) %{_unitdir}/postfix_relay.service
 %attr(0644, root, root) %{_unitdir}/milter_relay.service
 %{_datarootdir}/MailScanner/perl/custom/MailWatchConf.pm
