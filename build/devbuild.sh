@@ -197,13 +197,13 @@ rpmbuild -ba perl-List-AllUtils.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-AllUtils-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-strictures.spec
+[ $RELEASE -eq 7 ] && rpmbuild -ba perl-strictures.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-strictures-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-strictures-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-MooX-StrictConstructor.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-MooX-StrictConstructor-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MooX-StrictConstructor-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-MaxMind-DB-Metadata.spec
 [ $? -ne 0 ] && exit 1
