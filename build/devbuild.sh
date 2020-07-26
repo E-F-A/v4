@@ -274,11 +274,11 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/spamassassin-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Encoding-FixLatin.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Encoding-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Encoding-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Sendmail-PMilter.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sendmail-PMilter-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sendmail-PMilter-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba MailWatch.spec
 [ $? -ne 0 ] && exit 1
