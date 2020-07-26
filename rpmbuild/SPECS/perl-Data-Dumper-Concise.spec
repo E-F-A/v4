@@ -34,7 +34,7 @@ Group:          Development/Libraries
 URL:            https://metacpan.org/pod/Data::Dumper::Concise
 Source0:        https://cpan.metacpan.org/authors/id/E/ET/ETHER/Data-Dumper-Concise-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuldArch:       noarch
+BuildArch:       noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
