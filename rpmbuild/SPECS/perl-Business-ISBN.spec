@@ -32,7 +32,7 @@ Summary:        work with International Standard Book Numbers
 License:        artistic_2
 Group:          Development/Libraries
 URL:            https://metacpan.org/pod/Business::ISBN
-Source0:        https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISBN-%{version}.tar.gz
+Source:         https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISBN-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
