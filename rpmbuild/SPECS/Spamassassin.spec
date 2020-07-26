@@ -112,7 +112,7 @@ Requires: perl(Digest::HMAC) >= 1.03
 Requires: perl(Digest::MD5) >= 2.52
 Requires: perl(Digest::SHA) >= 5.85
 Requires: perl(ExtUtils::Constant) >= 0.23
-Requires: perl-libnet >= 1:3.08
+Requires: perl-libnet >= 3.08
 Requires: perl(Net::DNS::Resolver::Programmable)
 Requires: perl(Geo::IP) >= 1.43
 Requires: perl(Socket) >= 2.010
