@@ -191,11 +191,11 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-List-SomeUtils-XS-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-List-UtilsBy.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-List-UtilsBy-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-UtilsBy-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-List-AllUtils.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-List-AllUtils-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-AllUtils-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-strictures.spec
 [ $? -ne 0 ] && exit 1
