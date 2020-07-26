@@ -228,9 +228,9 @@ rpmbuild -ba perl-Data-Printer.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-Printer-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Data-Validate-IP.spec
+[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Data-Validate-IP.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Data-Validate-IP-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Data-Validate-IP-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-MaxMind-DB-Reader.spec
 [ $? -ne 0 ] && exit 1
