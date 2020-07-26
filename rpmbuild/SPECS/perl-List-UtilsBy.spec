@@ -34,6 +34,7 @@ Group:          Development/Libraries
 URL:            https://metacpan.org/pod/List::UtilsBy
 Source0:        https://cpan.metacpan.org/authors/id/P/PE/PEVANS/List-UtilsBy-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
 BuildRequires:  perl(Test::More) >= 0.98
