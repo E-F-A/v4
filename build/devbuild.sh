@@ -105,7 +105,7 @@ else
     perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-DateTime perl-Test-Warnings \
     perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
     perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \ 
-    libnsl2-devel perl-Test perl-List-SomeUtils
+    libnsl2-devel perl-Test perl-List-SomeUtils perl-Params-Validate
     [ $? -ne 0 ] && exit 1
 fi
 
@@ -234,7 +234,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-Printer-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-MaxMind-DB-Reader.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-MaxMind-DB-Reader-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MaxMind-DB-Reader-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-GeoIP2-Country-Reader.spec
 [ $? -ne 0 ] && exit 1
