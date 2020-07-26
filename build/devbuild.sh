@@ -247,7 +247,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Math-Int128-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Net-Works-Network.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Net-Works-Network-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-Works-Network-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-MaxMind-DB-Reader-XS.spec
 [ $? -ne 0 ] && exit 1
