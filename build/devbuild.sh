@@ -105,7 +105,7 @@ else
     perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-DateTime perl-Test-Warnings \
     perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
     perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \ 
-    libnsl2-devel perl-Test
+    libnsl2-devel perl-Test perl-List-SomeUtils
     [ $? -ne 0 ] && exit 1
 fi
 
@@ -158,31 +158,32 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-IP-Country-DB_File.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-IP-Country-DB_File-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-DB_File-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Sub-Quote.spec
+[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Sub-Quote.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sub-Quote-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Sub-Quote-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Module-Runtime.spec
+[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Module-Runtime.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Module-Runtime-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Module-Runtime-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Role-Tiny.spec
+[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Role-Tiny.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Role-Tiny-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Role-Tiny-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Moo.spec
+[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Moo.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Moo-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Moo-*.rpm
 [ $? -ne 0 ] && exit 1
+# Version on CentOS 8 too old
 rpmbuild -ba perl-Scalar-List-Utils.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Scalar-List-Utils-*.rpm
 [ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-List-SomeUtils.spec
+[ $RELEASE -eq 7 ] && rpmbuild -ba perl-List-SomeUtils.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-List-SomeUtils-*.rpm
+[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-List-SomeUtils-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-List-SomeUtils-XS.spec
 [ $? -ne 0 ] && exit 1

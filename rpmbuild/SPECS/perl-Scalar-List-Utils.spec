@@ -28,6 +28,7 @@
 Name:           perl-Scalar-List-Utils
 Version:        1.53
 Release:        1.eFa%{?dist}
+Epoch:          3
 Summary:        A selection of utility subroutines for subs and CODE references
 License:        perl_5
 Group:          Development/Libraries
