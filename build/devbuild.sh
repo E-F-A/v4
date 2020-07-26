@@ -218,7 +218,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MaxMind-DB-Metadata-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Test-Bits.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Test-Bits-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Test-Bits-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-Data-IEEE754.spec
 [ $? -ne 0 ] && exit 1
