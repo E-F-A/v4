@@ -34,6 +34,7 @@ Group:          Development/Libraries
 URL:            https://metacpan.org/pod/IP::Country::DB_File
 Source0:        https://cpan.metacpan.org/authors/id/N/NW/NWELLNHOF/IP-Country-DB_File-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 BuildRequires:  perl-ExtUtils-MakeMaker >= 6.68
 BuildRequires:  perl-Math-Int64 >= 0.52
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
