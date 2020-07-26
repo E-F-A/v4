@@ -24,6 +24,7 @@
 #-----------------------------------------------------------------------------#
 %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
+%undefine _disable_source_fetch
 
 Name:           perl-Sendmail-PMilter
 Version:        1.00
@@ -32,8 +33,9 @@ Summary:        Mail Filtering API implementing the Sendmail milter protocol
 License:        perl_5
 Group:          Development/Libraries
 URL:            https://metacpan.org/pod/Sendmail::PMilter
-Source0:        https://cpan.metacpan.org/authors/id/A/AV/AVAR/Sendmail-PMilter-%{version}.tar.gz
+Source:         https://cpan.metacpan.org/authors/id/A/AV/AVAR/Sendmail-PMilter-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  perl(Test::More)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
