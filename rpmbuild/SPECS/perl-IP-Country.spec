@@ -34,6 +34,8 @@ Group:          Development/Libraries
 URL:            https://metacpan.org/pod/IP::Country
 Source0:        https://cpan.metacpan.org/authors/id/N/NW/NWETTERS/IP-Country-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
+BuildRequires:  perl(Test)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Requires:       perl(Geography::Countries)
 Requires:       perl(Socket)
