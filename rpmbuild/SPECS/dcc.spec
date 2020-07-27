@@ -32,7 +32,6 @@ URL:       https://www.rhyolite.com/dcc
 License:   Copyright (c) 2014 by Rhyolite Software, LLC
 Source0:   dcc-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch: noarch
 Requires: postfix_eFa >= 3.1.3
 Requires: spamassassin >= 3.4.1
 Requires: MailScanner >= 5.0.4-3
