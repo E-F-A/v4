@@ -29,9 +29,13 @@ Source0:   eFa-base-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: php72u-cli >= 7.2.13-2
 BuildRequires: wget >= 1.14-18
-BuildRequires: php72u-json >= 7.2.21-1
-BuildRequires: php72u-xml >= 7.2.21-1
-BuildRequires: php72u-pdo >= 7.2.21-1
+%{?el7:BuildRequires: php72u-json >= 7.2.21-1}
+%{?el7:BuildRequires: php72u-xml >= 7.2.21-1}
+%{?el7:BuildRequires: php72u-pdo >= 7.2.21-1}
+%{?el8:BuildRequires: php-json >= 7.2.21-1}
+%{?el8:BuildRequires: php-xml >= 7.2.21-1}
+%{?el8:BuildRequires: php-pdo >= 7.2.21-1}
+
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
