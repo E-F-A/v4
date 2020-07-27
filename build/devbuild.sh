@@ -286,7 +286,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/noarch/MailWatch-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba sqlgreywebinterface.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/sqlgreywebinterface-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/sqlgreywebinterface-*.rpm
 [ $? -ne 0 ] && exit 1
 cd $GITPATH/rpmbuild/SOURCES
 [ $? -ne 0 ] && exit 1
