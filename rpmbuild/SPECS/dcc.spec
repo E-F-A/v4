@@ -17,6 +17,9 @@
 # along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
+# dcc fails to generate debuginfo packages on CentOS 8
+%global debug_package %{nil} 
+
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
