@@ -184,6 +184,16 @@ sed -i "/^    echo mailwatch_version/ a\    echo ' running on ' . efa_version();
 
 sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php
 
+%if 0%{?rhel} = 7
+chgrp php-fpm %{_localstatedir}/www/html/mailscanner/images
+chgrp php-fpm %{_localstatedir}/www/html/mailscanner/temp
+%endif
+
+%if 0%{?rhel} = 8
+chgrp apache %{_localstatedir}/www/html/mailscanner/images
+chgrp apache %{_localstatedir}/www/html/mailscanner/temp
+%endif
+
 %clean
 %{__rm} -rf %{buildroot}
 
@@ -211,8 +221,8 @@ sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        
 %{_bindir}/mailwatch/tools/MailScanner_config/*
 %attr(0755, root, root) %{_bindir}/mailwatch/tools/upgrade.php
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
-%attr(0775, root, php-fpm) %{_localstatedir}/www/html/mailscanner/images
-%attr(0775, root, php-fpm) %{_localstatedir}/www/html/mailscanner/temp
+%attr(0775, root, root) %{_localstatedir}/www/html/mailscanner/images
+%attr(0775, root, root) %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/favicon.ico
 %{_localstatedir}/www/html/mailscanner/.htaccess
 %{_localstatedir}/www/html/mailscanner/auto-release.php
