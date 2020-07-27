@@ -184,12 +184,12 @@ sed -i "/^    echo mailwatch_version/ a\    echo ' running on ' . efa_version();
 
 sed -i "/^        \$nav\['docs.php'\] =/{N;s/$/\n        \/\/Begin eFa\n        if \(\$_SESSION\['user_type'\] == 'A' \&\& SHOW_GREYLIST == true\) \{\n            \$nav\['grey.php'\] = \"greylist\";\n        \}\n        \/\/End eFa/}" /var/www/html/mailscanner/functions.php
 
-%if 0%{?rhel} = 7
+%if 0%{?rhel} == 7
 chgrp php-fpm %{_localstatedir}/www/html/mailscanner/images
 chgrp php-fpm %{_localstatedir}/www/html/mailscanner/temp
 %endif
 
-%if 0%{?rhel} = 8
+%if 0%{?rhel} == 8
 chgrp apache %{_localstatedir}/www/html/mailscanner/images
 chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %endif
