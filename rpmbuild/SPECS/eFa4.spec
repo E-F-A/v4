@@ -33,6 +33,7 @@ URL:       https://efa-project.org
 License:   GNU GPL v3+
 Source0:   eFa-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch: noarch
 # Control dependencies here as updates are released
 # Use version and release numbers required for each update
 # to maintain strict version control and dependency resolution

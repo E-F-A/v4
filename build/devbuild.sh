@@ -310,9 +310,9 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba eFa4-base.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-base-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-base-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba eFa4.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/x86_64/eFa-4*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-4*.rpm
 [ $? -ne 0 ] && exit 1
