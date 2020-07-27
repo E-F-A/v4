@@ -32,6 +32,7 @@ Group:         Applications/Utilities
 URL:           https://github.com/flok99/sgwi
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildArch:     noarch
 Requires:      httpd >= 2.4.6
 Requires:      php72u >= 7.2.5-2
 
