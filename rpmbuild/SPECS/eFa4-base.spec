@@ -27,6 +27,7 @@ URL:       https://efa-project.org
 License:   GNU GPL v3+
 Source0:   eFa-base-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch: noarch
 %{?el7:BuildRequires: php72u-cli >= 7.2.13-2}
 %{?el8:BuildRequires: php-cli >= 7.2.13-2}
 BuildRequires: wget >= 1.14-18
