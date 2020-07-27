@@ -306,7 +306,7 @@ cd $GITPATH/rpmbuild/SPECS
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba dcc.spec
 [ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/dcc-*.rpm
+yum -y install $GITPATH/rpmbuild/RPMS/x86_64/dcc-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba eFa4-base.spec
 [ $? -ne 0 ] && exit 1
