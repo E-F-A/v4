@@ -24,6 +24,7 @@
 #-----------------------------------------------------------------------------#
 %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)
 %define perl_vendorarch %(eval "`%{__perl} -V:installvendorarch`"; echo $installvendorarch)
+%undefine _disable_source_fetch
 
 Name:           perl-Test-Bits
 Version:        0.02

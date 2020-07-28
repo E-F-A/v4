@@ -26,6 +26,7 @@
 %define real_name Mail-SpamAssassin
 %{!?perl_vendorlib: %define perl_vendorlib %(eval "`%{__perl} -V:installvendorlib`"; echo $installvendorlib)}
 %global saversion 3.004004
+%undefine _disable_source_fetch
 
 Summary: Spam filter for email which can be invoked from mail delivery agents
 Name:    spamassassin
@@ -34,7 +35,7 @@ Release: 2.eFa%{?dist}
 License: ASL 2.0
 Group:   Applications/Internet
 URL:     http://spamassassin.apache.org/
-Source0: http://search.cpan.org/CPAN/authors/id/K/KM/KMCGRAIL/SpamAssassin/Mail-SpamAssassin-%{version}.tar.gz
+Source:  http://search.cpan.org/CPAN/authors/id/K/KM/KMCGRAIL/SpamAssassin/Mail-SpamAssassin-%{version}.tar.gz
 Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Buildroot: %{_tmppath}/%{name}-root
 Requires: /sbin/chkconfig /sbin/service
