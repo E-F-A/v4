@@ -46,34 +46,24 @@ Requires:  clamav-update >= 0.101.0-1
     # clamav-update                              # epel    # MailScanner
 Requires:  clamd >= 0.101.0-1
     # clamd			                             # epel    # MailScanner
-Requires:  mariadb101u-server >= 1:10.1.35-1
+%{?el7:Requires:  mariadb101u-server >= 1:10.1.35-1}
     # mariadb101u-server                         # IUS     # postfix, mailwatch
-    # #     mariadb101u-common                   #         #
-    # #     perl-Compress-Raw-Bzip2              #         #
-    # #     perl-Compress-Raw-Zlib               #         #
-    # #     perl-DBI                             #         #
-    # #     perl-Data-Dumper                     #         #
-    # #     perl-IO-Compress                     #         #
-    # #     perl-Net-Daemon                      #         #
-    # #     perl-PlRPC                           #         #
-    # #     mariadb101u-client                   #         #
-    # #     mariadb101u-shared                   #         #
-    # #     galera                               #         #
-    # #     jemalloc                             #         #
+%{?el8:Requires:  mariadb-server >= 1:10.1.35-1}
+    # mariadb-server                             # base    # postfix, mailwatch
 Requires:  perl-DBD-MySQL >= 4.023-6
     # perl-DBD-mysql                             # base    # spamassassin
-Requires:  php72u >= 7.2.13-2
+%{?el7:Requires:  php72u >= 7.2.13-2}
     # php72u                                     # IUS     # mailwatch, frontend
-    # #     libzip                               #         #
-    # #     php72u-common                        #         #
+%{?el8:Requires:  php >= 7.2.13-2}
+    # php                                        # base    # mailwatch, frontend
 Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
 Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # screen                                     # base    # basic system tools
-Requires:  php72u-gd >= 7.2.13-2
+%{?el7:Requires:  php72u-gd >= 7.2.13-2}
     # php72u-gd                                  # IUS     # mailwatch, frontend
-    # #     libXpm                               #         #
-    # #     t11ib                                #         #
+%{?el8:Requires:  php-gd >= 7.2.13-2}
+    # php-gd                                     # base    # mailwatch, frontend
 Requires:  php72u-mbstring >= 7.2.13-2
     # php72u-mbstring                            # IUS     # mailwatch, frontend
 Requires:  php72u-mysqlnd >= 7.2.13-2

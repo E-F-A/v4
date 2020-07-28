@@ -23,6 +23,7 @@
 # yum -y install
 #-----------------------------------------------------------------------------#
 %define real_name libnet
+%undefine _disable_source_fetch
 
 Summary:       Collection of Perl modules which provide Internet protocols
 Name:          perl-libnet

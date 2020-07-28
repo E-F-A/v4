@@ -41,9 +41,13 @@ BuildRequires:  perl(Test::More)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
-Sendmail::PMilter is a mail filtering API implementing the Sendmail milter protocol in pure Perl. This allows Sendmail servers (and perhaps other MTAs implementing milter) to filter and modify mail in transit during the SMTP connection, all in Perl.
+Sendmail::PMilter is a mail filtering API implementing the Sendmail milter protocol in pure Perl.
+This allows Sendmail servers (and perhaps other MTAs implementing milter) to filter and modify
+mail in transit during the SMTP connection, all in Perl.
 
-It should be noted that PMilter 0.90 and later is NOT compatible with scripts written for PMilter 0.5 and earlier. The API has been reworked significantly, and the enhanced APIs and rule logic provided by PMilter 0.5 and earlier has been factored out for inclusion in a separate package to be called Mail::Milter.
+It should be noted that PMilter 0.90 and later is NOT compatible with scripts written for PMilter 0.5 and earlier.
+The API has been reworked significantly, and the enhanced APIs and rule logic provided by PMilter 0.5 and earlier
+has been factored out for inclusion in a separate package to be called Mail::Milter.
 
 %prep
 %setup -q -n Sendmail-PMilter-%{version}
