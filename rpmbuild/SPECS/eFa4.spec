@@ -39,9 +39,6 @@ BuildArch: noarch
 # to maintain strict version control and dependency resolution
 Requires:  clamav >= 0.101.0-1
     # clamav                                     # epel    # MailScanner
-    # #     clamav-data                          #         #
-    # #     clamav-filesystem                    #         #
-    # #     clamav-lib                           #         #
 Requires:  clamav-update >= 0.101.0-1
     # clamav-update                              # epel    # MailScanner
 Requires:  clamd >= 0.101.0-1
@@ -64,34 +61,26 @@ Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # php72u-gd                                  # IUS     # mailwatch, frontend
 %{?el8:Requires:  php-gd >= 7.2.13-2}
     # php-gd                                     # base    # mailwatch, frontend
-Requires:  php72u-mbstring >= 7.2.13-2
+%{?el7:Requires:  php72u-mbstring >= 7.2.13-2}
     # php72u-mbstring                            # IUS     # mailwatch, frontend
-Requires:  php72u-mysqlnd >= 7.2.13-2
+%{?el8:Requires:  php-mbstring >= 7.2.13-2}
+    # php-mbstring                               # base    # mailwatch, frontend
+%{?el7:Requires:  php72u-mysqlnd >= 7.2.13-2}
     # php72u-mysqlnd                             # IUS     # mailwatch, frontend
-    # #     php72u-pdo                           #         #
-Requires:  php72u-ldap >= 7.2.13-2
+%{?el8:Requires:  php-mysqlnd >= 7.2.13-2}
+    # php-mysqlnd                                # base    # mailwatch, frontend
+%{?el7:Requires:  php72u-ldap >= 7.2.13-2}
     # php72u-ldap                                # IUS     # mailwatch, frontend
+%{?el8:Requires:  php-ldap >= 7.2.13-2}
+    # php-ldap                                   # base    # mailwatch, frontend
 Requires:  httpd >= 2.4.6-67
     # httpd                                      # base    # mailwatch, frontend
-    # #     apr                                  #         #
-    # #     apr-util                             #         #
-    # #     httpd-tools                          #         #
-    # #     mailcap                              #         #
 Requires:  cyrus-sasl-md5 >= 2.1.26-21
     # cyrus-sasl-md5                             # base    # postfix
 Requires:  mod_ssl >= 2.4.6-88
     # mod_ssl                                    # base    # httpd
 Requires:  openssl-devel >= 1.0.2k-16
     # openssl-devel                              # base    # MailScanner
-    # #     keyutils-libs-devel                  #         #
-    # #     libcom_err-devel                     #         #
-    # #     libselinux-devel                     #         #
-    # #     libsepol-devel                       #         #
-    # #     libverto-devel                       #         #
-    # #     pcre-devel                           #         #
-    # #     zlib-devel                           #         #
-    # #     krb5-devel                           # updates #
-    # #     libkadm5                             #         #
 Requires:  patch >= 2.7.1-10
     # patch                                      # base    # MailScanner
 Requires:  pyzor >= 0.5.0-10
@@ -102,135 +91,52 @@ Requires:  tnef >= 1.4.15-1
     # tnef                                       # epel    # MailScanner
 Requires:  gcc >= 4.8.5-36
     # gcc                                        # base    # MailScanner
-    # #     cpp                                  #         #
-    # #     libmpc                               #         #
-    # #     mpfr                                 #         #
 Requires:  perl-Archive-Tar >= 1.92-2
     # perl-Archive-Tar                           # base    # MailScanner
-    # #     perl-Compress-Raw-Bzip2              #         #
-    # #     perl-Compress-Raw-Zlib               #         #
-    # #     perl-Data-Dumper                     #         #
-    # #     perl-IO-Compress                     #         #
-    # #     perl-IO-Zlib                         #         #
-    # #     perl-Package-Constants               #         #
 Requires:  perl-Archive-Zip >= 1.30-11
     # perl-Archive-Zip                           # base    # MailScanner
 Requires:  perl-Convert-BinHex >= 1.119-20
     # perl-Convert-BinHex                        # epel    # MailScanner
 Requires:  perl-Convert-TNEF >= 0.18-2
     # perl-Convert-TNEF                          # epel    # MailScanner
-    # #     perl-IO-Socket-IP                    # base    #
-    # #     perl-IO-Socket-SSL                   #         #
-    # #     perl-IO-stringy                      #         #
-    # #     perl-MailTools                       #         #
-    # #     perl-Net-LibIDN                      #         #
-    # #     perl-Net-SMTP-SSL                    #         #
-    # #     perl-Net-SSLeay                      #         #
-    # #     perl-TimeDate                        #         #
-    # #     perl-MIME-tools                      # epel    #
 Requires:  perl-CPAN >= 1.9800-293
     # perl-CPAN                                  # base    # MailScanner
-    # #     perl-local-lib                       #         #
 Requires:  perl-Data-Dump >= 1.22-1
     # perl-Data-Dump                             # epel    # MailScanner
 Requires:  perl-DBD-SQLite >= 1.39-3
     # perl-DBD-SQLite                            # base    # MailScanner
-    # #     perl-DBI                             #         #
-    # #     perl-Net-Daemon                      #         #
-    # #     perl-PlRPC                           #         #
 Requires:  perl-Digest-SHA1 >= 2.13-9
     # perl-Digest-SHA1                           # base    # MailScanner
 Requires:  perl-Digest-HMAC >= 1.03-5
     # perl-Digest-HMAC                           # base    # MailScanner
-    # #     perl-Digest                          #         #
-    # #     perl-Digest-MD5                      #         #
-    # #     perl-Digest-SHA                      #         #
 Requires:  perl-Encode-Detect >= 1.01-13
     # perl-Encode-Detect                         # base    # MailScanner
 Requires:  perl-Env >= 1.04-2
     # perl-Env                                   # base    # MailScanner
 Requires:  perl-ExtUtils-CBuilder >= 0.28.2.6-293
     # perl-ExtUtils-CBuilder                     # base    # MailScanner
-    # #     perl-IPC-Cmd                         #         #
-    # #     perl-Locale-Maketext                 #         #
-    # #     perl-Locale-Maketext-Simple          #         #
-    # #     perl-Module-CoreList                 #         #
-    # #     perl-Module-Load                     #         #
-    # #     perl-Module-Load-Conditional         #         #
-    # #     perl-Module-Metadata                 #         #
-    # #     perl-Params-Check                    #         #
-    # #     perl-Perl-OSType                     #         #
 Requires:  perl-ExtUtils-MakeMaker >= 6.68-3
     # perl-ExtUtils-MakeMaker                    # base    # MailScanner
-    # #     gdbm-devel                           #         #
-    # #     libdb-devel                          #         #
-    # #     perl-ExtUtils-Install                #         #
-    # #     perl-ExtUtils-Manifest               #         #
-    # #     perl-ExtUtils-ParseXS                #         #
-    # #     perl-Test-Harness                    #         #
-    # #     perl-devel                           #         #
-    # #     pyparsing                            #         #
-    # #     systemtap-sdt-devel                  #         #
 Requires:  perl-File-ShareDir-Install >= 0.08-1
     # perl-File-ShareDir-Install                 # epel    # MailScanner
 Requires:  perl-Filesys-Df >= 0.92-20
     # perl-Filesys-Df                            # epel    # MailScanner
 Requires:  perl-HTML-Parser >= 3.71-4
     # perl-HTML-Parser                           # base    # MailScanner
-    # #     mailcap                              #         #
-    # #     perl-Business-ISBN                   #         #
-    # #     perl-Business-ISBN-Data              #         #
-    # #     perl-Encode-Locale                   #         #
-    # #     perl-HTML-Tagset                     #         #
-    # #     perl-HTTP-Date                       #         #
-    # #     perl-HTTP-Message                    #         #
-    # #     perl-IO-HTML                         #         #
-    # #     perl-LWP-MediaTypes                  #         #
-    # #     perl-URI                             #         #
 Requires:  perl-Inline >= 0.53-4
     # perl-Inline                                # base    # MailScanner
-    # #     perl-Parse-RecDescent                #         #
 Requires:  perl-IO-String >= 1.08-19
     # perl-IO-String                             # base    # MailScanner
 Requires:  perl-LDAP >= 0.56-6
     # perl-LDAP                                  # base    # MailScanner
-    # #     perl-Authen-SASL                     #         #
-    # #     perl-Convert-ASN1                    #         #
-    # #     perl-File-Listing                    #         #
-    # #     perl-GSSAPI                          #         #
-    # #     perl-HTTP-Cookies                    #         #
-    # #     perl-HTTP-Daemon                     #         #
-    # #     perl-HTTP-Negotiate                  #         #
-    # #     perl-JSON                            #         #
-    # #     perl-Net-HTTP                        #         #
-    # #     perl-Text-Soundex                    #         #
-    # #     perl-Text-Unidecode                  #         #
-    # #     perl-WWW-RobotRules                  #         #
-    # #     perl-XML-Filter-BufferText           #         #
-    # #     perl-XML-NamespaceSupport            #         #
-    # #     perl-XML-SAX-Base                    #         #
-    # #     perl-XML-SAX-Writer                  #         #
-    # #     perl-libwww-perl                     #         #
 Requires:  perl-Mail-DKIM >= 0.39-8
     # perl-Mail-DKIM                             # base    # MailScanner
-    # #     perl-Crypt-OpenSSL-Bignum            #         #
-    # #     perl-Crypt-OpenSSL-RSA               #         #
-    # #     perl-Crypt-OpenSSL-Random            #         #
-    # #     perl-Net-DNS                         #         #
 Requires:  perl-Mail-IMAPClient >= 3.37-1
     # perl-Mail-IMAPClient                       # epel    # MailScanner
 Requires:  perl-Mail-SPF >= 2.8.0-4
     # perl-Mail-SPF                              # base    # MailScanner
-    # #     perl-Error                           #         #
-    # #     perl-NetAddr-IP                      #         #
-    # #     perl-version                         #         #
 Requires:  perl-Module-Build >= 0.40.05-2
     # perl-Module-Build                          # base    # MailScanner
-    # #     perl-CPAN-Meta                       #         #
-    # #     perl-CPAN-Meta-Requirements          #         #
-    # #     perl-CPAN-Meta-YAML                  #         #
-    # #     perl-JSON-PP                         #         #
-    # #     perl-Parse-CPAN-Meta                 #         #
 Requires:  perl-Net-CIDR >= 0.18-1
     # perl-Net-CIDR                              # epel    # MailScanner
 Requires:  perl-Net-CIDR-Lite >= 0.21-11
@@ -243,7 +149,6 @@ Requires:  perl-OLE-Storage_Lite >= 0.19-9
     # perl-OLE-Storage_Lite                      # epel    # MailScanner
 Requires:  perl-Razor-Agent >= 2.85-15
     # perl-Razor-Agent                           # epel    # MailScanner
-    # #     perl-Sys-Syslog                      # base    #
 Requires:  perl-Sys-Hostname-Long >= 1.5-1
     # perl-Sys-Hostname-Long                     # epel    # MailScanner
 Requires:  perl-Sys-SigAction >= 0.20-1
@@ -252,7 +157,6 @@ Requires:  perl-Test-Manifest >= 1.23-2
     # perl-Test-Manifest                         # base    # MailScanner
 Requires:  perl-Test-Pod >= 1.48-3
     # perl-Test-Pod                              # base    # MailScanner
-    # #     perl-Test-Simple                     #         #
 Requires:  perl-YAML >= 0.84-5
     # perl-YAML                                  # base    # MailScanner
 Requires:  libtool-ltdl >= 2.4.2-22
@@ -261,23 +165,10 @@ Requires:  unrar >= 5.8.3-1
     # unrar                                      # eFa     # MailScanner
 Requires:  postfix_eFa >= 3.4.8-1
     # postfix_eFa                                # eFa     # MTA
-    # #    libicu                                # base    #
-    # #    mariadb-libs                          #         #
-    # #    perl-Bit-Vector                       #         #
-    # #    perl-Carp-Clan                        #         #
-    # #    perl-Date-Calc postgresql-libs        #         #
-    # #    tinycdb                               # epel    #
 Requires:  sqlgrey >= 1.8.0-8
     # sqlgrey                                    # epel    # Greylisting
 Requires:  spamassassin >= 3.4.4-2
     # spamassassin                               # eFa     # MailScanner
-    # #    perl-DB_File                          # base    #
-    # #    perl-IO-Socket-INET6                  #         #
-    # #    perl-Socket6                          #         #
-    # #    portreserve                           #         #
-    # #    procmail                              #         #
-    # #    perl-Geo-IP                           #         #
-    # #    perl-Net-Patricia                     #         #
 Requires:  MailScanner >= 5.3.3-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-4
@@ -298,9 +189,6 @@ Requires:  dcc >= 2.3.167-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
 Requires:  unbound >= 1.4.20-34
     # unbound                                    # base    # DNS
-    #     ldns                                   #         #
-    #     libevent                               #         #
-    #     unbound-libs                           #         #
 Requires:  yum-cron >= 3.4.3-154
     # Yum auto updates                           # base    # yum-cron
 Requires:  checkpolicy >= 2.5-4
@@ -311,30 +199,36 @@ Requires: perl-Net-DNS-Nameserver >= 0.72-6
     # perl-Net-DNS-Nameserver                    # base    # Spamassassin
 #Requires:  mod_security_crs
     # mod_security rule set                      # base    # httpd
-    # #     mod_security                         #         #
 Requires:  p7zip >= 16.02-2
     # p7zip     `                                # epel    # MailScanner
 Requires:  p7zip-plugins >= 16.02-2
     # p7zip-plugins                              # epel    # MailScanner
 Requires:  tmpwatch >= 2.11-5
     # tmpwatch                                   # base    # Spamassassin
-    #   psmisc                                   #         #
 Requires: php72u-fpm >= 7.2.5-2
     # php72u-fpm                                 # IUS     # mailwatch, frontend
 Requires: system-config-keyboard >= 1.4.0-4
     # system-config-keyboard                     # base    # eFa
-Requires: php72u-process >= 7.2.5-2
+%{?el7:Requires: php72u-process >= 7.2.5-2}
     # php72u-process                             # IUS     # eFaInit
-Requires: php72u-json >= 7.2.5-2
+%{?el8:Requires: php-process >= 7.2.5-2}
+    # php-process                                # base    # eFaInit
+%{?el7:Requires: php72u-json >= 7.2.5-2}
     # php72u-json                                # IUS     # eFaInit
+%{?el8:Requires: php-json >= 7.2.5-2}
+    # php-json                                   # base    # eFaInit
 Requires: sqlgreywebinterface >= 1.1.9-2
     # sqlgreywebinterrface                       # eFa     # mailwatch
 Requires: perl-Sendmail-PMilter >= 1.00-1
     # perl-Sendmail-PMilter                      # eFa     # MailScanner
-Requires: php72u-cli >= 7.2.13-2
+%{?el7:Requires: php72u-cli >= 7.2.13-2}
     # php72u-cli                                 # IUS     # mailwatch, frontend
-Requires: php72u-xml >= 7.2.13-2
+%{?el8:Requires: php-cli >= 7.2.13-2}
+    # php-cli                                    # base    # mailwatch, frontend
+%{?el7:Requires: php72u-xml >= 7.2.13-2}
     # php72u-xml                                 # IUS     # mailwatch, frontend
+%{?el8:Requires: php-xml >= 7.2.13-2}
+    # php-xml                                    # base    # mailwatch, frontend
 Requires: dovecot >= 1:2.2.36-3
     # clucene-core                               # base    # postfix
 Requires: virt-what >= 1.18-4
