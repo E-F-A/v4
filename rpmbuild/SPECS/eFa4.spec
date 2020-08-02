@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   19.eFa%{?dist}
+Release:   20.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -560,6 +560,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Aug 02 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-20
+- Fix settings hostname with IP Settings CLI
+
 * Sun Jul 26 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-19
 - Improve IP Settings CLI
 
