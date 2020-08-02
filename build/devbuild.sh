@@ -321,6 +321,10 @@ yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-base-*.rpm
 [ $? -ne 0 ] && exit 1
 [ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-DNS-*.rpm
 [ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && rpmbuild -ba perl-Sys-SigAction.spec
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-SigAction-*.rpm
+[ $? -ne 0 ] && exit 1
 # END: Some additional requirements
 rpmbuild -ba eFa4.spec
 [ $? -ne 0 ] && exit 1
