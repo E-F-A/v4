@@ -14,10 +14,10 @@ func_setipsettings(){
   # Write new hosts file
   echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
   echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
-  if [[ -n $IP4 || $BOOTPROTO == "dhcp" ]]; then
+  if [[ -n $IP4 ]]; then
     echo "$IP4    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
   fi
-  if [[ -n $IP6 || $IPV6_AUTOCONF == "yes" ]]; then
+  if [[ -n $IP6 ]]; then
     echo "$IP6    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
   fi
 
