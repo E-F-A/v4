@@ -29,7 +29,6 @@ shopt -s extglob
 # Load functions
 # +---------------------------------------------------+
 . /var/eFa/lib/eFa-Configure/func_getipsettings
-. /var/eFa/lib/eFa-Configure/func_sethostname
 . /var/eFa/lib/eFa-Configure/func_apachesettings
 . /var/eFa/lib/eFa-Configure/func_mailsettings
 . /var/eFa/lib/eFa-Configure/func_systemrestore

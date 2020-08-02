@@ -3,10 +3,6 @@
 # +---------------------------------------------------+
 func_setipsettings(){
 
-  # Grab current FQDN
-  HOSTNAME="`cat /etc/eFa/eFa-Config | grep HOSTNAME | sed 's/.*://'`"
-  DOMAINNAME="`cat /etc/eFa/eFa-Config | grep DOMAINNAME | sed 's/.*://'`"
-
   # Back up hosts file, just in case
   if [[ -f /etc/hosts.bak ]]; then
     rm -f /etc/host.bak
@@ -24,7 +20,7 @@ func_setipsettings(){
   if [[ -n $IP6 ]]; then
     echo "$IP6    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
   fi
-  
+
   # Enable or disable ipv6 dns
   if [[ "$IPV6DNS" == "yes" ]]; then
     sed -i '/^\tdo-ip6:/ c\\t# do-ip6: yes' /etc/unbound/unbound.conf
@@ -111,10 +107,7 @@ func_setipsettings(){
       sed -i "/^IPV6_DEFAULTGW=/ c\IPV6_DEFAULTGW=\"$GW6\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     fi
   fi
-  
-  systemctl restart network
-  systemctl restart unbound
-  
+
   # Write change to EFA-Config
   sed -i "/^IPV4ADDRESS:/ c\IPV4ADDRESS:$IP4" /etc/eFa/eFa-Config
   sed -i "/^IPV4NETMASK:/ c\IPV4NETMASK:$NM4" /etc/eFa/eFa-Config
@@ -125,7 +118,62 @@ func_setipsettings(){
   sed -i "/^DNSIP1:/ c\DNSIP1:$DNS1" /etc/eFa/eFa-Config
   sed -i "/^DNSIP2:/ c\DNSIP2:$DNS2" /etc/eFa/eFa-Config
   sed -i "/^IPV6DNS:/ c\IPV6DNS:$IPV6DNS" /etc/eFa/eFa-Config
-  
+
+  # Grab current FQDN
+  OLDHOSTNAME=$(grep "^HOSTNAME" /etc/eFa/eFa-Config | sed 's/^.*://')
+  OLDDOMAINNAME=$(grep "^DOMAINNAME" /etc/eFa/eFa-Config | sed 's/^.*://')
+
+  # Detect hostname/domainname change
+  if [[ $OLDHOSTNAME != $HOSTNAME || $OLDDOMAINNAME != $DOMAINNAME ]]; then
+    echo "$HOSTNAME.$DOMAINNAME" > /etc/hostname
+
+    # Change mailscanner config
+    sed -i "/^define('MAILWATCH_FROM_ADDR',/ c\define('MAILWATCH_FROM_ADDR', 'no-reply@$HOSTNAME.$DOMAINNAME');" /var/www/html/mailscanner/conf.php
+
+    # Issue 195 -- Update MySQL database hostname fields
+    MAILWATCHPWD=$(grep "^MAILWATCHSQLPWD" /etc/eFa/MailWatch-Config | sed 's/^.*://')
+
+    systemctl stop msmilter
+    systemctl stop mailscanner
+
+    mysql -u mailwatch --password=$MAILWATCHPWD mailscanner -e "\
+    LOCK TABLES maillog WRITE; \
+    ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
+    UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
+    ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; \
+    LOCK TABLES mtalog WRITE; \
+    UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
+    UNLOCK TABLES;"
+
+    postconf -e "error_notice_recipient = root@\$myhostname"
+
+    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf
+    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
+    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf.d/vhost.conf
+
+    # Issue #155 Change domainname in opendmarc reports
+    DBHOST='localhost'
+    DBUSER='opendmarc'
+    DBPASS="`grep ^DMARCSQLPWD /etc/eFa/openDMARC-Config | sed 's/^.*://'`"
+    DBNAME='opendmarc'
+    DMARCRepDomain="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/^.*://'`"
+    DMARCRepEmail="no-reply@$DMARCRepDomain"
+    /usr/sbin/opendmarc-reports -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} -interval=86400 -report-email $DMARCRepEmail -report-org $DMARCRepDomain -smtp-server=127.0.0.1
+
+    sed -i "/^HOSTNAME:/ c\HOSTNAME:$HOSTNAME" /etc/eFa/eFa-Config
+    sed -i "/^DOMAINNAME:/ c\DOMAINNAME:$DOMAINNAME" /etc/eFa/eFa-Config
+
+    echo -e ""
+    echo -e "Hostname or domainname changed.  Note that you may need to generate new SSL certificates to match the new hostname"
+    echo -e ""
+    echo -e "$red [eFa] Your system will now reboot. Press any key to continue. $clean"
+    pause
+    reboot
+  fi
+
+  systemctl restart network
+  systemctl restart unbound
+
   echo -e "All done"
   pause
 }
