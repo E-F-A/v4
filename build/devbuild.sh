@@ -312,11 +312,16 @@ rpmbuild -ba eFa4-base.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-base-*.rpm
 [ $? -ne 0 ] && exit 1
-# Some additional requirements
+# BEGIN: Some additional requirements
 [ $RELEASE -eq 8 ] && rpmbuild -ba perl-Mail-IMAPClient.spec
 [ $? -ne 0 ] && exit 1
 [ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Mail-IMAPClient-*.rpm
 [ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && rpmbuild -ba perl-Net-DNS.spec
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-DNS-*.rpm
+[ $? -ne 0 ] && exit 1
+# END: Some additional requirements
 rpmbuild -ba eFa4.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-4*.rpm
