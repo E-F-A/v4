@@ -160,14 +160,18 @@ func_ip-settings(){
                     ;;
                 13) echo ""
                     read -p "Enter your new HOSTNAME: " ASKHOSTNAME
-                    if [ -z "$ASKHOSTNAME" ]; then echo "ERROR empty value" && pause; else
+                    if [[ -n "$ASKHOSTNAME" && $HOSTNAME =~ ^[-a-zA-Z0-9]{2,256}+$ ]]; then 
                       HOSTNAME=$ASKHOSTNAME
+                    else
+                      echo "ERROR empty or invalid hostname" && pause
                     fi
                     ;;
                 14) echo ""
                     read -p "Enter your new DOMAIN NAME: " ASKDOMAINNAME
-                    if [ -z "$ASKDOMAINNAME" ]; then echo "ERROR empty value" && pause; else
+                    if [[ -n "$ASKDOMAINNAME" && $DOMAINNAME =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,15}$ ]]; then 
                       DOMAINNAME=$ASKDOMAINNAME
+                    else
+                      echo "ERROR empty or invalid domain name" && pause
                     fi
                     ;;
                 y)  func_setipsettings
