@@ -195,10 +195,10 @@ Requires:  checkpolicy >= 2.5-4
     # checkpolicy                                # base    # selinux
 Requires:  policycoreutils-python >= 2.5-17.1
     # policycoreutils-python                     # base    # selinux
-Requires: perl-Net-DNS-Nameserver >= 0.72-6
+%{?el7:Requires: perl-Net-DNS-Nameserver >= 0.72-6}
     # perl-Net-DNS-Nameserver                    # base    # Spamassassin
-#Requires:  mod_security_crs
-    # mod_security rule set                      # base    # httpd
+%{?el8:Requires: perl-Net-DNS >= 1.25-1}
+    # perl-Net-DNS                               # eFa     # Spamassassin
 Requires:  p7zip >= 16.02-2
     # p7zip     `                                # epel    # MailScanner
 Requires:  p7zip-plugins >= 16.02-2
