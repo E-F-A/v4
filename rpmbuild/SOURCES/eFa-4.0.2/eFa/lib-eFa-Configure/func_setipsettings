@@ -14,10 +14,10 @@ func_setipsettings(){
   # Write new hosts file
   echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
   echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
-  if [[ -n $IP4 ]]; then
+  if [[ -n $IP4 || $BOOTPROTO == "dhcp" ]]; then
     echo "$IP4    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
   fi
-  if [[ -n $IP6 ]]; then
+  if [[ -n $IP6 || $IPV6_AUTOCONF == "yes" ]]; then
     echo "$IP6    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
   fi
 
@@ -149,7 +149,6 @@ func_setipsettings(){
 
     sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf
     sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
-    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf.d/vhost.conf
 
     # Issue #155 Change domainname in opendmarc reports
     DBHOST='localhost'
