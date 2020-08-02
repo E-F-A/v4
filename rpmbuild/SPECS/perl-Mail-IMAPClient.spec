@@ -31,10 +31,10 @@ Summary:        An IMAP Client API
 License:        perl_5
 Group:          Development/Libraries
 URL:            https://metacpan.org/pod/distribution/Mail-IMAPClient
-Source0:        https://cpan.metacpan.org/authors/id/P/PL/PLOBBES/Mail-IMAPClient-%{version}.tar.gz
+Source:         https://cpan.metacpan.org/authors/id/P/PL/PLOBBES/Mail-IMAPClient-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
-
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
 This module provides methods implementing the IMAP protocol to support interacting
