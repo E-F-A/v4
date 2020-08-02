@@ -1,5 +1,5 @@
 
-module eFa 1.0.20;
+module eFa 1.0.21;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -387,6 +387,7 @@ allow mscan_t spamd_compiled_t:file { open read getattr ioctl execute };
 allow mscan_t sysfs_t:dir { read };
 allow mscan_t rpm_exec_t:file { getattr };
 allow mscan_t ldconfig_exec_t:file { getattr execute };
+allow mscan_t httpd_sys_content_t:file getattr;
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability kill;
