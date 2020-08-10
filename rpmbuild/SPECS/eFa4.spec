@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   23.eFa%{?dist}
+Release:   24.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -456,6 +456,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Aug 09 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-24
+- SELinux update
+
 * Sun Aug 09 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-23
 - Write RECURSIVEDNS setting to eFa-Config
 
