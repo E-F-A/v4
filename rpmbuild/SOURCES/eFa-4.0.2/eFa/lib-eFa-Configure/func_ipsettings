@@ -126,11 +126,11 @@ func_ip-settings(){
                10)  echo ""
                     read -p "Enable full recursive DNS? (Y/n): " ASKRECURSIVEDNS
                     if [[ -z $ASKRECURSIVEDNS || $ASKRECURSIVEDNS =~ ^[yY]$ ]]; then
-                       RECURSIVEDNS == "ENABLED"
+                       RECURSIVEDNS="ENABLED"
                        DNS1=
                        DNS2=
                     elif [[ $ASKRECURSIVEDNS =~ ^[nN]$ ]]; then
-                       RECURSIVEDNS == "DISABLED"
+                       RECURSIVEDNS="DISABLED"
                        echo -e "Recursion will be DISABLED.  Please set your DNS entries." && pause
                     else
                       echo "ERROR invalid choice" && pause
