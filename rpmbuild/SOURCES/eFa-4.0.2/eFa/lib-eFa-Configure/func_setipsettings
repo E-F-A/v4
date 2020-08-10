@@ -118,6 +118,7 @@ func_setipsettings(){
   sed -i "/^DNSIP1:/ c\DNSIP1:$DNS1" /etc/eFa/eFa-Config
   sed -i "/^DNSIP2:/ c\DNSIP2:$DNS2" /etc/eFa/eFa-Config
   sed -i "/^IPV6DNS:/ c\IPV6DNS:$IPV6DNS" /etc/eFa/eFa-Config
+  sed -i "/^RECURSION:/ c\RECURSION:$RECURSIVEDNS" /etc/eFa/eFa-Config
 
   # Grab current FQDN
   OLDHOSTNAME=$(grep "^HOSTNAME" /etc/eFa/eFa-Config | sed 's/^.*://')
