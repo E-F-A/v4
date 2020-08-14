@@ -1,3 +1,3 @@
-'Enter a valid hostname': 'Fyll i ett äkta domännamn'
+'Enter a valid hostname': 'Fyll i ett giltigt domännamn'
 'Passwords do not match': 'Lösenordet matchar inte'
 'Web Username must be alphanumeric (up to 30 characters starting with a letter or _) or a valid email address': 'Användarnamnet för webb behöver vara alfanumeriskt (upp till 30 tecken och börja med en bokstav eller _) eller en giltig mejladress.'
