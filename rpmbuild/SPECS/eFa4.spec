@@ -213,7 +213,7 @@ Requires:  tmpwatch >= 2.11-5
     # php72u-fpm                                 # IUS     # mailwatch, frontend
 %{?el8:Requires: php-fpm >= 7.2.5-2}
     # php-fpm                                    # base    # mailwatch, frontend
-Requires: system-config-keyboard >= 1.4.0-4
+%{?el7:Requires: system-config-keyboard >= 1.4.0-4}
     # system-config-keyboard                     # base    # eFa
 %{?el7:Requires: php72u-process >= 7.2.5-2}
     # php72u-process                             # IUS     # eFaInit
