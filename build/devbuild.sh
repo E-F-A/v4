@@ -325,6 +325,10 @@ yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-base-*.rpm
 [ $? -ne 0 ] && exit 1
 [ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-SigAction-*.rpm
 [ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && rpmbuild -ba tnef.spec
+[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/tnef.rpm
+[ $? -ne 0 ] && exit 1
 # END: Some additional requirements
 rpmbuild -ba eFa4.spec
 [ $? -ne 0 ] && exit 1
