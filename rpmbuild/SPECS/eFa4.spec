@@ -87,8 +87,10 @@ Requires:  pyzor >= 0.5.0-10
     # pyzor                                      # epel    # MailScanner
 Requires:  re2c >= 0.14.3-2
     # re2c                                       # epel    # MailScanner
-Requires:  tnef >= 1.4.15-1
+%{?el7:Requires:  tnef >= 1.4.15-1}
     # tnef                                       # epel    # MailScanner
+%{?el8:Requires:  tnef >= 1:1.4.18-1}
+    # tnef                                       # eFa     # MailScanner
 Requires:  gcc >= 4.8.5-36
     # gcc                                        # base    # MailScanner
 Requires:  perl-Archive-Tar >= 1.92-2
