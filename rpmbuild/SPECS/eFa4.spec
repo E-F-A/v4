@@ -189,8 +189,10 @@ Requires:  dcc >= 2.3.167-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
 Requires:  unbound >= 1.4.20-34
     # unbound                                    # base    # DNS
-Requires:  yum-cron >= 3.4.3-154
+%{?el7:Requires:  yum-cron >= 3.4.3-154}
     # Yum auto updates                           # base    # yum-cron
+%{?el8:Requires:  dnf-automatic >= 4.2.17-7}
+    # dnf auto updates                           # base    # dnf-automatic
 Requires:  checkpolicy >= 2.5-4
     # checkpolicy                                # base    # selinux
 Requires:  policycoreutils-python >= 2.5-17.1
