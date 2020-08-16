@@ -76,8 +76,13 @@ chmod g+rwxs /etc/MailScanner/rules
 chmod g+rw /etc/MailScanner/rules/*.rules
 
 # Ensure temp and images are set 
-chgrp -R php-fpm /var/www/html/mailscanner/images
-chgrp -R php-fpm /var/www/html/mailscanner/temp
+if [[ $centosver -eq 7 ]]; then
+    chgrp -R php-fpm /var/www/html/mailscanner/images
+    chgrp -R php-fpm /var/www/html/mailscanner/temp
+else
+    chgrp -R apache /var/www/html/mailscanner/images
+    chgrp -R apache /var/www/html/mailscanner/temp
+fi
 
 echo "Configuring MailWatch...done"
 
