@@ -32,7 +32,11 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring eFaInit..."
 
 # Grant apache permissions to cache/logs/sessions
-chown php-fpm /var/www/eFaInit/var/{cache,logs,sessions}
+if [[ $centosver -eq 7 ]]; then
+    chown php-fpm /var/www/eFaInit/var/{cache,logs,sessions}
+else
+    chown apache /var/www/eFaInit/var/{cache,logs,sessions}
+fi
 
 cat > /etc/httpd/conf.d/eFaInit.conf << 'EOF'
 Alias /eFaInit /var/www/eFaInit/web
@@ -69,6 +73,10 @@ echo '* * * * * root /usr/sbin/checkreboot.sh' > /etc/cron.d/checkreboot
 
 # Allow apache to sudo for eFaInit phase
 sed -i '/Defaults    requiretty/ c\#Defaults    requiretty' /etc/sudoers
-echo "php-fpm ALL=NOPASSWD: ALL" > /etc/sudoers.d/eFa-Services
+if [[ $centosver -eq 7 ]]; then
+    echo "php-fpm ALL=NOPASSWD: ALL" > /etc/sudoers.d/eFa-Services
+else
+    echo "apache ALL=NOPASSWD: ALL" > /etc/sudoers.d/eFa-Services
+fi
 
 echo "Configuring eFaInit...done"

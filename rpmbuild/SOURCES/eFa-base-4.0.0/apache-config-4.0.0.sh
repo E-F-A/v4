@@ -129,7 +129,8 @@ Alias / /var/www/html/
 EOF
 
 # Add php-fpm to mtagroup
-usermod -G mtagroup php-fpm
+# php-fpm not a separate user on CentOS 8
+[[ $centosver -eq 7 ]] && usermod -G mtagroup php-fpm
 
 # Pass a PATH environment variable to php-fpm for exec to call binaries
 sed -i '/^;env\[PATH\] =/ c\env[PATH] = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin' /etc/php-fpm.d/www.conf

@@ -25,4 +25,5 @@ version="4.0.0"
 srcdir="/usr/src/eFa"
 password="eFaPr0j3ct"
 instancetype=$(virt-what)
+centosver=$(cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}')
 #-----------------------------------------------------------------------------#
