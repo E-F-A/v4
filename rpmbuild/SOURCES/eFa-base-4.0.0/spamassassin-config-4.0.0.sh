@@ -37,6 +37,9 @@ sed -i "/^# loadplugin Mail::Spamassassin::Plugin::RelayCountry$/ c\loadplugin M
 
 # Symlink for Geo::IP
 rm -f /usr/share/GeoIP/GeoLiteCountry.dat
+if [[ $centosver -eq 8 ]]; then
+  mv /usr/share/GeoIP/GeoLite2-Country.mmdb /var/www/html/mailscanner/temp/GeoLite2-Country.mmdb
+fi
 ln -s /var/www/html/mailscanner/temp/GeoLite2-Country.mmdb /usr/share/GeoIP/GeoLite2-Country.mmdb
 
 # PDFInfo (now included in SA 3.4.1)
