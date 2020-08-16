@@ -105,7 +105,7 @@ else
     perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
     perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \
     libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet perl-strictures perl-Data-Validate-IP \
-    autoconf automake
+    autoconf automake rsync
     [ $? -ne 0 ] && exit 1
 fi
 
@@ -117,24 +117,42 @@ cd $GITPATH/rpmbuild/SPECS
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba postfix.spec
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && yum -y remove postfix postfix32u && [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 8 ] && yum -y remove postfix && [ $? -ne 0 ] && exit 1
+if [ $RELEASE -eq 7 ]; then
+  yum -y remove postfix postfix32u
+  [ $? -ne 0 ] && exit 1
+fi
+if [ $RELEASE -eq 8 ]; then
+  yum -y remove postfix 
+  [ $? -ne 0 ] && exit 1
+fi
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/postfix_eFa-*.rpm
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba clamav-unofficial-sigs.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/clamav-unofficial-sigs-*.rpm
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && echo "n" | rpmbuild -ba perl-libnet.spec && [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-libnet-*.rpm && [ $? -ne 0 ] && exit 1
+if [ $RELEASE -eq 7 ]; then
+  echo "n" | rpmbuild -ba perl-libnet.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-libnet-*.rpm 
+  [ $? -ne 0 ] && exit 1
+fi
 rpmbuild -ba perl-IP-Country.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-*.rpm
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && rpmbuild -ba perl-Text-Balanced.spec && [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Text-Balanced-*.rpm && [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 8 ] && rpmbuild -ba perl-Sys-Hostname-Long.spec && [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-Hostname-Long-*.rpm && [ $? -ne 0 ] && exit 1
+if [ $RELEASE -eq 7 ]; then
+  rpmbuild -ba perl-Text-Balanced.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Text-Balanced-*.rpm
+  [ $? -ne 0 ] && exit 1
+fi
+if [ $RELEASE -eq 8 ]; then
+  rpmbuild -ba perl-Sys-Hostname-Long.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-Hostname-Long-*.rpm
+  [ $? -ne 0 ] && exit 1
+fi
 rpmbuild -ba perl-Mail-SPF-Query.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Mail-SPF-Query-*.rpm

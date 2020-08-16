@@ -257,6 +257,8 @@ Requires: eFa-base >= 4.0.0-1
     #                                            # epel    # mailwatch, frontend
 %{?el8:Requires: python3-certbot-apache >= 1.6.0-1}
     #                                            # epel    # mailwatch, frontend
+%{?el8:Requires: rsync => 3.1.3-7}
+    #                                            # base    # clamd
 Requires: opendkim >= 2.11.0-0.1
     #                                            # epel    # eFa
 Requires: opendmarc >= 1.3.2-0.12
