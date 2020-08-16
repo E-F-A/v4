@@ -167,8 +167,10 @@ Requires:  unrar >= 5.8.3-1
     # unrar                                      # eFa     # MailScanner
 Requires:  postfix_eFa >= 3.4.8-1
     # postfix_eFa                                # eFa     # MTA
-Requires:  sqlgrey >= 1.8.0-8
+%{?el7:Requires:  sqlgrey >= 1.8.0-8}
     # sqlgrey                                    # epel    # Greylisting
+%{?el8:Requires:  sqlgrey >= 1:1.8.0-8}
+    # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin >= 3.4.4-2
     # spamassassin                               # eFa     # MailScanner
 Requires:  MailScanner >= 5.3.3-1
