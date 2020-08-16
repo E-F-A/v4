@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 instancetype=$(/sbin/virt-what)
+centosver=$(cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}')
 
 retval=0
 
@@ -101,50 +102,97 @@ cmd='sed -i "/^\sinnodb-defragment/d" /etc/my.cnf.d/mariadb-server.cnf'
 execcmd
 
 # Ensure tweaks are in place
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-name-resolve" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^skip-name-resolve /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-host-cache" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^skip-host-cache /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\tmp_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^tmp_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\thread_cache_size = 16" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^thread_cache_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\sort_buffer_size = 4M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^sort_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-host-cache" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^skip-host-cache /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-external-locking" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^skip-external-locking /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\read_rnd_buffer_size = 1M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^read_rnd_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\read_buffer_size = 2M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^read_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\query_cache_type = OFF" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^query_cache_type /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\query_cache_size = 0M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^query_cache_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\max_heap_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^max_heap_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\max_allowed_packet = 16M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^max_allowed_packet /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\key_cache_segments = 4" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^key_cache_segments /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\join_buffer_size = 512K" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^join_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_log_file_size = 125M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^innodb_log_file_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_log_buffer_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^innodb_log_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_file_per_table = 1" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^innodb_file_per_table /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_buffer_pool_size = 1G" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^innodb_buffer_pool_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_buffer_pool_instances = 1" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^innodb_buffer_pool_instances /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb-defragment = 1" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^innodb-defragment /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
-cmd='sed -i "/^\[mariadb-10.1\]$/ a\bind-address = 127.0.0.1" /etc/my.cnf.d/mariadb-server.cnf'
-[[ -z $(grep ^bind-address /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
+if [[ $centosver -eq 7 ]]; then
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-name-resolve" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^skip-name-resolve /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-host-cache" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^skip-host-cache /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\tmp_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^tmp_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\thread_cache_size = 16" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^thread_cache_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\sort_buffer_size = 4M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^sort_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-host-cache" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^skip-host-cache /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\skip-external-locking" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^skip-external-locking /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\read_rnd_buffer_size = 1M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^read_rnd_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\read_buffer_size = 2M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^read_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\query_cache_type = OFF" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^query_cache_type /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\query_cache_size = 0M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^query_cache_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\max_heap_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^max_heap_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\max_allowed_packet = 16M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^max_allowed_packet /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\key_cache_segments = 4" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^key_cache_segments /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\join_buffer_size = 512K" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^join_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_log_file_size = 125M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_log_file_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_log_buffer_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_log_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_file_per_table = 1" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_file_per_table /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_buffer_pool_size = 1G" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_buffer_pool_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb_buffer_pool_instances = 1" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_buffer_pool_instances /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\innodb-defragment = 1" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb-defragment /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb-10.1\]$/ a\bind-address = 127.0.0.1" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^bind-address /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
+else
+    cmd='sed -i "/^\[mariadb\]$/ a\skip-name-resolve" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^skip-name-resolve /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\skip-host-cache" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^skip-host-cache /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\tmp_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^tmp_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\thread_cache_size = 16" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^thread_cache_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\sort_buffer_size = 4M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^sort_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\skip-host-cache" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^skip-host-cache /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\skip-external-locking" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^skip-external-locking /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\read_rnd_buffer_size = 1M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^read_rnd_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\read_buffer_size = 2M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^read_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\query_cache_type = OFF" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^query_cache_type /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\query_cache_size = 0M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^query_cache_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\max_heap_table_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^max_heap_table_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\max_allowed_packet = 16M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^max_allowed_packet /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\key_cache_segments = 4" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^key_cache_segments /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\join_buffer_size = 512K" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^join_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\innodb_log_file_size = 125M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_log_file_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\innodb_log_buffer_size = 32M" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_log_buffer_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\innodb_file_per_table = 1" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_file_per_table /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\innodb_buffer_pool_size = 1G" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_buffer_pool_size /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\innodb_buffer_pool_instances = 1" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb_buffer_pool_instances /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\innodb-defragment = 1" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^innodb-defragment /etc/my.cnf.d/mariadb-server.cnf) ]] && execcmd
+    cmd='sed -i "/^\[mariadb\]$/ a\bind-address = 127.0.0.1" /etc/my.cnf.d/mariadb-server.cnf'
+    [[ -z $(grep ^bind-address /etc/my.cnf.d/mariadb-server.cnf) ]] &&  execcmd
+fi
 
 # Show version in MailWatch
 cmd="sed -i \"/^define('SHOW_SFVERSION',/ c\define('SHOW_SFVERSION', true);\" /var/www/html/mailscanner/conf.php"
@@ -165,7 +213,7 @@ cmd='rm -rf /var/www/eFaInit'
 [[ -d /var/www/eFaInit ]] && execcmd
 cmd='rm -f /usr/sbin/eFa-Init'
 [[ -f /usr/sbin/eFa-Init ]] && execcmd
-cmd='m -f /usr/sbin/eFa-Commit'
+cmd='rm -f /usr/sbin/eFa-Commit'
 [[ -f /usr/sbin/eFa-Commit ]] && execcmd
 
 # Autolearn
@@ -187,12 +235,14 @@ execcmd
 
 # Update SELinux
 if [[ $instancetype != "lxc" ]]; then
-  cmd='checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te'
-  execcmd
-  cmd='semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc'
-  execcmd
-  cmd='semodule -i /var/eFa/lib/selinux/eFa.pp'
-  execcmd
+  if [[ $centosver -eq 7 ]]; then
+    cmd='checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te'
+    execcmd
+    cmd='semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc'
+    execcmd
+    cmd='semodule -i /var/eFa/lib/selinux/eFa.pp'
+    execcmd
+  fi
 fi
 
 # Update MailWatch after MailWatch rpm update applies
@@ -212,13 +262,16 @@ execcmd
 cmd="sed -i 's|^#LoadModule mpm_event_module modules/mod_mpm_event.so|LoadModule mpm_event_module modules/mod_mpm_event.so|' /etc/httpd/conf.modules.d/00-mpm.conf"
 execcmd
 
-# Add php-fpm to mtagroup
-cmd='usermod -G mtagroup php-fpm'
-execcmd
 
-# Fix sudoers for php-fpm
-cmd="sed -i 's/apache/php-fpm/' /etc/sudoers.d/mailwatch"
-execcmd
+if [[ $centosver -eq 7 ]]; then
+    # Add php-fpm to mtagroup
+    cmd='usermod -G mtagroup php-fpm'
+    execcmd
+
+    # Fix sudoers for php-fpm
+    cmd="sed -i 's/apache/php-fpm/' /etc/sudoers.d/mailwatch"
+    execcmd
+fi
 
 # Fix bad sed for earlier base package
 cmd="sed -i '/^;env\[PATH\] =/ c\env[PATH] = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin' /etc/php-fpm.d/www.conf"
@@ -310,18 +363,22 @@ cmd='echo "d /var/run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/c
 execcmd
 cmd='sed -i "/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.socket/clamd.sock" /etc/MailScanner/MailScanner.conf'
 execcmd
-cmd='chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.socket'
-[[ $instancetype != "lxc" ]] && execcmd
-cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
-[[ $instancetype != "lxc" ]] && execcmd
+if [[ $centosver -eq 7 ]]; then
+    cmd='chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.socket'
+    [[ $instancetype != "lxc" ]] && execcmd
+    cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
+    [[ $instancetype != "lxc" ]] && execcmd
+fi
 
 # Fix postfix mailbox size
 cmd='postconf -e "mailbox_size_limit = 133169152"'
 execcmd
 
 # Supress messages from yum cron via crond
-cmd='sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf >/dev/null 2>\&1|" /etc/cron.hourly/0yum-hourly.cron'
-execcmd
+if [[ $centosver -eq 7 ]]; then
+    cmd='sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf >/dev/null 2>\&1|" /etc/cron.hourly/0yum-hourly.cron'
+    execcmd
+fi
 
 # Fix entry in postfix master.cf
 cmd='sed -i "/^\s\s-o smtpd_sasl_security_options=noanaonymous/ c\ \ -o smtpd_sasl_security_options=noanonymous" /etc/postfix/master.cf'
@@ -342,9 +399,14 @@ fi
 cmd='sed -i "s|#LoadModule autoindex_module modules/mod_autoindex.so|LoadModule autoindex_module modules/mod_autoindex.so|" /etc/httpd/conf.modules.d/00-base.conf'
 execcmd
 
-# Set php-fpm group for MSRE
-cmd='chgrp -R php-fpm /etc/MailScanner/rules'
-execcmd
+if [[ $centosver -eq 7 ]]; then
+    # Set php-fpm group for MSRE
+    cmd='chgrp -R php-fpm /etc/MailScanner/rules'
+    execcmd
+else
+    cmd='chgrp -R apache /etc/MailScanner/rules'
+    execcmd
+fi
 
 # Clean up root user in mysql
 cmd='/usr/bin/mysql -e "DELETE FROM mysql.user WHERE User=\"root\" AND Host NOT IN (\"localhost\");"'
@@ -409,12 +471,18 @@ exit 0
 EOF
 [[ $? -ne 0 ]] && echo "cat > /etc/cron.daily/mailscanner" && retval=1
 
-
-# Create .spamassassin directory for php-fpm
-cmd='mkdir -p /var/lib/php/fpm/.spamassassin'
-execcmd
-cmd='chown postfix:mtagroup /var/lib/php/fpm/.spamassassin'
-execcmd
+if [[ $centosver -eq 7 ]]; then
+    # Create .spamassassin directory for php-fpm
+    cmd='mkdir -p /var/lib/php/fpm/.spamassassin'
+    execcmd
+    cmd='chown postfix:mtagroup /var/lib/php/fpm/.spamassassin'
+    execcmd
+else
+    cmd='mkdir -p /var/www/html/.spamassassin'
+    execcmd
+    cmd='chown postfix:mtagroup /var/www/html/.spamassassin'
+    execcmd
+fi
 
 # Remove KAM.cf and eFa-SA-Update
 if [[ -f /etc/mail/spamassassin/KAM.cf ]]; then
@@ -510,20 +578,24 @@ cmd='mkdir /var/lib/mysql/temp && chown mysql:mysql /var/lib/mysql/temp'
 if [[ ! -f /etc/systemd/system/clamd@scan.service.d/override.conf ]]; then
   mkdir -p /etc/systemd/system/clamd@scan.service.d
   echo -e "[Service]\nTimeoutSec=900\n" > /etc/systemd/system/clamd@scan.service.d/override.conf
-  cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/clamd@scan.service.d'
-  [[ $instancetype != "lxc" ]] && execcmd
-  cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/clamd@scan.service.d/override.conf'
-  [[ $instancetype != "lxc" ]] && execcmd
+  if [[ $centosver -eq 7 ]]; then
+    cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/clamd@scan.service.d'
+    [[ $instancetype != "lxc" ]] && execcmd
+    cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/clamd@scan.service.d/override.conf'
+    [[ $instancetype != "lxc" ]] && execcmd
+  fi
 fi
 
 # Increase TimeoutSec for mariadb
 if [[ ! -f /etc/systemd/system/mariadb.service.d/override.conf ]]; then
   mkdir -p /etc/systemd/system/mariadb.service.d
   echo -e "[Service]\nTimeoutSec=900\n" > /etc/systemd/system/mariadb.service.d/override.conf
-  cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d'
-  [[ $instancetype != "lxc" ]] && execcmd
-  cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d/override.conf'
-  [[ $instancetype != "lxc" ]] && execcmd
+  if [[ $centosver -eq 7 ]]; then
+    cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d'
+    [[ $instancetype != "lxc" ]] && execcmd
+    cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d/override.conf'
+    [[ $instancetype != "lxc" ]] && execcmd
+  fi
 fi
 
 cmd='systemctl daemon-reload'
