@@ -144,7 +144,7 @@ yum -y install $GITPATH/rpmbuild/RPMS/x86_64/unrar-*.rpm
 [ $? -ne 0 ] && exit 1
 # BEGIN: New modules for spamassassin 3.4.4 development builds
 [ $RELEASE -eq 8 ] && rpmbuild -ba perl-Math-Int64.spec && [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Math-Int64-*.rpm && [ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 8 ] && yum -y install $GITPATH/rpmbuild/RPMS/x86_64/perl-Math-Int64-*.rpm && [ $? -ne 0 ] && exit 1
 rpmbuild -ba perl-IP-Country-DB_File.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-DB_File-*.rpm
