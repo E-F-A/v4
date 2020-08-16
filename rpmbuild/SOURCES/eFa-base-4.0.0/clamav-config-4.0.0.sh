@@ -32,7 +32,9 @@ echo "Configuring clamav..."
 usermod -G mtagroup,virusgroup,clamupdate clamscan
 
 sed -i '/^Example/ c\#Example' /etc/freshclam.conf
-sed -i '/REMOVE ME/d' /etc/sysconfig/freshclam
+if [[ $centosver -eq 7 ]]; then
+    sed -i '/REMOVE ME/d' /etc/sysconfig/freshclam
+fi
 sed -i '/^Example/ c\#Example' /etc/clamd.d/scan.conf
 sed -i '/#LocalSocket\s/ c\LocalSocket /var/run/clamd.socket/clamd.sock' /etc/clamd.d/scan.conf
 sed -i '/#LogFile\s/ c\LogFile /var/log/clamd.scan' /etc/clamd.d/scan.conf
