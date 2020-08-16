@@ -199,7 +199,7 @@ Requires:  unbound >= 1.4.20-34
     # dnf auto updates                           # base    # dnf-automatic
 Requires:  checkpolicy >= 2.5-4
     # checkpolicy                                # base    # selinux
-Requires:  policycoreutils-python >= 2.5-17.1
+%{?el7:Requires:  policycoreutils-python >= 2.5-17.1}
     # policycoreutils-python                     # base    # selinux
 %{?el7:Requires: perl-Net-DNS-Nameserver >= 0.72-6}
     # perl-Net-DNS-Nameserver                    # base    # Spamassassin
@@ -253,7 +253,9 @@ Requires: file >= 5.11-35
     # file                                       # base    # MailScanner
 Requires: eFa-base >= 4.0.0-1
     # eFa-base                                   # eFa     # eFa
-Requires: python2-certbot-apache >= 0.29.1-1
+%{?el7:Requires: python2-certbot-apache >= 0.29.1-1}
+    #                                            # epel    # mailwatch, frontend
+%{?el8:Requires: python3-certbot-apache >= 1.6.0-1}
     #                                            # epel    # mailwatch, frontend
 Requires: opendkim >= 2.11.0-0.1
     #                                            # epel    # eFa
