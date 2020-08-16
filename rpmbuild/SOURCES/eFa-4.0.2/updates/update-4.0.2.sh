@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 instancetype=$(/sbin/virt-what)
+centosver=$(cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}')
 
 retval=0
 
@@ -101,10 +102,17 @@ if [[ ! -d /var/lib/spamassassin/3.004004 ]]; then
   execcmd
 fi
 
-# Fix razor reporting
-if [[ ! -L /var/lib/php/fpm/.razor ]]; then
-  rm -rf /var/lib/php/fpm/.razor >/dev/null 2>&1
-  ln -s /var/spool/postfix/.razor /var/lib/php/fpm/.razor
+if [[ $centosver -eq 7 ]]; then
+    # Fix razor reporting
+    if [[ ! -L /var/lib/php/fpm/.razor ]]; then
+        rm -rf /var/lib/php/fpm/.razor >/dev/null 2>&1
+        ln -s /var/spool/postfix/.razor /var/lib/php/fpm/.razor
+    fi
+else
+    if [[ ! -L /var/www/html/.razor ]]; then
+        rm -rf /var/www/html/.razor >/dev/null 2>&1
+        ln -s /var/spool/postfix/.razor /var/www/html/.razor
+    fi
 fi
 
 # Enable new OLEVBMacro plugin
@@ -158,13 +166,15 @@ ln -s /etc/MailScanner/spamassassin.conf /etc/mail/spamassassin/mailscanner.cf  
 sed -i "/^Web Bug Replacement = https:\/\/s3.amazonaws.com\/msv5\/images\/spacer.gif/ c\Web Bug Replacement = http://dl.efa-project.org/static/1x1spacer.gif" /etc/MailScanner/MailScanner.conf
 
 # Update SELinux
-if [[ $instancetype != "lxc" ]]; then
-  cmd='checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te'
-  execcmd
-  cmd='semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc'
-  execcmd
-  cmd='semodule -i /var/eFa/lib/selinux/eFa.pp'
-  execcmd
+if [[ $centosver -eq 7 ]]; then
+    if [[ $instancetype != "lxc" ]]; then
+    cmd='checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te'
+    execcmd
+    cmd='semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc'
+    execcmd
+    cmd='semodule -i /var/eFa/lib/selinux/eFa.pp'
+    execcmd
+    fi
 fi
 
 cmd='systemctl daemon-reload'

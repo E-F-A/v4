@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 instancetype=$(/sbin/virt-what)
+centosver=$(cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}')
 
 retval=0
 
