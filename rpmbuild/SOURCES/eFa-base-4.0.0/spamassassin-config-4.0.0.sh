@@ -141,8 +141,8 @@ if [[ $centosver -eq 7 ]]; then
     mkdir -p /var/lib/php/fpm/.spamassassin
     chown postfix:mtagroup /var/lib/php/fpm/.spamassassin
 else
-    mkdir -p /var/www/html/.spamassassin
-    chown postfix:mtagroup /var/www/html/.spamassassin
+    mkdir -p /var/www/.spamassassin
+    chown postfix:mtagroup /var/www/.spamassassin
 fi
 
 cat > /etc/cron.daily/eFa-SAClean << 'EOF'
