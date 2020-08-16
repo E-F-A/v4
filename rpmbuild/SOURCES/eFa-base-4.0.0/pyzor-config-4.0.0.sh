@@ -38,6 +38,8 @@ chown -R postfix:mtagroup /var/spool/postfix/.pyzor
 chmod -R ug+rwx /var/spool/postfix/.pyzor
 
 # and finally initialize the servers file with an discover.
-su postfix -s /bin/bash -c 'pyzor discover'
+if [[ $centosver -eq 7 ]]; then
+    su postfix -s /bin/bash -c 'pyzor discover'
+fi
 
 echo "Configuring pyzor...done"
