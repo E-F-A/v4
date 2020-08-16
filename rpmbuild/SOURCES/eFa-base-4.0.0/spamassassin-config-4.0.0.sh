@@ -133,9 +133,14 @@ EOF
 
 chmod +x /etc/cron.daily/trim-txrep
 
-# Create .spamassassin directory (error reported in lint test)
-mkdir -p /var/lib/php/fpm/.spamassassin
-chown postfix:mtagroup /var/lib/php/fpm/.spamassassin
+if [[ $centosver -eq 7 ]]; then
+    # Create .spamassassin directory (error reported in lint test)
+    mkdir -p /var/lib/php/fpm/.spamassassin
+    chown postfix:mtagroup /var/lib/php/fpm/.spamassassin
+else
+    mkdir -p /var/www/html/.spamassassin
+    chown postfix:mtagroup /var/www/html/.spamassassin
+fi
 
 cat > /etc/cron.daily/eFa-SAClean << 'EOF'
 #!/bin/sh
