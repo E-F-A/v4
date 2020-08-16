@@ -273,11 +273,11 @@ rm -f eFa-base-4.0.0.tar.gz
 [ $? -ne 0 ] && exit 1
 tar czvf eFa-base-4.0.0.tar.gz eFa-base-4.0.0/
 [ $? -ne 0 ] && exit 1
+cd $GITPATH/rpmbuild/SPECS
+[ $? -ne 0 ] && exit 1
 rpmbuild -ba mailscanner.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/x86_64/MailScanner-*.rpm
-[ $? -ne 0 ] && exit 1
-cd $GITPATH/rpmbuild/SPECS
 [ $? -ne 0 ] && exit 1
 rpmbuild -ba dcc.spec
 [ $? -ne 0 ] && exit 1
