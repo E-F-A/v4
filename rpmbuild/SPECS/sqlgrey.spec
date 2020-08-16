@@ -1,5 +1,3 @@
-%undefine _disable_source_fetch
-
 Name:           sqlgrey
 Epoch:          1
 Version:        1.8.0
