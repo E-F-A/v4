@@ -74,8 +74,7 @@ fi
 yum -y update
 [ $? -ne 0 ] && exit 1
 
-[ $RELEASE -eq 7 ] && yum -y remove mariadb-libs
-[ $? -ne 0 ] && exit 1
+[ $RELEASE -eq 7 ] && yum -y remove mariadb-libs && [ $? -ne 0 ] && exit 1
 
 if [[ $RELEASE -eq 7 ]]; then
   yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod \
