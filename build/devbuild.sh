@@ -104,7 +104,7 @@ else
     perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-DateTime perl-Test-Warnings \
     perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
     perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \
-    libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet
+    libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet perl-strictures
     [ $? -ne 0 ] && exit 1
 fi
 

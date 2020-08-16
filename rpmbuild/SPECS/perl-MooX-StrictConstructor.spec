@@ -45,6 +45,7 @@ BuildRequires:  perl(IPC::Open3) >= 1.12
 BuildRequires:  perl(Test::Fatal) => 0.003
 BuildRequires:  perl(Test::More) => 0.98
 BuildRequires:  perl(warnings) >= 1.13
+BuildRequires:  perl(strictures) >= 2.000006
 Requires:       perl(B) >= 1.35
 Requires:       perl-Class-Method-Modifiers >= 2.10
 Requires:       perl-Moo >= 2.003006
