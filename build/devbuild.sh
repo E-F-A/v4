@@ -103,7 +103,7 @@ else
     perl-Net-CIDR perl-OLE-Storage_Lite perl-MIME-tools wget php-json perl-Test-Simple php-cli m4 perl-Path-Class \
     perl-Test-Fatal perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-DateTime perl-Test-Warnings \
     perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
-    perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \ 
+    perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \
     libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet
     [ $? -ne 0 ] && exit 1
 fi
