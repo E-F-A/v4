@@ -1,6 +1,6 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.1 initial configuration script
+# eFa 4.0.2 initial configuration script
 # v1 legacy script
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2020 https://efa-project.org
@@ -19,9 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
-# Just adding some todo's here so we don't forget them later on:
-#
-# - Configure email for yum-cron
+centosver=$(cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}')
 
 # +---------------------------------------------------+
 # Lets start asking questions.
@@ -557,9 +555,13 @@ function func_ask-timezone() {
 # +---------------------------------------------------+
 function func_ask-keyboard() {
   func_echo-header
-  echo -e "$green[eFa]$clean We will now launch the build in Keyboard layout selector"
-  pause
-  /usr/sbin/system-config-keyboard --text
+  if [[ $centosver -eq 7 ]]; then
+    echo -e "$green[eFa]$clean We will now launch the build in Keyboard layout selector"
+    pause
+
+    /usr/sbin/system-config-keyboard --text
+  fi
+  # Todo, build a selector for CentOS 8
   KEYBOARD=`localectl | grep Keymap | awk '{print $3}'`
 }
 # +---------------------------------------------------+
