@@ -1,0 +1,11 @@
+[Unit]
+Description=SQLgrey Postfix Grey-listing Policy service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/sqlgrey.pid
+ExecStart=/usr/sbin/sqlgrey -d
+
+[Install]
+WantedBy=multi-user.target

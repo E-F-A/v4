@@ -1,0 +1,19 @@
+diff -up sqlgrey-1.7.6/sqlgrey.orig sqlgrey-1.7.6/sqlgrey
+--- sqlgrey-1.7.6/sqlgrey.orig	2007-08-05 16:41:01.000000000 -0400
++++ sqlgrey-1.7.6/sqlgrey	2008-09-05 11:50:07.000000000 -0400
+@@ -827,6 +827,7 @@ sub connectdb($) {
+         $self->mylog('dbaccess', 3, "Read_hosts: ".join(', ', @read_hosts));
+ 
+ 	#Setting up cluster db's
++        no warnings 'once';
+     	$DBIx::DBCluster::CLUSTERS = {
+         		"$self->{sqlgrey}{db_host}" => {
+             		'WRITE_HOSTS'  => [$self->{sqlgrey}{db_host}],
+@@ -2447,6 +2448,7 @@ sub main()
+     no warnings 'uninitialized'; #Perl will spew warn's if running DBI only
+     if ($dflt{db_cluster} eq 'on') {
+             # if loglevel >= 4, enable debugging for DBCluster
++            no warnings 'once';
+             $DBIx::DBCluster::DEBUG = ($dflt{'loglevel'}>3)?1:0;
+ 
+             # Ugly hack to make perl shut up about about "possible typo".
