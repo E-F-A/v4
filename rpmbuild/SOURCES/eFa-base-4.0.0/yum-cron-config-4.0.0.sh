@@ -30,9 +30,13 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring automatic updates..."
 
 # Enable automatic updates in the config
-sed -i "/apply_updates =/ c\apply_updates = yes" /etc/yum/yum-cron.conf
+if [[ $centosver -eq 7 ]]; then
+    sed -i "/apply_updates =/ c\apply_updates = yes" /etc/yum/yum-cron.conf
 
-# Disable alerts from hourly cron and let yum cron handle alerts
-sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf >/dev/null 2>\&1|" /etc/cron.hourly/0yum-hourly.cron
+    # Disable alerts from hourly cron and let yum cron handle alerts
+    sed -i "s|^exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf$|exec /usr/sbin/yum-cron /etc/yum/yum-cron-hourly.conf >/dev/null 2>\&1|" /etc/cron.hourly/0yum-hourly.cron
+else
+    sed -i "/apply_updates =/ c\apply_updates = yes" /etc/dnf/automatic.conf
+fi
 
 echo "Configuring automatic updates...done"
