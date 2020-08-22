@@ -192,7 +192,7 @@ class eFaInitController extends Controller
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process("ifconfig $interface | grep inet\ | awk '{print $2}'");
+                        $process = new Process("ip add show dev $interface | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | awk -F'/' '{print $1}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -215,7 +215,7 @@ class eFaInitController extends Controller
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process("ifconfig $interface | grep inet\ | awk '{print $4}'");
+                        $process = new Process("ip add show dev $interface | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | xargs ipcalc -m | awk -F'=' {'print $2'}");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -239,7 +239,7 @@ class eFaInitController extends Controller
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process("route -n | grep $interface | grep 0.0.0.0 | awk '{print $2}' | grep -v 0.0.0.0");
+                        $process = new Process("ip -4 route list default dev $interface | awk {'print $3'}");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -263,7 +263,7 @@ class eFaInitController extends Controller
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process("ifconfig $interface | grep inet6\ | grep global | awk '{print $2}'");
+                        $process = new Process("ip add show dev $interface | grep inet6 | grep -v inet6\ ::1 | grep global | awk '{print $2}' | awk -F'/' '{print $1}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -310,7 +310,7 @@ class eFaInitController extends Controller
 
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process("route -n -6 | grep UG | grep ::/0 | awk '{print $2}'");
+                        $process = new Process("ip -6 route list default dev $interface | awk {'print $3'}");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
