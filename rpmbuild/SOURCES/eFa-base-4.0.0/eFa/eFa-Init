@@ -888,7 +888,11 @@ func_echo-header(){
 function func_configure-system() {
 
   efauserpwd=$(htpasswd -nbBC 10 "" "$efauserpwd" | tr -d ':\n')
-  efaclipwd=$(python -c "import crypt; print(crypt.crypt('$efaclipwd', crypt.mksalt(crypt.METHOD_SHA512)))")
+  if [[ centosver -eq 7 ]]; then
+    efaclipwd=$(python -c "import crypt; print(crypt.crypt('$efaclipwd', crypt.mksalt(crypt.METHOD_SHA512)))")
+  else
+    efaclipwd=$(python3 -c "import crypt; print(crypt.crypt('$efaclipwd', crypt.mksalt(crypt.METHOD_SHA512)))")
+  fi
 
   /usr/sbin/eFa-Commit --commitall --verbose --hostname=$HOSTNAME --domainname=$DOMAINNAME \
       --ipv4address=$IPV4ADDRESS --ipv6address=$IPV6ADDRESS --dnsip1=$DNS1 --dnsip2=$DNS2 \
