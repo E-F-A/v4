@@ -1113,9 +1113,6 @@ EOF
   if [[ $centosver -eq 7 ]]; then
     systemctl enable yum-cron
     [ $? -ne 0 ] && exit 1
-  else
-    systemctl enable dnf-automatic
-    [ $? -ne 0 ] && exit 1
   fi
   systemctl enable sshd
   [ $? -ne 0 ] && exit 1
