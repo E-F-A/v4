@@ -50,8 +50,8 @@ sed -i "/^    echo ' running on ' . efa_version/ c\    echo ' running on ' . efa
 [[ -f /usr/sbin/eFa-Commit ]] && rm -f /usr/sbin/eFa-Commit
 
 # Retrieve gateways for ipv4 and ipv6
-IPV4GATEWAY=$(/usr/sbin/route -n | grep ^0\.0\.0\.0 | awk '{print $2}')
-IPV6GATEWAY=$(/usr/sbin/route -n -6 | grep UG | grep ::/0 | awk '{print $2}')
+IPV4GATEWAY=$(ip -4 route list default | awk {'print $3'})
+IPV6GATEWAY=$(ip -6 route list default | awk {'print $3'})
 
 # Do we have Internet access?
 
