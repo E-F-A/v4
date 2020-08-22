@@ -144,7 +144,7 @@ After=network-online.target
 ExecStart=/etc/rc.local
 
 [Install]
-WatedBy=multi-user.target
+WantedBy=multi-user.target
 EOF
     systemctl enable eFaFirstBoot
 fi
