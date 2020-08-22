@@ -5,6 +5,7 @@
 function func_lets-encrypt() {
   func_echo-header
 
+  centosver=$(cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}')
   HOSTNAME=$(grep ^HOSTNAME /etc/eFa/eFa-Config | sed 's/^.*://')
   DOMAINNAME=$(grep ^DOMAINNAME /etc/eFa/eFa-Config | sed 's/^.*://')
   FQDN=$HOSTNAME.$DOMAINNAME
@@ -76,7 +77,11 @@ function func_lets-encrypt() {
         systemctl reload httpd
         # Add a cron job to renew cert
         if [[ ! -f /etc/cron.d/certbotrenew ]]; then
-          echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --pre-hook /usr/sbin/certbot-pre --post-hook /usr/sbin/certbot-post >/dev/null 2>&1' > /etc/cron.d/certbotrenew
+          if [[ $centosver -eq 7 ]]; then
+            echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --pre-hook /usr/sbin/certbot-pre --post-hook /usr/sbin/certbot-post >/dev/null 2>&1' > /etc/cron.d/certbotrenew
+          else
+            echo '0 0,12 * * * root python3 -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --pre-hook /usr/sbin/certbot-pre --post-hook /usr/sbin/certbot-post >/dev/null 2>&1' > /etc/cron.d/certbotrenew
+          fi
           echo -e "if [[ -z \$(firewall-cmd --list-ports | grep 80/tcp) && -z \$(firewall-cmd --list-services | grep -e \ http\ )]]; then\n  firewall-cmd --add-service http && touch /httpopen\nfi" >/usr/sbin/certbot-pre
           echo -e "if [[ -f /httpopen ]]; then\n  rm -f /httpopen\n  firewall-cmd --remove-service http\nfi\nsystemctl reload httpd\nsystemctl restart postfix" >/usr/sbin/certbot-post
           chmod +x /usr/sbin/certbot-pre
