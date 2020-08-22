@@ -29,10 +29,14 @@ source /usr/src/eFa/eFa-settings.inc
 #-----------------------------------------------------------------------------#
 echo "Configuring razor..."
 mkdir /var/spool/postfix/.razor
-ln -s /var/spool/postfix/.razor /var/www/.razor
+
 if [[ $centosver -eq 7 ]]; then
+    ln -s /var/spool/postfix/.razor /var/www/.razor
     ln -s /var/spool/postfix/.razor /var/lib/php/fpm/.razor
+else
+    ln -s /var/spool/postfix/.razor /usr/share/httpd/.razor
 fi
+
 chown postfix:mtagroup /var/spool/postfix/.razor
 chmod -R ug+rwx /var/spool/postfix/.razor
 
