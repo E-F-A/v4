@@ -1303,8 +1303,13 @@ class eFaInitController extends Controller
         $output = '<br/>eFa -- Configuring CLI<br/>' . $output;
 
         try {
+            $centosver = exec("cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}'");
             $password = $session->get('clipassword');
-            $password = exec("python -c \"import crypt; print(crypt.crypt('" . $password . "', crypt.mksalt(crypt.METHOD_SHA512)))\"");
+            if ($centosver === "7" ) {
+                $password = exec("python -c \"import crypt; print(crypt.crypt('" . $password . "', crypt.mksalt(crypt.METHOD_SHA512)))\"");
+            } else {
+                $password = exec("python3 -c \"import crypt; print(crypt.crypt('" . $password . "', crypt.mksalt(crypt.METHOD_SHA512)))\"");
+            }
             $process = new Process("sudo /usr/sbin/eFa-Commit --configcli --cliusername=" .  $session->get('cliusername') . " --efaclipwd='" . $password . "'");
             $process->setTimeout($this->timeout);
             $process->mustRun();
