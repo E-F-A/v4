@@ -101,7 +101,7 @@ function func_ask-ipv4address() {
 
   # Display current IP and ask for new, then validate the IP.
   #CIPV4ADDRESS=`ifconfig $INTERFACE | grep inet\ | awk '{print $2}'`
-  CIPV4ADDRESS=$(ip add | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | awk -F'/' '{print $1}')
+  CIPV4ADDRESS=$(ip add show dev $INTERFACE | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | awk -F'/' '{print $1}')
   echo -e ""
   echo -e "$green[eFa]$clean Your current IP address is: $CIPADDRESS"
   echo -e ""
@@ -131,7 +131,7 @@ function func_ask-ipv6address() {
 
   # Display current IP and ask for new, then validate the IP.
   #CIPV6ADDRESS=`ifconfig $INTERFACE | grep inet6\ | grep global | awk '{print $2}'`
-  CIPV6ADDRESS=$(ip add | grep "inet6" | grep -v inet6\ ::1 | grep global | awk '{print $2}' | awk -F'/' '{print $1}')
+  CIPV6ADDRESS=$(ip add show dev $INTERFACE | grep inet6 | grep -v inet6\ ::1 | grep global | awk '{print $2}' | awk -F'/' '{print $1}')
   echo -e ""
   echo -e "$green[eFa]$clean Your current IPv6 address is: $CIPV6ADDRESS"
   echo -e ""
@@ -190,7 +190,7 @@ function func_ask-ipv4netmask() {
 
   # Display current netmask and ask for new, then validate the netmask
   #CIPV4NETMASK=`ifconfig $INTERFACE | grep inet\ | awk '{print $4}'`
-  CIPV4NETMASK=$(ip add | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | xargs ipcalc -m | awk -F'=' {'print $2'})
+  CIPV4NETMASK=$(ip add show dev $INTERFACE | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | xargs ipcalc -m | awk -F'=' {'print $2'})
   echo -e ""
   echo -e "$green[eFa]$clean Your current netmask is: $CIPV4NETMASK"
   echo -e ""
@@ -220,7 +220,7 @@ function func_ask-ipv4gateway() {
 
   # Display current gateway
   #CIPV4GATEWAY=`route -n | grep $INTERFACE | grep 0.0.0.0 | awk '{print $2}' | grep -v 0.0.0.0`
-  CIPV4GATEWAY=$(ip -4 route list default | awk {'print $3'})
+  CIPV4GATEWAY=$(ip -4 route list default dev $INTERFACE | awk {'print $3'})
   echo -e ""
   echo -e "$green[eFa]$clean Your current default gateway is: $CIPV4GATEWAY"
   echo -e ""
@@ -250,7 +250,7 @@ function func_ask-ipv6gateway() {
 
   # Display current gateway
   #CIPV6GATEWAY=`route -n -6 | grep UG | grep ::/0 | awk '{print $2}'`
-  CIPV6GATEWAY=$(ip -6 route list default | awk {'print $3'})
+  CIPV6GATEWAY=$(ip -6 route list default dev $INTERFACE | awk {'print $3'})
   echo -e ""
   echo -e "$green[eFa]$clean Your current default gateway is: $CIPV6GATEWAY"
   echo -e ""
