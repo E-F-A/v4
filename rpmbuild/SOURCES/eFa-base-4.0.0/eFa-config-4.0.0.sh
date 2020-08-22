@@ -83,37 +83,35 @@ sed -i "s/#compress/compress/g" /etc/logrotate.conf
 
 # Is this a full vm or physical and not a container?
 if [[ "$instancetype" != "lxc" ]]; then
-    if [[ $centosver -eq 7 ]]; then
-        # Needed for apache to access postfix
-        setsebool -P daemons_enable_cluster_mode 1
+    # Needed for apache to access postfix
+    setsebool -P daemons_enable_cluster_mode 1
 
-        # Needed for apache to exec binaries on server side
-        setsebool -P httpd_ssi_exec 1
+    # Needed for apache to exec binaries on server side
+    setsebool -P httpd_ssi_exec 1
 
-        # Needed for clamd to access system
-        setsebool -P antivirus_can_scan_system 1
-        setsebool -P clamd_use_jit 1
+    # Needed for clamd to access system
+    setsebool -P antivirus_can_scan_system 1
+    setsebool -P clamd_use_jit 1
 
-        # Needed for mailscanner to bind to tcp_socket
-        setsebool -P nis_enabled 1
+    # Needed for mailscanner to bind to tcp_socket
+    setsebool -P nis_enabled 1
 
-        # Needed for mailscanner to preserve tmpfs
-        setsebool -P rsync_full_access 1
+    # Needed for mailscanner to preserve tmpfs
+    setsebool -P rsync_full_access 1
 
-        # Needed for httpd to connect to razor
-        setsebool -P httpd_can_network_connect 1
+    # Needed for httpd to connect to razor
+    setsebool -P httpd_can_network_connect 1
 
-        # Allow httpd to write content
-        setsebool -P httpd_unified 1
+    # Allow httpd to write content
+    setsebool -P httpd_unified 1
 
-        # Allow httpd to read content
-        setsebool -P httpd_read_user_content 1
+    # Allow httpd to read content
+    setsebool -P httpd_read_user_content 1
 
-        # eFa policy module
-        checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te
-        semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc
-        semodule -i /var/eFa/lib/selinux/eFa.pp
-    fi
+    # eFa policy module
+    checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te
+    semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc
+    semodule -i /var/eFa/lib/selinux/eFa.pp
 fi
 
 # Set eFa-Init to run at first root login:
