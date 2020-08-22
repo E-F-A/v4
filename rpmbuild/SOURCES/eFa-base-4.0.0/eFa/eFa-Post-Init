@@ -29,7 +29,7 @@
 if [[ -f /var/run/eFa-Post-Init.lock ]]; then
   # Check for running process
   CHECKPOST=$(ps -ef | grep eFa-Post-Init | wc -l)
-  if [[ $CHECKPOST -gt 2 ]]; then
+  if [[ $CHECKPOST -gt 3 ]]; then
     # Another post init is running, exit now
     exit 0
   fi
