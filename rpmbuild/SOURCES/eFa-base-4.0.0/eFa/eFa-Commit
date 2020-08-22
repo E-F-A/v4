@@ -34,18 +34,16 @@ function randompw()
 # Install Open VM Tools
 # +---------------------------------------------------+
 func_Install-OpenVMTools(){
-  yum -y install glib2-devel pam-devel libdnet-devel gcc-c++ libicu-devel open-vm-tools
-  [ $? -ne 0 ] && exit 1
-  systemctl enable vmtoolsd
-  [ $? -ne 0 ] && exit 1
-  if [[ $centosver -eq 7 ]]; then
+    yum -y install glib2-devel pam-devel libdnet-devel gcc-c++ libicu-devel open-vm-tools
+    [ $? -ne 0 ] && exit 1
+    systemctl enable vmtoolsd
+    [ $? -ne 0 ] && exit 1
     checkmodule -M -m -o /var/eFa/lib/selinux/eFavmtools.mod /var/eFa/lib/selinux/eFavmtools.te
     [ $? -ne 0 ] && exit 1
     semodule_package -o /var/eFa/lib/selinux/eFavmtools.pp -m /var/eFa/lib/selinux/eFavmtools.mod
     [ $? -ne 0 ] && exit 1
     semodule -i /var/eFa/lib/selinux/eFavmtools.pp
     [ $? -ne 0 ] && exit 1
-  fi
 }
 # +---------------------------------------------------+
 
@@ -53,20 +51,18 @@ func_Install-OpenVMTools(){
 # Install Hyper-V Tools
 # +---------------------------------------------------+
 func_Install-HyperVTools(){
-  yum -y install hyperv-tools hyperv-daemons hypervkvpd hypervvssd
-  [ $? -ne 0 ] && exit 1
-  systemctl enable hypervkvpd
-  [ $? -ne 0 ] && exit 1
-  systemctl enable hypervvssd
-  [ $? -ne 0 ] && exit 1
-  if [[ $centosver -eq 7 ]]; then
+    yum -y install hyperv-tools hyperv-daemons hypervkvpd hypervvssd
+    [ $? -ne 0 ] && exit 1
+    systemctl enable hypervkvpd
+    [ $? -ne 0 ] && exit 1
+    systemctl enable hypervvssd
+    [ $? -ne 0 ] && exit 1
     checkmodule -M -m -o /var/eFa/lib/selinux/eFahyperv.mod /var/eFa/lib/selinux/eFahyperv.te
     [ $? -ne 0 ] && exit 1
     semodule_package -o /var/eFa/lib/selinux/eFahyperv.pp -m /var/eFa/lib/selinux/eFahyperv.mod
     [ $? -ne 0 ] && exit 1
     semodule -i /var/eFa/lib/selinux/eFahyperv.pp
     [ $? -ne 0 ] && exit 1
-  fi
 }
 # +---------------------------------------------------+
 
@@ -74,18 +70,16 @@ func_Install-HyperVTools(){
 # Install QEMU Agent
 # +---------------------------------------------------+
 func_Install-QEMUAgent(){
-  yum -y install qemu-guest-agent
-  [ $? -ne 0 ] && exit 1
-  systemctl enable qemu-guest-agent
-  [ $? -ne 0 ] && exit 1
-  if [[ $centosver -eq 7 ]]; then
+    yum -y install qemu-guest-agent
+    [ $? -ne 0 ] && exit 1
+    systemctl enable qemu-guest-agent
+    [ $? -ne 0 ] && exit 1
     checkmodule -M -m -o /var/eFa/lib/selinux/eFaqemu.mod /var/eFa/lib/selinux/eFaqemu.te
     [ $? -ne 0 ] && exit 1
     semodule_package -o /var/eFa/lib/selinux/eFaqemu.pp -m /var/eFa/lib/selinux/eFaqemu.mod
     [ $? -ne 0 ] && exit 1
     semodule -i /var/eFa/lib/selinux/eFaqemu.pp
     [ $? -ne 0 ] && exit 1
-  fi
 }
 # +---------------------------------------------------+
 
@@ -1019,14 +1013,12 @@ fi
 
 if [[ $finalize -eq 1 ]]; then
   virtplatform=`/usr/sbin/virt-what`
-  if [[ $centosver -eq 7 ]]; then
-    if [[ "$virtplatform" != "lxc" ]]; then
-        # Reset selinux labels
-        touch /.autorelabel
-        [ $? -ne 0 ] && exit 1
+  if [[ "$virtplatform" != "lxc" ]]; then
+    # Reset selinux labels
+    touch /.autorelabel
+    [ $? -ne 0 ] && exit 1
 
-        sed -i "/^SELINUX=/ c\SELINUX=enforcing" /etc/selinux/config
-    fi
+    sed -i "/^SELINUX=/ c\SELINUX=enforcing" /etc/selinux/config
   fi
 
   rm -f /etc/issue
