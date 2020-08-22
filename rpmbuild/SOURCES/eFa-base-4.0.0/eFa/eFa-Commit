@@ -1038,6 +1038,10 @@ if [[ $finalize -eq 1 ]]; then
       touch /etc/rc.d/rc.local
   fi
 
+  if [[$centosver -eq 8 ]]; then
+    systemctl disable eFaFirstBoot
+  fi
+
   # Remove GUI eFaInit
   rm -f /etc/httpd/conf.d/eFaInit.conf
   [ $? -ne 0 ] && exit 1
