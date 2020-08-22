@@ -452,8 +452,10 @@ if [[ $startmariadb -eq 1 ]]; then
   /usr/bin/mysqladmin -u root password "$password"
 
   /usr/bin/mysqladmin -u root -p"$password" -h localhost.localdomain password "$password"
-
-  echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
+  
+  if [[ centosver -eq 7 ]]; then
+    echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
+  fi
 
   /usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='';"
 
