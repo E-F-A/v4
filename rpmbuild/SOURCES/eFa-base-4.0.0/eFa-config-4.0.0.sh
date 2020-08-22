@@ -132,6 +132,23 @@ echo '' >> /etc/issue
 echo -e "IP Address(es) for GUI:\n$IP" >> /etc/issue
 EOF
 chmod +x /etc/rc.d/rc.local
+
+if [[ $centosver -eq 8 ]]; then
+    # Use a systemd unit for CentOS 8 (rc.local executes too early)
+    cat >> /etc/systemd/system/eFaFirstBoot.service << 'EOF'
+[Unit]
+Description=eFa First Boot Service
+After=network-online.target
+
+[Service]
+ExecStart=/etc/rc.local
+
+[Install]
+WatedBy=multi-user.target
+EOF
+    systemctl enable eFaFirstBoot
+fi
+
 # Set the system as unconfigured
 mkdir -p /etc/eFa
 echo 'CONFIGURED:NO' > /etc/eFa/eFa-Config
