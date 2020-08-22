@@ -1044,7 +1044,7 @@ if [[ $finalize -eq 1 ]]; then
       touch /etc/rc.d/rc.local
   fi
 
-  if [[$centosver -eq 8 ]]; then
+  if [[ $centosver -eq 8 ]]; then
     systemctl disable eFaFirstBoot
   fi
 
@@ -1110,8 +1110,13 @@ EOF
   #chkconfig munin-node off
   systemctl enable chronyd
   [ $? -ne 0 ] && exit 1
-  systemctl enable yum-cron
-  [ $? -ne 0 ] && exit 1
+  if [[ $centosver -eq 7 ]]; then
+    systemctl enable yum-cron
+    [ $? -ne 0 ] && exit 1
+  else
+    systemctl enable dnf-automatic
+    [ $? -ne 0 ] && exit 1
+  fi
   systemctl enable sshd
   [ $? -ne 0 ] && exit 1
   systemctl enable php-fpm
