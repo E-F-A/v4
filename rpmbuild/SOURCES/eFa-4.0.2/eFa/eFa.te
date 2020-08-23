@@ -158,6 +158,8 @@ allow httpd_t mailwatchsql_etc_t:file { getattr read open };
 # allow ps to read MailScanner process
 allow httpd_sys_script_t unconfined_t:dir { getattr search };
 allow httpd_sys_script_t unconfined_t:file { open read };
+allow httpd_sys_script_t unconfined_service_t:dir { getattr search };
+allow httpd_sys_script_t unconfined_service_t:file { open read };
 allow httpd_sys_script_t mscan_t:dir { getattr search };
 allow httpd_sys_script_t mscan_t:file { ioctl open read };
 allow httpd_sys_script_t mscan_exec_t:dir { getattr search };
