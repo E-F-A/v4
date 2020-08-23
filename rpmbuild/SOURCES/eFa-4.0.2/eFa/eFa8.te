@@ -107,6 +107,10 @@ require {
     type ntpd_t;
     type dhcpc_t;
     type admin_home_t;
+    type sssd_t;
+    type systemd_resolved_t;
+    type unconfined_dbusd_t;
+    type gpg_agent_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -291,7 +295,15 @@ dontaudit httpd_sys_script_t ntpd_t:dir { getattr search };
 dontaudit httpd_sys_script_t ntpd_t:file { read open };
 dontaudit httpd_sys_script_t dhcpc_t:dir { getattr search };
 dontaudit httpd_sys_script_t dhcpc_t:file { read open };
-
+# CentOS 8
+dontaudit httpd_sys_script_t sssd_t:dir { getattr search };
+dontaudit httpd_sys_script_t sssd_t:file { read open };
+dontaudit httpd_sys_script_t systemd_resolved_t:dir { getattr search };
+dontaudit httpd_sys_script_t systemd_resolved_t:file { read open };
+dontaudit httpd_sys_script_t unconfined_dbusd_t:dir { getattr search };
+dontaudit httpd_sys_script_t unconfined_dbusd_t:file { read open };
+dontaudit httpd_sys_script_t gpg_agent_t:dir { getattr search };
+dontaudit httpd_sys_script_t gpg_agent_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
