@@ -619,6 +619,10 @@ if [[ $configdns -eq 1 ]]; then
   # Disable nm from overriding dns
   sed -i "/^\[main\]$/ a\dns=none" /etc/NetworkManager/NetworkManager.conf
 
+  # Reset resolv.conf in case of override (CentOS 8)
+  echo "nameserver 127.0.0.1" > /etc/resolv.conf
+  echo "nameserver ::1" >> /etc/resolv.conf
+
   echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
   [ $? -ne 0 ] && exit 1
   echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
