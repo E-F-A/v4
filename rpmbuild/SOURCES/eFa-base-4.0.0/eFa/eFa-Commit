@@ -947,7 +947,7 @@ if [[ $configapache -eq 1 ]]; then
 fi
 
 if [[ $configyumcron -eq 1 ]]; then
-  if [[$centosver -eq 7 ]]; then
+  if [[ $centosver -eq 7 ]]; then
     sed -i "/^email_from =/ c\email_from = root@$HOSTNAME.$DOMAINNAME" /etc/yum/yum-cron.conf
     [ $? -ne 0 ] && exit 1
     sed -i "/^email_to =/ c\email_to = $ADMINEMAIL" /etc/yum/yum-cron.conf
@@ -956,6 +956,7 @@ if [[ $configyumcron -eq 1 ]]; then
     sed -i "/^email_from =/ c\email_from = root@$HOSTNAME.$DOMAINNAME" /etc/dnf/automatic.conf
     [ $? -ne 0 ] && exit 1
     sed -i "/^email_to =/ c\email_to = $ADMINEMAIL" /etc/dnf/automatic.conf
+    [ $? -ne 0 ] && exit 1
   fi
 fi
 
