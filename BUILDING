@@ -43,7 +43,7 @@ sudo bash build.bash
 # install on a vps, LXC container, or other existing CentOS instance
 #######################################################################
 
-curl -O https://dl.efa-project.org/build/4/build.bash
+wget -O build.bash https://install.efa-project.org
 chmod +x build.bash
 ./build.bash testing
 
