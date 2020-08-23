@@ -97,7 +97,7 @@ fi
 #-----------------------------------------------------------------------------#
 logthis "Checking network connectivity"
 # use curl to test in case wget not installed yet.
-curl -s --connect-timeout 3 --max-time 5 --retry 3 --retry-delay 0 --retry-max-time 30 "${mirror}" > /dev/null
+curl -s --connect-timeout 3 --max-time 10 --retry 3 --retry-delay 0 --retry-max-time 30 "${mirror}" > /dev/null
 if [[ $? -eq 0 ]]; then
   logthis "OK - $mirror is reachable"
 else

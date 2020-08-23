@@ -1,5 +1,5 @@
 
-module eFa 1.0.22;
+module eFa 1.0.23;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -114,6 +114,7 @@ require {
     type antivirus_var_run_t;
     type mysqld_var_run_t;
     type rsync_t;
+    type gssproxy_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename map };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -311,6 +312,8 @@ dontaudit httpd_sys_script_t unconfined_dbusd_t:dir { getattr search };
 dontaudit httpd_sys_script_t unconfined_dbusd_t:file { read open };
 dontaudit httpd_sys_script_t gpg_agent_t:dir { getattr search };
 dontaudit httpd_sys_script_t gpg_agent_t:file { read open };
+dontaudit httpd_sys_script_t gssproxy_t:dir { getattr search };
+dontaudit httpd_sys_script_t gssproxy_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -415,7 +418,7 @@ allow mscan_t mysqld_var_run_t:sock_file { write };
 allow mscan_t mscan_t:process { setsched };
 
 #============= greylist_milter_t ==============
-allow greylist_milter_t self:capability kill;
+allow greylist_milter_t self:capability { kill dac_override };
 allow greylist_milter_t mysqld_port_t:tcp_socket name_connect;
 allow greylist_milter_t tmp_t:dir { add_name write create };
 allow greylist_milter_t tmp_t:file { create write };
