@@ -242,6 +242,13 @@ if [[ $instancetype != "lxc" ]]; then
     execcmd
     cmd='semodule -i /var/eFa/lib/selinux/eFa.pp'
     execcmd
+  else
+    cmd='checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa8.te'
+    execcmd
+    cmd='semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc'
+    execcmd
+    cmd='semodule -i /var/eFa/lib/selinux/eFa.pp'
+    execcmd
   fi
 fi
 
@@ -363,12 +370,10 @@ cmd='echo "d /var/run/clamd.socket 0750 clamscan mtagroup -" > /etc/tmpfiles.d/c
 execcmd
 cmd='sed -i "/^Clamd Socket =/ c\Clamd Socket = /var/run/clamd.socket/clamd.sock" /etc/MailScanner/MailScanner.conf'
 execcmd
-if [[ $centosver -eq 7 ]]; then
-    cmd='chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.socket'
-    [[ $instancetype != "lxc" ]] && execcmd
-    cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
-    [[ $instancetype != "lxc" ]] && execcmd
-fi
+cmd='chcon -u system_u -r object_r -t antivirus_var_run_t /var/run/clamd.socket'
+[[ $instancetype != "lxc" ]] && execcmd
+cmd='semanage fcontext -a -t antivirus_var_run_t /var/run/clamd.socket'
+[[ $instancetype != "lxc" ]] && execcmd
 
 # Fix postfix mailbox size
 cmd='postconf -e "mailbox_size_limit = 133169152"'
@@ -576,26 +581,22 @@ cmd='mkdir /var/lib/mysql/temp && chown mysql:mysql /var/lib/mysql/temp'
 
 # Increase TimeoutSec for clamd@scan
 if [[ ! -f /etc/systemd/system/clamd@scan.service.d/override.conf ]]; then
-  mkdir -p /etc/systemd/system/clamd@scan.service.d
-  echo -e "[Service]\nTimeoutSec=900\n" > /etc/systemd/system/clamd@scan.service.d/override.conf
-  if [[ $centosver -eq 7 ]]; then
+    mkdir -p /etc/systemd/system/clamd@scan.service.d
+    echo -e "[Service]\nTimeoutSec=900\n" > /etc/systemd/system/clamd@scan.service.d/override.conf
     cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/clamd@scan.service.d'
     [[ $instancetype != "lxc" ]] && execcmd
     cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/clamd@scan.service.d/override.conf'
     [[ $instancetype != "lxc" ]] && execcmd
-  fi
 fi
 
 # Increase TimeoutSec for mariadb
 if [[ ! -f /etc/systemd/system/mariadb.service.d/override.conf ]]; then
-  mkdir -p /etc/systemd/system/mariadb.service.d
-  echo -e "[Service]\nTimeoutSec=900\n" > /etc/systemd/system/mariadb.service.d/override.conf
-  if [[ $centosver -eq 7 ]]; then
+    mkdir -p /etc/systemd/system/mariadb.service.d
+    echo -e "[Service]\nTimeoutSec=900\n" > /etc/systemd/system/mariadb.service.d/override.conf
     cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d'
     [[ $instancetype != "lxc" ]] && execcmd
     cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d/override.conf'
     [[ $instancetype != "lxc" ]] && execcmd
-  fi
 fi
 
 cmd='systemctl daemon-reload'
