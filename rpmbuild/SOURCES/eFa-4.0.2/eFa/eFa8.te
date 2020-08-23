@@ -113,6 +113,7 @@ require {
     type gpg_agent_t;
     type antivirus_var_run_t;
     type mysqld_var_run_t;
+    type rsync_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename map };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
