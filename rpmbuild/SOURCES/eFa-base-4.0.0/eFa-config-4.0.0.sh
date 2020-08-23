@@ -109,7 +109,11 @@ if [[ "$instancetype" != "lxc" ]]; then
     setsebool -P httpd_read_user_content 1
 
     # eFa policy module
-    checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te
+    if [[ $centosver -eq 7 ]]; then
+        checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa.te
+    else
+        checkmodule -M -m -o /var/eFa/lib/selinux/eFa.mod /var/eFa/lib/selinux/eFa8.te
+    fi
     semodule_package -o /var/eFa/lib/selinux/eFa.pp -m /var/eFa/lib/selinux/eFa.mod -f /var/eFa/lib/selinux/eFa.fc
     semodule -i /var/eFa/lib/selinux/eFa.pp
 fi
