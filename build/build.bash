@@ -62,13 +62,17 @@ fi
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
-# check if we run CentOS 7
+# check if we run CentOS 7 or 8
 #-----------------------------------------------------------------------------#
 OSVERSION=`cat /etc/centos-release`
 if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
   logthis "Good you are running CentOS 7"
+  RELEASE=7
+elif [[ $OSVERSION =~ .*'release 8.'.* ]]; then
+  logthis "Good you are running CentOS 8"
+  RELEASE=8
 else
-  logthis "ERROR: You are not running CentOS 7"
+  logthis "ERROR: You are not running CentOS 7 or 8"
   logthis "ERROR: Unsupported system, stopping now"
   logthis "^^^^^^^^^^ SCRIPT ABORTED ^^^^^^^^^^"
   exit 1
@@ -144,18 +148,29 @@ aCTN=(testing kstesting testingnoefa)
 case "${aCTN[@]}" in
     ("$action "*|*" $action "*|*" $action")
        if [ ! -f /etc/yum.repos.d/eFa4-testing.repo ]; then
-           logthis "Adding eFa Testing Repo"
-           rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
-           curl -L $mirror/rpm/eFa4/eFa4-testing.repo -o /etc/yum.repos.d/eFa4-testing.repo
+            if [[ $RELEASE -eq 7 ]]; then
+                logthis "Adding eFa CentOS 7 Testing Repo"
+                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                curl -L $mirror/rpm/eFa4/eFa4-testing.repo -o /etc/yum.repos.d/eFa4-testing.repo
+            else
+                logthis "Adding eFa CentOS 8 Testing Repo"
+                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8-testing.repo -o /etc/yum.repos.d/eFa4-centos8-testing.repo
+            fi
        fi
        ;;
 
-    *) if [ ! -f /etc/yum.repos.d/eFa4.repo ]; then
-           logthis "Adding eFa Repo"
-           rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
-           curl -L $mirror/rpm/eFa4/eFa4.repo -o /etc/yum.repos.d/eFa4.repo
-       fi
-       ;;
+    *)  if [[ $RELEASE -eq 7 ]]; then
+            if [ ! -f /etc/yum.repos.d/eFa4.repo ]; then
+                logthis "Adding eFa Repo"
+                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                curl -L $mirror/rpm/eFa4/eFa4.repo -o /etc/yum.repos.d/eFa4.repo
+            fi
+        else
+          logthis "CentOS 8 Production Repo Coming Soon"
+          exit 1
+        fi
+        ;;
 esac
 #-----------------------------------------------------------------------------#
 
@@ -179,18 +194,24 @@ fi
 #-----------------------------------------------------------------------------#
 # ius repo
 #-----------------------------------------------------------------------------#
-rpm -q ius-release >/dev/null 2>&1
-if [ $? -ne 0 ]; then
-    logthis "Installing IUS Repo"
-    yum -y install https://repo.ius.io/ius-release-el7.rpm
-    if [ $? -eq 0 ]; then
-        logthis "IUS repo installed"
-        rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
-    else
-        logthis "ERROR: IUS installation failed"
-        logthis "^^^^^^^^^^ SCRIPT ABORTED ^^^^^^^^^^"
-        exit 1
+if [[ $RELEASE -eq 7 ]]; then
+    rpm -q ius-release >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        logthis "Installing IUS Repo"
+        yum -y install https://repo.ius.io/ius-release-el7.rpm
+        if [ $? -eq 0 ]; then
+            logthis "IUS repo installed"
+            rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
+        else
+            logthis "ERROR: IUS installation failed"
+            logthis "^^^^^^^^^^ SCRIPT ABORTED ^^^^^^^^^^"
+            exit 1
+        fi
     fi
+else
+    logthis "Enabling CentOS 8 PowerTools Repo"
+    yum config-manager --set-enabled PowerTools
+    [ $? -ne 0 ] && exit 1
 fi
 #-----------------------------------------------------------------------------#
 
