@@ -316,7 +316,7 @@ dontaudit httpd_sys_script_t gpg_agent_t:file { read open };
 allow httpd_sys_script_t etc_mail_t:dir search;
 allow httpd_sys_script_t spamd_var_lib_t:dir { getattr search read open };
 allow httpd_sys_script_t etc_mail_t:dir { getattr read open };
-allow httpd_sys_script_t spamd_var_lib_t:file { getattr read open ioctl execute };
+allow httpd_sys_script_t spamd_var_lib_t:file { getattr read open ioctl execute map };
 allow httpd_sys_script_t etc_mail_t:file { getattr read open ioctl };
 allow httpd_sys_script_t etc_mail_t:lnk_file { getattr read };
 allow httpd_sys_script_t mscan_etc_t:dir { getattr search open read };
