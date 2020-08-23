@@ -1,5 +1,5 @@
 
-module eFa 1.0.23;
+module eFa 1.0.24;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -115,6 +115,7 @@ require {
     type mysqld_var_run_t;
     type rsync_t;
     type gssproxy_t;
+    type setroubleshootd_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename map };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -303,7 +304,6 @@ dontaudit httpd_sys_script_t ntpd_t:dir { getattr search };
 dontaudit httpd_sys_script_t ntpd_t:file { read open };
 dontaudit httpd_sys_script_t dhcpc_t:dir { getattr search };
 dontaudit httpd_sys_script_t dhcpc_t:file { read open };
-# CentOS 8
 dontaudit httpd_sys_script_t sssd_t:dir { getattr search };
 dontaudit httpd_sys_script_t sssd_t:file { read open };
 dontaudit httpd_sys_script_t systemd_resolved_t:dir { getattr search };
@@ -314,6 +314,8 @@ dontaudit httpd_sys_script_t gpg_agent_t:dir { getattr search };
 dontaudit httpd_sys_script_t gpg_agent_t:file { read open };
 dontaudit httpd_sys_script_t gssproxy_t:dir { getattr search };
 dontaudit httpd_sys_script_t gssproxy_t:file { read open };
+dontaudit httpd_sys_script_t setroubleshootd_t:dir { getattr search };
+dontaudit httpd_sys_script_t setroubleshootd_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -416,6 +418,7 @@ allow mscan_t httpd_sys_content_t:file getattr;
 allow mscan_t self:capability dac_override;
 allow mscan_t mysqld_var_run_t:sock_file { write };
 allow mscan_t mscan_t:process { setsched };
+allow mscan_t antivirus_var_run_t:sock_file { getattr write };
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability { kill dac_override };
