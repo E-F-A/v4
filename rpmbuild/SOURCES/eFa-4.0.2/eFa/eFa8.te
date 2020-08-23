@@ -111,7 +111,8 @@ require {
     type systemd_resolved_t;
     type unconfined_dbusd_t;
     type gpg_agent_t;
-    class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
+    type antivirus_var_run_t;
+    class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename map };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
     class unix_stream_socket connectto;
@@ -154,6 +155,7 @@ allow httpd_t mscan_spool_t:dir { read write remove_name };
 allow httpd_t mscan_spool_t:file { read getattr open unlink };
 allow httpd_t tmpfs_t:file getattr;
 allow httpd_t sqlgreysql_etc_t:file { open getattr read };
+allow httpd_t antivirus_var_run_t:sock_file { getattr };
 
 # Allow access to MailWatch-Configuration
 allow httpd_t mailwatchsql_etc_t:file { getattr read open };
@@ -312,14 +314,14 @@ allow httpd_sys_script_t etc_mail_t:dir { getattr read open };
 allow httpd_sys_script_t spamd_var_lib_t:file { getattr read open ioctl execute };
 allow httpd_sys_script_t etc_mail_t:file { getattr read open ioctl };
 allow httpd_sys_script_t etc_mail_t:lnk_file { getattr read };
-allow httpd_sys_script_t mscan_etc_t:dir { search open read };
+allow httpd_sys_script_t mscan_etc_t:dir { getattr search open read };
 allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl lock };
 allow httpd_sys_script_t mscan_etc_t:lnk_file read;
 allow httpd_sys_script_t mscan_spool_t:file { getattr read open lock create write append setattr unlink };
 allow httpd_sys_script_t dcc_var_t:dir { getattr search write add_name remove_name };
 allow httpd_sys_script_t dcc_var_t:sock_file { getattr write };
 allow httpd_sys_script_t dcc_var_t:file { getattr create open lock rename unlink read write };
-allow httpd_sys_script_t dcc_client_map_t:file { getattr open read write lock };
+allow httpd_sys_script_t dcc_client_map_t:file { getattr open read write lock map };
 allow httpd_sys_script_t self:capability { setgid setuid chown dac_override dac_read_search sys_resource fsetid fowner audit_write };
 allow httpd_sys_script_t self:netlink_audit_socket { create write nlmsg_relay read };
 allow httpd_sys_script_t self:process setrlimit;
