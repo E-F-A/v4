@@ -184,7 +184,7 @@ allow httpd_sys_script_t postfix_showq_t:file { read open };
 allow httpd_sys_script_t postfix_cleanup_t:dir { getattr search };
 allow httpd_sys_script_t postfix_cleanup_t:file { read open };
 allow httpd_sys_script_t postfix_etc_t:dir { getattr read open search };
-allow httpd_sys_script_t postfix_etc_t:file { open read };
+allow httpd_sys_script_t postfix_etc_t:file { getattr open read };
 allow httpd_sys_script_t postfix_spool_t:dir { getattr read search open write add_name remove_name };
 allow httpd_sys_script_t postfix_spool_t:file { append getattr read open ioctl write create };
 allow httpd_sys_script_t postfix_spool_t:lnk_file { getattr read };
