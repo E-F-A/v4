@@ -184,6 +184,13 @@ if [[ $instancetype != "lxc" ]]; then
     fi
 fi
 
+# Add unbound override to delay startup to prevent segfault on CentOS 8
+if [[ ! -f /etc/systemd/system/unbound.service.d/override.conf ]]; then
+    mkdir -p /etc/systemd/system/unbound.service.d
+    echo -e "[Unit]\nAfter=network-online.target\n" > /etc/systemd/system/unbound.service.d/override.conf
+    [[ $instancetype != "lxc" ]] && chcon -t systemd_unit_file_t /etc/systemd/system/unbound.service.d/override.conf
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
