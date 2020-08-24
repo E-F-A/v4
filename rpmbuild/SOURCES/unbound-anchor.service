@@ -1,0 +1,9 @@
+[Unit]
+Description=update of the root trust anchor for DNSSEC validation in unbound
+Documentation=man:unbound-anchor(8)
+
+[Service]
+Type=oneshot
+User=unbound
+ExecStart=/usr/sbin/unbound-anchor -a /var/lib/unbound/root.key -c /etc/unbound/icannbundle.pem -f /etc/resolv.conf -R
+SuccessExitStatus=1
