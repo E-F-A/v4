@@ -1,0 +1,3 @@
+# for extra debug, add "-v -v" or change verbosity: in unbound.conf
+
+UNBOUND_OPTIONS=""
