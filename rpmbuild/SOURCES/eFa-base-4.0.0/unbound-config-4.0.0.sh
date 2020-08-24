@@ -37,4 +37,8 @@ echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
 echo "  forward-addr: 8.8.8.8" >> /etc/unbound/conf.d/forwarders.conf
 echo "  forward-addr: 8.8.4.4" >> /etc/unbound/conf.d/forwarders.conf
 
+# Set override to prevent segfault on boot from turning on before networking is ready
+mkdir -p /etc/systemd/system/unbound.service.d
+echo -e "[Unit]\nAfter=network-online.target\n" > /etc/systemd/system/unbound.service.d/override.conf
+
 echo "Configuring unbound...done"

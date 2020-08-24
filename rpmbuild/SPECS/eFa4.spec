@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   27.eFa%{?dist}
+Release:   28.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -468,6 +468,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Aug 23 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-28
+- Fix for unbound segfault CentOS 8 caused from premature startup
+
 * Sun Aug 23 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-27
 - SELinux update
 
