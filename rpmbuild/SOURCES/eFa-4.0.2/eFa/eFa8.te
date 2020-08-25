@@ -116,6 +116,7 @@ require {
     type rsync_t;
     type gssproxy_t;
     type setroubleshootd_t;
+    type httpd_sys_rw_content_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename map };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -398,7 +399,7 @@ allow mscan_t mscan_etc_t:lnk_file read;
 allow mscan_t mysqld_db_t:dir search;
 allow mscan_t cdcc_exec_t:file { getattr execute open read execute_no_trans map };
 allow mscan_t dcc_client_exec_t:file { getattr execute open read execute_no_trans };
-allow mscan_t dcc_client_map_t:file { getattr read write open lock };
+allow mscan_t dcc_client_map_t:file { getattr read write open lock map };
 allow mscan_t dcc_var_t:dir { getattr search write add_name remove_name };
 allow mscan_t dcc_var_t:file { getattr read write create open lock rename unlink };
 allow mscan_t dcc_var_t:sock_file { getattr write };
@@ -419,6 +420,7 @@ allow mscan_t self:capability dac_override;
 allow mscan_t mysqld_var_run_t:sock_file { write };
 allow mscan_t mscan_t:process { setsched };
 allow mscan_t antivirus_var_run_t:sock_file { getattr write };
+allow mscan_t httpd_sys_rw_content_t:file { getattr };
 
 #============= greylist_milter_t ==============
 allow greylist_milter_t self:capability { kill dac_override };
