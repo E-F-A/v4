@@ -708,9 +708,9 @@ if [[ $configtzone -eq 1 ]]; then
   [ $verbose -eq 1 ] && echo -e "$green[eFa]$clean - Configure timezone"
   if [[ "$virtplatform" != "lxc" ]]; then
     if [[ $ISUTC -eq true || $ISUTC -eq 1 ]]; then
-      timedatectl set-local-rtc 1 >/dev/null 2>&1
-    else
       timedatectl set-local-rtc 0 >/dev/null 2>&1
+    else
+      timedatectl set-local-rtc 1 >/dev/null 2>&1
     fi
   fi
   timedatectl set-timezone "$TZONE"
