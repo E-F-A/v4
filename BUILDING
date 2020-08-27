@@ -63,3 +63,13 @@ chmod +x devbuild.sh
 ./devbuild.sh
 
 (Available for development on CentOS 8)
+
+#######################################################################
+# create docker container - based on CentOS 7
+#######################################################################
+
+yum install git-core / apt install git
+git clone https://github.com/E-F-A/v4
+cd v4/build/docker
+cp ../build.bash .
+docker build -t efa .
