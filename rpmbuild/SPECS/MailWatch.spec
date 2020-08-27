@@ -49,7 +49,7 @@ to log all message data (excluding body text) to a MySQL database which is then
 queried by MailWatch for reporting and statistics.
 
 %prep
-%setup -q -n 1.2.zip
+%setup -q -n 1.2
 
 %build
 # Nothing to do
