@@ -1,5 +1,5 @@
 
-module eFa 1.0.24;
+module eFa 1.0.25;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -116,7 +116,9 @@ require {
     type rsync_t;
     type gssproxy_t;
     type setroubleshootd_t;
+    type dovecot_auth_t;
     type httpd_sys_rw_content_t;
+    type tmpreaper_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename map };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -317,6 +319,9 @@ dontaudit httpd_sys_script_t gssproxy_t:dir { getattr search };
 dontaudit httpd_sys_script_t gssproxy_t:file { read open };
 dontaudit httpd_sys_script_t setroubleshootd_t:dir { getattr search };
 dontaudit httpd_sys_script_t setroubleshootd_t:file { read open };
+dontaudit httpd_sys_script_t dovecot_auth_t:dir { getattr search };
+dontaudit httpd_sys_script_t dovecot_auth_t:file { read open };
+
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
@@ -378,7 +383,7 @@ allow httpd_sys_script_t proc_net_t:file { read };
 #============= spamd_update_t ==============
 allow spamd_update_t self:capability dac_override;
 allow spamd_update_t shadow_t:file read;
-allow spamd_update_t spamd_var_lib_t:file execute;
+allow spamd_update_t spamd_var_lib_t:file { execute map };
 allow spamd_update_t system_cronjob_tmp_t:file write;
 allow spamd_update_t admin_home_t:dir write;
 
@@ -444,5 +449,8 @@ allow systemd_logind_t httpd_sys_script_t:dbus { send_msg };
 #============== init_t ========================
 allow init_t mscan_spool_t:dir { read };
 
-#============== rcync_t ===================
+#============== rsync_t ===================
 allow rsync_t self:capability dac_override;
+
+#============== tmpreaper_t ===================
+allow tmpreaper_t self:capability dac_override;
