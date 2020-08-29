@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.2
-Release:   30.eFa%{?dist}
+Release:   31.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -315,7 +315,8 @@ Requires: perl-Net-Works-Network >= 0.22-1
     #                                            # eFa     # spamassassin
 Requires: perl-MaxMind-DB-Reader-XS >= 1.000008-1
     #                                            # eFa     # spamassassin
-
+%{?el8:Requires: perl-Switch >= 2.17-10}
+    #                                            # base    # opendmarc
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -468,6 +469,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Aug 29 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-31
+- Include perl-Switch CentOS 8 and include OpenDMARC in restores
+
 * Sun Aug 27 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-30
 - SELinux update and MailWatch update
 
