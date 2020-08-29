@@ -198,6 +198,10 @@ function func_system-restore() {
                           /bin/cp -rf /var/eFa/backup/backup/etc/postfix/* /etc/postfix
                           /bin/cp -rf /var/eFa/backup/backup/etc/opendkim/* /etc/opendkim
 
+                          # Fix ownership
+                          chown -R postfix:postfix /etc/postfix
+                          chown -R opendkim:opendkim /etc/opendkim
+
                           # Postmaps
                           postmap /etc/postfix/helo_access
                           postmap /etc/postfix/recipient_access
@@ -222,6 +226,7 @@ function func_system-restore() {
                           RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
                           RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/eFa/MailWatch-Config | sed 's/.*://'`"
                           RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/eFa/SQLGrey-Config | sed 's/.*://'`"
+                          RESTOREDMARCSQLPWD="`grep DMARCSQLPWD /var/eFa/backup/backup/etc/eFa/openDMARC-Config | sed 's/.*://'`"
                           /usr/bin/mysqladmin -u root -p$MYSQLROOTPWD password "$RESTOREMYSQLROOTPWD"
                           MYSQLROOTPWD=$RESTOREMYSQLROOTPWD
                           
@@ -230,6 +235,7 @@ function func_system-restore() {
                           sed -i "/^SAUSERSQLPWD:/ c\SAUSERSQLPWD:$RESTORESAUSERSQLPWD" /etc/eFa/SA-Config
                           sed -i "/^SQLGREYSQLPWD:/ c\SQLGREYSQLPWD:$RESTORESQLGREYSQLPWD" /etc/eFa/SQLGrey-Config
                           sed -i "/^MYSQLROOTPWD:/ c\MYSQLROOTPWD:$RESTOREMYSQLROOTPWD" /etc/eFa/MySQL-Config
+                          sed -i "/^DMARCSQLPWD:/ c\DMARCSQLPWD:$RESTOREDMARCSQLPWD" /etc/eFa/openDMARC-Config
                         else
                           OLDHOSTNAME="`grep HOSTNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
                           OLDDOMAINNAME="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/.*://'`"
@@ -238,6 +244,7 @@ function func_system-restore() {
                           RESTORESAUSERSQLPWD="`grep SAUSERSQLPWD /var/eFa/backup/backup/etc/eFa/SA-Config | sed 's/.*://'`"
                           RESTOREMAILWATCHSQLPWD="`grep MAILWATCHSQLPWD /var/eFa/backup/backup/etc/eFa/MailWatch-Config | sed 's/.*://'`"
                           RESTORESQLGREYSQLPWD="`grep SQLGREYSQLPWD /var/eFa/backup/backup/etc/eFa/SQLGrey-Config | sed 's/.*://'`"
+                          RESTOREDMARCSQLPWD="`grep DMARCSQLPWD /var/eFa/backup/backup/etc/eFa/openDMARC-Config | sed 's/.*://'`"
                           /bin/cp -rf /var/eFa/backup/backup/etc/* /etc
                           /bin/cp -rf /var/eFa/backup/backup/var/* /var
                         fi
@@ -251,6 +258,7 @@ function func_system-restore() {
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESAUSERSQLPWD') WHERE User='sa_user';"
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREMAILWATCHSQLPWD') WHERE User='mailwatch';"
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTORESQLGREYSQLPWD') WHERE User='sqlgrey';"
+                      /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "UPDATE mysql.user SET Password=PASSWORD('$RESTOREDMARCSQLPWD') WHERE User='opendmarc';"
                       /usr/bin/mysql -u root -p"$MYSQLROOTPWD" -e "FLUSH PRIVILEGES;"
 
                       # Ensure txrep table is present
