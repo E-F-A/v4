@@ -68,8 +68,45 @@ chmod +x devbuild.sh
 # create docker container - based on CentOS 7
 #######################################################################
 
-yum install git-core / apt install git
-git clone https://github.com/E-F-A/v4
-cd v4/build/docker
-cp ../build.bash .
-docker build -t efa .
+Create docker image:
+  yum install git-core / apt install git
+  git clone https://github.com/E-F-A/v4
+  cd v4/build/docker
+  cp ../build.bash .
+  docker build -t efa .
+
+Create docker container:
+  docker run --restart unless-stopped                           \
+        --name efa                                              \
+        --hostname efa                                          \
+        -e DOMAINNAME=local                                     \
+        -e ADMINEMAIL=admin@local                               \
+        -e USERNAME=admin                                       \
+        -e efauserpwd=adminpwd                                  \
+        -e CLIUSERNAME=admin                                    \
+        -e efaclipwd=cliadminpwd                                \
+        -e KEYBOARD=no                                          \
+        -e MAILSERVER=mail.local                                \
+        -e IANACODE=au                                          \
+        -e ORGNAME=Local                                        \
+        -e TZ=Australia/Melbourne                               \
+        -v /etc/localtime:/etc/localtime:ro                     \
+        -v /mnt/efa/dcc:/var/dcc                                \
+        -v /mnt/efa/mysql:/var/lib/mysql                        \
+        -v /mnt/efa/spamassassin:/var/lib/spamassassin          \
+        -v /mnt/efa/backup:/var/eFa/backup                      \
+        -v /mnt/efa/clamav:/var/lib/clamav                      \
+        -v /mnt/efa/clamav-us:/var/lib/clamav-unofficial-sigs   \
+        -v /mnt/efa/postfix:/var/spool/postfix                  \
+        -v /mnt/efa/mailscanner:/var/spool/MailScanner          \
+        -v /mnt/efa/log:/var/log                                \
+        -it                                                     \
+        -p 22:22                                                \
+        -p 25:25                                                \
+        -p 80:80                                                \
+        -p 443:443                                              \
+        -p 587:587                                              \
+        -d efa
+
+Container log file will show the output from /var/log/maillog when built:
+  docker logs efa -f

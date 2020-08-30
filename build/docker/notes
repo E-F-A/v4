@@ -1,0 +1,9 @@
+To-do:
+  * Add option to use MariaDB from another container
+  * Fix missing certs for dovecot
+  * Fix missing certs for unbound
+  * Add missing volumes. Would it make sense to re-direct multiple configuration files from /etc to a single /etc/eFa folder?
+  * Don't overwrite existing data when creating new container and using volumes
+  * Add missing options like enabling "webadmin" ?
+  * Add support for additional network layouts like bridge etc
+  * Add support for static IP addresses (IPv6) and DNS settings
