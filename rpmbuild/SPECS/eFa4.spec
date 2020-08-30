@@ -443,7 +443,7 @@ if [[ "$1" == "2" || "$flag" == "1" ]]; then
 
    if [[ %{version} == "4.0.3" || "$flag" == "1" ]]; then
      {
-       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.2.sh
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.3.sh
        [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
      } 2>&1 | tee -a /var/log/eFa/update.log
    fi
