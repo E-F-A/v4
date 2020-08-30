@@ -25,8 +25,8 @@
 
 Name:      eFa
 Summary:   eFa Maintenance rpm
-Version:   4.0.2
-Release:   29.eFa%{?dist}
+Version:   4.0.3
+Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -187,7 +187,7 @@ Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.15-3
+Requires:  MailWatch >= 1:1.2.15-4
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 2.3.167-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -206,7 +206,7 @@ Requires:  checkpolicy >= 2.5-4
 %{?el8:Requires: perl-Net-DNS >= 1.25-1}
     # perl-Net-DNS                               # eFa     # Spamassassin
 Requires:  p7zip >= 16.02-2
-    # p7zip     `                                # epel    # MailScanner
+    # p7zip                                      # epel    # MailScanner
 Requires:  p7zip-plugins >= 16.02-2
     # p7zip-plugins                              # epel    # MailScanner
 Requires:  tmpwatch >= 2.11-5
@@ -315,7 +315,10 @@ Requires: perl-Net-Works-Network >= 0.22-1
     #                                            # eFa     # spamassassin
 Requires: perl-MaxMind-DB-Reader-XS >= 1.000008-1
     #                                            # eFa     # spamassassin
-
+%{?el8:Requires: perl-Switch >= 2.17-10}
+    #                                            # base    # opendmarc
+Requires: fail2ban >= 0.11.1-9
+    #                                            # epel    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -438,6 +441,13 @@ if [[ "$1" == "2" || "$flag" == "1" ]]; then
      } 2>&1 | tee -a /var/log/eFa/update.log
    fi
 
+   if [[ %{version} == "4.0.3" || "$flag" == "1" ]]; then
+     {
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.3.sh
+       [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
+     } 2>&1 | tee -a /var/log/eFa/update.log
+   fi
+
     # cleanup if sucessful
     rm -rf /usr/src/eFa
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
@@ -468,6 +478,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Aug 29 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-1
+- Fail2ban support
+
+* Sat Aug 29 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-31
+- Include perl-Switch CentOS 8 and include OpenDMARC in restores
+
+* Sun Aug 27 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-30
+- SELinux update and MailWatch update
+
 * Sun Aug 23 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-29
 - SELinux update
 

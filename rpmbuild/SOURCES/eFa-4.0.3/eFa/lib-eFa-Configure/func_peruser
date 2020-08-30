@@ -1,0 +1,153 @@
+# +---------------------------------------------------+
+# Function to enable/disable per user spam scoring
+# +---------------------------------------------------+
+func_peruser(){
+  func_echo-header
+  echo -e "$green[eFa]$clean Enable/Disable per user spam scoring"
+  echo -e ""
+  echo -e "$green[eFa]$clean By default this feature is off." 
+  echo -e "$green[eFa]$clean Per user spam scores allow you to specify differing scores based"
+  echo -e "$green[eFa]$clean on user in the MailWatch GUI."
+  echo ""
+  echo -e "$green[eFa]$clean Caution: users that do not have an account in MailWatch will not"
+  echo -e "$green[eFa]$clean be scanned! This is a current limitation in MailWatch per user"
+  echo -e "$green[eFa]$clean handling of spam scores."
+  echo ""
+  if [[ $(grep -e "^Required SpamAssassin Score" /etc/MailScanner/MailScanner.conf | awk -F'=' {'print $2'} | tr -d ' ') == "&SQLSpamScores" ]]
+    then
+      echo -e "$green[eFa]$clean Per user scoring is $green ENABLED $clean"
+      echo -e -n "$green[eFa]$clean Would you like to $red DISABLE $clean per user scoring? [y/N/c]: "
+      read TMPUSER
+      FLAG=1
+      while [ $FLAG != "0" ]
+        do
+          if [[ "$TMPUSER" == "Y" || "$TMPUSER" == "y" ]]; then
+            echo -e -n "$green[eFa]$clean Please enter your new global Spam Score [1-100, default 4]: "
+            read SPAMSCORE
+            FLAG2=1
+            while [ $FLAG2 != "0" ]; do
+              if [[ "$SPAMSCORE" =~ ^[1-9]|[1-9][0-9]|100$ ]]; then
+                sed -i "/^Required SpamAssassin Score =/ c\Required SpamAssassin Score = $SPAMSCORE" /etc/MailScanner/MailScanner.conf
+                FLAG2=0
+              elif [[ -z "$SPAMSCORE" ]]; then
+                sed -i "/^Required SpamAssassin Score =/ c\Required SpamAssassin Score = 4" /etc/MailScanner/MailScanner.conf
+                FLAG2=0
+              else
+                echo -e "       $red ERROR: Invalid entry.$clean"
+                echo -e -n "$green[eFa]$clean Please enter your new global Spam Score [1-100, default 4]: "
+                read SPAMSCORE
+              fi
+            done
+
+            echo -e -n "$green[eFa]$clean Please enter your new global High Spam Score [1-100, default 7]: "
+            read HIGHSPAMSCORE
+            FLAG3=1
+            while [ $FLAG3 != "0" ]; do
+              if [[ "$HIGHSPAMSCORE" =~ ^[1-9]|[1-9][0-9]|100$ ]]; then
+                sed -i "/^High SpamAssassin Score =/ c\High SpamAssassin Score = $SPAMSCORE" /etc/MailScanner/MailScanner.conf
+                FLAG3=0
+              elif [[ -z "$SPAMSCORE" ]]; then
+                sed -i "/^High SpamAssassin Score =/ c\High SpamAssassin Score = 7" /etc/MailScanner/MailScanner.conf
+                FLAG3=0
+              else
+                echo -e "       $red ERROR: Invalid entry.$clean"
+                echo -e -n "$green[eFa]$clean Please enter your new global High Spam Score [1-100, default 7]: "
+                read HIGHSPAMSCORE
+              fi
+            done
+
+          systemctl restart mailscanner
+          FLAG=0
+          echo -e "$green[eFa]$clean Per user spam scoring $red DISABLED $clean"
+          pause
+        elif [[ "$TMPUSER" == "n" || "$TMPUSER" == "N" || -z "$TMPUSER" ]]; then 
+          echo -e "$green[eFa]$clean No changes made"
+          echo ""
+          FLAG=0
+          pause
+        elif [[ "$TMPUSER" == "C" || "$TMPUSER" == "c" ]]; then
+          echo "$green[eFa]$clean No changes made"
+          FLAG=0
+          pause
+        else
+          echo -e "       $red ERROR: please make an selection.$clean"
+          echo -e -n "$green[eFa]$clean Would you like to $red DISABLE $clean per user scoring? [y/N/c]: "
+          read TMPUSER
+        fi
+      done
+    else
+      echo -e "$green[eFa]$clean Per user scoring is $red DISABLED $clean"
+      echo -e -n "$green[eFa]$clean Would you like to $green ENABLE $clean per user scoring? [y/N/c]: "
+      read TMPUSER
+      FLAG=1
+      while [ $FLAG != "0" ]
+        do
+          if [[ "$TMPUSER" == "Y" || "$TMPUSER" == "y" ]]; then
+            echo -e -n "$green[eFa]$clean Please enter your new default per user Spam Score [1-100, default 4]: "
+            read SPAMSCORE
+            FLAG2=1
+            while [ $FLAG2 != "0" ]; do
+              if [[ "$SPAMSCORE" =~ ^[1-9]|[1-9][0-9]|100$ ]]; then
+                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
+                /usr/bin/mysql -u mailwatch -p"$MAILWATCHPW" mailscanner -e "ALTER TABLE \`users\` ALTER COLUMN \`spamscore\` SET DEFAULT '$SPAMSCORE';"
+                MAILWATCHPW=''
+                sed -i "/^Required SpamAssassin Score =/ c\Required SpamAssassin Score = &SQLSpamScores" /etc/MailScanner/MailScanner.conf
+                FLAG2=0
+              elif [[ -z "$SPAMSCORE" ]]; then
+                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
+                /usr/bin/mysql -u mailwatch -p"$MAILWATCHPW" mailscanner -e 'ALTER TABLE `users` ALTER COLUMN `spamscore` SET DEFAULT '4';'
+                MAILWATCHPW=''
+                sed -i "/^Required SpamAssassin Score =/ c\Required SpamAssassin Score = &SQLSpamScores" /etc/MailScanner/MailScanner.conf
+                FLAG2=0
+              else
+                echo -e "       $red ERROR: Invalid entry.$clean"
+                echo -e -n "$green[eFa]$clean Please enter your new default per user Spam Score [1-100, default 4]: "
+                read SPAMSCORE
+              fi
+            done
+
+            echo -e -n "$green[eFa]$clean Please enter your new per user High Spam Score [1-100, default 7]: "
+            read HIGHSPAMSCORE
+            FLAG3=1
+            while [ $FLAG3 != "0" ]; do
+              if [[ "$HIGHSPAMSCORE" =~ ^[1-9]|[1-9][0-9]|100$ ]]; then
+                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
+                /usr/bin/mysql -u mailwatch -p"$MAILWATCHPW" mailscanner -e "ALTER TABLE \`users\` ALTER COLUMN \`highspamscore\` SET DEFAULT '$HIGHSPAMSCORE';"
+                MAILWATCHPW=''
+                sed -i "/^High SpamAssassin Score =/ c\High SpamAssassin Score = &SQLHighSpamScores" /etc/MailScanner/MailScanner.conf
+                FLAG3=0
+              elif [[ -z "$SPAMSCORE" ]]; then
+                MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
+                /usr/bin/mysql -u mailwatch -p"$MAILWATCHPW" mailscanner -e 'ALTER TABLE `users` ALTER COLUMN `highspamscore` SET DEFAULT '7';'
+                MAILWATCHPW=''
+                sed -i "/^High SpamAssassin Score =/ c\High SpamAssassin Score = &SQLHighSpamScores" /etc/MailScanner/MailScanner.conf
+                FLAG3=0
+              else
+                echo -e "       $red ERROR: Invalid entry.$clean"
+                echo -e -n "$green[eFa]$clean Please enter your new global High Spam Score [1-100, default 7]: "
+                read HIGHSPAMSCORE
+              fi
+            done
+
+          systemctl restart mailscanner
+          FLAG=0
+          echo -e "$green[eFa]$clean Per user spam scoring $green ENABLED $clean"
+          pause
+        elif [[ "$TMPUSER" == "n" || "$TMPUSER" == "N" || -z "$TMPUSER" ]]; then 
+          echo -e "$green[eFa]$clean No changes made"
+          echo ""
+          FLAG=0
+          pause
+        elif [[ "$TMPUSER" == "C" || "$TMPUSER" == "c" ]]; then
+          echo -e "$green[eFa]$clean No changes made"
+          FLAG=0
+          pause
+        else
+          echo -e "       $red ERROR: please make an selection.$clean"
+          echo -e -n "$green[eFa]$clean Would you like to $green ENABLE $clean per user scoring? [y/N/c]: "
+          read TMPUSER
+        fi
+      done
+    fi
+}
+# +---------------------------------------------------+

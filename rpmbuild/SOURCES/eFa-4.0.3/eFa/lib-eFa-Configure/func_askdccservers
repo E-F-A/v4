@@ -1,0 +1,53 @@
+# +---------------------------------------------------+
+# Function to ask and set DCC Server Pool
+# +---------------------------------------------------+
+
+function func_ask-dccservers() {
+  func_echo-header
+  echo -e "$green[eFa]$clean - Set DCC Server Pools"
+  echo -e ""
+  echo -e "$green[eFa]$clean This option will allow you to set the DCC server"
+  echo -e "$green[eFa]$clean pools that you want to use."
+  echo -e "$green[eFa]$clean The dcc-servers.net pool is limited use and what ships with dcc."
+  echo -e "$green[eFa]$clean Choice of pool may affect performance, depending on your location"
+  echo -e ""
+  DCCPOOL=$(grep DCCPOOL /etc/eFa/eFa-Config | sed -e 's/.*://')
+  echo -e "Current DCC Pool: $DCCPOOL"
+  echo -e ""
+  
+  while [ "1" == "1" ]
+    do  
+      echo -e "Choose an option:"
+      echo -e "1) Use default pool (dccservers)"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1)
+                    cleardcc
+                    /usr/bin/cdcc "add dcc1.dcc-servers.net"
+                    /usr/bin/cdcc "add dcc2.dcc-servers.net"
+                    /usr/bin/cdcc "add dcc3.dcc-servers.net"
+                    /usr/bin/cdcc "add dcc4.dcc-servers.net"
+                    /usr/bin/cdcc "add dcc5.dcc-servers.net"
+                    sed -i '/^DCCPOOL:/ c\DCCPOOL:default' /etc/eFa/eFa-Config
+                    echo -e "$green[eFa]$clean DCC Pool set to default"
+                    pause
+                    return ;;
+                e) return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+      esac
+    done
+}
+
+
+function cleardcc() {
+    /usr/bin/cdcc "delete dcc1.dcc-servers.net" >/dev/null 2&>1
+    /usr/bin/cdcc "delete dcc2.dcc-servers.net" >/dev/null 2&>1
+    /usr/bin/cdcc "delete dcc3.dcc-servers.net" >/dev/null 2&>1
+    /usr/bin/cdcc "delete dcc4.dcc-servers.net" >/dev/null 2&>1
+    /usr/bin/cdcc "delete dcc5.dcc-servers.net" >/dev/null 2&>1
+}

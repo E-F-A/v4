@@ -17,6 +17,8 @@
 # along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
+%undefine _disable_source_fetch
+
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
@@ -26,11 +28,11 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.15
 Epoch:         1
-Release:       3.eFa%{?dist}
+Release:       4.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
-Source:        %{name}-%{version}.tar.gz
+Source:        https://github.com/mailwatch/MailWatch/archive/1.2.zip
 Source2:       favicon.ico
 Source3:       eFa4logo-79px.png
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
@@ -47,7 +49,7 @@ to log all message data (excluding body text) to a MySQL database which is then
 queried by MailWatch for reporting and statistics.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n MailWatch-1.2
 
 %build
 # Nothing to do

@@ -1,0 +1,114 @@
+# +---------------------------------------------------+
+# Function to reset mailwatch password
+# +---------------------------------------------------+
+func_resetadmin() {
+  func_echo-header
+  echo -e "$green[eFa]$clean - Reset MailWatch Password"
+  echo -e ""
+  echo -e "$green[eFa]$clean This option will lookup the username of the first mailwatch admin"
+  echo -e "$green[eFa]$clean if it exists and give you the option to reset the password."
+  echo -e ""
+
+  ADMINUSER=$(/usr/bin/mysql -s -N -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "select username from users where type = 'A' limit 1")
+
+  # What if there isn't an admin account?
+  if [[ -z $ADMINUSER ]]; then
+    echo -en "$green[eFa]$clean No Administrator account found!  Create a new one? (Y/n): "
+    read YESNO
+    if [[ $YESNO =~ ^[Yy]$ || -z $YESNO ]]; then
+      FLAG=1
+      while [ $FLAG -eq 1 ]
+      do
+        echo -en "$green[eFa]$clean Please enter a admin username: "
+        read ADMINUSER
+
+        if [[ $ADMINUSER =~ ^[A-Za-z0-9]+$ ]]; then
+          #  Check for an existing user
+          CHECKDUPE=$(/usr/bin/mysql -s -N -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "select username from users where username = '$ADMINUSER'")
+          if [[ -z $CHECKDUPE ]]; then
+            # Create account
+            /usr/bin/mysql -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "INSERT into users (username,fullname,type) VALUES('$ADMINUSER','$ADMINUSER','A')"
+            if [[ $? -ne 0 ]]; then
+              echo -e "$red[ERROR]$cleanError creating new user, exiting..."
+              pause
+              return 0
+            else
+              echo -e "$green[eFa]$cleanNew user created, proceeding..."
+              echo -e ""
+              FLAG=0
+            fi
+          else
+            echo -en "$green[eFa]$cleanUsername already exists!  Promote this user to administrator? (Y/n): "
+            read YESNO
+            if [[ $YESNO =~ ^[Yy]$ || -z $YESNO ]]; then
+             # Promote user
+             /usr/bin/mysql -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "UPDATE users SET type = 'A' WHERE username='$ADMINUSER'"
+            if [[ $? -ne 0 ]]; then
+              echo -e "$red[ERROR]$cleanError promoting new user, exiting..."
+              pause
+              return 0
+            else
+                echo -e "$green[eFa]$cleanNew user promoted, proceeding..."
+                echo -e ""
+                FLAG=0
+              fi
+            else
+              echo -e "No user promoted, exiting..."
+              pause
+              return 0
+            fi
+          fi
+        else
+          echo -e "$red[ERROR]$clean Please use letters and numbers when creating a username."
+          echo -e ""
+        fi
+      done
+    else
+      echo -e "$green[eFa]$clean No admin account created.  Exiting..."
+      pause
+      return 0
+    fi
+  fi
+  
+  echo -e "$green[eFa]$clean Administrator account username: $ADMINUSER"
+  echo -en "$green[eFa]$clean Reset password (Y/n):  "
+  read YESNO
+  echo -e ""
+
+  if [[ $YESNO =~ ^[Yy]$ || -z $YESNO ]]; then
+    FLAG=1
+    while [ $FLAG -eq 1 ]
+    do
+      echo -en "$green[eFa]$clean Please enter a new password (hidden): "
+      read -s NEWPASS1
+      echo -e ""
+      echo -en "$green[eFa]$clean Please re-enter a new password (hidden): "
+      read -s NEWPASS2
+      echo -e ""
+      if [[  "$NEWPASS1" == "$NEWPASS2" ]]; then
+        FLAG=0
+      else
+       echo -e "Passwords do not match..."
+       echo -e ""
+      fi
+    done
+
+    NEWPASS1=$(echo $NEWPASS1 | sed -e "s/'/''/g")
+
+    /usr/bin/mysql -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "UPDATE users SET password = md5('$NEWPASS1') WHERE username='$ADMINUSER'"
+
+    if [[ $? -ne 0 ]]; then
+      echo -e "$red[ERROR]$cleanError resetting mailwatch password!"
+    else
+      echo -e "$green[eFa]$clean MailWatch password reset!"
+    fi
+    NEWPASS1=""
+    NEWPASS2=""
+  else
+     echo -e "$green[eFa]$clean Not resetting password.  Exiting..."
+  fi
+
+  pause
+
+}
+# +---------------------------------------------------+

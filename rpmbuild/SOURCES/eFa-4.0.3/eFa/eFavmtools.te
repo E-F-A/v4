@@ -1,0 +1,11 @@
+module eFavmtools 1.0.0;
+
+require {
+    type httpd_sys_script_t;
+    type vmtools_t;
+    class dir { getattr search };
+    class file { open read };
+}
+
+dontaudit httpd_sys_script_t vmtools_t:dir { getattr search };
+dontaudit httpd_sys_script_t vmtools_t:file { read open };

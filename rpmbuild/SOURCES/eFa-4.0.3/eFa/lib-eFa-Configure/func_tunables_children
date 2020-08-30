@@ -1,0 +1,38 @@
+# +---------------------------------------------------+
+# Function to set mailscanner threads (other tunables?)
+# +---------------------------------------------------+
+func_tunables_children(){
+  func_echo-header
+  echo -e "$green[eFa]$clean - Configuring System Tunables"
+  echo -e ""
+  mschildren="`cat /etc/MailScanner/MailScanner.conf | grep -e '^Max Children' | awk -F'=' '{print $2}' | tr -d '[:blank:]'`"
+  echo -e "$green[eFa]$clean Mailscanner is currently set to use $mschildren children."
+  echo -e "" 
+  echo -e -n "$green[eFa]$clean : Mailscanner children (default/min 2, max 30):"
+  read MSTHREADS
+  mstuning=1
+  while [ $mstuning != "0" ]
+   do
+     if [[ $MSTHREADS = "" ]]
+      then
+        MSTHREADS=2
+     fi
+     if [[ $MSTHREADS =~ ^([2-9]|1[0-9]|2[0-9]|30)$ ]]
+      then
+        mstuning=0
+      else
+        echo -e "       $red ERROR: The number of threads $MSTHREADS appears to be invalid."
+        echo -e "        ERROR: please re-enter the number of threads.$clean"
+        echo -e -n "$green[eFa]$clean Mailscanner children (default/min 2, max 30):"
+        read MSTHREADS
+     fi
+   done
+
+  # Set mailscanner children 
+  sed -i "/^Max Children =/ c\Max Children = $MSTHREADS" /etc/MailScanner/MailScanner.conf
+  systemctl restart mailscanner
+  echo -e "MailScanner threads reconfigured to use $MSTHREADS children."
+  pause
+
+}
+# +---------------------------------------------------+

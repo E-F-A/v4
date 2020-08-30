@@ -1,0 +1,38 @@
+# +---------------------------------------------------+
+# Function to set mailscanner max spam check size
+# +---------------------------------------------------+
+func_ask-maxsize(){
+  func_echo-header
+  echo -e "$green[eFa]$clean MailScanner Max Spam Check Size"
+  echo -e ""
+  msmaxsize="`grep -e '^Max Spam Check Size' /etc/MailScanner/MailScanner.conf | awk -F'=' '{print $2}' | tr -d '[:blank:]' | tr -d 'k'`"
+  echo -e "$green[eFa]$clean Mailscanner is currently set to use $msmaxsize kilobytes."
+  echo -e "" 
+  echo -e -n "$green[eFa]$clean : Mailscanner max spam check size in kilobytes: (min 200/default 2048/max 999999):"
+  read MSMAXSIZE
+  msflag=1
+  while [ $msflag != "0" ]
+   do
+     if [[ -z $MSMAXSIZE ]]
+      then
+        MSMAXSIZE="2048"
+     fi
+     if [[ $MSMAXSIZE =~ ^[2-9][0-9]{2}|[1-9][0-9]{3,5}$ ]]
+      then
+        msflag=0
+      else
+        echo -e "       $red ERROR: The max spam check size $MSMAXSIZE appears to be invalid."
+        echo -e "        ERROR: please re-enter the max spam check size in kilobytes.$clean"
+        echo -e -n "$green[eFa]$clean : Mailscanner max spam check size in kilobytes: (min 200/default 2048/max 999999):"
+        read MSMAXSIZE
+     fi
+   done
+
+  # Set mailscanner max spam check size
+  sed -i "/^Max Spam Check Size =/ c\Max Spam Check Size = $MSMAXSIZE\k" /etc/MailScanner/MailScanner.conf
+  systemctl restart mailscanner
+  echo -e "MailScanner reconfigured to use $MSMAXSIZE kilobytes max spam check size."
+  pause
+
+}
+# +---------------------------------------------------+

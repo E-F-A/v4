@@ -1,0 +1,34 @@
+# +---------------------------------------------------+
+# Configure MailWatch Sub Menu
+# +---------------------------------------------------+
+func_mailwatch-settings() {
+  menu=0
+  mailwatchmenu=1
+  while [ $mailwatchmenu == "1" ]
+    do  
+      func_echo-header
+      echo -e "MailWatch settings"
+      echo ""
+      echo -e "1) Toggle Greylisting"
+      echo -e "2) Reset MailWatch Admin"
+      echo -e "3) Quarantine Retention"
+      echo -e "4) Per User Scoring"
+      echo -e "5) MaxMind GeoLite2 License Key"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1) func_greylisting;;
+                2) func_resetadmin;;
+                3) func_retention;;
+                4) func_peruser;;
+                5) func_maxmind;;
+                e) menu=1 && return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+      esac
+    done
+}
+# +---------------------------------------------------+
