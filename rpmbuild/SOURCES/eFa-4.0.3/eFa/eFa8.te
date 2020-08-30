@@ -1,5 +1,5 @@
 
-module eFa 1.0.25;
+module eFa 1.0.26;
 
 type mailwatchsql_etc_t;
 type sqlgreysql_etc_t;
@@ -119,6 +119,7 @@ require {
     type dovecot_auth_t;
     type httpd_sys_rw_content_t;
     type tmpreaper_t;
+    type fail2ban_t;
     class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename map };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
@@ -321,7 +322,8 @@ dontaudit httpd_sys_script_t setroubleshootd_t:dir { getattr search };
 dontaudit httpd_sys_script_t setroubleshootd_t:file { read open };
 dontaudit httpd_sys_script_t dovecot_auth_t:dir { getattr search };
 dontaudit httpd_sys_script_t dovecot_auth_t:file { read open };
-
+dontaudit httpd_sys_script_t fail2ban_t:dir { getattr search };
+dontaudit httpd_sys_script_t fail2ban_t:file { read open };
 
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
