@@ -25,8 +25,8 @@
 
 Name:      eFa
 Summary:   eFa Maintenance rpm
-Version:   4.0.2
-Release:   31.eFa%{?dist}
+Version:   4.0.3
+Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -317,6 +317,8 @@ Requires: perl-MaxMind-DB-Reader-XS >= 1.000008-1
     #                                            # eFa     # spamassassin
 %{?el8:Requires: perl-Switch >= 2.17-10}
     #                                            # base    # opendmarc
+Requires: fail2ban >= 0.11.1-9
+    #                                            # epel    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -439,6 +441,13 @@ if [[ "$1" == "2" || "$flag" == "1" ]]; then
      } 2>&1 | tee -a /var/log/eFa/update.log
    fi
 
+   if [[ %{version} == "4.0.3" || "$flag" == "1" ]]; then
+     {
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.2.sh
+       [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
+     } 2>&1 | tee -a /var/log/eFa/update.log
+   fi
+
     # cleanup if sucessful
     rm -rf /usr/src/eFa
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
@@ -469,6 +478,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Aug 29 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-1
+- Fail2ban support
+
 * Sat Aug 29 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-31
 - Include perl-Switch CentOS 8 and include OpenDMARC in restores
 
