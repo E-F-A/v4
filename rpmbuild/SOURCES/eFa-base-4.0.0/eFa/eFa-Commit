@@ -1123,6 +1123,8 @@ EOF
   [ $? -ne 0 ] && exit 1
   systemctl enable opendkim
   [ $? -ne 0 ] && exit 1
+  systemctl enable fail2ban
+  [ $? -ne 0 ] && exit 1
 
   if [[ $configvirtual -eq 1 ]]; then
     if [[ $virtplatform == "vmware"  ]]; then
