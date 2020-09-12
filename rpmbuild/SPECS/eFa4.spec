@@ -478,8 +478,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
-* Sat Aug 29 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-1
-- Fail2ban support
+* Sat Sep 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-1
+- Fail2ban support and eFa-SAClean fix
 
 * Sat Aug 29 2020 eFa Project <shawniverson@efa-project.org> - 4.0.2-31
 - Include perl-Switch CentOS 8 and include OpenDMARC in restores

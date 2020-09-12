@@ -264,6 +264,16 @@ if [[ $instancetype != "lxc" ]]; then
     fi
 fi
 
+# Fix >dev/null to >/dev/null in eFa-SAClean
+if [[ -n $(grep '>dev/null' /etc/cron.daily/eFa-SAClean) ]]; then
+    cat > /etc/cron.daily/eFa-SAClean << 'EOF'
+#!/bin/sh
+# MailScanner_incoming SA Cleanup
+/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp >/dev/null 2>&1
+EOF
+    chmod ugo+x /etc/cron.daily/eFa-SAClean
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
@@ -299,10 +309,6 @@ execcmd
 cmd='systemctl enable milter_relay'
 execcmd
 cmd='systemctl start milter_relay'
-execcmd
-cmd='systemctl enable fail2ban'
-execcmd
-cmd='systemctl start fail2ban'
 execcmd
 
 exit $retval
