@@ -169,7 +169,7 @@ case "${aCTN[@]}" in
                 logthis "Adding eFa Repo"
                 rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/eFa4-centos8.repo -o /etc/yum.repos.d/eFa4.repo
-          exit 1
+            fi
         fi
         ;;
 esac
