@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.3
-Release:   1.eFa%{?dist}
+Release:   2.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -478,6 +478,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Sep 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-2
+- Fail2ban eFa-Configure
+
 * Sat Sep 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-1
 - Fail2ban support and eFa-SAClean fix
 
