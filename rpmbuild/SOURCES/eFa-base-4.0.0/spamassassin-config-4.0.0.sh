@@ -148,7 +148,7 @@ fi
 cat > /etc/cron.daily/eFa-SAClean << 'EOF'
 #!/bin/sh
 # MailScanner_incoming SA Cleanup
-/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp >dev/null 2>&1
+/usr/sbin/tmpwatch -u 48 /var/spool/MailScanner/incoming/SpamAssassin-Temp >/dev/null 2>&1
 EOF
 chmod ugo+x /etc/cron.daily/eFa-SAClean
 

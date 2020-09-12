@@ -169,3 +169,12 @@ ln -s /usr/sbin/eFa-Daily-DMARC /etc/cron.daily/eFa-Daily-DMARC
 # MariaDB
 mkdir -p /etc/systemd/system/mariadb.service.d
 echo -e "[Service]\nTimeoutSec=900\n" > /etc/systemd/system/mariadb.service.d/override.conf
+
+#Fail2Ban
+cat > /etc/fail2ban/jail.d/jail.local << 'EOF'
+[sshd]
+enabled = true
+
+[postfix-sasl]
+enabled = true
+EOF
