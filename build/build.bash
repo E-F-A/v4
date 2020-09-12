@@ -1,6 +1,6 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.1 build script version 20191103
+# eFa 4.0.3 build script version 20200912
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2020 https://efa-project.org
 #
@@ -160,14 +160,15 @@ case "${aCTN[@]}" in
        fi
        ;;
 
-    *)  if [[ $RELEASE -eq 7 ]]; then
-            if [ ! -f /etc/yum.repos.d/eFa4.repo ]; then
+    *)  if [ ! -f /etc/yum.repos.d/eFa4.repo ]; then
+            if [[ $RELEASE -eq 7 ]]; then
                 logthis "Adding eFa Repo"
                 rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/eFa4.repo -o /etc/yum.repos.d/eFa4.repo
-            fi
-        else
-          logthis "CentOS 8 Production Repo Coming Soon"
+            else
+                logthis "Adding eFa Repo"
+                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                curl -L $mirror/rpm/eFa4/eFa4-centos8.repo -o /etc/yum.repos.d/eFa4.repo
           exit 1
         fi
         ;;
