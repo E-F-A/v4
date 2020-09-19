@@ -54,7 +54,7 @@ sed -i 's/LoadModule filter_module modules\/mod_filter.so/#&/' /etc/httpd/conf.m
 sed -i 's/LoadModule headers_module modules\/mod_headers.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule include_module modules\/mod_include.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule info_module modules\/mod_info.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
-sed -i 's/LoadModule negotiation_module modules\/mod_negotiation.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
+#sed -i 's/LoadModule negotiation_module modules\/mod_negotiation.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule remoteip_module modules\/mod_remoteip.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule socache_dbm_module modules\/mod_socache_dbm.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
 sed -i 's/LoadModule socache_memcache_module modules\/mod_socache_memcache.so/#&/' /etc/httpd/conf.modules.d/00-base.conf
