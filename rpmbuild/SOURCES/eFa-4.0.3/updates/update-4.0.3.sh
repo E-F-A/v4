@@ -275,7 +275,7 @@ EOF
 fi
 
 # Fix apache failure after recent update (Allow use of LanguagePriority)
-sed -i "/#LoadModule negotiation_module modules/mod_negotiation.so/ c\LoadModule negotiation_module modules/mod_negotiation.so" /etc/httpd/conf.modules.d/00-base.conf 
+sed -i "/^#LoadModule negotiation_module modules\/mod_negotiation.so/ c\LoadModule negotiation_module modules/mod_negotiation.so" /etc/httpd/conf.modules.d/00-base.conf 
 
 # Enable maintenance mode if not enabled
 MAINT=0
@@ -322,7 +322,7 @@ cmd='systemctl start milter_relay'
 execcmd
 
 # Disable maintenance mode if disabled during script
-if [[ $MAINT -eq 1 ]]
+if [[ $MAINT -eq 1 ]]; then
     echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
 fi
 
