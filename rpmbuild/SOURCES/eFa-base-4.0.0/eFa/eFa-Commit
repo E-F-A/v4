@@ -1,6 +1,6 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.2 initial configuration commit script
+# eFa 4.0.3 initial configuration commit script
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2020 https://efa-project.org
 #
@@ -622,6 +622,12 @@ if [[ $configdns -eq 1 ]]; then
   # Reset resolv.conf in case of override (CentOS 8)
   echo "nameserver 127.0.0.1" > /etc/resolv.conf
   echo "nameserver ::1" >> /etc/resolv.conf
+
+  # Start unbound now to allow DNS resolution
+  systemctl enable unbound.service
+  [ $? -ne 0 ] && exit 1
+  systemctl start unbound.service
+  [ $? -ne 0 ] && exit 1
 
   echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
   [ $? -ne 0 ] && exit 1
