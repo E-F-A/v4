@@ -274,6 +274,16 @@ EOF
     chmod ugo+x /etc/cron.daily/eFa-SAClean
 fi
 
+# Fix apache failure after recent update (Allow use of LanguagePriority)
+sed -i "/#LoadModule negotiation_module modules/mod_negotiation.so/ c\LoadModule negotiation_module modules/mod_negotiation.so" /etc/httpd/conf.modules.d/00-base.conf 
+
+# Enable maintenance mode if not enabled
+MAINT=0
+if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
+    rm -f /etc/cron.d/eFa-Monitor.cron
+    MAINT=1
+fi
+
 cmd='systemctl daemon-reload'
 execcmd
 cmd='systemctl reload httpd'
@@ -310,5 +320,10 @@ cmd='systemctl enable milter_relay'
 execcmd
 cmd='systemctl start milter_relay'
 execcmd
+
+# Disable maintenance mode if disabled during script
+if [[ $MAINT -eq 1 ]]
+    echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
+fi
 
 exit $retval

@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.3
-Release:   3.eFa%{?dist}
+Release:   4.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -478,6 +478,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Sep 19 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-4
+- Enable mod_negotiation.so for Apache to allow LanguagePriority
+
 * Sat Sep 19 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-3
 - Fix DNS resolution during eFa Initialization
 
