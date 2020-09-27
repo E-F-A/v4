@@ -320,6 +320,10 @@ cmd='systemctl enable milter_relay'
 execcmd
 cmd='systemctl start milter_relay'
 execcmd
+cmd='systemctl enable clamav-freshclam'
+execcmd
+cmd='systemctl start clamav-freshclam'
+execcmd
 
 # Disable maintenance mode if disabled during script
 if [[ $MAINT -eq 1 ]]; then
