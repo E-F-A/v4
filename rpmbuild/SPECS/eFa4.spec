@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.3
-Release:   6.eFa%{?dist}
+Release:   7.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -191,8 +191,8 @@ Requires:  MailWatch >= 1:1.2.15-4
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 2.3.167-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
-Requires:  unbound >= 1.4.20-34
-    # unbound                                    # base    # DNS
+Requires:  unbound >= 1.11.0-1
+    # unbound                                    # eFa     # DNS
 %{?el7:Requires:  yum-cron >= 3.4.3-154}
     # Yum auto updates                           # base    # yum-cron
 %{?el8:Requires:  dnf-automatic >= 4.2.17-7}
@@ -478,6 +478,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Oct 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-7
+- Razor fixes and CentOS 7 unbound backport
+
 * Sat Sep 19 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-6
 - Ensure clamav-freshclam is enabled and started
 
