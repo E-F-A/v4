@@ -96,6 +96,12 @@ echo 'ifplugin Mail::SpamAssassin::Plugin::RelayCountry' >> /etc/MailScanner/spa
 echo '    geoip2_default_db_path /usr/share/GeoIP/GeoLite2-Country.mmdb' >> /etc/MailScanner/spamassassin.conf
 echo 'endif' >> /etc/MailScanner/spamassassin.conf
 
+# Razor path
+echo '' >> /etc/MailScanner/spamassassin.conf
+echo 'ifplugin Mail::SpamAssassin::Plugin::Razor2' >> /etc/MailScanner/spamassassin.conf
+echo '    razor_config  /var/spool/postfix/.razor/razor-agent.conf' >> /etc/MailScanner/spamassassin.conf
+echo 'endif' >> /etc/MailScanner/spamassassin.conf
+
 # Enable Auto White Listing
 #sed -i '/^#loadplugin Mail::SpamAssassin::Plugin::AWL/ c\loadplugin Mail::SpamAssassin::Plugin::AWL' /etc/mail/spamassassin/v310.pre
 

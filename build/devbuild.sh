@@ -90,7 +90,7 @@ if [[ $RELEASE -eq 7 ]]; then
     perl-Test-Number-Delta perl-namespace-autoclean perl-Role-Tiny perl-Data-Dumper-Concise \
     perl-DateTime perl-Test-Warnings perl-autodie perl-Test-Requires perl-Test-Tester perl-Clone-PP \
     perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS perl-LWP-Protocol-https perl-Test-LeakTrace \
-    perl-Throwable libmaxminddb-devel
+    perl-Throwable libmaxminddb-devel gcc flex libevent-devel expat-devel python3-devel swig
     [ $? -ne 0 ] && exit 1
 else
   yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod \
@@ -358,6 +358,9 @@ if [ $RELEASE -eq 8 ]; then
     [ $? -ne 0 ] && exit 1
     yum -y install $GITPATH/rpmbuild/RPMS/noarch/sqlgrey-*.rpm
     [ $? -ne 0 ] && exit 1
+    rpmbuild -ba unbound.spec
+    [ $? -ne 0 ] && exit 1
+    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/unbound-*.rpm
 fi
 # END: Some additional requirements
 rpmbuild -ba eFa4.spec

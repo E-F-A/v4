@@ -277,6 +277,24 @@ fi
 # Fix apache failure after recent update (Allow use of LanguagePriority)
 sed -i "/^#LoadModule negotiation_module modules\/mod_negotiation.so/ c\LoadModule negotiation_module modules/mod_negotiation.so" /etc/httpd/conf.modules.d/00-base.conf 
 
+# Razor fixes
+if [[ -z $(grep razorhome /var/spool/postfix/.razor/razor-agent.conf) ]]; then
+    echo 'razorhome              = /var/spool/postfix/.razor' >> /var/spool/postfix/.razor/razor-agent.conf
+    su -c "/bin/cat /usr/share/doc/spamassassin/sample-spam.txt | razor-report -d --verbose" -s /bin/bash postfix
+    touch /var/spool/postfix/.razor/razor-agent.log
+    chmod 640 /var/spool/postfix/.razor/{identity-*,razor-agent.conf}
+    chmod 664 /var/spool/postfix/.razor/razor-agent.log
+    chmod 644 /var/spool/postfix/.razor/server*
+    chmod ug+s /var/spool/postfix/.razor
+fi
+
+if [[ -z $(grep razor_config /etc/MailScanner/spamassassin.conf) ]]; then
+    echo '' >> /etc/MailScanner/spamassassin.conf
+    echo 'ifplugin Mail::SpamAssassin::Plugin::Razor2' >> /etc/MailScanner/spamassassin.conf
+    echo 'razor_config  /var/spool/postfix/.razor/razor-agent.conf' >> /etc/MailScanner/spamassassin.conf
+    echo 'endif' >> /etc/MailScanner/spamassassin.conf
+fi
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then

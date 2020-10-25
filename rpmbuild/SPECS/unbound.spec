@@ -25,7 +25,7 @@
 %endif # with_python2 && rhel <= 6
 
 %if 0%{?rhel} <= 7
-%global with_python3 0
+%global with_python3 1
 %else
 %global with_python2 0
 %endif # rhel <= 7
