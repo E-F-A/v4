@@ -281,9 +281,9 @@ sed -i "/^#LoadModule negotiation_module modules\/mod_negotiation.so/ c\LoadModu
 if [[ -z $(grep razorhome /var/spool/postfix/.razor/razor-agent.conf) ]]; then
     echo 'razorhome              = /var/spool/postfix/.razor' >> /var/spool/postfix/.razor/razor-agent.conf
     if [[ $centosver -eq 7 ]]; then
-        $samplepath="$(rpm -q spamassassin | sed -e 's/eFa\.el7\.x86_64//' | sed -e 's/-1\.//')"
+        samplepath="$(rpm -q spamassassin | sed -e 's/eFa\.el7\.x86_64//' | sed -e 's/-1\.//')"
     else
-        $samplepath='spamassassin'
+        samplepath='spamassassin'
     fi
     su -c "/bin/cat /usr/share/doc/$samplepath/sample-spam.txt | razor-report -d" -s /bin/bash postfix
     touch /var/spool/postfix/.razor/razor-agent.log

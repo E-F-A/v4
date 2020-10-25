@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.3
-Release:   10.eFa%{?dist}
+Release:   11.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -478,6 +478,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Oct 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-11
+- Fix sample-spam path variable
+
 * Sat Oct 25 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-10
 - Fix quotes on sample-spam path variable
 
