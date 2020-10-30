@@ -105,7 +105,7 @@ else
     perl-autodie perl-Test-Requires perl-Clone-PP perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS \
     perl-LWP-Protocol-https perl-Test-LeakTrace perl-Throwable libmaxminddb-devel libdb-devel pcre-devel make \
     libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet perl-strictures perl-Data-Validate-IP \
-    autoconf automake rsync expat-devel flex libevent-devel python3-devel swig
+    autoconf automake rsync expat-devel flex libevent-devel python3-devel swig rsyslog
     [ $? -ne 0 ] && exit 1
 fi
 
