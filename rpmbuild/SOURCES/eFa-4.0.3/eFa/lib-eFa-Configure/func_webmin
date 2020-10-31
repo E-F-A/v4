@@ -21,6 +21,21 @@ function func_webmin() {
       if [[ $ASKWEBMIN =~ ^[yY]$ || -z $ASKWEBMIN ]]; then
         flag2=1
 
+
+        OSVERSION=`cat /etc/centos-release`
+        if [[ $OSVERSION =~ .*'release 8.'.* ]]; then
+          #Add webmin repository
+          if [[ ! -f /etc/yum.repos.d/webmin.repo ]]; then
+            echo "[Webmin]
+name=Webmin Distribution Neutral
+#baseurl=https://download.webmin.com/download/yum
+mirrorlist=https://download.webmin.com/download/yum/mirrorlist
+enabled=1" > /etc/yum.repos.d/webmin.repo
+
+            rpm --import http://www.webmin.com/jcameron-key.asc
+          fi
+        fi
+
         # Install webmin
         yum -y install webmin
 
@@ -50,6 +65,9 @@ function func_webmin() {
         /usr/libexec/webmin/changepass.pl /etc/webmin root $webminpwd1
         webminpwd1=
         webminpwd2=
+
+        # new password is not used if service is not restarted
+        /etc/rc3.d/S99webmin restart
 
         echo -e "$green[eFa]$clean Webmin is now enabled."
 
