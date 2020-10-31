@@ -122,7 +122,9 @@ if [ $RELEASE -eq 7 ]; then
   [ $? -ne 0 ] && exit 1
 fi
 if [ $RELEASE -eq 8 ]; then
-  yum -y remove postfix 
+  yum -y remove postfix
+  [ $? -ne 0 ] && exit 1
+  yum -y remove python3-unbound
   [ $? -ne 0 ] && exit 1
 fi
 yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/postfix_eFa-*.rpm
