@@ -1,6 +1,6 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.1 post initial configuration script
+# eFa 4.0.3 post initial configuration script
 #-----------------------------------------------------------------------------#
 # Copyright (C) 2013~2020 https://efa-project.org
 #
@@ -37,6 +37,8 @@ fi
 
 # Create lock file
 touch /var/run/eFa-Post-Init.lock
+
+centosver=$(cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}')
 
 # Reset footer
 sed -i "/^    echo ' running on ' . efa_version/ c\    echo ' running on ' . efa_version() . ' ...INITIALIZING SYSTEM, PLEASE WAIT... ';" /var/www/html/mailscanner/functions.php
@@ -158,8 +160,13 @@ sed -i "/^    echo ' running on ' . efa_version/ c\    echo ' running on ' . efa
 #############################################################################
 
 # Late Asynchronous tasks
-/usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --spam --file /usr/share/doc/spamassassin/sample-spam.txt &
-/usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --ham --file /usr/share/doc/spamassassin/sample-nonspam.txt &
+if [[ $centosver -eq 7 ]]; then
+  samplepath="$(rpm -q spamassassin | sed -e 's/eFa\.el7\.x86_64//' | sed -e 's/-1\.//')"
+else
+  samplepath='spamassassin'
+fi
+/usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --spam --file /usr/share/doc/$samplepath/sample-spam.txt &
+/usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --ham --file /usr/share/doc/$samplepath/sample-nonspam.txt &
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php &
 
 # Late Synchronous tasks
