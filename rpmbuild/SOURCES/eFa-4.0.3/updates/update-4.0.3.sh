@@ -285,7 +285,7 @@ if [[ -z $(grep razorhome /var/spool/postfix/.razor/razor-agent.conf) ]]; then
     else
         samplepath='spamassassin'
     fi
-    su -c "/bin/cat /usr/share/doc/$samplepath/sample-spam.txt | razor-report -d" -s /bin/bash postfix
+    su -l -c "/bin/cat /usr/share/doc/$samplepath/sample-spam.txt | razor-report -d" -s /bin/bash postfix
     touch /var/spool/postfix/.razor/razor-agent.log
     chmod 640 /var/spool/postfix/.razor/{identity-*,razor-agent.conf}
     chmod 664 /var/spool/postfix/.razor/razor-agent.log
