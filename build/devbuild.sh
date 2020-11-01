@@ -334,6 +334,10 @@ rpmbuild -ba dcc.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/dcc-*.rpm
 [ $? -ne 0 ] && exit 1
+rpmbuild -ba unbound.spec
+[ $? -ne 0 ] && exit 1
+yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/unbound-*.rpm
+[ $? -ne 0 ] && exit 1
 rpmbuild -ba eFa4-base.spec
 [ $? -ne 0 ] && exit 1
 yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-base-*.rpm
@@ -360,9 +364,6 @@ if [ $RELEASE -eq 8 ]; then
     [ $? -ne 0 ] && exit 1
     yum -y install $GITPATH/rpmbuild/RPMS/noarch/sqlgrey-*.rpm
     [ $? -ne 0 ] && exit 1
-    rpmbuild -ba unbound.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/unbound-*.rpm
 fi
 # END: Some additional requirements
 rpmbuild -ba eFa4.spec
