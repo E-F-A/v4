@@ -171,7 +171,7 @@ func_setipsettings(){
     reboot
   fi
 
-  systemctl restart network
+  systemctl restart NetworkManager
   systemctl restart unbound
 
   echo -e "All done"
