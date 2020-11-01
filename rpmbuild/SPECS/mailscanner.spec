@@ -1,5 +1,7 @@
+%undefine _disable_source_fetch
+
 Name:        MailScanner
-Version:     5.3.3
+Version:     5.3.4
 Release:     1.eFa%{?dist}
 Summary:     Email Gateway Virus Scanner with Malware, Phishing, and Spam Detection
 Group:       System Environment/Daemons
@@ -7,13 +9,13 @@ License:     GPLv2
 Vendor:      MailScanner Community
 Packager:    MailScanner Team <https://www.mailscanner.info>
 URL:         http://www.mailscanner.info
+Source:      https://github.com/MailScanner/v5/archive/%{version}-%{release}.tar.gz
 Requires:    perl >= 5.005
 Provides:    perl(MailScanner), perl(MailScanner::Antiword), perl(MailScanner::BinHex), perl(MailScanner::Config), perl(MailScanner::ConfigSQL), perl(MailScanner::CustomConfig), perl(MailScanner::FileInto), perl(MailScanner::GenericSpam), perl(MailScanner::LinksDump), perl(MailScanner::Lock), perl(MailScanner::Log), perl(MailScanner::Mail), perl(MailScanner::MCP), perl(MailScanner::MCPMessage), perl(MailScanner::Message), perl(MailScanner::MessageBatch), perl(MailScanner::Quarantine), perl(MailScanner::Queue), perl(MailScanner::RBLs), perl(MailScanner::MCPMessage), perl(MailScanner::Message), perl(MailScanner::MCP), perl(MailScanner::SA), perl(MailScanner::Sendmail), perl(MailScanner::SMDiskStore), perl(MailScanner::SweepContent), perl(MailScanner::SweepOther), perl(MailScanner::SweepViruses), perl(MailScanner::TNEF), perl(MailScanner::Unzip), perl(MailScanner::WorkArea), perl(MIME::Parser::MailScanner)
-Source:      %{name}-%{version}.tar.gz
 BuildRoot:   %{_tmppath}/%{name}-root
-BuildArchitectures: noarch
+BuildArch:   noarch
 AutoReqProv: no
-Obsoletes: mailscanner
+Obsoletes:   mailscanner
 
 %description
 MailScanner is a freely distributable email gateway virus scanner with
@@ -25,15 +27,14 @@ offensive content such as pornographic spam. It also has features which
 protect it against Denial Of Service attacks.
 
 After installation, you must install one of the supported open source or
-commercial antivirus packa make the rpm backwards compatible
-if not installed using the MailScanner
+commercial antivirus packages if not installed using the MailScanner
 configuration script.
 
 This has been tested on Red Hat Linux, but should work on other RPM
 based Linux distributions.
 
 %prep
-%setup -q -n MailScanner-%{version}
+%setup -q -n v5-%{version}
 
 %build
 
