@@ -173,7 +173,7 @@ Requires:  postfix_eFa >= 3.4.8-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin >= 3.4.4-2
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.3.3-1
+Requires:  MailScanner >= 5.3.4-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-4
     # clamav-unofficial-sigs                     # eFa     # clamav
