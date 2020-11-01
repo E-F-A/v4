@@ -583,12 +583,14 @@ if [[ $confighost -eq 1 ]]; then
 
   echo "$HOSTNAME.$DOMAINNAME" > /etc/hostname
   [ $? -ne 0 ] && exit 1
-  if [[ $centosver -eq 7]]; then
+  if [[ $centosver -eq 7 ]]; then
     hostname $HOSTNAME.$DOMAINNAME
+    [ $? -ne 0 ] && exit 1
   else
     hostnamectl set-hostname $HOSTNAME.$DOMAINNAME
+    [ $? -ne 0 ] && exit 1
   fi
-  [ $? -ne 0 ] && exit 1
+  
 
   # Add Received header check to remove localhost entry
   if [[ -f /etc/postfix/header_checks.bak ]]; then
