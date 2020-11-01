@@ -167,6 +167,7 @@ else
 fi
 /usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --spam --file /usr/share/doc/$samplepath/sample-spam.txt &
 /usr/bin/sa-learn -p /etc/MailScanner/spamassassin.conf --ham --file /usr/share/doc/$samplepath/sample-nonspam.txt &
+su -l -c "/bin/cat /usr/share/doc/$samplepath/sample-spam.txt | razor-report -d --verbose" -s /bin/bash postfix &
 /usr/bin/mailwatch/tools/Cron_jobs/mailwatch_update_sarules.php &
 
 # Late Synchronous tasks
