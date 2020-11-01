@@ -56,7 +56,7 @@ function func_ask-domainname() {
   dncheck=1
   while [ $dncheck != 0 ]
    do
-     if [[ $DOMAINNAME =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*\.[a-z]{2,15}$ ]]
+    if [[ $DOMAINNAME =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*$ ]]
       then
         dncheck=0
       else

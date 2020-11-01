@@ -64,7 +64,7 @@ class eFaInitTask
      *    groups={"Domainname"}
      * )
      * @Assert\Regex(
-     *    "/^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*\.[a-z]{2,15}$/",
+     *    "/^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*$/",
      *    groups={"Domainname"}
      * )
      */
