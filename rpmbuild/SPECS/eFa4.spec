@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.3
-Release:   12.eFa%{?dist}
+Release:   13.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -173,7 +173,7 @@ Requires:  postfix_eFa >= 3.4.8-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin >= 3.4.4-2
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.3.4-1
+Requires:  MailScanner >= 5.3.4-2
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 5.6.2-4
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -478,6 +478,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Fri Nov 13 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-13
+- MailScanner update for eFa to fix recipient issue
+
 * Sat Nov 01 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-12
 - Multiple updates and fixes for eFa
 
