@@ -319,6 +319,8 @@ Requires: perl-MaxMind-DB-Reader-XS >= 1.000008-1
     #                                            # base    # opendmarc
 Requires: fail2ban >= 0.11.1-9
     #                                            # epel    # eFa
+%{?el8:Required: rsyslog >= 8.1911.0-3}
+    #                                            # base    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
