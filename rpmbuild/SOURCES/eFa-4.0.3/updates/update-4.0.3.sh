@@ -300,6 +300,16 @@ if [[ -z $(grep razor_config /etc/MailScanner/spamassassin.conf) ]]; then
     echo 'endif' >> /etc/MailScanner/spamassassin.conf
 fi
 
+# Fix MSRE
+if [[ $centosver -eq 7 ]]; then
+    chgrp -R php-fpm /etc/MailScanner/rules
+else
+    chgrp -R apache /etc/MailScanner/rules
+fi
+
+chmod g+rwxs /etc/MailScanner/rules
+chmod g+rw /etc/MailScanner/rules/*.rules
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
