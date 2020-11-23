@@ -172,8 +172,8 @@ su -l -c "/bin/cat /usr/share/doc/$samplepath/sample-spam.txt | razor-report -d 
 
 # Late Synchronous tasks
 if [[ ! -f /etc/postfix/ssl/dhparam.pem ]]; then
-  openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
-  postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
+  /usr/bin/openssl dhparam -out /etc/postfix/ssl/dhparam.pem 2048
+  /usr/sbin/postconf -e "smtpd_tls_dh1024_param_file = /etc/postfix/ssl/dhparam.pem"
   cat /etc/postfix/ssl/dhparam.pem >> /etc/pki/tls/certs/localhost.crt
 fi
 
