@@ -111,7 +111,6 @@ configip=0
 genhostkeys=0
 enablerecursion=0
 configtzone=0
-configiana=0
 configrazor=0
 configclam=0
 configsa=0
@@ -159,7 +158,6 @@ while [ $# -gt 0 ]; do
         configdns=1
         genhostkeys=1
         configtzone=1
-        configiana=1
         configrazor=1
         configsa=1
         configip=1
@@ -198,9 +196,6 @@ while [ $# -gt 0 ]; do
     ;;
       --configtzone)
         configtzone=1
-    ;;
-      --configiana)
-        configiana=1
     ;;
       --configrazor)
         configrazor=1
@@ -382,14 +377,6 @@ while [ $# -gt 0 ]; do
           echo "ISUTC:$ISUTC" >> /etc/eFa/eFa-Config
         else
           sed -i "/^ISUTC:/ c\ISUTC:$ISUTC" /etc/eFa/eFa-Config
-        fi
-    ;;
-      --ianacode=*)
-        IANACODE=${1#*=}
-        if [[ -z $(grep ^IANA /etc/eFa/eFa-Config) ]]; then
-          echo "IANA:$IANACODE" >> /etc/eFa/eFa-Config
-        else
-          sed -i "/^IANA:/ c\IANA:$IANACODE" /etc/eFa/eFa-Config
         fi
     ;;
       --orgname=*)
@@ -733,14 +720,6 @@ if [[ $configtzone -eq 1 ]]; then
   sed -i "/^;date.timezone =/ c\date.timezone = $TZONE" /etc/php.ini
   [ $? -ne 0 ] && exit 1
   sed -i "/^date.timezone =/ c\date.timezone = $TZONE" /etc/php.ini
-  [ $? -ne 0 ] && exit 1
-fi
-
-if [[ $configiana -eq 1 ]]; then
-  # Write ianacode to freshclam config.
-  sed -i "/^#DatabaseMirror / c\DatabaseMirror db.$IANACODE.clamav.net" /etc/freshclam.conf
-  [ $? -ne 0 ] && exit 1
-  sed -i "/^DatabaseMirror / c\DatabaseMirror db.$IANACODE.clamav.net" /etc/freshclam.conf
   [ $? -ne 0 ] && exit 1
 fi
 
