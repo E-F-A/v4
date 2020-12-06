@@ -44,7 +44,7 @@ signature databases provided by Sanesecurity, FOXHOLE, OITC, Scamnailer, BOFHLAN
 Porcupine, Securiteinfo, MalwarePatrol, Yara-Rules Project, etc.
 
 %prep
-%setup -q -n dev
+%setup -q -n %{name}-dev
 
 %build
 # Nothing to do
