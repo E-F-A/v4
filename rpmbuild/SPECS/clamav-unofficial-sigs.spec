@@ -17,6 +17,8 @@
 # along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
+%undefine _disable_source_fetch
+
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
@@ -24,13 +26,13 @@
 #-----------------------------------------------------------------------------#
 Summary:       clamav-unofficial-sigs Maintained and provided by https://eXtremeSHOK.com
 Name:          clamav-unofficial-sigs
-Version:       7.0.1
+Version:       7.2.0
 Epoch:         1
 Release:       1.eFa%{?dist}
 License:       Copyright (c) Adrian Jon Kriel admin@extremeshok.com
 Group:         Applications/Utilities
 URL:           https://github.com/extremeshok/clamav-unofficial-sigs
-Source:        %{name}-%{version}.tar.gz
+Source:        https://github.com/extremeshok/clamav-unofficial-sigs/archive/dev.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 Requires:      clamav >= 0.101.0
@@ -42,7 +44,7 @@ signature databases provided by Sanesecurity, FOXHOLE, OITC, Scamnailer, BOFHLAN
 Porcupine, Securiteinfo, MalwarePatrol, Yara-Rules Project, etc.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n dev
 
 %build
 # Nothing to do
@@ -84,6 +86,9 @@ sed -i '/^clamd_pid=/ c\clamd_pid="/var/run/clamd.socket/clamd.pid"' /etc/clamav
 %attr(0644, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.timer
 
 %changelog
+* Sun Dec 06 2020 Shawn Iverson <shawniverson@efa-project.org> - 7.2.0-1
+- Update testing for eFa <https://www.efa-project.org>
+
 * Sat Jan 25 2020 Shawn Iverson <shawniverson@efa-project.org> - 7.0.1-1
 - Upgrade package for eFa <https://www.efa-project.org>
 
