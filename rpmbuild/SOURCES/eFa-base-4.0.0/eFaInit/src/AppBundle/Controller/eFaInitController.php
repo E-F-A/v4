@@ -132,12 +132,12 @@ class eFaInitController extends Controller
     /**
      * @Route("/{_locale}/{slug}",
      *     name="textboxpage",
-     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6prefix|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname"},
+     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6prefix|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|orgname"},
      *     defaults={"_locale": "en", "edit" = null}
      * )
      * @Route("/{_locale}/{slug}/{edit}",
      *     name="textboxeditpage",
-     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6prefix|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|ianacode|orgname", "edit"="edit"},
+     *     requirements={"slug"="hostname|domainname|email|ipv4address|ipv4netmask|ipv4gateway|ipv6address|ipv6prefix|ipv6gateway|dns1|dns2|webusername|cliusername|mailserver|orgname", "edit"="edit"},
      *     defaults={"_locale": "en"}
      * )
      */
@@ -401,22 +401,10 @@ class eFaInitController extends Controller
                     'varData'     => $session->get($slug),
                 );
                 $varTitle     = 'Local Mail Server';
-                $nextSlug     = 'ianacode';
+                $nextSlug     = 'orgname';
                 $nextPage     = 'textboxpage';
                 $previousSlug = 'timezone';
                 $previousPage = 'timezonepage';
-            break;
-            case "ianacode":
-                $options = array(
-                    'varLabel'    => 'Please enter your IANA country code',
-                    'varProperty' => 'IANAcode',
-                    'varData'     => $session->get($slug),
-                );
-                $varTitle     = 'IANA Code';
-                $nextSlug     = 'orgname';
-                $nextPage     = 'textboxpage';
-                $previousSlug = 'mailserver';
-                $previousPage = 'textboxpage';
             break;
             case "orgname":
                 $options = array(
@@ -427,7 +415,7 @@ class eFaInitController extends Controller
                 $varTitle     = 'Organization Name';
                 $nextSlug     = 'verify';
                 $nextPage     = 'verifysettingspage';
-                $previousSlug = 'ianacode';
+                $previousSlug = 'mailserver';
                 $previousPage = 'textboxpage';
             break;
 
@@ -951,7 +939,6 @@ class eFaInitController extends Controller
             'configutc'       => $session->get('configutc'),
             'timezone'        => $session->get('timezone'),
             'mailserver'      => $session->get('mailserver'),
-            'ianacode'        => $session->get('ianacode'),
             'orgname'         => $session->get('orgname'),
             'errormessage'    => $errormessage,
         ));
@@ -1073,24 +1060,6 @@ class eFaInitController extends Controller
 
         } catch (ProcessFailedException $exception) {
             eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error setting timezone");
-            return;
-        }
-
-        $progress += $progressStep;
-
-        $output = '<br/>eFa -- Writing IANA code to freshclam config<br/>' . $output;
-
-        try {
-            $process = new Process('sudo /usr/sbin/eFa-Commit --configiana --ianacode=' . $session->get('ianacode'));
-            $process->setTimeout($this->timeout);
-            $process->mustRun();
-
-            $output = '<br/> eFa -- Wrote IANA code to freshclam config<br/>' . $output;
-
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output);
-
-        } catch (ProcessFailedException $exception) {
-            eFaInitController::progressBar($progress, $progress + $progressStep, $output, "Error writing IANA code to freshclam config");
             return;
         }
 

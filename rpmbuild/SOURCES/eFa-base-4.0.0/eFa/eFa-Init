@@ -603,32 +603,6 @@ function func_ask-mailserver() {
 # +---------------------------------------------------+
 
 # +---------------------------------------------------+
-function func_ask-ianacode() {
-  func_echo-header
-  echo -e "$green[eFa]$clean I need your 2 letter IANA country code, this is used to"
-  echo -e "$green[eFa]$clean determine the closest mirror to download software updates from."
-  echo -e "$green[eFa]$clean If you don't know your country code please take a look at: "
-  echo -e "$green[eFa]$clean https://www.iso.org/obp/ "
-  echo ""
-  echo -e -n "$green[eFa]$clean Your IANA code (lowercase): "
-  read IANACODE
-  ianacodecheck=1
-  while [ $ianacodecheck != 0 ]
-   do
-     if [[ $IANACODE =~ ^[a-z]{1,2}$ ]]
-      then
-        ianacodecheck=0
-      else
-        echo -e "       $red ERROR: The code $IANACODE seems to be invalid"
-        echo -e "        ERROR: please re-enter the IANA code$clean"
-        echo -e -n "$green[eFa]$clean Your IANA code (lowercase): "
-        read IANACODE
-     fi
-   done
-}
-# +---------------------------------------------------+
-
-# +---------------------------------------------------+
 function func_ask-orgname() {
   func_echo-header
   echo -e "$green[eFa]$clean Please enter the name of your organization."
@@ -703,9 +677,8 @@ function func_verify-settings() {
     echo -e -n "19) Hypervisor Agents   : "; if [[ "$CONFIGUREVIRTUAL" -eq 1 ]]; then echo "Install"; else echo "No"; fi
     echo -e -n "20) Time zone           : $TZONE "; if [[ "$ISUTC" == true ]]; then echo " Using UTC "; else echo " Not using UTC"; fi
     echo -e "21) Keyboard            : $KEYBOARD"
-    echo -e "22) IANA Code           : $IANACODE"
-    echo -e "23) Mail Server         : $MAILSERVER"
-    echo -e "24) Org. name           : $ORGNAME"
+    echo -e "22) Mail Server         : $MAILSERVER"
+    echo -e "23) Org. name           : $ORGNAME"
     echo -e "--------------------------------------------------------------"
     echo -e ""
     echo -e "$green[eFa]$clean If these settings are correct type 'OK' to continue."
@@ -756,11 +729,9 @@ function func_verify-settings() {
                         ;;
                 21)       func_ask-keyboard
                         ;;
-                22)       func_ask-ianacode
+                22)       func_ask-mailserver
                         ;;
-                23)       func_ask-mailserver
-                        ;;
-                24)       func_ask-orgname
+                23)       func_ask-orgname
                         ;;
                 OK)       verifymenu=0
                         ;;
@@ -903,7 +874,7 @@ function func_configure-system() {
       --ipv4address=$IPV4ADDRESS --ipv6address=$IPV6ADDRESS --dnsip1=$DNS1 --dnsip2=$DNS2 \
       --enablerecursion=$enablerecursion --interface=$INTERFACE --ipv4netmask=$IPV4NETMASK \
       --ipv4gateway=$IPV4GATEWAY --ipv6mask=$IPV6MASK --ipv6gateway=$IPV6GATEWAY --timezone=$TZONE \
-      --ianacode=$IANACODE --orgname=$ORGNAME --mailserver=$MAILSERVER --adminemail=$ADMINEMAIL \
+      --orgname=$ORGNAME --mailserver=$MAILSERVER --adminemail=$ADMINEMAIL \
       --efauserpwd="$efauserpwd" --username=$USERNAME --cliusername=$CLIUSERNAME --efaclipwd="$efaclipwd" \
       --configvirtual=$CONFIGVIRTUAL --isutc=$ISUTC --ipv6dns=$IPV6DNS
 
@@ -988,7 +959,6 @@ if [ $CONFIGURED == "NO" ]
       func_ask-clipassword
       func_detect-virtual
       func_ask-timezone
-      func_ask-ianacode
       func_ask-mailserver
       func_ask-orgname
       func_verify-settings
