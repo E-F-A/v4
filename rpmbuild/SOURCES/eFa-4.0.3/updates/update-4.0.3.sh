@@ -243,7 +243,7 @@ sed -i "/^my (\$db_pass) = 'mailwatch';$/ c\my (\$fh);\nmy (\$pw_config) = '/etc
 ln -s /etc/MailScanner/spamassassin.conf /etc/mail/spamassassin/mailscanner.cf  >/dev/null 2>&1
 
 # Fix 1x1 spacer
-sed -i "/^Web Bug Replacement = https:\/\/s3.amazonaws.com\/msv5\/images\/spacer.gif/ c\Web Bug Replacement = http://dl.efa-project.org/static/1x1spacer.gif" /etc/MailScanner/MailScanner.conf
+sed -i "/^Web Bug Replacement = https:\/\/s3.amazonaws.com\/msv5\/images\/spacer.gif/ c\Web Bug Replacement = https://dl.efa-project.org/static/1x1spacer.gif" /etc/MailScanner/MailScanner.conf
 
 # Update SELinux
 if [[ $instancetype != "lxc" ]]; then

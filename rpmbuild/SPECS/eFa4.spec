@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.3
-Release:   14.eFa%{?dist}
+Release:   15.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -480,6 +480,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Dec 12 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-15
+- Use https for web bug replacement
+
 * Fri Nov 13 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-14
 - MailScanner, clamav-unofficial-sigs, eFa updates
 
