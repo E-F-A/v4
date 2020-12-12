@@ -67,7 +67,7 @@ if [[ $RELEASE -eq 7 ]]; then
   rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
   [ $? -ne 0 ] && exit 1
 else
-  yum config-manager --set-enabled PowerTools
+  yum config-manager --set-enabled powertools
   [ $? -ne 0 ] && exit 1
 fi
 

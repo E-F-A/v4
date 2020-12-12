@@ -211,7 +211,7 @@ if [[ $RELEASE -eq 7 ]]; then
     fi
 else
     logthis "Enabling CentOS 8 PowerTools Repo"
-    yum config-manager --set-enabled PowerTools
+    yum config-manager --set-enabled powertools
     [ $? -ne 0 ] && exit 1
 fi
 #-----------------------------------------------------------------------------#
