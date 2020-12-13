@@ -171,7 +171,8 @@ func_setipsettings(){
     reboot
   fi
 
-  systemctl restart NetworkManager
+  nmcli c down $INTERFACE
+  nmcli c up $INTERFACE
   systemctl restart unbound
 
   echo -e "All done"
