@@ -26,7 +26,7 @@ Summary:       SQLGrey Web Interface Legacy
 Name:          sqlgreywebinterface
 Version:       1.1.9
 Epoch:         1
-Release:       2.eFa%{?dist}
+Release:       3.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/flok99/sgwi
@@ -34,8 +34,8 @@ Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 Requires:      httpd >= 2.4.6
-%{?el7:Requires:      php72u >= 7.2.5-2}
-%{?el8:Requires:      php >= 7.2.5-2}
+#%{?el7:Requires:      php72u >= 7.2.5-2}
+#%{?el8:Requires:      php >= 7.2.5-2}
 
 %description
 A SQLGrey webinterface
@@ -81,5 +81,8 @@ rm %{buildroot}%{_localstatedir}/www/html/sgwi/{README.md,license.txt,readme.txt
 %{_localstatedir}/www/html/sgwi/includes/opt_in_out.inc.php
 
 %changelog
+* Sun Dec 27 2020 Shawn Iverson <shawniverson@efa-project.org> - 1.1.9-3
+- Relax php requirements in preparation for upgrade
+
 * Sat Sep 22 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.1.9-2
 - Include as legacy interface for eFa v4
