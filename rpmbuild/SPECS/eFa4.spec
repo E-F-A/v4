@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.3
-Release:   15.eFa%{?dist}
+Release:   17.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -49,29 +49,29 @@ Requires:  clamd >= 0.101.0-1
     # mariadb-server                             # base    # postfix, mailwatch
 Requires:  perl-DBD-MySQL >= 4.023-6
     # perl-DBD-mysql                             # base    # spamassassin
-#%{?el7:Requires:  php72u >= 7.2.13-2}
+%{?el7:Requires:  php72u >= 7.2.13-2}
     # php72u                                     # IUS     # mailwatch, frontend
-#%{?el8:Requires:  php >= 7.2.13-2}
+%{?el8:Requires:  php >= 7.2.13-2}
     # php                                        # base    # mailwatch, frontend
 Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
 Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # screen                                     # base    # basic system tools
-#%{?el7:Requires:  php72u-gd >= 7.2.13-2}
+%{?el7:Requires:  php72u-gd >= 7.2.13-2}
     # php72u-gd                                  # IUS     # mailwatch, frontend
-#%{?el8:Requires:  php-gd >= 7.2.13-2}
+%{?el8:Requires:  php-gd >= 7.2.13-2}
     # php-gd                                     # base    # mailwatch, frontend
-#%{?el7:Requires:  php72u-mbstring >= 7.2.13-2}
+%{?el7:Requires:  php72u-mbstring >= 7.2.13-2}
     # php72u-mbstring                            # IUS     # mailwatch, frontend
-#%{?el8:Requires:  php-mbstring >= 7.2.13-2}
+%{?el8:Requires:  php-mbstring >= 7.2.13-2}
     # php-mbstring                               # base    # mailwatch, frontend
-#%{?el7:Requires:  php72u-mysqlnd >= 7.2.13-2}
+%{?el7:Requires:  php72u-mysqlnd >= 7.2.13-2}
     # php72u-mysqlnd                             # IUS     # mailwatch, frontend
-#%{?el8:Requires:  php-mysqlnd >= 7.2.13-2}
+%{?el8:Requires:  php-mysqlnd >= 7.2.13-2}
     # php-mysqlnd                                # base    # mailwatch, frontend
-#%{?el7:Requires:  php72u-ldap >= 7.2.13-2}
+%{?el7:Requires:  php72u-ldap >= 7.2.13-2}
     # php72u-ldap                                # IUS     # mailwatch, frontend
-#%{?el8:Requires:  php-ldap >= 7.2.13-2}
+%{?el8:Requires:  php-ldap >= 7.2.13-2}
     # php-ldap                                   # base    # mailwatch, frontend
 Requires:  httpd >= 2.4.6-67
     # httpd                                      # base    # mailwatch, frontend
@@ -211,31 +211,31 @@ Requires:  p7zip-plugins >= 16.02-2
     # p7zip-plugins                              # epel    # MailScanner
 Requires:  tmpwatch >= 2.11-5
     # tmpwatch                                   # base    # Spamassassin
-#%{?el7:Requires: php72u-fpm >= 7.2.5-2}
+%{?el7:Requires: php72u-fpm >= 7.2.5-2}
     # php72u-fpm                                 # IUS     # mailwatch, frontend
-#%{?el8:Requires: php-fpm >= 7.2.5-2}
+%{?el8:Requires: php-fpm >= 7.2.5-2}
     # php-fpm                                    # base    # mailwatch, frontend
 %{?el7:Requires: system-config-keyboard >= 1.4.0-4}
     # system-config-keyboard                     # base    # eFa
-#%{?el7:Requires: php72u-process >= 7.2.5-2}
+%{?el7:Requires: php72u-process >= 7.2.5-2}
     # php72u-process                             # IUS     # eFaInit
-#%{?el8:Requires: php-process >= 7.2.5-2}
+%{?el8:Requires: php-process >= 7.2.5-2}
     # php-process                                # base    # eFaInit
-#%{?el7:Requires: php72u-json >= 7.2.5-2}
+%{?el7:Requires: php72u-json >= 7.2.5-2}
     # php72u-json                                # IUS     # eFaInit
-#%{?el8:Requires: php-json >= 7.2.5-2}
+%{?el8:Requires: php-json >= 7.2.5-2}
     # php-json                                   # base    # eFaInit
 Requires: sqlgreywebinterface >= 1.1.9-2
     # sqlgreywebinterrface                       # eFa     # mailwatch
 Requires: perl-Sendmail-PMilter >= 1.00-1
     # perl-Sendmail-PMilter                      # eFa     # MailScanner
-#%{?el7:Requires: php72u-cli >= 7.2.13-2}
+%{?el7:Requires: php72u-cli >= 7.2.13-2}
     # php72u-cli                                 # IUS     # mailwatch, frontend
-#%{?el8:Requires: php-cli >= 7.2.13-2}
+%{?el8:Requires: php-cli >= 7.2.13-2}
     # php-cli                                    # base    # mailwatch, frontend
-#%{?el7:Requires: php72u-xml >= 7.2.13-2}
+%{?el7:Requires: php72u-xml >= 7.2.13-2}
     # php72u-xml                                 # IUS     # mailwatch, frontend
-#%{?el8:Requires: php-xml >= 7.2.13-2}
+%{?el8:Requires: php-xml >= 7.2.13-2}
     # php-xml                                    # base    # mailwatch, frontend
 Requires: dovecot >= 1:2.2.36-3
     # clucene-core                               # base    # postfix
@@ -482,6 +482,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Wed Dec 30 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-17
+- Revert requirements for php and move development to dev repo
+
 * Sun Dec 27 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-16
 - Relax requirements for php in preparation for php upgrades
 
