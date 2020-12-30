@@ -1,5 +1,5 @@
 ######################################################################
-# eFa 4.0.2 BUILDING
+# eFa 4.0.3 BUILDING
 ######################################################################
 # Copyright (C) 2020  https://efa-project.org
 #
@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################
 
-Welcome to eFa Version 4.0.2!
+Welcome to eFa Version 4.0.3!
 
 Many thanks goes to the developers of eFa and maintainers of all
 3rd party packages!
@@ -29,15 +29,11 @@ Many thanks goes to the developers of eFa and maintainers of all
 #######################################################################
 curl -sSL https://install.efa-project.org | bash
 
-(Coming soon to CentOS 8)
-
 #######################################################################
 # install using install.efa-project.org #2
 #######################################################################
 curl -sSL https://install.efa-project.org > build.bash
 sudo bash build.bash
-
-(Coming soon to CentOS 8)
 
 #######################################################################
 # install on a vps, LXC container, or other existing CentOS instance
@@ -46,8 +42,6 @@ sudo bash build.bash
 curl -sSL https://install.efa-project.org > build.bash
 chmod +x build.bash
 ./build.bash testing
-
-(Available for testing on CentOS 8)
 
 #######################################################################
 # Building using github clone for development
@@ -61,8 +55,6 @@ git clone https://github.com/E-F-A/v4
 cd v4/build
 chmod +x devbuild.sh
 ./devbuild.sh
-
-(Available for development on CentOS 8)
 
 #######################################################################
 # create docker container - based on CentOS 7
