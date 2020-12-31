@@ -72,8 +72,10 @@ fi
 yum -y update
 [ $? -ne 0 ] && exit 1
 
-[ $RELEASE -eq 7 ] && yum -y remove mariadb-libs
-[ $? -ne 0 ] && exit 1
+if [[ $RELEASE -eq 7 ]]; then
+  yum -y remove mariadb-libs
+  [ $? -ne 0 ] && exit 1
+fi
 
 yum -y install rpm-build
 [ $? -ne 0 ] && exit 1
@@ -84,7 +86,11 @@ echo "%_topdir $GITPATH/rpmbuild" > ~/.rpmmacros
 [ $? -ne 0 ] && exit 1
 cd $GITPATH/rpmbuild/SPECS
 [ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 7 ] && yum -y remove postfix postfix32u
-[ $? -ne 0 ] && exit 1
-[ $RELEASE -eq 8 ] && yum -y remove postfix
-[ $? -ne 0 ] && exit 1
+if [[ $RELEASE -eq 7 ]]; then
+  yum -y remove postfix postfix32u
+  [ $? -ne 0 ] && exit 1
+fi
+if [[ $RELEASE -eq 8 ]]; then
+  yum -y remove postfix
+  [ $? -ne 0 ] && exit 1
+fi
