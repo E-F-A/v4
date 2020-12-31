@@ -143,11 +143,9 @@ fi
 #-----------------------------------------------------------------------------#
 # Add eFa Repo
 #-----------------------------------------------------------------------------#
-aCTN=(testing kstesting testingnoefa)
-
-case "${aCTN[@]}" in
-    ("$action "*|*" $action "*|*" $action")
-       if [ ! -f /etc/yum.repos.d/eFa4-testing.repo ]; then
+case "$action" in
+    ("testing"|"kstesting"|"testingnoefa")
+       if [[ ! -f /etc/yum.repos.d/eFa4-testing.repo ]]; then
             if [[ $RELEASE -eq 7 ]]; then
                 logthis "Adding eFa CentOS 7 Testing Repo"
                 rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
@@ -155,7 +153,21 @@ case "${aCTN[@]}" in
             else
                 logthis "Adding eFa CentOS 8 Testing Repo"
                 rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
-                curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8-testing.repo -o /etc/yum.repos.d/eFa4-centos8-testing.repo
+                curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8-testing.repo -o /etc/yum.repos.d/eFa4-testing.repo
+            fi
+       fi
+       ;;
+    
+    ("dev"|"ksdev"|"devnoefa")
+       if [[ ! -f /etc/yum.repos.d/eFa4-dev.repo ]]; then
+            if [[ $RELEASE -eq 7 ]]; then
+                logthis "Adding eFa CentOS 7 Testing Repo"
+                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                curl -L $mirror/rpm/eFa4/eFa4-dev.repo -o /etc/yum.repos.d/eFa4-dev.repo
+            else
+                logthis "Adding eFa CentOS 8 Testing Repo"
+                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8-dev.repo -o /etc/yum.repos.d/eFa4-dev.repo
             fi
        fi
        ;;
@@ -240,7 +252,7 @@ yum -y remove postfix mariadb-libs >/dev/null 2>&1
 logthis "Installing eFa packages (This can take a while)"
 rpm -q eFa >/dev/null 2>&1
 if [ $? -ne 0 ]; then
-    if [[ "$action" != "testingnoefa" ]]; then
+    if [[ "$action" != "testingnoefa" && "$action" != "devnoefa" ]]; then
         yum -y install eFa >> $LOGFILE 2>&1
         if [ $? -eq 0 ]; then
             logthis "eFa4 Installed"
@@ -256,7 +268,7 @@ fi
 #-----------------------------------------------------------------------------#
 # kickstart
 #-----------------------------------------------------------------------------#
-if [[ "$action" == "kstesting" || "$action" == "ksproduction" ]]; then
+if [[ "$action" == "kstesting" || "$action" == "ksproduction" || "$action" == "ksdev"]]; then
   # Set root default pass for kickstart builds
   echo 'echo "First time login: root/eFaPr0j3ct" >> /etc/issue' >> /etc/rc.d/rc.local
   echo "root:eFaPr0j3ct" | chpasswd --md5 root
@@ -286,7 +298,7 @@ fi
 logthis "============  EFA4 BUILD SCRIPT FINISHED  ============"
 logthis "============  PLEASE REBOOT YOUR SYSTEM   ============"
 
-if [[ "$action" == "testing" || "$action" == "production" ]]; then
+if [[ "$action" == "testing" || "$action" == "production" || "$action" == "dev"]]; then
   read -p "Do you wish to reboot the system now? (Y/N): " yn
   if [[ "$yn" == "y" || "$yn" == "Y" ]]; then
     shutdown -r +1 "Installation requires reboot. Restarting in 1 minute"
