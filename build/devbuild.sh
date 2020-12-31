@@ -1,6 +1,6 @@
 #!/bin/bash
 ######################################################################
-# eFa 4.0.1 Build script for local development builds
+# eFa 4.0.3 Build script for local development builds
 ######################################################################
 # Copyright (C) 2020  https://efa-project.org
 #
