@@ -161,11 +161,11 @@ case "$action" in
     ("dev"|"ksdev"|"devnoefa")
        if [[ ! -f /etc/yum.repos.d/eFa4-dev.repo ]]; then
             if [[ $RELEASE -eq 7 ]]; then
-                logthis "Adding eFa CentOS 7 Testing Repo"
+                logthis "Adding eFa CentOS 7 Dev Repo"
                 rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/eFa4-dev.repo -o /etc/yum.repos.d/eFa4-dev.repo
             else
-                logthis "Adding eFa CentOS 8 Testing Repo"
+                logthis "Adding eFa CentOS 8 Dev Repo"
                 rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8-dev.repo -o /etc/yum.repos.d/eFa4-dev.repo
             fi
