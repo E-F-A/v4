@@ -298,7 +298,7 @@ fi
 logthis "============  EFA4 BUILD SCRIPT FINISHED  ============"
 logthis "============  PLEASE REBOOT YOUR SYSTEM   ============"
 
-if [[ "$action" == "testing" || "$action" == "production" || "$action" == "dev"]]; then
+if [[ "$action" == "testing" || "$action" == "production" || "$action" == "dev" ]]; then
   read -p "Do you wish to reboot the system now? (Y/N): " yn
   if [[ "$yn" == "y" || "$yn" == "Y" ]]; then
     shutdown -r +1 "Installation requires reboot. Restarting in 1 minute"
