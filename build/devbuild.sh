@@ -2,7 +2,7 @@
 ######################################################################
 # eFa 4.0.3 Build script for local development builds
 ######################################################################
-# Copyright (C) 2020  https://efa-project.org
+# Copyright (C) 2021  https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

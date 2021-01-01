@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.3 build script version 20200912
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2020 https://efa-project.org
+# Copyright (C) 2013~2021 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -161,11 +161,11 @@ case "$action" in
     ("dev"|"ksdev"|"devnoefa")
        if [[ ! -f /etc/yum.repos.d/eFa4-dev.repo ]]; then
             if [[ $RELEASE -eq 7 ]]; then
-                logthis "Adding eFa CentOS 7 Testing Repo"
+                logthis "Adding eFa CentOS 7 Dev Repo"
                 rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/eFa4-dev.repo -o /etc/yum.repos.d/eFa4-dev.repo
             else
-                logthis "Adding eFa CentOS 8 Testing Repo"
+                logthis "Adding eFa CentOS 8 Dev Repo"
                 rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8-dev.repo -o /etc/yum.repos.d/eFa4-dev.repo
             fi
@@ -268,7 +268,7 @@ fi
 #-----------------------------------------------------------------------------#
 # kickstart
 #-----------------------------------------------------------------------------#
-if [[ "$action" == "kstesting" || "$action" == "ksproduction" || "$action" == "ksdev"]]; then
+if [[ "$action" == "kstesting" || "$action" == "ksproduction" || "$action" == "ksdev" ]]; then
   # Set root default pass for kickstart builds
   echo 'echo "First time login: root/eFaPr0j3ct" >> /etc/issue' >> /etc/rc.d/rc.local
   echo "root:eFaPr0j3ct" | chpasswd --md5 root
