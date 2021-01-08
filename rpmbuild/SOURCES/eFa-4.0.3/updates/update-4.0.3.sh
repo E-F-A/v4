@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.3-x cumulative updates script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2020 https://efa-project.org
+# Copyright (C) 2013~2021 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -167,6 +167,14 @@ if [[ ! -f /etc/systemd/system/mariadb.service.d/override.conf ]]; then
     [[ $instancetype != "lxc" ]] && execcmd
     cmd='chcon -u system_u -r object_r -t systemd_unit_file_t /etc/systemd/system/mariadb.service.d/override.conf'
     [[ $instancetype != "lxc" ]] && execcmd
+fi
+
+# Make sure yara rules is set to at least HIGH
+if [[ -n $(grep "^#yararulesproject_dbs_rating=" /etc/clamav-unofficial-sigs/user.conf) ]]; then
+  # Make sure it isn't already manually set
+  if [[ -z $(grep "^yararulesproject_dbs_rating=" /etc/clamav-unofficial-sigs/users.conf) ]]; then
+    sed -i "/^#yararulesproject_dbs_rating=/ c\yararulesproject_dbs_rating=\"HIGH\"" /etc/clamav-unofficial-sigs/user.conf
+  fi
 fi
 
 # Set milter queue permissions
