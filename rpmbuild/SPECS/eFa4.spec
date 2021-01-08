@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.3
-Release:   17.eFa%{?dist}
+Release:   18.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -109,6 +109,8 @@ Requires:  perl-DBD-SQLite >= 1.39-3
     # perl-DBD-SQLite                            # base    # MailScanner
 Requires:  perl-Digest-SHA1 >= 2.13-9
     # perl-Digest-SHA1                           # base    # MailScanner
+Requires:  perl-Digest-SHA >= 5.85-4
+    # perl-Digest-SHA                            # base    # MailScanner
 Requires:  perl-Digest-HMAC >= 1.03-5
     # perl-Digest-HMAC                           # base    # MailScanner
 Requires:  perl-Encode-Detect >= 1.01-13
@@ -175,7 +177,7 @@ Requires:  spamassassin >= 3.4.4-2
     # spamassassin                               # eFa     # MailScanner
 Requires:  MailScanner >= 5.3.4-3
     # MailScanner                                # eFa     # MailScanner
-Requires:  clamav-unofficial-sigs >= 7.2.0-1
+Requires:  clamav-unofficial-sigs >= 7.2.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
 Requires:  perl-IP-Country >= 2.28-1
     # perl-IP-Country                            # eFa     # MailScanner, Spamassassin
@@ -187,7 +189,7 @@ Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.15-4
+Requires:  MailWatch >= 1:1.2.16-1
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 2.3.167-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -482,6 +484,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Tue Jan 05 2021 eFa Project <shawniverson@efa-project.org> - 4.0.3-18
+- Update clamav-unofficial-sigs, MailWatch, cleanup eFaInit view
+
 * Wed Dec 30 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-17
 - Revert requirements for php and move development to dev repo
 

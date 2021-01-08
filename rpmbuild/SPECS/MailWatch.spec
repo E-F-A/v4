@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2020 https://efa-project.org
+# Copyright (C) 2013~2021 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,13 +26,13 @@
 #-----------------------------------------------------------------------------#
 Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
-Version:       1.2.15
+Version:       1.2.16
 Epoch:         1
-Release:       4.eFa%{?dist}
+Release:       1.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
-Source:        https://github.com/mailwatch/MailWatch/archive/1.2.zip
+Source:        https://github.com/mailwatch/MailWatch/archive/v%{version}.tar.gz
 Source2:       favicon.ico
 Source3:       eFa4logo-79px.png
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
@@ -49,7 +49,7 @@ to log all message data (excluding body text) to a MySQL database which is then
 queried by MailWatch for reporting and statistics.
 
 %prep
-%setup -q -n MailWatch-1.2
+%setup -q -n %{name}-%{version}
 
 %build
 # Nothing to do
@@ -310,6 +310,9 @@ chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Tue Jan 05 2021 Shawn Iverson <shawniverson@efa-project.org> - 1.2.16-1
+- Update to v1.2.16
+
 * Sat May 03 2020 Shawn Iverson <shawniverson@efa-project.org> - 1.2.15-3
 - Additional minor fixes for HTML Purifier and report handling
 

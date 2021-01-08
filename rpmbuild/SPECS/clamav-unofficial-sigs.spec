@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2020 https://efa-project.org
+# Copyright (C) 2013~2021 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,13 +26,13 @@
 #-----------------------------------------------------------------------------#
 Summary:       clamav-unofficial-sigs Maintained and provided by https://eXtremeSHOK.com
 Name:          clamav-unofficial-sigs
-Version:       7.2.0
+Version:       7.2.2
 Epoch:         1
 Release:       1.eFa%{?dist}
 License:       Copyright (c) Adrian Jon Kriel admin@extremeshok.com
 Group:         Applications/Utilities
 URL:           https://github.com/extremeshok/clamav-unofficial-sigs
-Source:        https://github.com/extremeshok/clamav-unofficial-sigs/archive/dev.tar.gz
+Source:        https://github.com/extremeshok/clamav-unofficial-sigs/archive/%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 Requires:      clamav >= 0.101.0
@@ -44,7 +44,7 @@ signature databases provided by Sanesecurity, FOXHOLE, OITC, Scamnailer, BOFHLAN
 Porcupine, Securiteinfo, MalwarePatrol, Yara-Rules Project, etc.
 
 %prep
-%setup -q -n %{name}-dev
+%setup -q -n %{name}-%{version}
 
 %build
 # Nothing to do
@@ -86,6 +86,9 @@ sed -i '/^clamd_pid=/ c\clamd_pid="/var/run/clamd.socket/clamd.pid"' /etc/clamav
 %attr(0644, root, root) %{_usr}/lib/systemd/system/clamav-unofficial-sigs.timer
 
 %changelog
+* Tue Jan 05 2021 Shawn Iverson <shawniverson@efa-project.org> - 7.2.2-1
+- Update for eFa <https://www.efa-project.org>
+
 * Sun Dec 06 2020 Shawn Iverson <shawniverson@efa-project.org> - 7.2.0-1
 - Update testing for eFa <https://www.efa-project.org>
 
