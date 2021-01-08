@@ -169,6 +169,14 @@ if [[ ! -f /etc/systemd/system/mariadb.service.d/override.conf ]]; then
     [[ $instancetype != "lxc" ]] && execcmd
 fi
 
+# Make sure yara rules is set to at least HIGH
+if [[ -n $(grep "^#yararulesproject_dbs_rating=" /etc/clamav-unofficial-sigs/user.conf) ]]; then
+  # Make sure it isn't already manually set
+  if [[ -z $(grep "^yararulesproject_dbs_rating=" /etc/clamav-unofficial-sigs/users.conf) ]]; then
+    sed -i "/^#yararulesproject_dbs_rating=/ c\yararulesproject_dbs_rating=\"HIGH\"" /etc/clamav-unofficial-sigs/user.conf
+  fi
+fi
+
 # Set milter queue permissions
 cmd='chown postfix:postfix /var/spool/MailScanner/milterin'
 execcmd
