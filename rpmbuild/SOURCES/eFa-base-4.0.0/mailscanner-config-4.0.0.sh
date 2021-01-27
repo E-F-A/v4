@@ -65,6 +65,7 @@ sed -i '/^Quarantine Whole Message =/ c\Quarantine Whole Message = yes' /etc/Mai
 # Set to yes to allow blocked file release
 sed -i '/^Quarantine Infections =/ c\Quarantine Infections = yes' /etc/MailScanner/MailScanner.conf
 sed -i '/^Keep Spam And MCP Archive Clean =/ c\Keep Spam And MCP Archive Clean = yes' /etc/MailScanner/MailScanner.conf
+sed -i '/^Quarantine Silent Viruses =/ c\Quarantine Silent Viruses = yes' /etc/MailScanner/MailScanner.conf
 sed -i 's/X-%org-name%-MailScanner/X-%org-name%-MailScanner-eFa/g' /etc/MailScanner/MailScanner.conf
 sed -i '/^Remove These Headers =/ c\Remove These Headers = X-Mozilla-Status: X-Mozilla-Status2: Disposition-Notification-To: Return-Receipt-To:' /etc/MailScanner/MailScanner.conf
 sed -i '/^Disarmed Modify Subject =/ c\Disarmed Modify Subject = no' /etc/MailScanner/MailScanner.conf
