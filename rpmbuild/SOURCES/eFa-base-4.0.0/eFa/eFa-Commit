@@ -468,6 +468,9 @@ if [[ $startmariadb -eq 1 ]]; then
   # sqlgrey user
   /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on sqlgrey.* to 'sqlgrey'@'localhost' identified by '$password'"
 
+  # Overrride character set and collation for sqlgrey
+  /usr/bin/mysql -u root -p"$password" -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
   # efa user for token handling
   # /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$password'"
 
