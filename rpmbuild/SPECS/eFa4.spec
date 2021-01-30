@@ -25,8 +25,8 @@
 
 Name:      eFa
 Summary:   eFa Maintenance rpm
-Version:   4.0.3
-Release:   19.eFa%{?dist}
+Version:   4.0.4
+Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -356,6 +356,11 @@ mv eFa/eFa-Configure $RPM_BUILD_ROOT%{_sbindir}
 
 # Move modules into position
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
+mv eFa/eFa-release.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
+mv eFa/CustomAction.pm $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
+mv eFa/efatokens.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/eFavmtools.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFahyperv.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFaqemu.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
@@ -368,6 +373,7 @@ mv eFa/eFa-Weekly-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Daily-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+mv eFa/eFa-Tokens.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-logrotate $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mv eFa/mysqltuner.pl $RPM_BUILD_ROOT%{_sbindir}
@@ -454,6 +460,13 @@ if [[ "$1" == "2" || "$flag" == "1" ]]; then
      } 2>&1 | tee -a /var/log/eFa/update.log
    fi
 
+    if [[ %{version} == "4.0.4" || "$flag" == "1" ]]; then
+     {
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.4.sh
+       [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
+     } 2>&1 | tee -a /var/log/eFa/update.log
+   fi
+
     # cleanup if sucessful
     rm -rf /usr/src/eFa
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
@@ -480,10 +493,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.fc
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa8.te
+%attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens.sql
+%attr(0755, root, root) %{_localstatedir}/eFa/lib/token/CustomAction.pm
+%attr(0755, root, root) %{_localstatedir}/www/html/mailscanner/eFa-release.php
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
+%attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Tokens.cron
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Jan 30 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-1
+- Add spam release logic back to eFa
+
 * Wed Jan 27 2021 eFa Project <shawniverson@efa-project.org> - 4.0.3-19
 - Update MailScanner, fix yara rules, sqlgrey unicode, etc.
 
