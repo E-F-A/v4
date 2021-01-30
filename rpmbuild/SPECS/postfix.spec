@@ -22,6 +22,8 @@
 #-----------------------------------------------------------------------------#
 # yum -y install
 #-----------------------------------------------------------------------------#
+%undefine _disable_source_fetch
+
 %define MYSQL 1
 %define PGSQL 1
 %define SQLITE 1
@@ -65,7 +67,7 @@
 
 Name: postfix_eFa
 Summary: Postfix Mail Transport Agent
-Version: 3.4.8
+Version: 3.5.9
 Release: 1.eFa%{?dist}
 Epoch: 2
 Group: System Environment/Daemons
@@ -87,7 +89,7 @@ Provides: postfix = %{epoch}:%{version}-%{release}
 Conflicts: postfix < %{epoch}:%{version}-%{release}
 Conflicts: postfix-pflogsumm postfix-perl-scripts
 
-Source0: postfix_eFa-3.4.8.tar.gz
+Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-%{Version}.tar.gz
 Source1: postfix-etc-init.d-postfix
 Source2: postfix.service
 Source3: README-Postfix-SASL-RedHat.txt
@@ -138,7 +140,7 @@ BuildRequires: systemd-units, libicu-devel
 Postfix is a Mail Transport Agent (MTA).
 
 %prep
-%setup -q
+%setup -q -n postfix-%{Version}
 # Apply obligatory patches
 %patch1 -p1 -b .config
 %patch2 -p1 -b .files
