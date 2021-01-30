@@ -175,7 +175,7 @@ Requires:  postfix_eFa >= 3.4.8-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin >= 3.4.4-2
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.3.4-3
+Requires:  MailScanner >= 5.4.1-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 7.2.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -503,6 +503,9 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sat Jan 30 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-1
 - Add spam release logic back to eFa
+
+* Wed Jan 27 2021 eFa Project <shawniverson@efa-project.org> - 4.0.3-19
+- Update MailScanner, fix yara rules, sqlgrey unicode, etc.
 
 * Tue Jan 05 2021 eFa Project <shawniverson@efa-project.org> - 4.0.3-18
 - Update clamav-unofficial-sigs, MailWatch, cleanup eFaInit view

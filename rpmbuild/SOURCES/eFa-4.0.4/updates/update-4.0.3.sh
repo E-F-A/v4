@@ -169,11 +169,11 @@ if [[ ! -f /etc/systemd/system/mariadb.service.d/override.conf ]]; then
     [[ $instancetype != "lxc" ]] && execcmd
 fi
 
-# Make sure yara rules is set to at least HIGH
+# Disable yara rules
 if [[ -n $(grep "^#yararulesproject_dbs_rating=" /etc/clamav-unofficial-sigs/user.conf) ]]; then
   # Make sure it isn't already manually set
-  if [[ -z $(grep "^yararulesproject_dbs_rating=" /etc/clamav-unofficial-sigs/user.conf) ]]; then
-    sed -i "/^#yararulesproject_dbs_rating=/ c\yararulesproject_dbs_rating=\"HIGH\"" /etc/clamav-unofficial-sigs/user.conf
+  if [[ -z $(grep "^yararulesproject_dbs_rating=" /etc/clamav-unofficial-sigs/users.conf) ]]; then
+    sed -i "/^#yararulesproject_dbs_rating=/ c\yararulesproject_dbs_rating=\"DISABLED\"" /etc/clamav-unofficial-sigs/user.conf
   fi
 fi
 
@@ -317,6 +317,9 @@ fi
 
 chmod g+rwxs /etc/MailScanner/rules
 chmod g+rw /etc/MailScanner/rules/*.rules
+
+#Fix SQLGREY unicode
+/usr/bin/mysql -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 # Enable maintenance mode if not enabled
 MAINT=0
