@@ -167,7 +167,7 @@ Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 5.8.3-1
     # unrar                                      # eFa     # MailScanner
-Requires:  postfix_eFa >= 3.4.8-1
+Requires:  postfix_eFa >= 3.5.9-1
     # postfix_eFa                                # eFa     # MTA
 %{?el7:Requires:  sqlgrey >= 1.8.0-8}
     # sqlgrey                                    # epel    # Greylisting
