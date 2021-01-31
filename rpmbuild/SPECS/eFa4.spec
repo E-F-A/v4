@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   2.eFa%{?dist}
+Release:   3.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -501,6 +501,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-3
+- Fix hang on update for token db creation
+
 * Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-2
 - Fix error on update for token db creation
 
