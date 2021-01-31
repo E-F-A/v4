@@ -76,7 +76,7 @@ License: IBM and GPLv2+
 BuildRequires: m4
 BuildRequires: make
 BuildRequires: gcc
-BuildRequires: libnsl2-devel
+%{?el8:BuildRequires: libnsl2-devel}
 Requires(post): systemd systemd-sysv
 Requires(post): %{_sbindir}/alternatives
 Requires(pre): %{_sbindir}/groupadd
