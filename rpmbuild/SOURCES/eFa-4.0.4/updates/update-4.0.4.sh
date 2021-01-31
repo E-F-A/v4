@@ -324,21 +324,22 @@ if [[ $? -ne 0 ]]; then
   # database is not present let's create and initialize everything
   /usr/bin/mysql < /var/eFa/lib/token/efatokens.sql
   # Just in case someone out there is doing something weird
-  rm -f /var/eFa/backup/CustomAction.pm.old
+  if [[ -f /var/eFa/backup/CustomAction.pm.old ]]; then 
+    rm -f /var/eFa/backup/CustomAction.pm.old
+  fi
   if [[ -f /var/eFa/backup/CustomAction.pm ]]; then 
-    mv /var/eFa/backup/CustomAction.pm CustomAction.pm.old
+    mv /var/eFa/backup/CustomAction.pm /var/eFa/backup/CustomAction.pm.old
   fi
   mv /usr/share/MailScanner/perl/custom/CustomAction.pm /var/eFa/backup/CustomAction.pm
-  rm -f /usr/share/MailScanner/perl/custom/CustomAction.pm
   cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
 
   # Create efa user
-  PASSWD=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
-  /usr/bin/mysql -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$PASSWD'"
+  PASSWD=`openssl rand -hex 16`
+  /usr/bin/mysql -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$PASSWD';"
   /usr/bin/mysql -e "FLUSH PRIVILEGES;"
 
   if [[ -z $(grep ^EFASQLPWD /etc/eFa/eFa-Config) ]]; then
-    echo "EFASQLPWD:$PASSWD" > /etc/eFa/eFa-Config
+    echo "EFASQLPWD:$PASSWD" >> /etc/eFa/eFa-Config
   else
     sed -i "/^EFASQLPWD/ c\EFASQLPWD:$PASSWD" /etc/eFa/eFa-Config
   fi
