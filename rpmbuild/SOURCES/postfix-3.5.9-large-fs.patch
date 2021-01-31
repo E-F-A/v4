@@ -1,5 +1,5 @@
---- postfix-3.2.4/src/util/fsspace.c	2006-06-15 18:07:16.000000000 +0000
-+++ postfix-3.2.4/src/util/fsspace.c2	2018-01-13 19:43:12.525140080 +0000
+--- postfix-3.5.9/src/util/fsspace.c	2006-06-15 18:07:16.000000000 +0000
++++ postfix-3.5.9/src/util/fsspace.c2	2018-01-13 19:43:12.525140080 +0000
 @@ -91,8 +91,15 @@
  
      if (statvfs(path, &fsbuf) < 0)
@@ -18,8 +18,8 @@
  #endif
      if (msg_verbose)
  	msg_info("%s: %s: block size %lu, blocks free %lu",
---- postfix-3.2.4/src/util/sys_defs.h	2017-02-02 01:31:15.000000000 +0000
-+++ postfix-3.2.4/src/util/sys_defs.h2	2018-01-13 20:10:41.142466094 +0000
+--- postfix-3.5.9/src/util/sys_defs.h	2017-02-02 01:31:15.000000000 +0000
++++ postfix-3.5.9/src/util/sys_defs.h2	2018-01-13 20:10:41.142466094 +0000
 @@ -769,8 +769,8 @@
  #define GETTIMEOFDAY(t)	gettimeofday(t,(struct timezone *) 0)
  #define ROOT_PATH	"/bin:/usr/bin:/sbin:/usr/sbin"
