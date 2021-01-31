@@ -345,6 +345,8 @@ if [[ $? -ne 0 ]]; then
   fi
 fi
 
+/usr/bin/mysql -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then

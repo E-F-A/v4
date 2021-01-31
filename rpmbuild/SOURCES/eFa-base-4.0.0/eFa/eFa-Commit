@@ -468,7 +468,8 @@ if [[ $startmariadb -eq 1 ]]; then
   /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on sqlgrey.* to 'sqlgrey'@'localhost' identified by '$password'"
 
   # Overrride character set and collation for sqlgrey
-  /usr/bin/mysql -u root -p"$password" -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  # Move to post database creation
+  #/usr/bin/mysql -u root -p"$password" -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
   # efa user for token handling
   # /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$password'"
@@ -926,7 +927,7 @@ if [[ $configsqlgrey -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
-  sed -i "/db_pass =/ c\db_pass = $SQLGREYSQLPWD" /etc/sqlgrey/sqlgrey.conf
+  sed -i "/^db_pass =/ c\db_pass = $SQLGREYSQLPWD" /etc/sqlgrey/sqlgrey.conf
   [ $? -ne 0 ] && exit 1
   echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" > /etc/eFa/SQLGrey-Config
   [ $? -ne 0 ] && exit 1
