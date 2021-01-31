@@ -53,7 +53,7 @@ sed -i '/^# clean_method =/ c\clean_method = sync' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# prepend =/ c\prepend = 1' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# reject_first_attempt =/ c\reject_first_attempt = immed' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# reject_early_reconnect =/ c\reject_early_reconnect = immed' /etc/sqlgrey/sqlgrey.conf
-sed -i '/^# reject_code =/ c\reject_code = 451' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# reject_code = 451/ c\reject_code = 451' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# optmethod =/ c\optmethod = optout' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# inet = 2501/ c\inet = 127.0.0.1:2501' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# pidfile =/ a\pidfile = /var/run/sqlgrey/sqlgrey.pid' /etc/sqlgrey/sqlgrey.conf
