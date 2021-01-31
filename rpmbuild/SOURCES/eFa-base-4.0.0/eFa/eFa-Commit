@@ -1176,7 +1176,7 @@ EOF
   [ $? -ne 0 ] && exit 1
 
   # Schedule post init
-  echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
+  echo '* * * * * root /usr/sbin/eFa-Post-Init >/dev/null 2>&1' > /etc/cron.d/efapostinit
 
   # Clear logs
   if [[ "$virtplatform" != "lxc" ]]; then
