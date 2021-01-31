@@ -74,6 +74,9 @@ Group: System Environment/Daemons
 URL: http://www.postfix.org
 License: IBM and GPLv2+
 BuildRequires: m4
+BuildRequires: make
+BuildRequires: gcc
+BuildRequires: libnsl2-devel
 Requires(post): systemd systemd-sysv
 Requires(post): %{_sbindir}/alternatives
 Requires(pre): %{_sbindir}/groupadd
@@ -89,7 +92,7 @@ Provides: postfix = %{epoch}:%{version}-%{release}
 Conflicts: postfix < %{epoch}:%{version}-%{release}
 Conflicts: postfix-pflogsumm postfix-perl-scripts
 
-Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-%{Version}.tar.gz
+Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-%{version}.tar.gz
 Source1: postfix-etc-init.d-postfix
 Source2: postfix.service
 Source3: README-Postfix-SASL-RedHat.txt
@@ -140,7 +143,7 @@ BuildRequires: systemd-units, libicu-devel
 Postfix is a Mail Transport Agent (MTA).
 
 %prep
-%setup -q -n postfix-%{Version}
+%setup -q -n postfix-%{version}
 # Apply obligatory patches
 %patch1 -p1 -b .config
 %patch2 -p1 -b .files
