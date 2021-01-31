@@ -1,0 +1,11 @@
+/etc/eFa/MailWatch-Config          --  system_u:object_r:mailwatchsql_etc_t:s0
+/etc/eFa/SA-Config                 --  system_u:object_r:sasql_etc_t:s0
+/etc/eFa/SQLGrey-Config            --  system_u:object_r:sqlgreysql_etc_t:s0
+/etc/eFa/eFaSQL-Config             --  system_u:object_r:efasql_etc_t:s0
+/etc/eFa/MySQL-Config              --  system_u:object_r:mysqlsql_etc_t:s0
+/etc/eFa/openDMARC-Config          --  system_u:object_r:opendmarcsql_etc_t:s0
+/usr/sbin/MSMilter                 --  system_u:object_r:mscan_exec_t:s0
+/var/eFa                           --  system_u:object_r:efa_var_t:s0
+/var/log/clamd.scan                --  system_u:object_r:antivirus_log_t:s0
+/var/run/clamd.socket              --  system_u:object_r:antivirus_var_run_t:s0
+/etc/sysconfig/network-scripts.bak --  system_u:object_r:net_conf_t:s0

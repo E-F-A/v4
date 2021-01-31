@@ -1,0 +1,68 @@
+# +---------------------------------------------------+
+# Function to toggle eFa Monitor for Maintenance
+# +---------------------------------------------------+
+func_maintenance-mode() {
+  func_echo-header
+  echo -e "$green[eFa]$clean - Maintenance Mode"
+  echo -e ""
+  echo -e "$green[eFa]$clean This option will toggle eFa Monitor to allow for Maintenance"
+  echo -e ""
+  [[ -f /etc/cron.d/eFa-Monitor.cron ]] && modeStatus="0" || modeStatus="1"
+  
+  if [[ "$modeStatus" -eq "0" ]]; then
+    echo -en "$green[eFa]$clean : Enter eFa Maintenance Mode? (y/N/c):"
+    read MAINTENANCE
+
+    FLAG=1
+    while [ $FLAG -eq 1 ]
+    do
+      if [[ $MAINTENANCE =~ ^[yY]$ ]]; then
+        rm -f /etc/cron.d/eFa-Monitor.cron
+        echo -e ""
+        echo -e "$green[eFa]$clean Maintenance mode is $green ENABLED $clean"
+        echo -e ""
+        FLAG=0
+      elif [[ -z "$MAINTENANCE" || $MAINTENANCE =~ ^[nN]$ ]]; then
+        echo -e ""
+        echo -e "$green[eFa]$clean No action taken"
+        FLAG=0
+      elif [[ $MAINTENANCE =~ ^[cC]$ ]]; then
+        echo -e "$green[eFa]$clean No action taken, exiting."
+        FLAG=0
+      else
+        echo -e "$red[ERROR]$clean Invalid input"
+        echo -en "$green[eFa]$clean : Enter eFa Maintenance Mode? (y/N/c):"
+        read MAINTENANCE
+      fi
+    done
+  else
+    echo -en "$green[eFa]$clean : Exit eFa Maintenance Mode? (Y/n/c):"
+    read MAINTENANCE
+
+    FLAG=1
+    while [ $FLAG -eq 1 ]
+    do
+      if [[ -z "$MAINTENANCE" || $MAINTENANCE =~ ^[yY]$ ]]; then
+        echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
+        echo -e ""
+        echo -e "$green[eFa]$clean Maintenance mode is $green DISABLED $clean"
+        echo -e ""
+        FLAG=0
+      elif [[ $MAINTENANCE =~ ^[nN]$ ]]; then
+        echo -e ""
+        echo -e "$green[eFa]$clean No action taken"
+        FLAG=0
+      elif [[ $MAINTENANCE =~ ^[cC]$ ]]; then
+        echo -e "$green[eFa]$clean No action taken, exiting."
+        FLAG=0
+      else
+        echo -e "$red[ERROR]$clean Invalid input"
+        echo -en "$green[eFa]$clean : Exit eFa Maintenance Mode? (Y/n/c):"
+        read MAINTENANCE
+      fi
+    done
+  fi
+  pause
+
+}
+# +---------------------------------------------------+

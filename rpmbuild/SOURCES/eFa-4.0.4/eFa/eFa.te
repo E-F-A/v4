@@ -1,0 +1,415 @@
+
+module eFa 1.0.23;
+
+type mailwatchsql_etc_t;
+type sqlgreysql_etc_t;
+type sasql_etc_t;
+type efasql_etc_t;
+type mysqlsql_etc_t;
+type efa_var_t;
+type opendmarcsql_etc_t;
+
+require {
+    attribute file_type;
+    type httpd_sys_script_t;
+    type httpd_sys_content_t;
+    type sendmail_t;
+    type postfix_etc_t;
+    type postfix_public_t;
+    type postfix_master_t;
+    type postfix_bounce_t;
+    type postfix_spool_t;
+    type postfix_showq_t;
+    type postfix_pickup_t;
+    type postfix_qmgr_t;
+    type postfix_cleanup_t;
+    type postfix_smtp_t;
+    type postfix_postdrop_t;
+    type httpd_t;
+    type mscan_etc_t;
+    type mscan_t;
+    type mscan_spool_t;
+    type unconfined_t;
+    type etc_mail_t;
+    type spamd_var_lib_t;
+    type init_t;
+    type kernel_t;
+    type syslogd_t;
+    type lvm_t;
+    type udev_t;
+    type auditd_t;
+    type irqbalance_t;
+    type policykit_t;
+    type systemd_logind_t;
+    type lsmd_t;
+    type abrt_watch_log_t;
+    type fsdaemon_t;
+    type system_dbusd_t;
+    type chronyd_t;
+    type crond_t;
+    type local_login_t;
+    type firewalld_t;
+    type syslogd_t;
+    type tuned_t;
+    type sshd_t;
+    type sshd_net_t;
+    type NetworkManager_t;
+    type user_tty_device_t;
+    type mysqld_safe_t;
+    type mysqld_t;
+    type named_t;
+    type antivirus_t;
+    type system_cronjob_t;
+    type greylist_milter_t;
+    type initrc_t;
+    type devpts_t;
+    type rpm_t;
+    type dcc_var_t;
+    type tmpfs_t;
+    type spamc_exec_t;
+    type razor_port_t;
+    type dcc_client_exec_t;
+    type cdcc_exec_t;
+    type mysqld_db_t;
+    type mysqld_port_t;
+    type dcc_client_map_t;
+    type shadow_t;
+    type postfix_smtpd_t;
+    type getty_t;
+    type spamd_update_t;
+    type system_cronjob_tmp_t;
+    type kdumpctl_t;
+    type systemd_hostnamed_t;
+    type mandb_t;
+    type rpm_script_t;
+    type sysstat_t;
+    type user_devpts_t;
+    type user_tmp_t;
+    type tty_device_t;
+    type unconfined_service_t;
+    type spamd_compiled_t;
+    type tmp_t;
+    type sysctl_vm_t;
+    type sysfs_t;
+    type ifconfig_t;
+    type var_run_t;
+    type rpm_exec_t;
+    type ldconfig_exec_t;
+    type rngd_t;
+    type mscan_exec_t;
+    type system_mail_t;
+    type rpcbind_t;
+    type dovecot_t;
+    type httpd_var_lib_t;
+    type initrc_var_run_t;
+    type proc_net_t;
+    type dkim_milter_t;
+    type ntpd_t;
+    type dhcpc_t;
+    type admin_home_t;
+    type fail2ban_t;
+    class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
+    class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
+    class sock_file { getattr write };
+    class unix_stream_socket connectto;
+    class chr_file getattr;
+    class lnk_file { getattr read };
+    class tcp_socket { name_connect getattr ioctl };
+    class capability { kill setuid setgid chown dac_override dac_read_search sys_resource fsetid fowner audit_write net_raw };
+    class netlink_audit_socket { create write nlmsg_relay read };
+    class process setrlimit;
+    class service enable;
+    class filesystem getattr;
+    class capability2 mac_admin;
+    class fifo_file { getattr ioctl write open };
+    class dbus { send_msg };
+}
+
+# Configuration security hardening
+typeattribute mailwatchsql_etc_t file_type;
+typeattribute sasql_etc_t file_type;
+typeattribute sqlgreysql_etc_t file_type;
+typeattribute efasql_etc_t file_type;
+typeattribute mysqlsql_etc_t file_type;
+typeattribute efa_var_t file_type;
+typeattribute opendmarcsql_etc_t file_type;
+
+#============ ifconfig_t ============
+# allow ifconfig to access /var/run
+# observed when /run/vmware-active-nics executes
+allow ifconfig_t var_run_t:file { read };
+
+#============= httpd_t ==============
+# allow httpd access to mailscanner and postfix
+allow httpd_t mscan_etc_t:file { getattr open read create write };
+allow httpd_t mscan_etc_t:dir { getattr read write add_name };
+allow httpd_t postfix_etc_t:file { getattr open read };
+allow httpd_t postfix_etc_t:dir read;
+allow httpd_t postfix_public_t:sock_file write;
+allow httpd_t postfix_spool_t:dir read;
+allow httpd_t mscan_spool_t:dir { read write remove_name };
+allow httpd_t mscan_spool_t:file { read getattr open unlink };
+allow httpd_t tmpfs_t:file getattr;
+allow httpd_t sqlgreysql_etc_t:file { open getattr read };
+
+# Allow access to MailWatch-Configuration
+allow httpd_t mailwatchsql_etc_t:file { getattr read open };
+
+#============= httpd_sys_script_t ==============
+# allow ps to read MailScanner process
+allow httpd_sys_script_t unconfined_t:dir { getattr search };
+allow httpd_sys_script_t unconfined_t:file { open read };
+allow httpd_sys_script_t unconfined_service_t:dir { getattr search };
+allow httpd_sys_script_t unconfined_service_t:file { open read };
+allow httpd_sys_script_t mscan_t:dir { getattr search };
+allow httpd_sys_script_t mscan_t:file { ioctl open read };
+allow httpd_sys_script_t mscan_exec_t:dir { getattr search };
+allow httpd_sys_script_t mscan_exec_t:file { ioctl open read };
+allow httpd_sys_script_t httpd_t:tcp_socket { ioctl getattr };
+allow httpd_sys_script_t mscan_spool_t:dir { read open };
+
+# allow ps to read antivirus process
+allow httpd_sys_script_t antivirus_t:dir { getattr search };
+allow httpd_sys_script_t antivirus_t:file { read open };
+
+# allow ps/scripts to read postfix process and files
+allow httpd_sys_script_t postfix_master_t:unix_stream_socket connectto;
+allow httpd_sys_script_t postfix_master_t:dir { getattr search };
+allow httpd_sys_script_t postfix_master_t:file { read open };
+allow httpd_sys_script_t postfix_pickup_t:dir { getattr search };
+allow httpd_sys_script_t postfix_pickup_t:file { read open };
+allow httpd_sys_script_t postfix_qmgr_t:dir { getattr search };
+allow httpd_sys_script_t postfix_qmgr_t:file { read open };
+allow httpd_sys_script_t postfix_showq_t:dir { getattr search read };
+allow httpd_sys_script_t postfix_showq_t:file { read open };
+allow httpd_sys_script_t postfix_cleanup_t:dir { getattr search };
+allow httpd_sys_script_t postfix_cleanup_t:file { read open };
+allow httpd_sys_script_t postfix_etc_t:dir { getattr read open search };
+allow httpd_sys_script_t postfix_etc_t:file { getattr open read };
+allow httpd_sys_script_t postfix_spool_t:dir { getattr read search open write add_name remove_name };
+allow httpd_sys_script_t postfix_spool_t:file { append getattr read open ioctl write create };
+allow httpd_sys_script_t postfix_spool_t:lnk_file { getattr read };
+allow httpd_sys_script_t postfix_public_t:dir search;
+allow httpd_sys_script_t postfix_public_t:sock_file write;
+allow httpd_sys_script_t postfix_smtp_t:dir search;
+allow httpd_sys_script_t postfix_bounce_t:dir { getattr search };
+allow httpd_sys_script_t postfix_bounce_t:file { read open };
+allow httpd_sys_script_t postfix_smtp_t:dir { getattr search };
+allow httpd_sys_script_t postfix_smtp_t:file { read open };
+allow httpd_sys_script_t postfix_smtpd_t:dir { getattr search read open};
+allow httpd_sys_script_t postfix_smtpd_t:file { open read };
+allow httpd_sys_script_t postfix_postdrop_t:dir { getattr search read open};
+allow httpd_sys_script_t postfix_postdrop_t:file { open read };
+allow httpd_sys_script_t system_mail_t:dir { getattr search read open};
+allow httpd_sys_script_t system_mail_t:file { open read };
+
+# Allow ps to get process information for MailScanner and postfix only
+dontaudit httpd_sys_script_t init_t:dir { getattr search };
+dontaudit httpd_sys_script_t init_t:file { read open };
+dontaudit httpd_sys_script_t kernel_t:dir { getattr search };
+dontaudit httpd_sys_script_t kernel_t:file { read open };
+dontaudit httpd_sys_script_t syslogd_t:dir { getattr search };
+dontaudit httpd_sys_script_t syslogd_t:file { read open };
+dontaudit httpd_sys_script_t lvm_t:dir { getattr search };
+dontaudit httpd_sys_script_t lvm_t:file { read open };
+dontaudit httpd_sys_script_t udev_t:dir { getattr search };
+dontaudit httpd_sys_script_t udev_t:file { read open };
+dontaudit httpd_sys_script_t auditd_t:dir { getattr search };
+dontaudit httpd_sys_script_t auditd_t:file { read open };
+dontaudit httpd_sys_script_t irqbalance_t:dir { getattr search };
+dontaudit httpd_sys_script_t irqbalance_t:file { read open };
+dontaudit httpd_sys_script_t policykit_t:dir { getattr search };
+dontaudit httpd_sys_script_t policykit_t:file { read open };
+dontaudit httpd_sys_script_t systemd_logind_t:dir { getattr search };
+dontaudit httpd_sys_script_t systemd_logind_t:file { read open };
+dontaudit httpd_sys_script_t lsmd_t:dir { getattr search };
+dontaudit httpd_sys_script_t lsmd_t:file { read open };
+dontaudit httpd_sys_script_t abrt_watch_log_t:dir getattr;
+dontaudit httpd_sys_script_t fsdaemon_t:dir getattr;
+dontaudit httpd_sys_script_t system_dbusd_t:dir { getattr search };
+dontaudit httpd_sys_script_t system_dbusd_t:file { read open };
+dontaudit httpd_sys_script_t chronyd_t:dir { getattr search };
+dontaudit httpd_sys_script_t chronyd_t:file { read open };
+dontaudit httpd_sys_script_t crond_t:dir { getattr search };
+dontaudit httpd_sys_script_t crond_t:file { read open };
+dontaudit httpd_sys_script_t local_login_t:dir { getattr search };
+dontaudit httpd_sys_script_t local_login_t:file { read open };
+dontaudit httpd_sys_script_t firewalld_t:dir { getattr search };
+dontaudit httpd_sys_script_t firewalld_t:file { read open };
+dontaudit httpd_sys_script_t syslogd_t:dir getattr;
+dontaudit httpd_sys_script_t syslogd_t:file { read open };
+dontaudit httpd_sys_script_t tuned_t:dir { getattr search };
+dontaudit httpd_sys_script_t tuned_t:file { read open };
+dontaudit httpd_sys_script_t sshd_t:dir { getattr search };
+dontaudit httpd_sys_script_t sshd_t:file { read open };
+dontaudit httpd_sys_script_t NetworkManager_t:dir { getattr search };
+dontaudit httpd_sys_script_t NetworkManager_t:file { read open };
+dontaudit httpd_sys_script_t user_tty_device_t:chr_file getattr;
+dontaudit httpd_sys_script_t named_t:dir { getattr search };
+dontaudit httpd_sys_script_t named_t:file { read open };
+dontaudit httpd_sys_script_t system_cronjob_t:dir { getattr search };
+dontaudit httpd_sys_script_t system_cronjob_t:file { read open };
+dontaudit httpd_sys_script_t initrc_t:dir { getattr search };
+dontaudit httpd_sys_script_t initrc_t:file { read open };
+dontaudit httpd_sys_script_t devpts_t:dir getattr;
+dontaudit httpd_sys_script_t devpts_t:chr_file getattr;
+dontaudit httpd_sys_script_t rpm_t:dir { getattr search };
+dontaudit httpd_sys_script_t rpm_t:file { read open };
+dontaudit httpd_sys_script_t devpts_t:dir search;
+dontaudit httpd_sys_script_t getty_t:dir getattr;
+dontaudit httpd_sys_script_t greylist_milter_t:dir { getattr search };
+dontaudit httpd_sys_script_t greylist_milter_t:file { read open };
+dontaudit httpd_sys_script_t mysqld_safe_t:dir getattr;
+dontaudit httpd_sys_script_t mysqld_t:dir { getattr search };
+dontaudit httpd_sys_script_t mysqld_t:file { read open };
+dontaudit httpd_sys_script_t kdumpctl_t:dir getattr;
+dontaudit httpd_sys_script_t systemd_hostnamed_t:dir getattr;
+dontaudit httpd_sys_script_t mandb_t:dir getattr;
+dontaudit httpd_sys_script_t rpm_script_t:dir getattr;
+dontaudit httpd_sys_script_t sysstat_t:dir getattr;
+dontaudit httpd_sys_script_t user_devpts_t:chr_file getattr;
+dontaudit httpd_sys_script_t mandb_t:dir { getattr search };
+dontaudit httpd_sys_script_t mandb_t:file { read open };
+dontaudit httpd_sys_script_t httpd_t:tcp_socket { getattr ioctl };
+dontaudit httpd_sys_script_t unconfined_service_t:dir { getattr search };
+dontaudit httpd_sys_script_t unconfined_service_t:file { open read };
+dontaudit httpd_sys_script_t getty_t:dir search;
+dontaudit httpd_sys_script_t getty_t:file { read open };
+dontaudit httpd_sys_script_t tty_device_t:chr_file getattr;
+dontaudit httpd_sys_script_t sysctl_vm_t:file { read open };
+dontaudit httpd_sys_script_t sysctl_vm_t:dir { getattr search };
+dontaudit httpd_sys_script_t sshd_net_t:dir { getattr search };
+dontaudit httpd_sys_script_t sshd_net_t:file { read open };
+dontaudit httpd_sys_script_t rngd_t:dir { getattr search };
+dontaudit httpd_sys_script_t rngd_t:file { read open };
+dontaudit httpd_sys_script_t rpcbind_t:dir { getattr search };
+dontaudit httpd_sys_script_t rpcbind_t:file { read open };
+dontaudit httpd_sys_script_t dovecot_t:dir { getattr search };
+dontaudit httpd_sys_script_t dovecot_t:file { read open };
+dontaudit httpd_sys_script_t dkim_milter_t:dir { getattr search };
+dontaudit httpd_sys_script_t dkim_milter_t:file { read open };
+dontaudit httpd_sys_script_t ntpd_t:dir { getattr search };
+dontaudit httpd_sys_script_t ntpd_t:file { read open };
+dontaudit httpd_sys_script_t dhcpc_t:dir { getattr search };
+dontaudit httpd_sys_script_t dhcpc_t:file { read open };
+dontaudit httpd_sys_script_t fail2ban_t:dir { getattr search };
+dontaudit httpd_sys_script_t fail2ban_t:file { read open };
+
+# allow spamassassin and mailscanner lint
+allow httpd_sys_script_t etc_mail_t:dir search;
+allow httpd_sys_script_t spamd_var_lib_t:dir { getattr search read open };
+allow httpd_sys_script_t etc_mail_t:dir { getattr read open };
+allow httpd_sys_script_t spamd_var_lib_t:file { getattr read open ioctl execute };
+allow httpd_sys_script_t etc_mail_t:file { getattr read open ioctl };
+allow httpd_sys_script_t etc_mail_t:lnk_file { getattr read };
+allow httpd_sys_script_t mscan_etc_t:dir { getattr search open read };
+allow httpd_sys_script_t mscan_etc_t:file { getattr read open ioctl lock };
+allow httpd_sys_script_t mscan_etc_t:lnk_file read;
+allow httpd_sys_script_t mscan_spool_t:file { getattr read open lock create write append setattr unlink };
+allow httpd_sys_script_t dcc_var_t:dir { getattr search write add_name remove_name };
+allow httpd_sys_script_t dcc_var_t:sock_file { getattr write };
+allow httpd_sys_script_t dcc_var_t:file { getattr create open lock rename unlink read write };
+allow httpd_sys_script_t dcc_client_map_t:file { getattr open read write lock };
+allow httpd_sys_script_t self:capability { setgid setuid chown dac_override dac_read_search sys_resource fsetid fowner audit_write };
+allow httpd_sys_script_t self:netlink_audit_socket { create write nlmsg_relay read };
+allow httpd_sys_script_t self:process setrlimit;
+allow httpd_sys_script_t mscan_spool_t:dir { getattr search setattr write add_name create remove_name rmdir };
+allow httpd_sys_script_t tmpfs_t:dir { setattr write add_name create read remove_name rmdir };
+allow httpd_sys_script_t tmpfs_t:file { append getattr open ioctl setattr create read write lock unlink };
+allow httpd_sys_script_t tmpfs_t:filesystem getattr;
+allow httpd_sys_script_t antivirus_t:unix_stream_socket connectto;
+allow httpd_sys_script_t user_tmp_t:file setattr;
+allow httpd_sys_script_t initrc_t:unix_stream_socket connectto;
+allow httpd_sys_script_t mailwatchsql_etc_t:file { ioctl getattr read open };
+allow httpd_sys_script_t postfix_spool_t:file { unlink ioctl };
+allow httpd_sys_script_t spamd_compiled_t:dir { search getattr read open };
+allow httpd_sys_script_t spamd_compiled_t:file { getattr read open ioctl execute };
+allow httpd_sys_script_t shadow_t:file { read open };
+allow httpd_sys_script_t httpd_var_lib_t:dir { search add_name create };
+allow httpd_sys_script_t system_dbusd_t:unix_stream_socket { connectto };
+allow httpd_sys_script_t initrc_var_run_t:file { read open lock };
+allow httpd_sys_script_t shadow_t:file { getattr };
+allow httpd_sys_script_t system_dbusd_t:dbus { send_msg };
+
+# Allow file release
+allow httpd_sys_script_t postfix_spool_t:file { rename setattr };
+allow httpd_sys_script_t postfix_public_t:sock_file { getattr };
+
+# Allow geoip updates
+allow httpd_sys_script_t httpd_t:dir { getattr search };
+allow httpd_sys_script_t httpd_t:file { read open };
+
+# Allow sa-learn
+allow httpd_sys_script_t spamd_update_t:dir { getattr search };
+allow httpd_sys_script_t mscan_spool_t:file { ioctl };
+allow httpd_sys_script_t httpd_var_lib_t:dir { getattr write };
+allow httpd_sys_script_t httpd_var_lib_t:file { lock create write open getattr read };
+allow httpd_sys_script_t httpd_var_lib_t:lnk_file { read };
+
+# Allow dbus
+allow httpd_sys_script_t systemd_logind_t:dbus { send_msg };
+
+# Allow postconf
+allow httpd_sys_script_t proc_net_t:file { read };
+
+#============= spamd_update_t ==============
+allow spamd_update_t self:capability dac_override;
+allow spamd_update_t shadow_t:file read;
+allow spamd_update_t spamd_var_lib_t:file execute;
+allow spamd_update_t system_cronjob_tmp_t:file write;
+allow spamd_update_t admin_home_t:dir write;
+
+#============= mscan_t ==============
+allow mscan_t postfix_spool_t:dir { search read open getattr ioctl write add_name remove_name };
+allow mscan_t postfix_spool_t:file { append getattr read ioctl lock open write create rename setattr unlink };
+allow mscan_t postfix_spool_t:lnk_file { getattr read };
+allow mscan_t postfix_public_t:dir search;
+allow mscan_t postfix_public_t:fifo_file { getattr ioctl write open };
+allow mscan_t postfix_public_t:sock_file write;
+allow mscan_t etc_mail_t:dir { search getattr read open };
+allow mscan_t etc_mail_t:file { getattr read open ioctl };
+allow mscan_t etc_mail_t:lnk_file read;
+allow mscan_t tmpfs_t:dir { write add_name create setattr read remove_name rmdir ioctl };
+allow mscan_t tmpfs_t:file { create read write getattr open lock append unlink ioctl setattr };
+allow mscan_t tmpfs_t:filesystem getattr;
+allow mscan_t mscan_etc_t:lnk_file read;
+allow mscan_t mysqld_db_t:dir search;
+allow mscan_t cdcc_exec_t:file { getattr execute open read execute_no_trans };
+allow mscan_t dcc_client_exec_t:file { getattr execute open read execute_no_trans };
+allow mscan_t dcc_client_map_t:file { getattr read write open lock };
+allow mscan_t dcc_var_t:dir { getattr search write add_name remove_name };
+allow mscan_t dcc_var_t:file { getattr read write create open lock rename unlink };
+allow mscan_t dcc_var_t:sock_file { getattr write };
+allow mscan_t razor_port_t:tcp_socket name_connect;
+allow mscan_t spamc_exec_t:file { getattr execute open read execute_no_trans ioctl };
+allow mscan_t spamd_var_lib_t:file execute;
+allow mscan_t self:capability { fowner fsetid };
+allow mscan_t initrc_t:unix_stream_socket connectto;
+allow mscan_t efasql_etc_t:file { read open ioctl getattr };
+allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
+allow mscan_t spamd_compiled_t:dir { search };
+allow mscan_t spamd_compiled_t:file { open read getattr ioctl execute };
+allow mscan_t sysfs_t:dir { read };
+allow mscan_t rpm_exec_t:file { getattr };
+allow mscan_t ldconfig_exec_t:file { getattr execute };
+allow mscan_t httpd_sys_content_t:file getattr;
+
+#============= greylist_milter_t ==============
+allow greylist_milter_t self:capability kill;
+allow greylist_milter_t mysqld_port_t:tcp_socket name_connect;
+allow greylist_milter_t tmp_t:dir { add_name write create };
+allow greylist_milter_t tmp_t:file { create write };
+
+#============= unconfined_t ==============
+allow unconfined_t init_t:service enable;
+allow unconfined_t self:capability2 mac_admin;
+
+#============= sendmail_t ==============
+allow sendmail_t postfix_etc_t:dir read;
+
+#============= named_t ==============
+allow named_t self:capability { net_raw };
+
+#============= systemd_logind_t ===============
+allow systemd_logind_t httpd_sys_script_t:dbus { send_msg };
+

@@ -1,0 +1,40 @@
+# +---------------------------------------------------+
+# Function to set processing database attempts
+# +---------------------------------------------------+
+func_tunables_procdb(){
+  func_echo-header
+  echo -e "$green[eFa]$clean - Configuring System Tunables"
+  echo -e ""
+  msprocdb="`cat /etc/MailScanner/MailScanner.conf | grep -e '^Maximum Processing Attempts' | awk -F'=' '{print $2}' | tr -d '[:blank:]'`"
+  echo -e "$green[eFa]$clean Mailscanner is currently set to make $msprocdb processing attempts."
+  echo -e "$green[eFa]$clean Note that more processing attempts requires more memory."
+  echo -e "$green[eFa]$clean Insufficient memory can cause MailScanner/clamav to crash."
+  echo -e "" 
+  echo -e -n "$green[eFa]$clean : Processing Attempts (default/min 0, max 10):"
+  read MSPROCDB
+  mstuning=1
+  while [ $mstuning != "0" ]
+   do
+     if [[ $MSPROCDB = "" ]]
+      then
+        MSPROCDB=0
+     fi
+     if [[ $MSPROCDB =~ ^([0-9]|10)$ ]]
+      then
+        mstuning=0
+      else
+        echo -e "       $red ERROR: The number of attempts $MSPROCDB appears to be invalid."
+        echo -e "        ERROR: please re-enter the number of attempts.$clean"
+        echo -e -n "$green[eFa]$clean Processing Attempts(default/min 0, max 10):"
+        read MSPROCDB
+     fi
+   done
+
+  # Set processing attempts
+  sed -i "/^Maximum Processing Attempts =/ c\Maximum Processing Attempts = $MSPROCDB" /etc/MailScanner/MailScanner.conf
+  systemctl restart mailscanner
+  echo -e "MailScanner processing attempts reconfigured to use $MSPROCDB attempts."
+  pause
+
+}
+# +---------------------------------------------------+

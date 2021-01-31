@@ -1,0 +1,95 @@
+# +---------------------------------------------------+
+# Configure Webmin
+# +---------------------------------------------------+
+
+function func_webmin() {
+  func_echo-header
+
+  local ASKWEBMIN
+  local webminpwd1
+  local webminpwd2
+  local flag
+  local flag2
+
+  echo -e "$green[eFa]$clean Webmin is a user friendly web management tool for linux that runs on port 10000"
+  
+  flag2=0
+  while [ $flag2 -eq 0 ]; do
+      echo -e ""
+      echo -e -n "$green[eFa]$clean Would you like to $green Enable $clean Webmin? [Y/n/c]: "
+      read ASKWEBMIN
+      if [[ $ASKWEBMIN =~ ^[yY]$ || -z $ASKWEBMIN ]]; then
+        flag2=1
+
+
+        OSVERSION=`cat /etc/centos-release`
+        if [[ $OSVERSION =~ .*'release 8.'.* ]]; then
+          #Add webmin repository
+          if [[ ! -f /etc/yum.repos.d/webmin.repo ]]; then
+            echo "[Webmin]
+name=Webmin Distribution Neutral
+#baseurl=https://download.webmin.com/download/yum
+mirrorlist=https://download.webmin.com/download/yum/mirrorlist
+enabled=1" > /etc/yum.repos.d/webmin.repo
+
+            rpm --import http://www.webmin.com/jcameron-key.asc
+          fi
+        fi
+
+        # Install webmin
+        yum -y install webmin
+
+        # Open port 10000
+        firewall-cmd --add-port 10000/tcp --permanent
+        firewall-cmd --reload
+
+        # Set webmin password
+        flag=0
+        while [ $flag -eq 0 ]; do
+          echo -e ""
+          echo -e -n "$green[eFa]$clean Please enter a root password to use for webmin: "
+          read -s webminpwd1
+          echo -e ""
+          echo -e -n "$green[eFa]$clean Please re-enter a root password to use for webmin: "
+          read -s webminpwd2
+          echo -e ""
+
+          if [[ "$webminpwd1" != "$webminpwd2" ]]; then
+            echo "$green[eFa]$clean Passwords do not match, please try again."
+          else
+            flag=1
+          fi
+        done
+
+        # set password
+        /usr/libexec/webmin/changepass.pl /etc/webmin root $webminpwd1
+        webminpwd1=
+        webminpwd2=
+
+        # new password is not used if service is not restarted
+        /etc/rc3.d/S99webmin restart
+
+        echo -e "$green[eFa]$clean Webmin is now enabled."
+
+        pause
+      elif [[ $ASKWEBMIN =~ ^[nN]$ ]]; then
+        flag2=1
+        yum -y remove webmin
+        
+        firewall-cmd --remove-port 10000/tcp --permanent
+        firewall-cmd --reload
+
+        echo -e "$green[eFa]$clean Webmin is now disabled"
+        pause
+      elif [[ $ASKWEBMIN =~ ^[cC]$ ]]; then
+        flag2=1
+        echo -e "$green[eFa]$clean No action taken"
+        pause
+      else
+        echo -e "Choice $green\"$ASKWEBMIN\"$clean is not a valid choice."
+        echo -e ""
+      fi
+  done
+}
+
+# +----------------------------------------------

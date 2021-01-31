@@ -1,0 +1,11 @@
+module eFaqemu 1.0.0;
+
+require {
+    type httpd_sys_script_t;
+    type virt_qemu_ga_t;
+    class dir { getattr search };
+    class file { open read };
+}
+
+dontaudit httpd_sys_script_t virt_qemu_ga_t:dir { getattr search };
+dontaudit httpd_sys_script_t virt_qemu_ga_t:file { read open };

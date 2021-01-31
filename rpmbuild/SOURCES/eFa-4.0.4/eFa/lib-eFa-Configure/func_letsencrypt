@@ -1,0 +1,125 @@
+# +---------------------------------------------------+
+# Configure Lets Encrypt
+# +---------------------------------------------------+
+
+function func_lets-encrypt() {
+  func_echo-header
+
+  centosver=$(cat /etc/centos-release | awk -F'[^0-9]*' '{print $2}')
+  HOSTNAME=$(grep ^HOSTNAME /etc/eFa/eFa-Config | sed 's/^.*://')
+  DOMAINNAME=$(grep ^DOMAINNAME /etc/eFa/eFa-Config | sed 's/^.*://')
+  FQDN=$HOSTNAME.$DOMAINNAME
+  LOWERFQDN=${FQDN,,}
+  ADMINEMAIL=$(grep ^ADMINEMAIL /etc/eFa/eFa-Config | sed 's/^.*://')
+
+  echo -e "$green[eFa]$clean This is the current FQDN that will be used for all cert functions:"
+  echo -e ""
+  echo -e "$green[eFa]$clean $HOSTNAME.$DOMAINNAME"
+  echo -e ""
+  echo -e "$green[eFa]$clean If this is not correct, please update your Hostname and Domain Name within main menu #4."
+  echo -e ""
+  echo -e "$green[eFa]$clean Please also make sure the name above is externally resolvabe before continuing."
+  echo -e "$green[eFa]$clean Please also make sure that TCP 80 and 443 is opened from the WAN to eFa." 
+  echo -e "$green[eFa]$clean By continuing, you agree to the Terms Of Service for Let's Encrypt and EFF."
+  echo -e ""
+  echo -e ""
+
+  if [[ -e /etc/cron.d/certbotrenew ]]; then
+    echo -e "The Let's Encrypt feature is already $green Enabled $clean"
+    echo -e "You may update an exisiting configuration (ex. new FQDN) by disabling and then re-enabling this feature."
+    echo -e "Would you like to $red Disable $clean Let's Encrypt? [y/n/c]"
+    read TMPLE
+    if [[ $TMPLE == "y" || $TMPLE == "Y" ]]; then
+      #flip back ssl.conf
+      echo -e ""
+      echo -e "I'm restoring the original self-signed certs back to Apache and Postfix."
+      echo -e ""
+      sed -i "/^SSLCertificateFile / c\SSLCertificateFile /etc/pki/tls/certs/localhost.crt" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^SSLCertificateKeyFile / c\SSLCertificateKeyFile /etc/pki/tls/private/localhost.key" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^SSLCertificateChainFile/d" /etc/httpd/conf.d/ssl.conf
+      sed -i "/^ServerAlias/d" /etc/httpd/conf.d/ssl.conf
+
+      if [[ -n $(grep "^smtpd_tls_key_file = \/etc\/letsencrypt\/" /etc/postfix/main.cf) ]]; then
+        sed -i "/^smtpd_tls_key_file/ c\smtpd_tls_key_file = \/etc\/postfix\/ssl\/smtpd.pem" /etc/postfix/main.cf
+        sed -i "/^smtpd_tls_cert_file/ c\smtpd_tls_cert_file = \/etc\/postfix\/ssl\/smtpd.pem" /etc/postfix/main.cf
+        sed -i "/^smtpd_tls_CAfile/ c\smtpd_tls_CAfile = \/etc\/postfix\/ssl\/smtpd.pem" /etc/postfix/main.cf
+      fi
+
+      #remove cron job
+      if [ -e /etc/cron.d/certbotrenew ]; then
+        rm -f /etc/cron.d/certbotrenew
+      fi
+
+      #refresh services
+      systemctl reload httpd
+      systemctl restart postfix
+      
+      echo -e "Let's encrypt is disabled"
+      
+      pause
+    elif [[ $TMPLE == "n" || $TMPLE == "N" || $TMPLE == "c" || $TMPLE == "C" ]]; then
+      echo -e "No action taken. Exiting."
+      pause
+    else
+      echo -e "Choice $green\"$TMPLE\"$clean is not a valid choice."
+      echo -e ""
+      echo -e -n "$green[eFa]$clean Disable Let's Encrypt? (y/n/c): "
+      read TMPLE
+    fi
+
+  else
+  
+    echo -e "Would you like to $green Enable $clean Let's Encrypt? [y/n/c]"
+    read TMPLE
+    if [[ $TMPLE == "y" || $TMPLE == "Y" ]]; then
+      certbot --apache --non-interactive --agree-tos -m $ADMINEMAIL --domains $LOWERFQDN
+      if [[ $? -eq 0 ]]; then
+        systemctl reload httpd
+        # Add a cron job to renew cert
+        if [[ ! -f /etc/cron.d/certbotrenew ]]; then
+          if [[ $centosver -eq 7 ]]; then
+            echo '0 0,12 * * * root python -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --pre-hook /usr/sbin/certbot-pre --post-hook /usr/sbin/certbot-post >/dev/null 2>&1' > /etc/cron.d/certbotrenew
+          else
+            echo '0 0,12 * * * root python3 -c "import random; import time; time.sleep(random.random() * 3600)" && certbot renew --quiet --pre-hook /usr/sbin/certbot-pre --post-hook /usr/sbin/certbot-post >/dev/null 2>&1' > /etc/cron.d/certbotrenew
+          fi
+          echo -e "if [[ -z \$(firewall-cmd --list-ports | grep 80/tcp) && -z \$(firewall-cmd --list-services | grep -e \ http\ )]]; then\n  firewall-cmd --add-service http && touch /httpopen\nfi" >/usr/sbin/certbot-pre
+          echo -e "if [[ -f /httpopen ]]; then\n  rm -f /httpopen\n  firewall-cmd --remove-service http\nfi\nsystemctl reload httpd\nsystemctl restart postfix" >/usr/sbin/certbot-post
+          chmod +x /usr/sbin/certbot-pre
+          chmod +x /usr/sbin/certbot-post
+        fi
+
+        echo -e "Would you like use Let's Encrypt for postfix? [y/n]"
+        read TMPPF
+        if [[ $TMPPF == "y" || $TMPPF == "Y" ]]; then
+          echo "Applying cert to postfix..."
+          sed -i "/^smtpd_tls_key_file/ c\smtpd_tls_key_file = \/etc\/letsencrypt\/live\/$LOWERFQDN\/privkey.pem" /etc/postfix/main.cf
+          sed -i "/^smtpd_tls_cert_file/ c\smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/$LOWERFQDN\/cert.pem" /etc/postfix/main.cf
+          sed -i "/^smtpd_tls_CAfile/ c\smtpd_tls_CAfile = \/etc\/letsencrypt\/live\/$LOWERFQDN\/chain.pem" /etc/postfix/main.cf
+          systemctl restart postfix
+        else
+          echo "Skipping postfix."
+        fi
+
+        echo -e ""
+        echo -e "Let's Encrypt has been enabled"
+        echo -e ""
+      pause
+      else
+        echo ""
+        echo "Error running Let's Encrypt, please correct the problem and try again."
+        echo ""
+        pause
+      fi
+    elif [[ $TMPLE == "n" || $TMPLE == "N" || $TMPLE == "c" || $TMPLE == "C" ]]; then
+      echo -e "No action taken. Exiting."
+      pause
+    else
+      echo -e "Choice $green\"$TMPLE\"$clean is not a valid choice."
+      echo -e ""
+      echo -e -n "$green[eFa]$clean Enable Let's Encrypt? (y/n/c): "
+      read TMPLE
+    fi
+  fi
+}
+
+# +----------------------------------------------

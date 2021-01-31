@@ -1,0 +1,236 @@
+#!/bin/bash
+# +--------------------------------------------------------------------+
+# eFa Backup
+# Version 20181229
+# +--------------------------------------------------------------------+
+# Copyright (C) 2012~2021  http://www.efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# +--------------------------------------------------------------------+
+action="$1"
+
+#----------------------------------------------------------------#
+# Variables
+#----------------------------------------------------------------#
+BACKUPDIR="/var/eFa/backup"
+MYSQLROOTPWD="`grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/.*://'`"
+TMPDIR="/var/eFa/backup/tmp"
+DAYSTOKEEP=5
+
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Begin Backup Purge
+#----------------------------------------------------------------#
+function start_purge()
+{
+
+  echo "Purging Backups older than $DAYSTOKEEP..."
+  # Do not purge if no recent backups are present
+  if [[ -n `find $BACKUPDIR -type f -mtime -$((DAYSTOKEEP+1))` ]]; then
+    find $BACKUPDIR -type f -mtime +$DAYSTOKEEP -exec rm -f {} \;
+    echo "Old backups purged."
+  else
+    echo "No recent backups are present!  Skipping purge."
+  fi
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Begin Backup
+#----------------------------------------------------------------#
+function start_backup()
+{
+  # Get current date and time
+  CDATE=`date +%Y%m%d`
+  CTIME=`date +%H%M%S`
+
+  echo "Beginning System Backup at $CDATE $CTIME"
+
+  WORKINGDIR=$TMPDIR/$CDATE$CTIME/backup
+
+  mkdir -p $WORKINGDIR
+
+  # Perform SQL Dump
+  mkdir -p $WORKINGDIR/sql
+  mysqldump --user=root --password=$MYSQLROOTPWD --all-databases --events > $WORKINGDIR/sql/backup.sql
+
+  # Backup Postfix Settings
+  mkdir -p $WORKINGDIR/etc/postfix/ssl
+  cp -a /etc/postfix/*cf $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/*access $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/transport $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/virtual $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/sasl_passwd $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/relocated $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/access $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/canonical $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/generic $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/header_checks $WORKINGDIR/etc/postfix
+  cp -a /etc/postfix/ssl/* $WORKINGDIR/etc/postfix/ssl
+
+  # Backup EFA-Config
+  mkdir -p $WORKINGDIR/etc/eFa
+  cp -a /etc/eFa/* $WORKINGDIR/etc/eFa
+
+  # Backup sysconfig
+  mkdir $WORKINGDIR/etc/sysconfig/
+  cp -ra /etc/sysconfig/* $WORKINGDIR/etc/sysconfig
+
+  # Backup portions of /etc
+  cp -a /etc/passwd $WORKINGDIR/etc
+  cp -a /etc/fstab $WORKINGDIR/etc
+  cp -a /etc/shadow $WORKINGDIR/etc
+  mkdir -p $WORKINGDIR/etc/clamd.d
+  cp -a /etc/clamd.d/scan.conf $WORKINGDIR/etc/clamd.d
+  cp -a /etc/hosts* $WORKINGDIR/etc
+  cp -a /etc/networks $WORKINGDIR/etc
+  cp -a /etc/my.cnf $WORKINGDIR/etc
+  mkdir -p $WORKINGDIR/etc/my.cnf.d
+  cp -a /etc/my.cnf.d/* $WORKINGDIR/etc/my.cnf.d
+  cp -a /etc/php.ini $WORKINGDIR/etc
+  cp -a /etc/php-fpm.conf $WORKINGDIR/etc
+  mkdir -p $WORKINGDIR/etc/php-fpm.d
+  cp -a /etc/php-fpm.d/www.conf $WORKINGDIR/etc/php-fpm.d
+  cp -a /etc/resolv* $WORKINGDIR/etc
+  cp -a /etc/sudo.conf $WORKINGDIR/etc
+  mkdir -p $WORKINGDIR/etc/sudoers.d
+  cp -a /etc/sudoers.d/* $WORKINGDIR/etc/sudoers.d
+
+  # Backup MailScanner settings
+  mkdir -p $WORKINGDIR/etc/MailScanner
+  cp -ra /etc/MailScanner/* $WORKINGDIR/etc/MailScanner
+
+  # Backup Cron
+  cp -ra /etc/cron* $WORKINGDIR/etc
+
+  # Backup SQLGrey
+  mkdir -p $WORKINGDIR/etc/sqlgrey
+  cp -a /etc/sqlgrey/* $WORKINGDIR/etc/sqlgrey
+
+  # Backup SSH Config
+  mkdir -p $WORKINGDIR/etc/ssh
+  cp -a /etc/ssh/* $WORKINGDIR/etc/ssh
+
+  # Backup pki
+  mkdir -p $WORKINGDIR/etc/pki
+  cp -ra /etc/pki/* $WORKINGDIR/etc/pki
+
+  # Backup MailWatch Config
+  mkdir -p $WORKINGDIR/var/www/html/mailscanner
+  cp -a /var/www/html/mailscanner/conf.php $WORKINGDIR/var/www/html/mailscanner
+
+  # Backup Apache
+  mkdir -p $WORKINGDIR/etc/httpd
+  cp -ra /etc/httpd/* $WORKINGDIR/etc/httpd
+  
+  # Backup Unbound
+  mkdir -p $WORKINGDIR/etc/unbound
+  cp -ra /etc/unbound/* $WORKINGDIR/etc/unbound
+  
+  # Issue #227 Include local.cf in eFa-Backup
+  mkdir -p $WORKINGDIR/etc/mail/spamassassin
+  cp -a /etc/mail/spamassassin/local.cf $WORKINGDIR/etc/mail/spamassassin
+
+  # Backup opendkim
+  mkdir -p $WORKINGDIR/etc/opendkim
+  cp -a /etc/opendkim/* $WORKINGDIR/etc/opendkim
+  
+  # Gzip tarball the collection
+  tar -cpzf $TMPDIR/backup-$CDATE-$CTIME.tar.gz -C $TMPDIR/$CDATE$CTIME .
+  rm -rf $TMPDIR/$CDATE$CTIME
+  mv $TMPDIR/backup-$CDATE-$CTIME.tar.gz $BACKUPDIR
+  chmod 0600 $BACKUPDIR/backup-$CDATE-$CTIME.tar.gz
+
+  echo "Backup Completed at `date +%m%d%Y\ %H%M%S`"
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Check if we are root
+#----------------------------------------------------------------#
+function user_check()
+{
+  if [ `whoami` == root ]
+    then
+      echo "[eFa] Good you are root"
+      if [[ ${action} == "-backup" ]]; then
+        start_backup
+      elif [[ ${action} == "-purge" ]]; then
+        start_purge
+      fi
+  else
+    echo "[eFa] Please become root to run this backup"
+    exit 0
+  fi
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# show the usage
+#----------------------------------------------------------------#
+function show_usage()
+{
+  echo "Usage: $0 [option]"
+  echo "Where [option] is:"
+  echo ""
+  echo "-backup"
+  echo "   Initiate backup"
+  echo ""
+  echo "-purge"
+  echo "   Purge oldest backups"
+  echo ""
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Parse action
+#----------------------------------------------------------------#
+function parse_action()
+{
+  case $action in
+      -backup)
+        user_check
+        ;;
+      -purge)
+        user_check
+        ;;
+      *)
+        show_usage
+        ;;
+  esac
+  exit 0
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Main function
+#----------------------------------------------------------------#
+function main()
+{
+  if [ "X${action}" == "X" ]
+    then
+      show_usage
+      exit 0
+    else
+      parse_action
+  fi
+}
+#----------------------------------------------------------------#
+
+#----------------------------------------------------------------#
+# Run main
+#----------------------------------------------------------------#
+main
+#----------------------------------------------------------------#

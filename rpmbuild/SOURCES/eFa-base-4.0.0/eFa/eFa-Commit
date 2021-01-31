@@ -453,9 +453,8 @@ if [[ $startmariadb -eq 1 ]]; then
   # Create the DMARC db
   /usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/schema.mysql
 
-  # Create and populate efa db
-  # Removed from eFa4 for now
-  #/usr/bin/mysql -u root -p"$password" < /usr/src/eFa/mariadb/efatokens.sql
+  # Create eFa Token db
+  /usr/bin/mysql -u root -p"$password" < /var/eFa/lib/token/efatokens.sql
 
   # Create the users
   /usr/bin/mysql -u root -p"$password" -e "GRANT SELECT,INSERT,UPDATE,DELETE on sa_bayes.* to 'sa_user'@'localhost' identified by '$password'"
@@ -476,6 +475,8 @@ if [[ $startmariadb -eq 1 ]]; then
 
   # DMARC user
   /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on opendmarc.* to 'opendmarc'@'localhost' identified by '$password'"
+
+  /usr/bin/mysql -u root -p"$password" -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$password'"
 
   # flush
   /usr/bin/mysql -u root -p"$password" -e "FLUSH PRIVILEGES;"
@@ -895,6 +896,18 @@ if [[ $configmailwatch -eq 1 ]]; then
   /usr/bin/mailwatch/tools/upgrade.php --skip-user-confirm /var/www/html/mailscanner/functions.php
   # Uncommented check on failure as the upgrade gives some ingorable warnings
   # [ $? -ne 0 ] && exit 1
+  
+  # Copy CustomAction.pm into position
+  rm -f /usr/share/MailScanner/perl/custom/CustomAction.pm
+  [ $? -ne 0 ] && exit 1
+  cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
+  [ $? -ne 0 ] && exit 1
+
+  # Initialize token user
+  randompw
+  EFASQLPWD=$PASSWD
+  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$EFASQLPWD') WHERE User='efa';"
+  echo "EFASQLPWD:$EFASQLPWD" >> /etc/eFa/eFa-Config
 fi
 
 if [[ $configsasl -eq 1 ]]; then
@@ -1163,7 +1176,7 @@ EOF
   [ $? -ne 0 ] && exit 1
 
   # Schedule post init
-  echo '* * * * * root /usr/sbin/eFa-Post-Init' > /etc/cron.d/efapostinit
+  echo '* * * * * root /usr/sbin/eFa-Post-Init >/dev/null 2>&1' > /etc/cron.d/efapostinit
 
   # Clear logs
   if [[ "$virtplatform" != "lxc" ]]; then

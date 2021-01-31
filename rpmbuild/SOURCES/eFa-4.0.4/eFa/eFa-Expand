@@ -1,0 +1,45 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# eFa 4.0.1 virtual machine image expansion script
+#-----------------------------------------------------------------------------#
+# Copyright (C) 2013~2021 https://efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-----------------------------------------------------------------------------#
+
+# eFa-Expand disk capacity expansion script
+
+# TODO
+#
+# Construct script, execute on startup
+# Only install script on VM image builds
+#
+#
+# NOTES
+#  Detect new disks
+#  cat /proc/partitions | grep 'sd.' | awk '{print $4}' | grep -v '[0-9]' | grep -v '^sda$'
+#
+#  Detect partitions
+#  fdisk -l /dev/sdb | grep '^/dev/sdb[1-4]'  (dos)
+#  fdisk -l /dev/sdb | grep '^[ 1-9]' (GPT)
+#
+# Create partition 
+# printf "g\nn\np\n1\n\n\nt\n31\nw\n" | fdisk /dev/sdb
+#
+# Create PV
+# pvcreate /dev/sdb1
+#
+# Extend VG
+# vgextend centos /dev/sdb1
+# lvextend -r --extents +100%FREE /dev/centos/root
