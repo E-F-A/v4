@@ -337,7 +337,7 @@ if [[ $? -ne 0 ]]; then
   /usr/bin/mysql -e "GRANT ALL on efa.* to 'efa'@'localhost' identified by '$PASSWD'"
   /usr/bin/mysql -e "FLUSH PRIVILEGES;"
 
-  if [[ -z (grep ^EFASQLPWD /etc/eFa/eFa-Config) ]]; then
+  if [[ -z $(grep ^EFASQLPWD /etc/eFa/eFa-Config) ]]; then
     echo "EFASQLPWD:$PASSWD" > /etc/eFa/eFa-Config
   else
     sed -i "/^EFASQLPWD/ c\EFASQLPWD:$PASSWD" /etc/eFa/eFa-Config
