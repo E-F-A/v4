@@ -17,6 +17,7 @@ BuildRoot:   %{_tmppath}/%{name}-root
 BuildArch:   noarch
 AutoReqProv: no
 Obsoletes:   mailscanner
+Patch1:      mailscanner-%{version}-%{releasenum}-spamreport.patch
 
 %description
 MailScanner is a freely distributable email gateway virus scanner with
@@ -36,6 +37,7 @@ based Linux distributions.
 
 %prep
 %setup -q -n v5-%{version}-%{releasenum}
+%patch1 -p1
 
 %build
 
