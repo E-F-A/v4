@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   3.eFa%{?dist}
+Release:   4.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -494,13 +494,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa8.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens.sql
-%attr(0755, root, root) %{_localstatedir}/eFa/lib/token/CustomAction.pm
-%attr(0755, root, root) %{_localstatedir}/www/html/mailscanner/eFa-release.php
+%attr(0644, root, root) %{_localstatedir}/eFa/lib/token/CustomAction.pm
+%attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-release.php
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Tokens.cron
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-4
+- Tidy up permissions on key files
+
 * Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-3
 - Fix hang on update for token db creation
 
