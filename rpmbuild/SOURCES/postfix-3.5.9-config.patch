@@ -1,5 +1,5 @@
---- postfix-3.2.4/conf/main.cf	2017-02-19 01:58:20.000000000 +0000
-+++ postfix-3.2.4/conf/main.cf2	2018-01-13 20:03:11.475104420 +0000
+--- postfix-3.5.9/conf/main.cf	2017-02-19 01:58:20.000000000 +0000
++++ postfix-3.5.9/conf/main.cf2	2018-01-13 20:03:11.475104420 +0000
 @@ -132,6 +132,10 @@
  #inet_interfaces = all
  #inet_interfaces = $myhostname
@@ -79,8 +79,8 @@
  readme_directory =
 -inet_protocols = ipv4
  
---- postfix-3.2.4/conf/master.cf	2016-12-03 15:49:54.000000000 +0000
-+++ postfix-3.2.4/conf/master.cf2	2018-01-13 19:19:45.243008172 +0000
+--- postfix-3.5.9/conf/master.cf	2016-12-03 15:49:54.000000000 +0000
++++ postfix-3.5.9/conf/master.cf2	2018-01-13 19:19:45.243008172 +0000
 @@ -40,7 +40,7 @@
  #628       inet  n       -       n       -       -       qmqpd
  pickup    unix  n       -       n       60      1       pickup
@@ -94,8 +94,8 @@
  # Also specify in main.cf: cyrus_destination_recipient_limit=1
  #
  #cyrus     unix  -       n       n       -       -       pipe
--#  user=cyrus argv=/cyrus/bin/deliver -e -r ${sender} -m ${extension} ${user}
-+#  user=cyrus argv=/usr/lib/cyrus-imapd/deliver -e -r ${sender} -m ${extension} ${user}
+-#  flags=DRX user=cyrus argv=/cyrus/bin/deliver -e -r ${sender} -m ${extension} ${user}
++#  flags=DRX user=cyrus argv=/usr/lib/cyrus-imapd/deliver -e -r ${sender} -m ${extension} ${user}
  #
  # ====================================================================
  #

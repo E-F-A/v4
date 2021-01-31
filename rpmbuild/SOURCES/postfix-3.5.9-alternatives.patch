@@ -1,5 +1,5 @@
---- postfix-3.4.8_eFa/conf/post-install	2019-01-29 17:24:42.000000000 -0500
-+++ postfix-3.4.8_eFa/conf/post-install2	2020-01-20 09:30:18.273586584 -0500
+--- postfix-3.5.9/conf/post-install	2019-01-29 17:24:42.000000000 -0500
++++ postfix-3.5.9/conf/post-install2	2020-01-20 09:30:18.273586584 -0500
 @@ -537,6 +537,18 @@
  	    case $path in
  	    no|no/*) continue;;

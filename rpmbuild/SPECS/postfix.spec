@@ -112,10 +112,10 @@ Source101: postfix-pam.conf
 
 # Patches
 
-Patch1: postfix-3.4.8-config.patch
-Patch2: postfix-3.4.8-files.patch
-Patch3: postfix-3.4.8-alternatives.patch
-Patch4: postfix-3.4.8-large-fs.patch
+Patch1: postfix-3.5.9-config.patch
+Patch2: postfix-3.5.9-files.patch
+Patch3: postfix-3.5.9-alternatives.patch
+Patch4: postfix-3.5.9-large-fs.patch
 Patch9: pflogsumm-1.1.5-datecalc.patch
 
 # Optional patches - set the appropriate environment variables to include
@@ -634,6 +634,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Jan 31 2021 Shawn Iverson <shawniverson@efa-project.org> - 2:3.5.9-1
+- Update package for eFa v4
+
 * Mon Jan 20 2020 Shawn Iverson <shawniverson@efa-project.org> - 2:3.4.8-1
 - Update package for eFa v4
 
