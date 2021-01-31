@@ -353,7 +353,7 @@ if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
 fi
 
 cmd='systemctl daemon-reload'
-execcmdcd /usr
+execcmd
 cmd='systemctl reload httpd'
 execcmd
 cmd='systemctl reload php-fpm'
