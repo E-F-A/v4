@@ -38,32 +38,25 @@ echo "127.0.0.1" >> /etc/sqlgrey/clients_ip_whitelist.local
 echo "::1" >> /etc/sqlgrey/clients_ip_whitelist.local
 
 # Make the changes to the config file...
-sed -i '/conf_dir =/ c\conf_dir = /etc/sqlgrey' /etc/sqlgrey/sqlgrey.conf
-sed -i '/user =/ c\user = sqlgrey' /etc/sqlgrey/sqlgrey.conf
-sed -i '/group =/ c\group = sqlgrey' /etc/sqlgrey/sqlgrey.conf
-sed -i '/connect_src_throttle =/ c\connect_src_throttle = 5' /etc/sqlgrey/sqlgrey.conf
-sed -i "/awl_age = 32/d" /etc/sqlgrey/sqlgrey.conf
-sed -i "/group_domain_level = 10/d" /etc/sqlgrey/sqlgrey.conf
-sed -i '/awl_age =/ c\awl_age = 60' /etc/sqlgrey/sqlgrey.conf
-sed -i '/group_domain_level =/ c\group_domain_level = 2' /etc/sqlgrey/sqlgrey.conf
-sed -i '/db_type =/ c\db_type = mysql' /etc/sqlgrey/sqlgrey.conf
-sed -i '/db_name =/ c\db_name = sqlgrey' /etc/sqlgrey/sqlgrey.conf
-sed -i '/db_host =/ c\db_host = localhost' /etc/sqlgrey/sqlgrey.conf
-sed -i '/db_port =/ c\db_port = default' /etc/sqlgrey/sqlgrey.conf
-sed -i '/db_user =/ c\db_user = sqlgrey' /etc/sqlgrey/sqlgrey.conf
-sed -i "/db_pass =/ c\db_pass = $password" /etc/sqlgrey/sqlgrey.conf
-sed -i '/db_cleandelay =/ c\db_cleandelay = 1800' /etc/sqlgrey/sqlgrey.conf
-sed -i '/clean_method =/ c\clean_method = sync' /etc/sqlgrey/sqlgrey.conf
-sed -i '/prepend =/ c\prepend = 1' /etc/sqlgrey/sqlgrey.conf
-sed -i "/reject_first_attempt\/reject_early_reconnect/d" /etc/sqlgrey/sqlgrey.conf
-sed -i '/reject_first_attempt =/ c\reject_first_attempt = immed' /etc/sqlgrey/sqlgrey.conf
-sed -i '/reject_early_reconnect =/ c\reject_early_reconnect = immed' /etc/sqlgrey/sqlgrey.conf
-sed -i "/reject_code = dunno/d" /etc/sqlgrey/sqlgrey.conf
-sed -i '/reject_code =/ c\reject_code = 451' /etc/sqlgrey/sqlgrey.conf
-sed -i '/whitelists_host =/ c\whitelists_host = sqlgrey.bouton.name' /etc/sqlgrey/sqlgrey.conf
-sed -i '/optmethod =/ c\optmethod = optout' /etc/sqlgrey/sqlgrey.conf
-sed -i '/# inet = 2501/ a\inet = 127.0.0.1:2501' /etc/sqlgrey/sqlgrey.conf
-sed -i '/# pidfile =/ a\pidfile = /var/run/sqlgrey/sqlgrey.pid' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# conf_dir =/ c\conf_dir = /etc/sqlgrey' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# user =/ c\user = sqlgrey' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# group =/ c\group = sqlgrey' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# connect_src_throttle =/ c\connect_src_throttle = 5' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# db_type =/ c\db_type = mysql' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# db_name =/ c\db_name = sqlgrey' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# db_host =/ c\db_host = localhost' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# db_port =/ c\db_port = default' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# db_user =/ c\db_user = sqlgrey' /etc/sqlgrey/sqlgrey.conf
+sed -i "/^# db_pass =/ c\db_pass = $password" /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# db_cleandelay =/ c\db_cleandelay = 1800' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# clean_method =/ c\clean_method = sync' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# prepend =/ c\prepend = 1' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# reject_first_attempt =/ c\reject_first_attempt = immed' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# reject_early_reconnect =/ c\reject_early_reconnect = immed' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# reject_code =/ c\reject_code = 451' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# optmethod =/ c\optmethod = optout' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# inet = 2501/ c\inet = 127.0.0.1:2501' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^# pidfile =/ a\pidfile = /var/run/sqlgrey/sqlgrey.pid' /etc/sqlgrey/sqlgrey.conf
 
 echo "d /run/sqlgrey 0755 sqlgrey sqlgrey" > /usr/lib/tmpfiles.d/sqlgrey.conf
 
