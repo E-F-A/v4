@@ -42,8 +42,8 @@ sed -i '/^# conf_dir =/ c\conf_dir = /etc/sqlgrey' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# user =/ c\user = sqlgrey' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# group =/ c\group = sqlgrey' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# connect_src_throttle =/ c\connect_src_throttle = 5' /etc/sqlgrey/sqlgrey.conf
-sed -i '/^# db_type =/ c\db_type = mysql' /etc/sqlgrey/sqlgrey.conf
-sed -i '/^# db_name = sqlgrey/ c\db_name = sqlgrey' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^db_type =/ c\db_type = mysql' /etc/sqlgrey/sqlgrey.conf
+sed -i '/^db_name = sqlgrey/ c\db_name = sqlgrey' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# db_host =/ c\db_host = localhost' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# db_port =/ c\db_port = default' /etc/sqlgrey/sqlgrey.conf
 sed -i '/^# db_user =/ c\db_user = sqlgrey' /etc/sqlgrey/sqlgrey.conf
