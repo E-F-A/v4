@@ -1,0 +1,73 @@
+#!/usr/bin/perl
+# +--------------------------------------------------------------------+
+# eFa-Tokens.cron
+# Expires old tokens from efa database
+# Version 20210130
+# +--------------------------------------------------------------------+
+# Copyright (C) 2012~2021 http://www.efa-project.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# +--------------------------------------------------------------------+
+
+use strict 'vars';
+use strict 'refs';
+
+use DBI;
+use Sys::Syslog qw( :DEFAULT setlogsock);
+
+my($user) = $ENV{'USER'};
+setlogsock('unix');
+
+my($db_name) = 'efa';
+my($db_host) = 'localhost';
+my($db_user) = 'efa';
+# Issue #66 Grab Passwords from eFa-Config
+my($fh);
+my($pw_config) = '/etc/eFa/eFa-Config';
+open($fh, "<", $pw_config);
+if (!$fh) {
+  openlog($0,'','user');
+  syslog('error', "Unable to retrieve password from /etc/eFa/eFa-Config, aborting!");
+  closelog;
+  exit 1;
+}
+my($db_pass) = grep(/^EFASQLPWD/,<$fh>);
+$db_pass =~ s/EFASQLPWD://;
+$db_pass =~ s/\n//;
+close($fh);
+
+my($sql,$sth,$dbh);
+
+# Connect to the database
+$dbh = DBI->connect("DBI:mysql:database=$db_name;host=$db_host",
+                      $db_user, $db_pass,
+                      {PrintError => 0});
+
+if ($dbh) {
+  $sql = "DELETE from tokens WHERE datestamp < DATE_SUB(NOW() , INTERVAL 3 DAY)";
+  $sth = $dbh->prepare($sql);
+  $sth->execute;
+
+  $sth->finish();
+  $dbh->disconnect();
+
+  openlog($0,'','user');
+  syslog('info', "Successfully expired old tokens.");
+  closelog;
+} else {
+
+  openlog($0,'','user');
+  syslog('ERR', "Unable to open efa database, tokens not expired!");
+  closelog;
+}

@@ -149,6 +149,8 @@ fi
 systemctl enable msmilter
 systemctl start msmilter
 
+/usr/bin/mysql -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
 # Schedule eFa-Monitor cron
 echo "* * * * * root /usr/sbin/eFa-Monitor-cron >/dev/null 2>&1" > /etc/cron.d/eFa-Monitor.cron
 

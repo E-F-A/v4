@@ -1,0 +1,12 @@
+--- v5-5.4.1-1/common/usr/share/MailScanner/reports/en/recipient.spam.report.txt	2021-01-25 07:01:29.000000000 -0500
++++ v5-5.4.1-1/common/usr/share/MailScanner/reports/en/recipient.spam.report.txt2	2021-01-31 09:10:02.385988230 -0500
+@@ -24,6 +24,9 @@
+   Message id: $id
+   Date code: $datenumber
+ 
++If you are satisfied that this message is not spam, you can release it from quarantine in the next 3 days
++by clicking http://$hostname/mailscanner/eFa-release.php?&mid=$id&r=$token
++
+ -- 
+ MailScanner
+ Email Virus Scanner

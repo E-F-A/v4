@@ -1,0 +1,14 @@
+module eFahyperv 1.0.0;
+
+require {
+    type httpd_sys_script_t;
+    type hypervvssd_t;
+    type hypervkvp_t;
+    class dir { getattr search };
+    class file { open read };
+}
+
+dontaudit httpd_sys_script_t hypervvssd_t:dir { getattr search };
+dontaudit httpd_sys_script_t hypervvssd_t:file { read open };
+dontaudit httpd_sys_script_t hypervkvp_t:dir { getattr search };
+dontaudit httpd_sys_script_t hypervkvp_t:file { read open };

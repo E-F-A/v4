@@ -1,0 +1,181 @@
+# +---------------------------------------------------+
+# Function to set the new IP settings
+# +---------------------------------------------------+
+func_setipsettings(){
+
+  # Back up hosts file, just in case
+  if [[ -f /etc/hosts.bak ]]; then
+    rm -f /etc/host.bak
+    cp -f /etc/hosts /etc/hosts.bak
+  else
+    cp -f /etc/hosts /etc/hosts.bak
+  fi
+
+  # Write new hosts file
+  echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
+  echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
+  if [[ -n $IP4 ]]; then
+    echo "$IP4    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
+  fi
+  if [[ -n $IP6 ]]; then
+    echo "$IP6    $HOSTNAME.$DOMAINNAME   $HOSTNAME" >> /etc/hosts
+  fi
+
+  # Enable or disable ipv6 dns
+  if [[ "$IPV6DNS" == "yes" ]]; then
+    sed -i '/^\tdo-ip6:/ c\\t# do-ip6: yes' /etc/unbound/unbound.conf
+  else
+    sed -i '/^\t# do-ip6:/ c\\tdo-ip6: no' /etc/unbound/unbound.conf
+  fi
+
+  if [[ -z $(grep "^dns=none" /etc/NetworkManager/NetworkManager.conf) ]]; then
+    sed -i "/^\[main\]$/ a\dns=none" /etc/NetworkManager/NetworkManager.conf
+  fi
+
+  # Write resolv file
+  # new unbound stuff... 
+  if [[ "$RECURSIVEDNS" == "DISABLED" ]]; then
+    echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
+    echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
+    [[ -n $DNS1 ]] && echo "  forward-addr: $DNS1" >> /etc/unbound/conf.d/forwarders.conf
+    [[ -n $DNS2 ]] && echo "  forward-addr: $DNS2" >> /etc/unbound/conf.d/forwarders.conf
+  else
+    echo "forward-zone:" > /etc/unbound/conf.d/forwarders.conf
+    echo '  name: "."' >> /etc/unbound/conf.d/forwarders.conf
+    echo "  forward-first: yes" >> /etc/unbound/conf.d/forwarders.conf
+  fi
+
+  # Set ip settings
+  mkdir -p /etc/sysconfig/network-scripts.bak
+  if [[ -f /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak ]]; then
+    rm -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    cp -f /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  else
+    cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak
+  fi
+
+  if [[ "$BOOTPROTO" == "dhcp" ]]; then
+    sed -i "/^BOOTPROTO/ c\BOOTPROTO=dhcp" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^IPADDR/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^NETMASK/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^GATEWAY/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    IP4=""
+    NM4=""
+    GW4=""
+  else
+    sed -i "/^BOOTPROTO/ c\BOOTPROTO=none" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  fi
+  
+  if [[ "$IPV6AUTOCONF" == "yes" ]]; then
+    sed -i "/^IPV6_AUTOCONF/ c\IPV6_AUTOCONF=yes" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^IPV6ADDR/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    sed -i "/^IPV6_DEFAULTGW/d" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    IP6=""
+    PF6=""
+    GW6=""
+  else
+    sed -i "/^IPV6_AUTOCONF/ c\IPV6_AUTOCONF=no" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+  fi
+
+  if [[ -n $IP4 ]]; then
+    if [[ -z $(grep ^IPADDR /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
+      echo "IPADDR=\"$IP4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    else
+      sed -i "/^IPADDR=/ c\IPADDR=\"$IP4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    fi
+    if [[ -z $(grep ^NETMASK /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
+      echo "NETMASK=\"$NM4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    else
+      sed -i "/^NETMASK=/ c\NETMASK=\"$NM4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    fi
+    if [[ -z $(grep ^GATEWAY /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
+      echo "GATEWAY=\"$GW4\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    else
+      sed -i "/^GATEWAY=/ c\GATEWAY=\"$GW4\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    fi
+  fi
+  if [[ -n $IP6 ]]; then
+    sed -i '/^IPV6_AUTOCONF=/ c\IPV6_AUTOCONF="no"' /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    if [[ -z $(grep ^IPV6ADDR /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
+      echo "IPV6ADDR=\"$IP6/$PF6\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    else
+      sed -i "/^IPV6ADDR=/ c\IPV6ADDR=\"$IP6/$PF6\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    fi
+    if [[ -z $(grep ^IPV6_DEFAULTGW /etc/sysconfig/network-scripts/ifcfg-$INTERFACE) ]]; then
+      echo "IPV6_DEFAULTGW=\"$GW6\"" >> /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    else
+      sed -i "/^IPV6_DEFAULTGW=/ c\IPV6_DEFAULTGW=\"$GW6\"" /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    fi
+  fi
+
+  # Write change to EFA-Config
+  sed -i "/^IPV4ADDRESS:/ c\IPV4ADDRESS:$IP4" /etc/eFa/eFa-Config
+  sed -i "/^IPV4NETMASK:/ c\IPV4NETMASK:$NM4" /etc/eFa/eFa-Config
+  sed -i "/^IPV4GATEWAY:/ c\IPV4GATEWAY:$GW4" /etc/eFa/eFa-Config
+  sed -i "/^IPV6ADDRESS:/ c\IPV6ADDRESS:$IP6" /etc/eFa/eFa-Config
+  sed -i "/^IPV6MASK:/ c\IPV6MASK:$PF6" /etc/eFa/eFa-Config
+  sed -i "/^IPV6GATEWAY:/ c\IPV6GATEWAY:$GW6" /etc/eFa/eFa-Config
+  sed -i "/^DNSIP1:/ c\DNSIP1:$DNS1" /etc/eFa/eFa-Config
+  sed -i "/^DNSIP2:/ c\DNSIP2:$DNS2" /etc/eFa/eFa-Config
+  sed -i "/^IPV6DNS:/ c\IPV6DNS:$IPV6DNS" /etc/eFa/eFa-Config
+  sed -i "/^RECURSION:/ c\RECURSION:$RECURSIVEDNS" /etc/eFa/eFa-Config
+
+  # Grab current FQDN
+  OLDHOSTNAME=$(grep "^HOSTNAME" /etc/eFa/eFa-Config | sed 's/^.*://')
+  OLDDOMAINNAME=$(grep "^DOMAINNAME" /etc/eFa/eFa-Config | sed 's/^.*://')
+
+  # Detect hostname/domainname change
+  if [[ $OLDHOSTNAME != $HOSTNAME || $OLDDOMAINNAME != $DOMAINNAME ]]; then
+    echo "$HOSTNAME.$DOMAINNAME" > /etc/hostname
+
+    # Change mailscanner config
+    sed -i "/^define('MAILWATCH_FROM_ADDR',/ c\define('MAILWATCH_FROM_ADDR', 'no-reply@$HOSTNAME.$DOMAINNAME');" /var/www/html/mailscanner/conf.php
+
+    # Issue 195 -- Update MySQL database hostname fields
+    MAILWATCHPWD=$(grep "^MAILWATCHSQLPWD" /etc/eFa/MailWatch-Config | sed 's/^.*://')
+
+    systemctl stop msmilter
+    systemctl stop mailscanner
+
+    mysql -u mailwatch --password=$MAILWATCHPWD mailscanner -e "\
+    LOCK TABLES maillog WRITE; \
+    ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
+    UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
+    ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; \
+    LOCK TABLES mtalog WRITE; \
+    UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
+    UNLOCK TABLES;"
+
+    postconf -e "error_notice_recipient = root@\$myhostname"
+
+    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:80" /etc/httpd/conf/httpd.conf
+    sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
+
+    # Issue #155 Change domainname in opendmarc reports
+    DBHOST='localhost'
+    DBUSER='opendmarc'
+    DBPASS="`grep ^DMARCSQLPWD /etc/eFa/openDMARC-Config | sed 's/^.*://'`"
+    DBNAME='opendmarc'
+    DMARCRepDomain="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/^.*://'`"
+    DMARCRepEmail="no-reply@$DMARCRepDomain"
+    /usr/sbin/opendmarc-reports -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} -interval=86400 -report-email $DMARCRepEmail -report-org $DMARCRepDomain -smtp-server=127.0.0.1
+
+    sed -i "/^HOSTNAME:/ c\HOSTNAME:$HOSTNAME" /etc/eFa/eFa-Config
+    sed -i "/^DOMAINNAME:/ c\DOMAINNAME:$DOMAINNAME" /etc/eFa/eFa-Config
+
+    echo -e ""
+    echo -e "Hostname or domainname changed.  Note that you may need to generate new SSL certificates to match the new hostname"
+    echo -e ""
+    echo -e "$red [eFa] Your system will now reboot. Press any key to continue. $clean"
+    pause
+    reboot
+  fi
+
+  nmcli c down $INTERFACE
+  nmcli c up $INTERFACE
+  systemctl restart unbound
+
+  echo -e "All done"
+  pause
+}
+# +---------------------------------------------------+

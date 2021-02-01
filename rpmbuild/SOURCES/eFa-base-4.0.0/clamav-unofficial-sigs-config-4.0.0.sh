@@ -28,6 +28,7 @@ source /usr/src/eFa/eFa-settings.inc
 # Start configuration of clamav unofficial sigs
 #-----------------------------------------------------------------------------#
 sed -i '/^#user_configuration_complete="yes"/s/^#//g' /etc/clamav-unofficial-sigs/user.conf
+sed -i "/^#yararulesproject_dbs_rating=/ c\yararulesproject_dbs_rating=\"DISABLED\"" /etc/clamav-unofficial-sigs/user.conf
 #sed -i '/^ExecStart=/ c\ExecStart=/usr/sbin/clamav-unofficial-sigs.sh' /usr/lib/systemd/system/clamav-unofficial-sigs.service
 #sed -i '/^WantedBy=/ c\WantedBy=clamd@scan.service'  /usr/lib/systemd/system/clamav-unofficial-sigs.timer
 #sed -i '/^clamd_restart_opt=/ c\clamd_restart_opt="systemctl restart clamd@scan"' /etc/clamav-unofficial-sigs/os.conf

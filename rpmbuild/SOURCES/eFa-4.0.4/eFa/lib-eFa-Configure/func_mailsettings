@@ -1,0 +1,622 @@
+# +---------------------------------------------------+
+# Option Mail settings menu
+# +---------------------------------------------------+
+func_mail-settings(){
+  menu=0
+  mailmenu=1
+  while [ $mailmenu == "1" ]
+    do
+      func_echo-header
+      echo -e "Mail settings"
+      echo ""
+      echo -e "1) Outbound mail relay"
+      echo -e "2) Outbound smarthost"
+      echo -e "3) Admin Email"
+      echo -e "4) Transport settings"
+      echo -e "5) Automated recipient verification"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+                1) func_outbound-relay;;
+                2) func_outbound-smarthost;;
+                3) func_adminemail;;
+                4) func_transport-settings;;
+                5) func_recipient_verification;;
+                e) menu=1 && return ;;
+                *) echo -e "Error \"$choice\" is not an option..." && pause
+       esac
+    done
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# transport menu
+# +---------------------------------------------------+
+func_transport-settings(){
+  tpmenu=1
+  while [ $tpmenu == "1" ]
+    do
+      func_echo-header
+      echo -e ""
+      echo -e "Description:"
+      echo -e "All mail domains for which this system accepts mail need an destination server."
+      echo -e "Below is the list of current smtp mail domains on this system."
+      echo -e ""
+      RELAYS=( `cat /etc/postfix/transport | grep smtp: | sort | sed '/^\#/d;/^$/d;s/smtp:\[//;s/\]//'` )
+      tLen=${#RELAYS[@]}
+      padding="                        "
+      for (( y=0; y<$tLen; y+=2 ));
+      do
+        # Fix layout spacing up to 999 rows..
+        if (( $((y/2+1)) < 10 )); then echo -n "  "
+        elif (( $((y/2+1)) < 100 )); then echo -n " "
+        fi
+        echo -e "$((y/2+1))) ${RELAYS[$y]} ${padding:${#RELAYS[$y]}} ${RELAYS[$((y+1))]}"
+        [[ $(((y/2 + 1) % 25)) -eq 0 ]] && pause
+      done
+      echo -e ""
+      echo -e "n) Add new mail domain"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+             [0-9]*)
+               if [[ $choice -gt 0 && $choice -lt $((tLen/2+1)) ]]; then
+                 ENTDOMAIN=${RELAYS[$((choice*2-2))]}
+                 ENTDEST=${RELAYS[$((choice*2-1))]}
+                 echo -e "Entry Selected: $ENTDOMAIN  $ENTDEST"
+                 flag=0
+                 while [ $flag == "0" ]
+                   do
+                     echo -e ""
+                     echo -e "Do you want to $green[e]$clean edit, $green[r]$clean replace, $green[d]$clean delete this entry, or $green[c]$clean cancel? : "
+                     local TMPOPTION
+                     read TMPOPTION
+                     if [[ $TMPOPTION == "e" || $TMPOPTION == "E" ]]; then
+                        echo -e "Enter the new destination server"
+                        echo -e -n "$green[Destination]$clean : "
+                        local DEST
+                        read DEST
+                        # Strip brackets
+                        DEST=$(echo $DEST | sed -e "s/^\[//" -e "s/\]$//")
+                        # Simple check if destination contains any data.
+                        DESTCHECK=1
+                        while [ $DESTCHECK != 0 ]
+                        do
+                          if checkip4 $DEST
+                            then
+                              # If $DEST looks to be an valid IP we are ok.
+                              DESTCHECK=0
+                          elif checkip6 $DEST
+                            then
+                                DESTCHECK=0
+                          elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
+                              # If $DEST looks like an valid domain name we are ok.
+                              DESTCHECK=0
+                          else
+                              echo -e "       $red ERROR: The value $DEST seems to be invalid"
+                              echo -e "        ERROR: please re-enter the destination$clean"
+                              echo -e ""
+                              echo -e -n "$green[Destination]$clean : "
+                              read DEST
+                          fi
+                        done
+                        sed -i "/$ENTDOMAIN[[:space:]]\+smtp:\[$ENTDEST\]/ c\\$ENTDOMAIN  smtp:[$DEST]" /etc/postfix/transport
+                        postmap /etc/postfix/transport
+                        flag=1
+                     elif [[ $TMPOPTION == "r" || $TMPOPTION == "R" ]]; then
+                        echo -e ""
+                        echo -e "Please enter the domain you want use:"
+                        echo -e -n "$green[Domain]$clean : "
+                        local DOMAIN
+                        read DOMAIN
+                        # Simple check if domain is valid.
+                        DOMAINCHECK=1
+                        while [ $DOMAINCHECK != 0 ]
+                          do
+                            if [[ $DOMAIN =~ ^\.?[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*\.[a-z]{2,63}$ ]]; then
+                              DUPLICATECHECK=0
+                              for (( y=0; y<$tLen; y+=2 ));
+                              do
+                                if [[ ${RELAYS[$y]} == $DOMAIN ]]; then
+                                  DUPLICATECHECK=1
+                                fi
+                              done
+                              if [[ $DUPLICATECHECK == "1" ]]; then
+                                echo -e "       $red ERROR: The domain $DOMAINNAME already exists"
+                                echo -e "        ERROR: please re-enter the domain$clean"
+                                echo -e ""
+                                echo -e -n "$green[Domain]$clean : "
+                                read DOMAIN
+                              else
+                                DOMAINCHECK=0
+                              fi
+                            else
+                              echo -e "       $red ERROR: The domain $DOMAINNAME seems to be invalid"
+                              echo -e "        ERROR: please re-enter the domain$clean"
+                              echo -e ""
+                              echo -e -n "$green[Domain]$clean : "
+                              read DOMAIN
+                            fi
+                          done
+                        echo -e "Thank you..."
+                        echo -e ""
+                        echo -e "Now enter the destination server"
+                        echo -e -n "$green[Destination]$clean : "
+                        local DEST
+                        read DEST
+                        # Simple check if destination contains any data.
+                        DESTCHECK=1
+                        # Strip brackets
+                        DEST=$(echo $DEST | sed -e "s/^\[//" -e "s/\]$//")
+                        while [ $DESTCHECK != 0 ]
+                        do
+                          if checkip4 $DEST
+                            then
+                              # If $DEST looks to be an valid IP we are ok.
+                              DESTCHECK=0
+                          elif checkip6 $DEST
+                            then
+                              # If $DEST looks to be an valid IP we are ok.
+                              DESTCHECK=0
+                          elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
+                              # If $DEST looks like an valid domain name we are ok.
+                              DESTCHECK=0
+                          else
+                              echo -e "       $red ERROR: The value $DEST seems to be invalid"
+                              echo -e "        ERROR: please re-enter the destination$clean"
+                              echo -e ""
+                              echo -e -n "$green[Destination]$clean : "
+                              read DEST
+                          fi
+                        done
+                        echo -e "Thank you.."
+                        sed -i "/$ENTDOMAIN[[:space:]]\+smtp:\[$ENTDEST\]/ c\\$DOMAIN  smtp:[$DEST]" /etc/postfix/transport
+                        postmap /etc/postfix/transport
+                        flag=1
+                      elif [[ $TMPOPTION == "d" || $TMPOPTION == "D" ]]; then
+                        sed -i "/$ENTDOMAIN[[:space:]]\+smtp:\[$ENTDEST\]/d" /etc/postfix/transport
+                        postmap /etc/postfix/transport
+                        echo -e "Entry deleted from transports." && pause
+                        flag=1
+                      elif [[ $TMPOPTION == "c" || $TMPOPTION == "C" ]]; then
+                        flag=1
+                      else
+                        echo -e "Error \"$TMPOPTION\" is not an option..." && pause
+                      fi
+                    done
+                  else
+                        echo -e "Error \"$choice\" is not an option..." && pause
+                  fi
+                    ;;
+                n)  echo -e ""
+                    echo -e "Please enter the domain you want add:"
+                    echo -e -n "$green[Domain]$clean : "
+                    local DOMAIN
+                    read DOMAIN
+                    # Check if the domain is valid.
+                    DOMAINCHECK=1
+                    while [ $DOMAINCHECK != 0 ]
+                      do
+                        if [[ $DOMAIN =~ ^\.?[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9-]+)*\.[a-z]{2,63}$ ]]; then
+                          DUPLICATECHECK=0
+                          for (( y=0; y<$tLen; y+=2 ));
+                            do
+                              if [[ ${RELAYS[$y]} == $DOMAIN ]]; then
+                                DUPLICATECHECK=1
+                              fi
+                            done
+                          if [[ $DUPLICATECHECK == "1" ]]; then
+                            echo -e "       $red ERROR: The domain $DOMAINNAME already exists"
+                            echo -e "        ERROR: please re-enter the domain$clean"
+                            echo -e ""
+                            echo -e -n "$green[Domain]$clean : "
+                            read DOMAIN
+                          else
+                            DOMAINCHECK=0
+                          fi
+                        else
+                          echo -e "       $red ERROR: The domain $DOMAINNAME seems to be invalid"
+                          echo -e "        ERROR: please re-enter the domain$clean"
+                          echo -e ""
+                          echo -e -n "$green[Domain]$clean : "
+                          read DOMAIN
+                        fi
+                      done
+                    echo -e "Thank you..."
+                    echo -e ""
+                    echo -e "Now enter the destination server"
+                    echo -e -n "$green[Destination]$clean : "
+                    local DEST
+                    read DEST
+                    # Simple check if destination contains any data.
+                    DESTCHECK=1
+                    # Strip brackets
+                    DEST=$(echo $DEST | sed -e "s/^\[//" -e "s/\]$//")
+                    while [ $DESTCHECK != 0 ]
+                      do
+                        if checkip4 $DEST
+                          then
+                            # If $DEST looks to be an valid IP we are ok.
+                            DESTCHECK=0
+                        elif checkip6 $DEST
+                          then
+                            # If $DEST looks to be an valid IP we are ok.
+                            DESTCHECK=0
+                        elif [[ $DEST =~ ^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-z]{2,63}$ ]]; then
+                            # If $DEST looks like an valid domain name we are ok.
+                            DESTCHECK=0
+                        else
+                            echo -e "       $red ERROR: The value $DEST seems to be invalid"
+                            echo -e "        ERROR: please re-enter the destination$clean"
+                            echo -e ""
+                            echo -e -n "$green[Destination]$clean : "
+                            read DEST
+                        fi
+                      done
+                    echo -e "Thank you.."
+                    echo -e "$DOMAIN  smtp:[$DEST]" >> /etc/postfix/transport
+                    postmap /etc/postfix/transport
+                    echo -e "Domain $DOMAIN added to this system"
+                    pause
+                    entry=1
+                    ;;
+                e)  mailmenu=1 && return ;;
+                *)  echo -e "Error \"$choice\" is not an option..." && pause
+                    echo -e -n "$green[eFa]$clean : "
+                    ;;
+          esac
+  done
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Configure admin email
+# +---------------------------------------------------+
+func_adminemail(){
+  aemenu=1
+  ADMINEMAIL="`cat /etc/eFa/eFa-Config | grep ADMINEMAIL | sed 's/.*://'`"
+  while [ $aemenu == "1" ]
+    do
+      func_echo-header
+      echo -e ""
+      echo -e "Description:"
+      echo -e "With this option you can change the eFa admin email address."
+      echo -e "This address is used for various system alerts and notifications."
+      echo -e ""
+      echo -e "Current settings are:"
+      echo -e "1) Admin email:        $ADMINEMAIL"
+      echo -e ""
+      echo -e "e) Return to main menu"
+      local choice
+      read -p "Enter setting you want to change: " choice
+      case $choice in
+        1) aemenu=0
+           echo -e ""
+           echo -e "Enter your new admin email address"
+           echo -e ""
+           read -p "> " ADMINEMAIL
+           sed -i "/ADMINEMAIL\:/ c\ADMINEMAIL\:$ADMINEMAIL" /etc/eFa/eFa-Config
+
+           Issue #73 Admin Email Change Fails to Update MailScanner Values
+           sed -i "/^Unscanned Header Value =/ c\Unscanned Header Value = Please contact $ADMINEMAIL for details" /etc/MailScanner/MailScanner.conf
+           sed -i "/^Information Header Value =/ c\Information Header Value = Please contact $ADMINEMAIL for more information" /etc/MailScanner/MailScanner.conf
+           sed -i "/^root:/ c\root: $ADMINEMAIL" /etc/aliases
+
+           aemenu=1
+           ;;
+        e) mailmenu=1 && return ;;
+        *) echo -e "Error \"$choice\" is not an option..." && pause
+      esac
+    done
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Configure outbound relay
+# +---------------------------------------------------+
+func_outbound-relay(){
+  obmrmenu=1
+  #read only once - we will work on the array
+  RELAYS=( `postconf -h mynetworks | sed "s/^127\.0\.0\.0\/8 \[\:\:1\]\/128\s*//"` )
+  while [ $obmrmenu == "1" ]
+    do
+      func_echo-header
+      echo -e ""
+      echo -e "Description:"
+      echo -e "With this option you can configure eFa"
+      echo -e "to relay outgoing message for your local"
+      echo -e "mail-server or clients."
+      echo -e ""
+	  echo "Current allowed adresses are:"      
+      tLen=${#RELAYS[@]}
+      padding="                        "
+      for (( y=0; y<$tLen; y+=1 ));
+      do
+        # Fix layout spacing up to 999 rows..
+        if (( $((y + 1)) < 10 )); then echo -n "  "
+        elif (( $((y + 1)) < 100 )); then echo -n " "
+        fi
+        echo -e "$((y + 1))) ${RELAYS[$y]} ${padding:${#RELAYS[$y]}}"
+        [[ $(((y + 1) % 25)) -eq 0 ]] && pause
+      done
+      echo -e ""
+      echo -e "n) Add new address"
+	  echo -e ""
+      echo -e "s) Save changes and return to main menu"
+      echo -e ""
+      echo -e "e) Discard changes and return to main menu"
+      echo -e ""
+      echo -e -n "$green[eFa]$clean : "
+      local choice
+      read choice
+      case $choice in
+             [0-9]*)
+               if [[ $choice -gt 0 && $choice -lt $((tLen + 1)) ]]; then
+                 RELAY=${RELAYS[($choice-1)]}
+                 echo -e "Entry Selected: $RELAY"
+                 flag=0
+                 while [ $flag == "0" ]
+                   do
+                     echo -e ""
+                     echo -e "Do you want to $green[e]$clean edit, $green[d]$clean delete this entry, or $green[c]$clean cancel? : "
+                     local TMPOPTION
+                     read TMPOPTION
+                     if [[ $TMPOPTION == "e" || $TMPOPTION == "E" ]]; then
+                        echo -e "Enter the new IP address"
+                        echo -e -n "$green[IP]$clean : "
+                        local RELAYINP
+                        read -i "test" RELAYINP 
+                        # Strip brackets
+                        RELAYINP=$(echo $RELAYINP | sed -e "s/^\[//" -e "s/\]$//")
+                        # Simple check if destination contains any data.
+                        IPCHECK=1
+                        while [ $IPCHECK != 0 ]
+                        do
+                          if checkip4cidr $RELAYINP
+                            then
+                              # If $RELAYINP looks to be an valid IP we are ok.
+                              IPCHECK=0
+                          elif checkip6 $RELAYINP
+                            then
+                                IPCHECK=0
+                          else
+                              echo -e "       $red ERROR: The value $RELAYINP seems to be invalid"
+                              echo -e "        ERROR: please re-enter the address$clean"
+                              echo -e ""
+                              echo -e -n "$green[IP]$clean : "
+                              read RELAYINP
+                          fi
+                        done
+                        RELAYS[$choice-1]=$RELAYINP
+                        flag=1
+                      elif [[ $TMPOPTION == "d" || $TMPOPTION == "D" ]]; then
+                        unset RELAYS[$choice-1]
+                        #reindex array
+                        RELAYS=( "${RELAYS[@]}" )
+                        echo -e "Entry deleted." && pause
+                        flag=1
+                      elif [[ $TMPOPTION == "c" || $TMPOPTION == "C" ]]; then
+                        flag=1
+                      else
+                        echo -e "Error \"$TMPOPTION\" is not an option..." && pause
+                      fi
+                    done
+                  else
+                        echo -e "Error \"$choice\" is not an option..." && pause
+                  fi
+                    ;;
+                n)  echo -e ""
+                    echo -e "Please enter the IP adress (CIDR is supported) you want add:"
+                    echo -e -n "$green[IP]$clean : "
+                    local RELAYINP
+                    read RELAYINP
+					# check for valid input
+                    IPCHECK=1
+                    # Strip brackets
+                    IPCHECK=$(echo $RELAYINP | sed -e "s/^\[//" -e "s/\]$//")
+                    while [ $IPCHECK != 0 ]
+                      do
+                        if checkip4cidr $RELAYINP
+                          then
+                            # If $IP looks to be an valid IP we are ok.
+                            IPCHECK=0
+                        elif checkip6 $RELAYINP
+                          then
+                            # If $IP looks to be an valid IP we are ok.
+                            IPCHECK=0
+                        else
+                            echo -e "       $red ERROR: The value $IP seems to be invalid"
+                            echo -e "        ERROR: please re-enter the IP address$clean"
+                            echo -e ""
+                            echo -e -n "$green[IP]$clean : "
+                            read RELAYINP
+                        fi
+                      done
+                    RELAYS[tLen]=$RELAYINP
+                    echo -e "Thank you.."
+                    echo -e "IP $RELAYINP was added"
+                    pause
+                    entry=1
+                    ;;
+                s)  echo -e ""
+                    echo -e "Saving and applying..."
+					echo -e ""
+                    mailmenu=1 
+                    
+					#one line of all ips
+					mynetworks=${RELAYS[@]}
+					
+                    ##postfix
+					echo -e "setting postfix mynetworks"
+                    postconf -e mynetworks="127.0.0.0/8 [::1]/128 $mynetworks"
+
+                    ##opendkim
+					echo -e "setting PeerList for opendkim"
+					if [[ $tLen -gt 0 ]]; then
+						sed -i "/PeerList/c\PeerList $mynetworks" /etc/opendkim.conf
+					else
+						sed -i "/PeerList/c\#PeerList" /etc/opendkim.conf
+					fi
+
+                    ##opendmarc
+					echo -e "populating opendmarc's ignore.hosts"
+					#enable ignorehosts
+					if ! grep -Fxq 'IgnoreHosts /etc/opendmarc/ignore.hosts' /etc/opendmarc.conf
+					then
+						echo 'IgnoreHosts /etc/opendmarc/ignore.hosts' >> /etc/opendmarc.conf
+					fi
+					
+					#write ignore.hosts file
+					echo "127.0.0.1" > /etc/opendmarc/ignore.hosts
+					printf "%s\n" $mynetworks >> /etc/opendmarc/ignore.hosts
+
+                    #reload everything:
+					systemctl restart opendkim
+					systemctl restart opendmarc
+                    systemctl reload postfix
+					
+					echo -e ""
+					echo -e "Done." && pause					
+					
+                    return ;;
+				e) mailmenu=1 && return ;;
+                *)  echo -e "Error \"$choice\" is not an option..." && pause
+                    echo -e -n "$green[eFa]$clean : "
+                    ;;
+          esac
+  done
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Configure Outbound smart-host
+# +---------------------------------------------------+
+func_outbound-smarthost(){
+  obshmenu=1
+  while [ $obshmenu == "1" ]
+    do
+      OBSH="`cat /etc/postfix/main.cf |grep "relayhost ="| grep -v "#" | sed 's/.*relayhost = //'`"
+      if [ -z "$OBSH" ]
+        then
+          OBSH="DISABLED"
+      fi
+      func_echo-header
+      echo " "
+      echo "Description:"
+      echo "With this option you can configure eFa"
+      echo "to use a external smart-host for outgoing"
+      echo "mail. (useful if you also use eFa as"
+      echo "an mail-relay)"
+      echo ""
+      echo "Current settings are:"
+      echo "1) Smart-host:                $OBSH"
+      echo "2) Disable smart-host"
+      echo ""
+      echo "e) Return to main menu"
+      echo ""
+      local choice
+      read -p "Enter setting you want to change: " choice
+      case $choice in
+            1)  obshmenu=0
+                echo ""
+                read -p "Enter your new smart host: " OBSH
+                postconf -e relayhost=$OBSH
+                systemctl reload postfix
+                echo "Smarthost configured"
+                pause
+                obshmenu=1
+                ;;
+            2)  obshmenu=0
+                echo ""
+                echo "Disabling SmartHost"
+                postconf -e relayhost=
+                systemctl reload postfix
+                obshmenu=1
+                ;;
+            e) mailmenu=1 && return ;;
+            *) echo -e "Error \"$choice\" is not an option..." && pause
+      esac
+    done
+}
+# +---------------------------------------------------+
+
+# +---------------------------------------------------+
+# Configure Automated recipient verification
+# +---------------------------------------------------+
+func_recipient_verification(){
+  local menu=1
+  local restrictions
+  func_echo-header
+  echo ""
+  echo -e "$green[eFa]$clean Automated recipient address verification"
+  echo -e "$green[eFa]$clean This option allows postfix to send probes to"
+  echo -e "$green[eFa]$clean check that the recipient exists.  This is enabled"
+  echo -e "$green[eFa]$clean by default in new installs."
+  local choice
+  while [ $menu -eq 1 ]
+    do
+      echo -e -n "$green[eFa]$clean Do you want to enable recipient address verification? (Y/n): "
+      read choice
+      if [[ $choice =~ ^[Yy]$ || -z $choice ]]; then
+        menu=0
+        restrictions=$(grep ^smtpd_recipient_restrictions /etc/postfix/main.cf)
+        if [[ ! $restrictions =~ reject_unverified_recipient ]]; then
+          if [[ -z $(echo $restrictions | sed -e "s/^smtpd_recipient_restrictions\s\{0,1\}=\s\{0,1\}//") ]]; then
+            # something is wrong, string is empty, reset to default
+            restrictions="smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, reject_unverified_recipient, check_policy_service inet:127.0.0.1:2501"
+          else
+            restrictions="$restrictions, reject_unverified_recipient"
+          fi
+        fi
+        postconf -e "$restrictions"
+        postconf -e "unverified_recipient_reject_reason = No user at this address"
+        postconf -e "unverified_recipient_reject_code = 550"
+      elif [[ $choice =~ ^[nN]$ ]]; then
+        menu=0
+        # explode and rebuild without option
+        restrictions=$(grep ^smtpd_recipient_restrictions /etc/postfix/main.cf | sed -e "s/^smtpd_recipient_restrictions\s\{0,1\}=\s\{0,1\}//")
+        local array
+        OLDIFS=$IFS
+        IFS=','
+        read -r -a array <<< "$restrictions"
+        IFS=$OLDIFS
+        restrictions=
+        local flag=0
+        for i in "${array[@]}"; do
+          i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          if [[ ! $i =~ reject_unverified_recipient ]]; then
+            if [[ $flag -eq 1 ]]; then
+              restrictions="$restrictions, $i"
+            else
+              restrictions="$i"
+              flag=1
+            fi
+          fi
+        done
+        if [[ -z $restrictions ]]; then
+          # something is wrong, string is empty, reset to default
+          restrictions="smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501"
+        else
+          restrictions="smtpd_recipient_restrictions = $restrictions"
+        fi
+        postconf -e "$restrictions"
+      else
+        echo "Invalid option..."
+        echo -e -n "$green[eFa]$clean Do you want to enable recipient address verification? (Y/n): "
+        read choice
+      fi
+    done
+
+  systemctl reload postfix
+  echo "Postfix reloaded"
+  pause
+}
+# +---------------------------------------------------+

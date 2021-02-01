@@ -25,8 +25,8 @@
 
 Name:      eFa
 Summary:   eFa Maintenance rpm
-Version:   4.0.3
-Release:   17.eFa%{?dist}
+Version:   4.0.4
+Release:   5.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -109,6 +109,8 @@ Requires:  perl-DBD-SQLite >= 1.39-3
     # perl-DBD-SQLite                            # base    # MailScanner
 Requires:  perl-Digest-SHA1 >= 2.13-9
     # perl-Digest-SHA1                           # base    # MailScanner
+Requires:  perl-Digest-SHA >= 5.85-4
+    # perl-Digest-SHA                            # base    # MailScanner
 Requires:  perl-Digest-HMAC >= 1.03-5
     # perl-Digest-HMAC                           # base    # MailScanner
 Requires:  perl-Encode-Detect >= 1.01-13
@@ -165,7 +167,7 @@ Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 5.8.3-1
     # unrar                                      # eFa     # MailScanner
-Requires:  postfix_eFa >= 3.4.8-1
+Requires:  postfix_eFa >= 3.5.9-1
     # postfix_eFa                                # eFa     # MTA
 %{?el7:Requires:  sqlgrey >= 1.8.0-8}
     # sqlgrey                                    # epel    # Greylisting
@@ -173,9 +175,9 @@ Requires:  postfix_eFa >= 3.4.8-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin >= 3.4.4-2
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.3.4-3
+Requires:  MailScanner >= 5.4.1-1
     # MailScanner                                # eFa     # MailScanner
-Requires:  clamav-unofficial-sigs >= 7.2.0-1
+Requires:  clamav-unofficial-sigs >= 7.2.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
 Requires:  perl-IP-Country >= 2.28-1
     # perl-IP-Country                            # eFa     # MailScanner, Spamassassin
@@ -187,7 +189,7 @@ Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.15-4
+Requires:  MailWatch >= 1:1.2.16-1
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 2.3.167-1
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -354,6 +356,11 @@ mv eFa/eFa-Configure $RPM_BUILD_ROOT%{_sbindir}
 
 # Move modules into position
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
+mv eFa/eFa-release.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
+mv eFa/CustomAction.pm $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
+mv eFa/efatokens.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/eFavmtools.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFahyperv.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFaqemu.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
@@ -366,6 +373,7 @@ mv eFa/eFa-Weekly-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Daily-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+mv eFa/eFa-Tokens.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-logrotate $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mv eFa/mysqltuner.pl $RPM_BUILD_ROOT%{_sbindir}
@@ -452,6 +460,13 @@ if [[ "$1" == "2" || "$flag" == "1" ]]; then
      } 2>&1 | tee -a /var/log/eFa/update.log
    fi
 
+    if [[ %{version} == "4.0.4" || "$flag" == "1" ]]; then
+     {
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.4.sh
+       [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
+     } 2>&1 | tee -a /var/log/eFa/update.log
+   fi
+
     # cleanup if sucessful
     rm -rf /usr/src/eFa
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
@@ -478,10 +493,35 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.fc
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa8.te
+%attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens.sql
+%attr(0644, root, root) %{_localstatedir}/eFa/lib/token/CustomAction.pm
+%attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-release.php
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
+%attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Tokens.cron
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-5
+- Fix SQLGrey initial load and db character set conversion
+
+* Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-4
+- Tidy up permissions on key files
+
+* Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-3
+- Fix hang on update for token db creation
+
+* Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-2
+- Fix error on update for token db creation
+
+* Sat Jan 30 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-1
+- Add spam release logic back to eFa
+
+* Wed Jan 27 2021 eFa Project <shawniverson@efa-project.org> - 4.0.3-19
+- Update MailScanner, fix yara rules, sqlgrey unicode, etc.
+
+* Tue Jan 05 2021 eFa Project <shawniverson@efa-project.org> - 4.0.3-18
+- Update clamav-unofficial-sigs, MailWatch, cleanup eFaInit view
+
 * Wed Dec 30 2020 eFa Project <shawniverson@efa-project.org> - 4.0.3-17
 - Revert requirements for php and move development to dev repo
 

@@ -1,0 +1,141 @@
+# +---------------------------------------------------+
+# Configure DKIM and DMARC
+# +---------------------------------------------------+
+
+function func_dkim-dmarc() {
+  func_echo-header
+  local TMPOPT
+  local mitlers
+  local milters2
+  local array
+  local flag
+  local menu
+
+  echo -e ""
+  echo -e "$green[eFa]$clean Welcome to the DKIM and DMARC wizard!"
+  echo -e "$green[eFa]$clean This option is enabled by default for new builds"
+  echo -e "$green[eFa]$clean The following questions will be used to"
+  echo -e "$green[eFa]$clean enable/disable/modify a DKIM and DMARC deployment."
+  echo -e ""
+
+  menu=1
+
+  echo -e -n "$green[eFa]$clean Would you like to enable DMARC and DKIM functionality? [Y/n/c]: "
+  read TMPOPT
+  while [ $menu -eq 1 ]; do
+    if [[ $TMPOPT =~ ^[Yy]$ || -z $TMPOPT ]]; then
+      menu=0
+      milters=$(grep ^smtpd_milters /etc/postfix/main.cf | sed -e 's/^smtpd_milters\s\{0,1\}=\s\{0,1\}//')
+      if [[ -z $milters ]]; then
+        # Something wrong, reset to default
+        milters="inet:127.0.0.1:8891, inet:127.0.0.1:8893, inet:127.0.0.1:33333"
+      fi
+      if [[ -z $(echo $milters | grep inet:127.0.0.1:8893) && -z $(echo $milters | grep inet:localhost:8893) ]]; then
+        milters="inet:127.0.0.1:8893, $milters"
+      fi
+      if [[ -z $(echo $milters | grep inet:127.0.0.1:8891) && -z $(echo $milters | grep inet:localhost:8891) ]]; then
+        milters="inet:127.0.0.1:8891, $milters"
+      fi
+      milters2=$(grep ^non_smtpd_milters /etc/postfix/main.cf | sed -e 's/^non_smtpd_milters\s\{0,1\}=\s\{0,1\}//')
+      if [[ -z $milters2 ]]; then
+        # Empty
+        milters2="inet:127.0.0.1:8891, inet:127.0.0.1:8893"
+      fi
+      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8893) && -z $(echo $milters2 | grep inet:localhost:8893) ]]; then
+        milters2="inet:127.0.0.1:8893, $milters2"
+      fi
+      if [[ -z $(echo $milters2 | grep inet:127.0.0.1:8891) && -z $(echo $milters2 | grep inet:localhost:8891) ]]; then
+        milters2="inet:127.0.0.1:8891, $milters2"
+      fi
+      milters="smtpd_milters = $milters"
+      milters2="non_smtpd_milters = $milters2"
+
+      postconf -e "$milters"
+      postconf -e "$milters2"
+
+      systemctl start opendmarc
+      systemctl enable opendmarc
+      systemctl start opendkim
+      systemctl enable opendkim
+      systemctl reload postfix
+
+      ln -s /usr/sbin/eFa-Weekly-DMARC /etc/cron.weekly/eFa-Weekly-DMARC >/dev/null 2>&1
+      ln -s /usr/sbin/eFa-Daily-DMARC /etc/cron.daily/eFa-Daily-DMARC >/dev/null 2>&1
+
+      echo -e "System is ready to use OpenDKIM verification and OpenDMARC verification and reporting"
+      pause
+    elif [[ $TMPOPT =~ ^[Nn]$ ]]; then
+      menu=0
+      # explode and rebuild without option
+      milters=$(grep ^smtpd_milters /etc/postfix/main.cf | sed -e "s/^smtpd_milters\s\{0,1\}=\s\{0,1\}//")
+      OLDIFS=$IFS
+      IFS=','
+      read -r -a array <<< "$milters"
+      IFS=$OLDIFS
+      milters=
+      flag=0
+      for i in "${array[@]}"; do
+        i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        if [[ ! $i =~ (inet:127.0.0.1:8891|inet:localhost:8891) && ! $i =~ (inet:127.0.0.1:8893|inet:localhost:8893) ]]; then
+          if [[ $flag -eq 1 ]]; then
+            milters="$milters, $i"
+          else
+            milters="$i"
+            flag=1
+          fi
+        fi
+      done
+      if [[ -z $milters ]]; then
+        # something is wrong, string is empty, reset to default
+        milters="inet:127.0.0.1:33333"
+      fi
+      milters="smtpd_milters = $milters"
+      postconf -e "$milters"
+
+      # explode and rebuild without option
+      milters2=$(grep ^non_smtpd_milters /etc/postfix/main.cf | sed -e "s/^non_smtpd_milters\s\{0,1\}=\s\{0,1\}//")
+      OLDIFS=$IFS
+      IFS=','
+      read -r -a array <<< "$milters2"
+      IFS=$OLDIFS
+    milters2=
+      flag=0
+      for i in "${array[@]}"; do
+        i=$(echo $i | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        if [[ $flag -eq 1 && ! $i =~ (inet:127.0.0.1:8891|inet:localhost:8891) && ! $i =~ (inet:127.0.0.1:8893|inet:localhost:8893) ]]; then
+          milters2="$milters2,"
+        else
+          flag=1
+        fi
+        if [[ ! $i =~ (inet:127.0.0.1:8891|inet:localhost:8891) && ! $i =~ (inet:127.0.0.1:8893|inet:localhost:8893) ]]; then
+          milters2="$milters2 $i"
+        else
+          flag=0
+        fi
+      done
+      milters2="non_smtpd_milters = $milters2"
+      postconf -e "$milters2"
+
+      systemctl stop opendmarc
+      systemctl disable opendmarc
+      systemctl stop opendkim
+      systemctl disable opendkim
+      systemctl reload postfix
+
+      rm -f /etc/cron.weekly/eFa-Weekly-DMARC > /dev/null 2>&1
+      rm -f /etc/cron.daily/eFa-Daily-DMARC > /dev/null 2>&1
+
+      echo "openDKIM and openDMARC are now disabled"
+      pause
+    elif [[ $TMPOPT =~ ^[cC]$ ]]; then
+      menu=0
+      echo "Nothing changed."
+      pause
+    else
+      echo ""
+      echo "Invalid option..."
+      echo -e -n "$green[eFa]$clean Would you like to enable DMARC and DKIM functionality? [Y/n/c]: "
+      read TMPOPT
+    fi
+  done
+}
