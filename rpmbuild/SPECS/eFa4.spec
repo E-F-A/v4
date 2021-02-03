@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   5.eFa%{?dist}
+Release:   6.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -501,6 +501,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Wed Feb 03 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-6
+- Fix CustomAction.pm token generation
+
 * Sun Jan 31 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-5
 - Fix SQLGrey initial load and db character set conversion
 

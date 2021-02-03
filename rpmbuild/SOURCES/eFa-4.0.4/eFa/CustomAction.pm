@@ -151,7 +151,7 @@ sub randomtoken {
   my $message = @_;
   my ($token, $sha1);
   $sha1 = Digest::SHA->new(1);
-  my ($timestamp) = sprintf("%d-%02d-%02d %02d:%02d:%02d", $year + 1900, $mon + 1, $mday, $hour, $min, $sec);
+  my ($timestamp) = localtime();
   $sha1->add($message->{id}, $timestamp, $message->{size}, $message->{headers});
   $token = $sha1->hexdigest;
   return $token;
