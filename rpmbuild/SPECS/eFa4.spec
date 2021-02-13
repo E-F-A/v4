@@ -51,6 +51,7 @@ Requires:  perl-DBD-MySQL >= 4.023-6
     # perl-DBD-mysql                             # base    # spamassassin
 %{?el7:Requires:  php74-common >= 7.4.15-1}
 %{?el7:Obsoletes:  php72u}
+%{?el7:Obsoletes:  php72u-common}
     # php74                                      # IUS     # mailwatch, frontend
 %{?el8:Requires:  php >= 7.2.13-2}
     # php                                        # base    # mailwatch, frontend
