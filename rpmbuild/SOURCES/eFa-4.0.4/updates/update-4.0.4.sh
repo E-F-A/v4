@@ -348,6 +348,12 @@ cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomA
 
 /usr/bin/mysql -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
+# Fix IUS Repo conflicts
+if [[ -n $(rpm -qa | grep php72u) ]]
+  yum -y remove php72u-mysqlnd php72u-common php72u-ldap php72u-json php72u-gd php72u-fpm php72u-cli php72u-pdo php72u-process php72u-xml php72u-mbstring >/dev/null 2>&1
+fi
+yum -y install php74-common php74-mysqlnd php74-ldap php74-json php74-gd php74-fpm php74-cli php74-pdo php74-process php74-xml php74-mbstring
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
