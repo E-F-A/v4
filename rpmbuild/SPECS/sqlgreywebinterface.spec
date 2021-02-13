@@ -35,7 +35,7 @@ BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 Requires:      httpd >= 2.4.6
 %{?el7:Requires:      php74-common >= 7.4.15-1}
-%{?el7:Obsoletes:     php72u-common}
+%{?el7:Obsoletes:     php72u}
 %{?el8:Requires:      php >= 7.2.5-2}
 
 %description

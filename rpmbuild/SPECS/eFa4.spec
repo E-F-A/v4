@@ -250,6 +250,9 @@ Requires: perl-Sendmail-PMilter >= 1.00-1
 %{?el7:Requires: php74-pdo >= 7.4.15-1}
 %{?el7:Obsoletes:  php72u-pdo}
     # php74-pdo                                  # IUS     # mailwatch, frontend
+%{?el7:Requires: mod_php74 >= 7.4.15-1}
+%{?el7:Obsoletes:  mod_php72u}
+    # mod_php74                                  # IUS     # mailwatch, frontend
 %{?el8:Requires: php-xml >= 7.2.13-2}
     # php-xml                                    # base    # mailwatch, frontend
 Requires: dovecot >= 1:2.2.36-3
