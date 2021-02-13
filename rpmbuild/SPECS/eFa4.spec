@@ -49,7 +49,7 @@ Requires:  clamd >= 0.101.0-1
     # mariadb-server                             # base    # postfix, mailwatch
 Requires:  perl-DBD-MySQL >= 4.023-6
     # perl-DBD-mysql                             # base    # spamassassin
-%{?el7:Requires:  php74 >= 7.2.13-2}
+%{?el7:Requires:  php74-common >= 7.4.15-1}
     # php74                                     # IUS     # mailwatch, frontend
 %{?el8:Requires:  php >= 7.2.13-2}
     # php                                        # base    # mailwatch, frontend
@@ -57,19 +57,19 @@ Requires:  bzip2-devel >= 1.0.6-13
     # bzip2-devel                                # base    # MailScanner
 Requires:  screen >= 4.1.0-0.23.20120314git3c2946
     # screen                                     # base    # basic system tools
-%{?el7:Requires:  php74-gd >= 7.2.13-2}
+%{?el7:Requires:  php74-gd >= 7.4.15-1}
     # php74-gd                                  # IUS     # mailwatch, frontend
 %{?el8:Requires:  php-gd >= 7.2.13-2}
     # php-gd                                     # base    # mailwatch, frontend
-%{?el7:Requires:  php74-mbstring >= 7.2.13-2}
+%{?el7:Requires:  php74-mbstring >= 7.4.15-1}
     # php74-mbstring                            # IUS     # mailwatch, frontend
 %{?el8:Requires:  php-mbstring >= 7.2.13-2}
     # php-mbstring                               # base    # mailwatch, frontend
-%{?el7:Requires:  php74-mysqlnd >= 7.2.13-2}
+%{?el7:Requires:  php74-mysqlnd >= 7.4.15-1}
     # php74-mysqlnd                             # IUS     # mailwatch, frontend
 %{?el8:Requires:  php-mysqlnd >= 7.2.13-2}
     # php-mysqlnd                                # base    # mailwatch, frontend
-%{?el7:Requires:  php74-ldap >= 7.2.13-2}
+%{?el7:Requires:  php74-ldap >= 7.4.15-1}
     # php74-ldap                                # IUS     # mailwatch, frontend
 %{?el8:Requires:  php-ldap >= 7.2.13-2}
     # php-ldap                                   # base    # mailwatch, frontend
@@ -231,11 +231,11 @@ Requires: sqlgreywebinterface >= 1.1.9-2
     # sqlgreywebinterrface                       # eFa     # mailwatch
 Requires: perl-Sendmail-PMilter >= 1.00-1
     # perl-Sendmail-PMilter                      # eFa     # MailScanner
-%{?el7:Requires: php74-cli >= 7.2.13-2}
+%{?el7:Requires: php74-cli >= 7.4.15-1}
     # php74-cli                                 # IUS     # mailwatch, frontend
 %{?el8:Requires: php-cli >= 7.2.13-2}
     # php-cli                                    # base    # mailwatch, frontend
-%{?el7:Requires: php74-xml >= 7.2.13-2}
+%{?el7:Requires: php74-xml >= 7.4.15-1}
     # php74-xml                                 # IUS     # mailwatch, frontend
 %{?el8:Requires: php-xml >= 7.2.13-2}
     # php-xml                                    # base    # mailwatch, frontend
