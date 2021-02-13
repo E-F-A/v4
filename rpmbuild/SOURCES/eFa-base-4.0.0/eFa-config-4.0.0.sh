@@ -178,8 +178,3 @@ enabled = true
 [postfix-sasl]
 enabled = true
 EOF
-
-#PHP
-rpm -e --nodeps php-common
-rpm -e --nodeps php-cli
-yum -y install php74-common php74-mysqlnd php74-ldap php74-json php74-gd php74-fpm php74-cli php74-pdo php74-process php74-xml php74-mbstring
