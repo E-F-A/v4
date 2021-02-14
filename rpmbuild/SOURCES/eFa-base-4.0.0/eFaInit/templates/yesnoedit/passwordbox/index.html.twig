@@ -1,0 +1,43 @@
+{# app/Resources/views/domainname/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Welcome to{% endtrans %} eFa -- {{ title|trans }}{% endblock %}
+{% block body %}
+    <div class="initbody">
+        <div class="init">
+            <div class="center">
+                    <img src="{{ asset('images/logo.png') }}" alt="eFa Logo" />
+            </div>
+            <h1>{{ title|trans }}</h1>
+           <div class="inner-container">
+                {{ form_start(form) }}
+                <h2>
+                    {{ form_label(form.Passwordbox1) }}
+                </h2>
+                <div>
+                    {{ form_widget(form.Passwordbox1) }}
+                </div>
+                <h2>
+                    {{ form_label(form.Passwordbox2) }}
+                </h2>
+                <div>
+                    {{ form_widget(form.Passwordbox2) }}
+                </div>
+                <div style="display:none">
+                    {{ form_widget(form.NextHidden) }}
+                </div>
+                <div style="display:block">
+                    {{ form_widget(form.Back) }}
+                    {{ form_widget(form.Next) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+            <div class="error-container">
+                {{ form_errors(form) }}
+                {% if error != '' %}
+                    <ul>{{ error|trans }}</ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
