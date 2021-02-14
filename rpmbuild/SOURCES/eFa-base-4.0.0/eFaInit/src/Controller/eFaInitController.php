@@ -17,7 +17,7 @@ use App\Form\TimezoneEditTaskType;
 use App\Form\VerifySettingsTaskType;
 use App\Form\InterfaceTaskType;
 use App\Form\InterfaceEditTaskType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,7 +26,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Validator\Validation;
 
-class eFaInitController extends AbstractController
+class eFaInitController extends Controller
 {
     protected $timeout=900;
 
