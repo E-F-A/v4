@@ -94,11 +94,8 @@ cd $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit
 $RPM_BUILD_ROOT%{_bindir}/composer install --quiet
 
 # Cleanup composer for rpm build
-#sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.xml
-#sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.xml.meta
-#sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.php.meta
-#sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainerDeprecations.log
-#sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/logs/dev.log
+sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/twig/db/*
+sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/logs/dev.log
 
 %pre
 
