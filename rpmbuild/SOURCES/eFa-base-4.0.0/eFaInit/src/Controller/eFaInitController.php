@@ -199,7 +199,7 @@ class eFaInitController extends AbstractController
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process(["ip add show dev $interface | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | awk -F'/' '{print $1}'"]);
+                        $process = Process::fromShellCommandline("ip add show dev $interface | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | awk -F'/' '{print $1}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -222,7 +222,7 @@ class eFaInitController extends AbstractController
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process(["ip add show dev $interface | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | xargs ipcalc -m | awk -F'=' {'print $2'}"]);
+                        $process = Process::fromShellCommandline("ip add show dev $interface | grep inet\  | grep -v inet\ 127. | awk '{print $2}' | xargs ipcalc -m | awk -F'=' {'print $2'}");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -246,7 +246,7 @@ class eFaInitController extends AbstractController
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process(["ip -4 route list default dev $interface | awk {'print $3'}"]);
+                        $process = Process::fromShellCommandline("ip -4 route list default dev $interface | awk {'print $3'}");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -270,7 +270,7 @@ class eFaInitController extends AbstractController
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process(["ip add show dev $interface | grep inet6 | grep -v inet6\ ::1 | grep global | awk '{print $2}' | awk -F'/' '{print $1}'"]);
+                        $process = Process::fromShellCommandline("ip add show dev $interface | grep inet6 | grep -v inet6\ ::1 | grep global | awk '{print $2}' | awk -F'/' '{print $1}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -294,7 +294,7 @@ class eFaInitController extends AbstractController
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
                         $interface = $session->get('interface');
-                        $process = new Process(["ip add show $interface | grep inet6\ | grep global | awk '{print $2}' | awk -F'/' '{print $2}'"]);
+                        $process = Process::fromShellCommandline("ip add show $interface | grep inet6\ | grep global | awk '{print $2}' | awk -F'/' '{print $2}'");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -317,7 +317,7 @@ class eFaInitController extends AbstractController
 
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process(["ip -6 route list default dev $interface | awk {'print $3'}"]);
+                        $process = Process::fromShellCommandline("ip -6 route list default dev $interface | awk {'print $3'}");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -340,7 +340,7 @@ class eFaInitController extends AbstractController
 
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process(["grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -n 1p"]);
+                        $process = Process::fromShellCommandline("grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -n 1p");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -363,7 +363,7 @@ class eFaInitController extends AbstractController
 
                 if ($options['varData'] === '' || $options['varData'] === null) {
                     try {
-                        $process = new Process(["grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -n 2p"]);
+                        $process = Process::fromShellCommandline("grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -n 2p");
                         $process->mustRun();
                         $options['varData'] = $process->getOutput();
                     } catch (ProcessFailedException $exception) {
@@ -491,7 +491,7 @@ class eFaInitController extends AbstractController
         $previousSlug = 'email';
         $previousPage = 'textboxpage';
         try {
-            $process = new Process(["ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' -e 's/@.*$//g' | sort | uniq"]);
+            $process = Process::fromShellCommandline("ip link show | grep ^[0-9] | awk -F': ' '{print $2}' | sed -e '/^lo/d' -e 's/@.*$//g' | sort | uniq");
             $process->mustRun();
             foreach ( explode("\n",$process->getOutput()) as $var ) 
             {
