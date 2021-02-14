@@ -94,7 +94,7 @@ cd $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit
 $RPM_BUILD_ROOT%{_bindir}/composer install --quiet
 
 # Cleanup composer for rpm build
-find $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/ -type f -print0 | xargs -0 sed -i "s|$RPM_BUILD_ROOT||g" $i
+find $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/prod/ -type f -print0 | xargs -0 sed -i "s|$RPM_BUILD_ROOT||g" $i
 
 %pre
 
