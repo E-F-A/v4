@@ -395,6 +395,11 @@ cmd='systemctl enable clamav-freshclam'
 execcmd
 cmd='systemctl start clamav-freshclam'
 execcmd
+cmd='systemctl enable php-fpm'
+execcmd
+cmd='systemctl start php-fpm'
+execcmd
+
 
 # Disable maintenance mode if disabled during script
 if [[ $MAINT -eq 1 ]]; then
