@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   8.eFa%{?dist}
+Release:   9.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -518,6 +518,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Feb 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-9
+- Re-enable php-fpm following IUS changes
+
 * Sat Feb 13 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-8
 - Update dependencies for IUS changes
 
