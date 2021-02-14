@@ -1,7 +1,7 @@
 <?php
 
 // src/AppBundle/Validator/Constraints/CLIUsernameValidator.php
-namespace AppBundle\Validator\Constraints;
+namespace App\Validator\Constraints;
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Validator\Constraint;
