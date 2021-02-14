@@ -4,7 +4,7 @@
 namespace App\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Validator\Constraints as eFaInitAssert;
+use App\Validator\Constraints as eFaInitAssert;
 
 class eFaInitTask
 {

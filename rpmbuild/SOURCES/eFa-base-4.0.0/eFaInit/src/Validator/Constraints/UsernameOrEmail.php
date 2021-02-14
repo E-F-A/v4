@@ -1,7 +1,7 @@
 <?php 
 
 // src/AppBundle/Validator/Constraints/UsernameOrEmail.php
-namespace AppBundle\Validator\Constraints;
+namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
