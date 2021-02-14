@@ -1,0 +1,25 @@
+{# app/Resources/views/language/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Welcome to{% endtrans %} eFa{% endblock %}
+{% block body %}
+    <div class="initbody">
+        <div class="init">
+            <div class="center">
+                    <img src="{{ asset('images/logo.png') }}" alt="eFa Logo" />
+            </div>
+            <h1>{% trans %}Welcome to{% endtrans %} eFa</h1>
+            <div class="inner-container">
+                {{ form_start(form) }}
+                <h2>
+                    {{ form_label(form.Language) }}
+                </h2>
+                <div>
+                    {{ form_widget(form.Language) }}
+                </div>
+                {{ form_row(form.Save) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
