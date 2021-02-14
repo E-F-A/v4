@@ -1,0 +1,34 @@
+{# app/Resources/views/interfacebox/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Welcome to{% endtrans %} eFa{% endblock %}
+{% block body %}
+    <div class="initbody">
+        <div class="init">
+            <div class="center">
+                    <img src="{{ asset('images/logo.png') }}" alt="eFa Logo" />
+            </div>
+            <h1>{% trans %}Welcome to{% endtrans %} eFa</h1>
+            <div class="inner-container">
+                {{ form_start(form) }}
+                <h2>
+                    {{ label|trans }}
+                </h2>
+                <div>
+                    {{ form_widget(form.Interface) }}
+                </div>
+                <div style="display:none">
+                    {{ form_widget(form.NextHidden) }}
+                </div>
+                <div style="display:block">
+                    {{ form_widget(form.Back) }}
+                    {{ form_widget(form.Next) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+            <div class="error-container">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

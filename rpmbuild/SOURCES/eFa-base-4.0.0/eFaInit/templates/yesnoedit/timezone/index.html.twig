@@ -1,0 +1,33 @@
+{# app/Resources/views/language/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Welcome to{% endtrans %} eFa -- {{ title|trans }}{% endblock %}
+{% block body %}
+    <div class="initbody">
+        <div class="init">
+            <div class="center">
+                    <img src="{{ asset('images/logo.png') }}" alt="eFa Logo" />
+            </div>
+            <h1>{{ title|trans }}</h1>
+            
+            <div class="inner-container">
+                {{ form_start(form) }}
+                <h2>
+                    {{ form_label(form.Timezone) }}
+                </h2>
+                <div class="timezone-container">
+                    {{ form_widget(form.Timezone) }}
+                </div>
+                <div style="display:none">
+                  {{ form_widget(form.NextHidden) }}
+                </div>
+                {{ form_widget(form.Back) }} 
+                {{ form_widget(form.Next) }}
+            </div>
+            {{ form_end(form) }}
+            <div class="error-container">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
