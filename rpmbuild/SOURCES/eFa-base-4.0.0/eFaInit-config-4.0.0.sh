@@ -39,8 +39,8 @@ else
 fi
 
 cat > /etc/httpd/conf.d/eFaInit.conf << 'EOF'
-Alias /eFaInit /var/www/eFaInit/web
-<Directory /var/www/eFaInit/web>
+Alias /eFaInit /var/www/eFaInit/public
+<Directory /var/www/eFaInit/public>
    AllowOverride All
    Require all granted
 
