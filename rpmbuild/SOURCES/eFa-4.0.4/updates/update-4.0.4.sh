@@ -323,15 +323,6 @@ chmod g+rw /etc/MailScanner/rules/*.rules
 if [[ $? -ne 0 ]]; then
   # database is not present let's create and initialize everything
   /usr/bin/mysql < /var/eFa/lib/token/efatokens.sql
-  # Just in case someone out there is doing something weird
-  if [[ -f /var/eFa/backup/CustomAction.pm.old ]]; then 
-    rm -f /var/eFa/backup/CustomAction.pm.old
-  fi
-  if [[ -f /var/eFa/backup/CustomAction.pm ]]; then 
-    mv /var/eFa/backup/CustomAction.pm /var/eFa/backup/CustomAction.pm.old
-  fi
-  mv /usr/share/MailScanner/perl/custom/CustomAction.pm /var/eFa/backup/CustomAction.pm
-  cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
 
   # Create efa user
   PASSWD=`openssl rand -hex 16`
@@ -344,6 +335,16 @@ if [[ $? -ne 0 ]]; then
     sed -i "/^EFASQLPWD/ c\EFASQLPWD:$PASSWD" /etc/eFa/eFa-Config
   fi
 fi
+
+# Refresh CustomAction.pm
+if [[ -f /var/eFa/backup/CustomAction.pm.old ]]; then 
+  rm -f /var/eFa/backup/CustomAction.pm.old
+fi
+if [[ -f /var/eFa/backup/CustomAction.pm ]]; then 
+  mv /var/eFa/backup/CustomAction.pm /var/eFa/backup/CustomAction.pm.old
+fi
+mv /usr/share/MailScanner/perl/custom/CustomAction.pm /var/eFa/backup/CustomAction.pm
+cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
 
 /usr/bin/mysql -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
@@ -394,6 +395,11 @@ cmd='systemctl enable clamav-freshclam'
 execcmd
 cmd='systemctl start clamav-freshclam'
 execcmd
+cmd='systemctl enable php-fpm'
+execcmd
+cmd='systemctl start php-fpm'
+execcmd
+
 
 # Disable maintenance mode if disabled during script
 if [[ $MAINT -eq 1 ]]; then

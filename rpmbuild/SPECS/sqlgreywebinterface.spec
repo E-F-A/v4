@@ -26,7 +26,7 @@ Summary:       SQLGrey Web Interface Legacy
 Name:          sqlgreywebinterface
 Version:       1.1.9
 Epoch:         1
-Release:       3.eFa%{?dist}
+Release:       4.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/flok99/sgwi
@@ -34,7 +34,8 @@ Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 Requires:      httpd >= 2.4.6
-%{?el7:Requires:      php72u >= 7.2.5-2}
+%{?el7:Requires:      php74-common >= 7.4.15-1}
+%{?el7:Obsoletes:     php72u}
 %{?el8:Requires:      php >= 7.2.5-2}
 
 %description

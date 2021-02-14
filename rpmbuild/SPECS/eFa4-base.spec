@@ -28,12 +28,12 @@ License:   GNU GPL v3+
 Source0:   eFa-base-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-%{?el7:BuildRequires: php72u-cli >= 7.2.13-2}
+%{?el7:BuildRequires: php74-cli >= 7.4.15-1}
 %{?el8:BuildRequires: php-cli >= 7.2.13-2}
 BuildRequires: wget >= 1.14-18
-%{?el7:BuildRequires: php72u-json >= 7.2.21-1}
-%{?el7:BuildRequires: php72u-xml >= 7.2.21-1}
-%{?el7:BuildRequires: php72u-pdo >= 7.2.21-1}
+%{?el7:BuildRequires: php74-json >= 7.4.15-1}
+%{?el7:BuildRequires: php74-xml >= 7.4.15-1}
+%{?el7:BuildRequires: php74-pdo >= 7.4.15-1}
 %{?el8:BuildRequires: php-json >= 7.2.21-1}
 %{?el8:BuildRequires: php-xml >= 7.2.21-1}
 %{?el8:BuildRequires: php-pdo >= 7.2.21-1}
@@ -94,11 +94,7 @@ cd $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit
 $RPM_BUILD_ROOT%{_bindir}/composer install --quiet
 
 # Cleanup composer for rpm build
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.xml
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.xml.meta
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainer.php.meta
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/dev/appDevDebugProjectContainerDeprecations.log
-sed -i "s|$RPM_BUILD_ROOT||g" $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/logs/dev.log
+find $RPM_BUILD_ROOT%{_localstatedir}/www/eFaInit/var/cache/prod/ -type f -print0 | xargs -0 sed -i "s|$RPM_BUILD_ROOT||g" $i
 
 %pre
 
