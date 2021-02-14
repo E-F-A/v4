@@ -736,7 +736,7 @@ class eFaInitController extends AbstractController
             $passwordcompare->setPassword1($session->get('webpassword'));
             $passwordcompare->setPassword2($session->get('clipassword'));
             
-            $errors = $validator->validator->validate($passwordcompare);
+            $errors = $this->validator->validate($passwordcompare);
 
             if (count($errors) === 0) {
                 if ($edit === 'edit') {
