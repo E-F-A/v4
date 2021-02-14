@@ -27,7 +27,7 @@ class CLIUsernameValidator extends ConstraintValidator
         }
         
         // Test for existing user account
-        $process = new Process("sudo cat /etc/passwd");
+        $process = new Process(["sudo", "cat", "/etc/passwd"]);
         $process->mustRun();
         $output = $process->getOutput();
         $output = preg_replace('/:.*/', '', $output);
