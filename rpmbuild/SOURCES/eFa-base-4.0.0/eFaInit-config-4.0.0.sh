@@ -44,6 +44,13 @@ Alias /eFaInit /var/www/eFaInit/web
    AllowOverride All
    Require all granted
 
+   <IfModule mod_rewrite.c>
+      Options -MultiViews
+      RewriteEngine On
+      RewriteCond %{REQUEST_FILENAME} !-f
+      RewriteRule ^(.*)$ index.php [QSA,L]
+   </IfModule>
+
 </Directory>
 EOF
 
