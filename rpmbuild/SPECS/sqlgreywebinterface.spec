@@ -55,7 +55,7 @@ mkdir -p %{buildroot}%{_localstatedir}/www/html/sgwi
 cp -ra * %{buildroot}%{_localstatedir}/www/html/sgwi
 
 # Add efa password retrieval
-sed -i '/^$db_user/ c\$db_user        = "sqlgrey";' %{buildroot}%{_localstatedir}www/html/sgwi/includes/config.inc.php
+sed -i '/^$db_user/ c\$db_user        = "sqlgrey";' %{buildroot}%{_localstatedir}/www/html/sgwi/includes/config.inc.php
 sed -i "/^\$db_pass/ c\$efa_array = preg_grep('/^SQLGREYSQLPWD/', file('/etc/eFa/SQLGrey-Config'));\nforeach(\$efa_array as \$num => \$line) {\n  if (\$line) {\n    \$db_pass = chop(preg_replace('/^SQLGREYSQLPWD:(.*)/','\$1',\$line));\n  }\n}" %{buildroot}%{_localstatedir}/www/html/sgwi/includes/config.inc.php
 
 # Remove doc info
