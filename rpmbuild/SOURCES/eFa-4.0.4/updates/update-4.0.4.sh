@@ -348,6 +348,10 @@ cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomA
 
 /usr/bin/mysql -e "ALTER database sqlgrey CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
+# Force disable yara rules for stability
+sed -i '/^enable_yararules=/ c\enable_yararules="no"' /etc/clamav-unofficial-sigs/master.conf
+sed -i '/^yararulesproject_enabled=/ c\yararulesproject_enabled="no"' /etc/clamav-unofficial-sigs/master.conf
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
