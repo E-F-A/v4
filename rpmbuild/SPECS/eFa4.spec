@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   9.eFa%{?dist}
+Release:   11.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -342,6 +342,8 @@ Requires: fail2ban >= 0.11.1-9
     #                                            # base    # eFa
 Requires: tar >= 1.26-35
     #                                            # base    # eFa
+%{?el7:Requires: NetworkManager >= 1.18.8-2}
+    #                                            # base    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -518,6 +520,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Mar 28 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-11
+- SELinux updates and fixes for eFa-Commit
+
+* Sun Feb 21 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-10
+- Fixes for eFa-Commit and disable yara rules
+
 * Sun Feb 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-9
 - Re-enable php-fpm following IUS changes
 
