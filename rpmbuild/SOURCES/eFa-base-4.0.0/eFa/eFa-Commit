@@ -615,6 +615,11 @@ if [[ $configdns -eq 1 ]]; then
   fi
 
   # Disable nm from overriding dns
+  systemctl enable NetworkManager
+  [ $? -ne 0 ] && exit 1
+  systemctl start NetworkManager
+  [ $? -ne 0 ] && exit 1
+
   if [[ -z $(grep "^dns=none" /etc/NetworkManager/NetworkManager.conf) ]]; then
     sed -i "/^\[main\]$/ a\dns=none" /etc/NetworkManager/NetworkManager.conf
   fi

@@ -403,7 +403,7 @@ allow mscan_t etc_mail_t:dir { search getattr read open };
 allow mscan_t etc_mail_t:file { getattr read open ioctl };
 allow mscan_t etc_mail_t:lnk_file read;
 allow mscan_t tmpfs_t:dir { write add_name create setattr read remove_name rmdir ioctl };
-allow mscan_t tmpfs_t:file { create read write getattr open lock append unlink ioctl setattr };
+allow mscan_t tmpfs_t:file { create read write getattr open lock append unlink ioctl setattr rename};
 allow mscan_t tmpfs_t:filesystem getattr;
 allow mscan_t mscan_etc_t:lnk_file read;
 allow mscan_t mysqld_db_t:dir search;
