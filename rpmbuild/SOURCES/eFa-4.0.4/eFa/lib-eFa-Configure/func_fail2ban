@@ -29,7 +29,21 @@ enabled = true
 
 [postfix-sasl]
 enabled = true
+
+[mailwatch]
+enabled = true
+port    = http,https
+logpath = /var/log/php-fpm/www-error.log
 EOF
+
+                cat > /etc/fail2ban/filter.d/mailwatch.conf << 'EOF'
+[Definition]
+
+failregex = ^\[.*?\] MailWatch failed login attempt from\: \[<HOST>\] for User: .*?$
+
+ignoreregex =
+EOF
+
             fi
 
             systemctl enable fail2ban
