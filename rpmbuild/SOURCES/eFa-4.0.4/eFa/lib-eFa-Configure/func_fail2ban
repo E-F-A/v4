@@ -29,6 +29,7 @@ enabled = true
 
 [postfix-sasl]
 enabled = true
+filter = postfix[mode=auth]
 
 [mailwatch]
 enabled = true
