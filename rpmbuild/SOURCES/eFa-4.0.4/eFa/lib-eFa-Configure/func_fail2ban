@@ -18,18 +18,33 @@ function func_fail2ban() {
         if [[ $ASK =~ ^[yY]$ || -z $ASK ]]; then
             flag=1
 
-            if [[ -f /etc/fail2ban/jail.d/jail.local.old ]]; then
-                if [[ ! -f /etc/fail2ban/jail.d/jail.local ]]; then
-                    mv /etc/fail2ban/jail.d/jail.local.old /etc/fail2ban/jail.d/jail.local
+            if [[ -f /etc/fail2ban/jail.d/efa.local.disabled ]]; then
+                if [[ ! -f /etc/fail2ban/jail.d/efa.local ]]; then
+                    mv /etc/fail2ban/jail.d/efa.local.disabled /etc/fail2ban/jail.d/efa.local
                 fi
             else
-                cat > /etc/fail2ban/jail.d/jail.local << 'EOF'
+                cat > /etc/fail2ban/jail.d/efa.local << 'EOF'
 [sshd]
 enabled = true
 
 [postfix-sasl]
 enabled = true
+filter = postfix[mode=auth]
+
+[mailwatch]
+enabled = true
+port    = http,https
+logpath = /var/log/php-fpm/www-error.log
 EOF
+
+                cat > /etc/fail2ban/filter.d/mailwatch.conf << 'EOF'
+[Definition]
+
+failregex = ^\[.*?\] MailWatch failed login attempt from\: \[<HOST>\] for User: .*?$
+
+ignoreregex =
+EOF
+
             fi
 
             systemctl enable fail2ban
@@ -40,7 +55,7 @@ EOF
             pause
         elif [[ $ASK =~ ^[nN]$ ]]; then
             flag=1
-            mv /etc/fail2ban/jail.d/jail.local /etc/fail2ban/jail.d/jail.local.old
+            mv /etc/fail2ban/jail.d/efa.local /etc/fail2ban/jail.d/efa.local.disabled
             systemctl disable fail2ban
             systemctl stop fail2ban
 
