@@ -1,0 +1,10 @@
+--- OpenDMARC-rel-opendmarc-1-4-1.orig/opendmarc/opendmarc.c	2021-04-29 15:09:17.000000000 -0500
++++ OpenDMARC-rel-opendmarc-1-4-1/opendmarc/opendmarc.c	2021-04-29 21:52:54.841855709 -0500
+@@ -3591,7 +3591,6 @@
+ 		ret = SMFIS_CONTINUE;
+ 
+ 		if (conf->conf_rejectfail &&
+-		    conf->conf_holdquarantinedmessages &&
+ 		    random() % 100 < pct)
+ 		{
+ 			snprintf(replybuf, sizeof replybuf,
