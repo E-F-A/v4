@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   11.eFa%{?dist}
+Release:   12.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -280,7 +280,7 @@ Requires: eFa-base >= 4.0.0-1
     #                                            # base    # clamd
 Requires: opendkim >= 2.11.0-0.1
     #                                            # epel    # eFa
-Requires: opendmarc >= 1.3.2-0.12
+Requires: opendmarc >= 1.4.1-1efa.1
     #                                            # epel    # eFa
 Requires: cyrus-sasl >= 2.1.26-23
     #                                            # base    # eFa
@@ -520,6 +520,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Thu Jun 17 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-12
+- Fix for OpenDMARC
+
 * Sun Mar 28 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-11
 - SELinux updates and fixes for eFa-Commit
 
