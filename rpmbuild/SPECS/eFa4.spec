@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   13.eFa%{?dist}
+Release:   14.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -43,7 +43,9 @@ Requires:  clamav-update >= 0.101.0-1
     # clamav-update                              # epel    # MailScanner
 Requires:  clamd >= 0.101.0-1
     # clamd			                             # epel    # MailScanner
-%{?el7:Requires:  mariadb101u-server >= 1:10.1.35-1}
+%{?el7:Requires:  mariadbn104-server >= 3:10.4.17-1}
+    # mariadb101u-server                         # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadbn101u-server >= 1:10.1.35-1}
     # mariadb101u-server                         # IUS     # postfix, mailwatch
 %{?el8:Requires:  mariadb-server >= 1:10.1.35-1}
     # mariadb-server                             # base    # postfix, mailwatch
