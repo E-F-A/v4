@@ -43,7 +43,7 @@ Requires:  clamav-update >= 0.101.0-1
     # clamav-update                              # epel    # MailScanner
 Requires:  clamd >= 0.101.0-1
     # clamd			                             # epel    # MailScanner
-%{?el7:Requires:  mariadb101-server >= 3:10.4.17-1}
+%{?el7:Requires:  mariadb102-server >= 3:10.2.30-1}
     # mariadb101-server                          # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadbn101u-server >= 1:10.1.35-1}
     # mariadb101u-server                         # IUS     # postfix, mailwatch
