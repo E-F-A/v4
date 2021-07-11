@@ -44,11 +44,13 @@ Requires:  clamav-update >= 0.101.0-1
 Requires:  clamd >= 0.101.0-1
     # clamd			                             # epel    # MailScanner
 %{?el7:Requires:  mariadb102-server >= 3:10.2.30-1}
-    # mariadb101-server                          # IUS     # postfix, mailwatch
+    # mariadb102-server                          # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadbn101u-server >= 1:10.1.35-1}
     # mariadb101u-server                         # IUS     # postfix, mailwatch
 %{?el8:Requires:  mariadb-server >= 1:10.1.35-1}
     # mariadb-server                             # base    # postfix, mailwatch
+%{?el7:Requires:  rsync => 3.1.2-10}
+    # rsync                                      # base    # clamav-unofficial-sigs
 Requires:  perl-DBD-MySQL >= 4.023-6
     # perl-DBD-mysql                             # base    # spamassassin
 %{?el7:Requires:  php74-common >= 7.4.15-1}
