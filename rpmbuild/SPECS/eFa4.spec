@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   14.eFa%{?dist}
+Release:   15.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -45,7 +45,7 @@ Requires:  clamd >= 0.101.0-1
     # clamd			                             # epel    # MailScanner
 %{?el7:Requires:  mariadb102-server >= 3:10.2.30-1}
     # mariadb102-server                          # IUS     # postfix, mailwatch
-%{?el7:Obsoletes:  mariadbn101u-server >= 1:10.1.35-1}
+%{?el7:Obsoletes:  mariadb101u-server >= 1:10.1.35-1}
     # mariadb101u-server                         # IUS     # postfix, mailwatch
 %{?el8:Requires:  mariadb-server >= 1:10.1.35-1}
     # mariadb-server                             # base    # postfix, mailwatch
@@ -524,6 +524,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Wed Jul 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-15
+- Obsolete mariadb101u
+
 * Sat Jul 10 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-14
 - Upgrade Mariadb and fix Spamassassin
 
