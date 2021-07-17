@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   15.eFa%{?dist}
+Release:   16.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -51,6 +51,18 @@ Requires:  clamd >= 0.101.0-1
     # mariadb102                                 # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u >= 1:10.1.35-1}
     # mariadb101u                                # IUS     # postfix, mailwatch
+%{?el7:Requires:  mariadb102-common >= 3:10.2.30-1}
+    # mariadb102-common                          # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb101u-common >= 1:10.1.35-1}
+    # mariadb101u-common                         # IUS     # postfix, mailwatch
+%{?el7:Requires:  mariadb102-libs >= 3:10.2.30-1}
+    # mariadb102-libs                            # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb101u-libs >= 1:10.1.35-1}
+    # mariadb101u-libs                           # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb101u-errmsg >= 1:10.1.35-1}
+    # mariadb101u-errmsg                         # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb101u-config >= 1:10.1.35-1}
+    # mariadb101u-config                         # IUS     # postfix, mailwatch
 %{?el8:Requires:  mariadb-server >= 1:10.1.35-1}
     # mariadb-server                             # base    # postfix, mailwatch
 %{?el7:Requires:  rsync => 3.1.2-10}
@@ -528,6 +540,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Wed Jul 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-16
+- Obsolete mariadb101u-common,-libs,-errmsg,-config
+
 * Wed Jul 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-15
 - Obsolete mariadb101u
 
