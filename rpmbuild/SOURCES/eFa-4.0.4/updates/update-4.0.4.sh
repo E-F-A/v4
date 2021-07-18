@@ -352,6 +352,9 @@ cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomA
 sed -i '/^enable_yararules=/ c\enable_yararules="no"' /etc/clamav-unofficial-sigs/master.conf
 sed -i '/^yararulesproject_enabled=/ c\yararulesproject_enabled="no"' /etc/clamav-unofficial-sigs/master.conf
 
+# Run MySQL upgrade script (safe to run more than once)
+/bin/mysql_upgrade >/dev/null 2>&1
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then

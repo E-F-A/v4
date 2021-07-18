@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   16.eFa%{?dist}
+Release:   17.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -540,6 +540,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jul 18 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-17
+- Run mysql_upgrade
+
 * Wed Jul 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-16
 - Obsolete mariadb101u-common,-libs,-errmsg,-config
 
