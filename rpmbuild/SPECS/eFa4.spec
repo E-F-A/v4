@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   17.eFa%{?dist}
+Release:   18.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -199,7 +199,7 @@ Requires:  postfix_eFa >= 3.5.9-1
     # sqlgrey                                    # epel    # Greylisting
 %{?el8:Requires:  sqlgrey >= 1:1.8.0-8}
     # sqlgrey                                    # eFa     # Greylisting
-Requires:  spamassassin >= 3.4.4-2
+Requires:  spamassassin >= 3.4.6-1
     # spamassassin                               # eFa     # MailScanner
 Requires:  MailScanner >= 5.4.1-1
     # MailScanner                                # eFa     # MailScanner
@@ -540,6 +540,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Aug 07 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-18
+- Spamassassin 3.4.6
+
 * Sun Jul 18 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-17
 - Run mysql_upgrade
 
