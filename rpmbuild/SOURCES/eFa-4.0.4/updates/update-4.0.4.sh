@@ -355,6 +355,9 @@ sed -i '/^yararulesproject_enabled=/ c\yararulesproject_enabled="no"' /etc/clama
 # Run MySQL upgrade script (safe to run more than once)
 /bin/mysql_upgrade >/dev/null 2>&1
 
+# Run OpenDMARC schema update (safe to run more than once)
+/usr/bin/mysql opendmarc < /usr/src/eFa/mariadb/schema_update_1.4.1.mysql >/dev/null 2>&1
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
