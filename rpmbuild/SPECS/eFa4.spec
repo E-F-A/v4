@@ -217,7 +217,7 @@ Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
 Requires:  MailWatch >= 1:1.2.16-1
     # MailWatch                                  # eFa     # MailWatch Frontend
-Requires:  dcc >= 2.3.167-1
+Requires:  dcc >= 2.3.167-2
     # dcc                                        # eFa     # Spamassassin, MailScanner
 Requires:  unbound >= 1.11.0-1
     # unbound                                    # eFa     # DNS
