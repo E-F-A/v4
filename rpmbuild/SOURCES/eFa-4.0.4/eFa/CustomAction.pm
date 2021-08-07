@@ -83,7 +83,7 @@ sub EFANonSpam {
 # EFA Token Creation
 #
 sub EFACreateToken {
-  my $message = @_;
+  my ($message) = @_;
   my($dbh, $sth, $sql);
   my($db_name) = 'efa';
   my($db_host) = 'localhost';
@@ -148,7 +148,7 @@ sub EFASpamNotify {
 # # Function to create a pseudorandom 32 char token
 # # +---------------------------------------------------+
 sub randomtoken {
-  my $message = @_;
+  my ($message) = @_;
   my ($token, $sha1);
   $sha1 = Digest::SHA->new(1);
   my ($timestamp) = localtime();

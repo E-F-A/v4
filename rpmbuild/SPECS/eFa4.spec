@@ -400,6 +400,7 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/eFa-release.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/CustomAction.pm $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/efatokens.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
+mv eFa/efatokens_update.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/eFavmtools.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFahyperv.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mv eFa/eFaqemu.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
@@ -534,6 +535,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/selinux/eFa8.te
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens.sql
+%attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens_update.sql
 %attr(0644, root, root) %{_localstatedir}/eFa/lib/token/CustomAction.pm
 %attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-release.php
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
@@ -542,7 +544,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Sat Aug 07 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-18
-- Spamassassin 3.4.6, openDMARC schema update
+- Spamassassin 3.4.6, openDMARC schema update, eFa Tokens fixes
 
 * Sun Jul 18 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-17
 - Run mysql_upgrade

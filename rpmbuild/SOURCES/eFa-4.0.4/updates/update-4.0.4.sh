@@ -334,6 +334,8 @@ if [[ $? -ne 0 ]]; then
   else
     sed -i "/^EFASQLPWD/ c\EFASQLPWD:$PASSWD" /etc/eFa/eFa-Config
   fi
+else
+  /usr/bin/mysql < /var/eFa/lib/token/efatokens_update.sql
 fi
 
 # Refresh CustomAction.pm
@@ -356,7 +358,7 @@ sed -i '/^yararulesproject_enabled=/ c\yararulesproject_enabled="no"' /etc/clama
 /bin/mysql_upgrade >/dev/null 2>&1
 
 # Run OpenDMARC schema update (safe to run more than once)
-/usr/bin/mysql opendmarc < /usr/src/eFa/mariadb/schema_update_1.4.1.mysql >/dev/null 2>&1
+/usr/bin/mysql opendmarc < /usr/src/eFa/mariadb/schema_update_1.4.1.mysql 
 
 # Enable maintenance mode if not enabled
 MAINT=0
