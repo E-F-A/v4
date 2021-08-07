@@ -30,8 +30,8 @@
 
 Summary: Spam filter for email which can be invoked from mail delivery agents
 Name:    spamassassin
-Version: 3.4.4
-Release: 2.eFa%{?dist}
+Version: 3.4.6
+Release: 1.eFa%{?dist}
 License: ASL 2.0
 Group:   Applications/Internet
 URL:     http://spamassassin.apache.org/
@@ -146,6 +146,7 @@ Requires: perl(Encode::Detect) >= 1.01
 Requires: perl(Crypt::OpenSSL::Random) >= 0.04
 Requires: perl(Crypt::OpenSSL::RSA) >= 0.28
 Obsoletes: perl-Mail-SpamAssassin
+Obsoletes: spamassassin
 
 %description
 SpamAssassin provides you with a way to reduce if not completely eliminate
@@ -304,6 +305,9 @@ fi
 exit 0
 
 %changelog
+* Sat Aug 07 2021 Shawn Iverson <shawniverson@gmail.com> - 3.4.6-1
+- Updated and rebuilt for eFa https://efa-project.org
+
 * Sun Feb 02 2020 Shawn Iverson <shawniverson@gmail.com> - 3.4.4-2
 - Updated and rebuilt for eFa https://efa-project.org
 
