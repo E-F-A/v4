@@ -70,7 +70,7 @@ sub EFANonSpam {
 	  # Message is inbound and whitelisted, do not sign
 	  return $message;
     } else {
-      $token = EFACreateToken();
+      $token = EFACreateToken($message);
 
       $message->{token} = $token;
 
@@ -133,7 +133,7 @@ sub EFASpamNotify {
   my($message) = @_;
   my($token);
 
-  $token = EFACreateToken();
+  $token = EFACreateToken($message);
   #if (!$token) { return; }
 
   $message->{token} = $token;
