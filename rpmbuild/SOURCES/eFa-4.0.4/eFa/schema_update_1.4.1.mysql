@@ -1,0 +1,67 @@
+-- OpenDMARC database schema update
+--
+-- Copyright (c) 2012, 2016, 2018, 2021, The Trusted Domain Project.
+-- 	All rights reserved.
+-- Adapted for eFa <https://www.efa-project.org>
+
+-- A table for logging encountered ARC selectors
+CREATE TABLE IF NOT EXISTS selectors (
+	id INT NOT NULL AUTO_INCREMENT,
+	domain INT NOT NULL,
+	name VARCHAR(255) NOT NULL,
+	firstseen TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+	PRIMARY KEY(id),
+	KEY(name),
+	UNIQUE KEY(name, domain)
+);
+
+-- A table for logging ARC-Authentication-Results information
+CREATE TABLE IF NOT EXISTS arcauthresults (
+	id INT NOT NULL AUTO_INCREMENT,
+	message INT UNSIGNED NOT NULL,
+	instance INT UNSIGNED NOT NULL,
+	arc_client_addr VARCHAR(64) NOT NULL DEFAULT '',
+
+	PRIMARY KEY(id),
+	KEY(message),
+	UNIQUE KEY(message, instance)
+);
+
+-- A table for logging ARC-Seal information
+CREATE TABLE IF NOT EXISTS arcseals (
+	id INT NOT NULL AUTO_INCREMENT,
+	message INT UNSIGNED NOT NULL,
+	domain INT UNSIGNED NOT NULL,
+	selector INT UNSIGNED NOT NULL,
+	instance INT UNSIGNED NOT NULL,
+	firstseen TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+	PRIMARY KEY(id),
+	KEY(message),
+	UNIQUE KEY(message, domain, selector, instance)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- A table for logging reporting requests
+ALTER TABLE requests
+	MODIFY repuri VARCHAR(255) NOT NULL DEFAULT '',
+	MODIFY adkim TINYINT NOT NULL DEFAULT '0',
+	MODIFY aspf TINYINT NOT NULL DEFAULT '0',
+	MODIFY policy TINYINT NOT NULL DEFAULT '0',
+	MODIFY spolicy TINYINT NOT NULL DEFAULT '0',
+	MODIFY pct TINYINT NOT NULL DEFAULT '0',
+	MODIFY locked TINYINT NOT NULL DEFAULT '0',
+    MODIFY lastsent TIMESTAMP NOT NULL DEFAULT '1970-01-01 00:00:00';
+
+-- A table for messages
+ALTER TABLE messages 	
+    ADD IF NOT EXISTS arc TINYINT UNSIGNED NOT NULL,
+	ADD IF NOT EXISTS arc_policy TINYINT UNSIGNED NOT NULL;
+
+-- A table for signatures
+ALTER TABLE signatures 	
+    MODIFY message INT UNSIGNED NOT NULL,
+	MODIFY domain INT UNSIGNED NOT NULL,
+	ADD IF NOT EXISTS selector INT UNSIGNED NOT NULL,
+	MODIFY pass TINYINT UNSIGNED NOT NULL,
+	MODIFY error TINYINT UNSIGNED NOT NULL;
