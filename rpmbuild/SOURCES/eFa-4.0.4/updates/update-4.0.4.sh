@@ -194,7 +194,7 @@ cmd='chmod -R 750 /var/spool/postfix/incoming'
 execcmd
 
 # sa-update, if needed
-if [[ ! -d /var/lib/spamassassin/3.004004 ]]; then
+if [[ ! -d /var/lib/spamassassin/3.004006 ]]; then
   cmd='sa-update'
   execcmd
   cmd='sa-compile'
