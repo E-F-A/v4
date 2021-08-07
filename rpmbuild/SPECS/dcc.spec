@@ -28,7 +28,7 @@
 Name:      dcc
 Summary:   DCC Distributed Checksum Clearinghouse
 Version:   2.3.167
-Release:   1.eFa%{?dist}
+Release:   2.eFa%{?dist}
 Epoch:     1
 Group:     System Environment/Daemons
 URL:       https://www.rhyolite.com/dcc
