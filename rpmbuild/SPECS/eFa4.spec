@@ -418,6 +418,7 @@ mv eFa/eFa-logrotate $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mv eFa/mysqltuner.pl $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/eFa/mariadb
 mv eFa/schema.mysql $RPM_BUILD_ROOT%{_usrsrc}/eFa/mariadb
+mv eFa/schema_update_1.4.1.mysql $RPM_BUILD_ROOT%{_usrsrc}/eFa/mariadb
 # Move update scripts into position
 mv updates $RPM_BUILD_ROOT%{_usrsrc}/eFa
 
@@ -541,7 +542,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Sat Aug 07 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-18
-- Spamassassin 3.4.6
+- Spamassassin 3.4.6, openDMARC schema update
 
 * Sun Jul 18 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-17
 - Run mysql_upgrade
