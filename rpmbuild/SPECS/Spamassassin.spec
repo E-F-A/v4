@@ -29,7 +29,7 @@
 %undefine _disable_source_fetch
 
 Summary: Spam filter for email which can be invoked from mail delivery agents
-Name:    spamassassin
+Name:    spamassassin_eFa
 Version: 3.4.6
 Release: 1.eFa%{?dist}
 License: ASL 2.0
