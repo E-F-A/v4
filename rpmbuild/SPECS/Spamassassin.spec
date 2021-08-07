@@ -215,34 +215,34 @@ rm -rf $RPM_BUILD_ROOT
 %pre
 # Preserve critical cf and pre configs
 if [ -f %{_sysconfdir}/mail/spamassassin/init.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/init.pre %{_sysconfdir}/mail/spamassassin/init.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/init.pre %{_sysconfdir}/mail/spamassassin/init.pre.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/local.cf ]; then
-  mv %{_sysconfdir}/mail/spamassassin/local.cf %{_sysconfdir}/mail/spamassassin/local.cf.tmp
+  cp %{_sysconfdir}/mail/spamassassin/local.cf %{_sysconfdir}/mail/spamassassin/local.cf.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v310.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/v310.pre %{_sysconfdir}/mail/spamassassin/v310.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/v310.pre %{_sysconfdir}/mail/spamassassin/v310.pre.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v312.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/v312.pre %{_sysconfdir}/mail/spamassassin/v312.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/v312.pre %{_sysconfdir}/mail/spamassassin/v312.pre.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v320.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/v320.pre %{_sysconfdir}/mail/spamassassin/v320.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/v320.pre %{_sysconfdir}/mail/spamassassin/v320.pre.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v330.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/v330.pre %{_sysconfdir}/mail/spamassassin/v330.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/v330.pre %{_sysconfdir}/mail/spamassassin/v330.pre.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v340.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/v340.pre %{_sysconfdir}/mail/spamassassin/v340.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/v340.pre %{_sysconfdir}/mail/spamassassin/v340.pre.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v341.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/v341.pre %{_sysconfdir}/mail/spamassassin/v341.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/v341.pre %{_sysconfdir}/mail/spamassassin/v341.pre.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v342.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/v342.pre %{_sysconfdir}/mail/spamassassin/v342.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/v342.pre %{_sysconfdir}/mail/spamassassin/v342.pre.tmp
 fi
 if [ -f %{_sysconfdir}/mail/spamassassin/v343.pre ]; then
-  mv %{_sysconfdir}/mail/spamassassin/v343.pre %{_sysconfdir}/mail/spamassassin/v343.pre.tmp
+  cp %{_sysconfdir}/mail/spamassassin/v343.pre %{_sysconfdir}/mail/spamassassin/v343.pre.tmp
 fi
 exit 0
 
