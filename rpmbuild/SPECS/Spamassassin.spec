@@ -35,7 +35,7 @@ Release: 1.eFa%{?dist}
 License: ASL 2.0
 Group:   Applications/Internet
 URL:     http://spamassassin.apache.org/
-Source:  http://search.cpan.org/CPAN/authors/id/K/KM/KMCGRAIL/SpamAssassin/Mail-SpamAssassin-%{version}.tar.gz
+Source:  https://cpan.metacpan.org/authors/id/S/SI/SIDNEY/Mail-SpamAssassin-%{version}.tar.gz
 Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Buildroot: %{_tmppath}/%{name}-root
 Requires: /sbin/chkconfig /sbin/service
