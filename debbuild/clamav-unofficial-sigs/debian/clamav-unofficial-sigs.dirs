@@ -1,0 +1,5 @@
+usr/sbin
+etc
+etc/clamav-unofficial-sigs
+lib/systemd/system
+var/log/clamav-unofficial-sigs

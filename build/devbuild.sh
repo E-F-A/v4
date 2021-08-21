@@ -1,6 +1,6 @@
 #!/bin/bash
 ######################################################################
-# eFa 4.0.3 Build script for local development builds
+# eFa 4.0.4 Build script for local development builds
 ######################################################################
 # Copyright (C) 2021  https://efa-project.org
 #
@@ -33,14 +33,18 @@ fi
 
 # check if we run CentOS 7 or 8
 OSVERSION=`cat /etc/centos-release`
+DEBVERSION=`cat /etc/debian_version`
 if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
   RELEASE=7
   echo "- Good you are running CentOS 7"
 elif [[ $OSVERSION =~ .*'release 8.'.* ]]; then
   echo "- Good you are running CentOS 8"
   RELEASE=8
+elif [[ $DEBVERSION =~ ^10 ]]; then
+  echo "- Good you are running Debian 10"
+  RELEASE=10
 else
-  echo "- ERROR: You are not running CentOS 7 or 8"
+  echo "- ERROR: You are not running CentOS 7,8 or Debian 10"
   echo "- ERROR: Unsupported system, stopping now"
   exit 1
 fi
@@ -57,8 +61,10 @@ if [[ ! -d /root/v4 ]]; then
   exit 1
 fi
 
-yum -y install epel-release
-[ $? -ne 0 ] && exit 1
+if [[ $RELEASE -eq 7 || $RELEASE -eq 8 ]]; then
+  yum -y install epel-release
+  [ $? -ne 0 ] && exit 1
+fi
 
 if [[ $RELEASE -eq 7 ]]; then
   echo "- Adding IUS Repo"
@@ -66,13 +72,15 @@ if [[ $RELEASE -eq 7 ]]; then
   [ $? -ne 0 ] && exit 1
   rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
   [ $? -ne 0 ] && exit 1
-else
+elif [[ $RELEASE -eq 8 ]]; then
   yum config-manager --set-enabled powertools
   [ $? -ne 0 ] && exit 1
 fi
 
-yum -y update
-[ $? -ne 0 ] && exit 1
+if [[ $RELEASE -eq 7 || $RELEASE -eq 8 ]]; then
+  yum -y update
+  [ $? -ne 0 ] && exit 1
+fi
 
 [ $RELEASE -eq 7 ] && yum -y remove mariadb-libs && [ $? -ne 0 ] && exit 1
 
@@ -92,7 +100,7 @@ if [[ $RELEASE -eq 7 ]]; then
     perl-File-HomeDir perl-Sort-Naturally perl-JSON-MaybeXS perl-LWP-Protocol-https perl-Test-LeakTrace \
     perl-Throwable libmaxminddb-devel gcc flex libevent-devel expat-devel python3-devel swig
     [ $? -ne 0 ] && exit 1
-else
+elif [[ $RELEASE -eq 8 ]]; then
   yum -y install rpm-build rpmdevtools gcc-c++ gcc perl-Net-DNS perl-NetAddr-IP openssl-devel perl-Test-Pod \
     perl-HTML-Parser perl-Archive-Tar perl-devel perl-libwww-perl perl-DB_File perl-Mail-SPF perl-Encode-Detect \
     perl-IO-Socket-INET6 perl-Mail-DKIM perl-Parse-RecDescent perl-Test-Manifest perl-YAML perl-ExtUtils-CBuilder \
@@ -107,266 +115,293 @@ else
     libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet perl-strictures perl-Data-Validate-IP \
     autoconf automake rsync expat-devel flex libevent-devel python3-devel swig rsyslog
     [ $? -ne 0 ] && exit 1
+elif [[ $RELEASE -eq 10 ]]; then
+    apt -y install gcc libnet-dns-perl libnetaddr-ip-perl libssl-dev libtest-pod-perl \
+      libhtml-parser-perl libperl-dev libwww-perl libmail-spf-perl libencode-detect-perl \
+      libio-socket-inet6-perl libmail-dkim-perl libparse-recdescent-perl libtest-manifest-perl libyaml-perl libextutils-cbuilder-perl \ 
+      libmodule-build-perl libio-string-perl libgeo-ip-perl libnet-cidr-lite-perl libnet-patricia-perl \
+      libicu-dev libldap2-dev libmariadb-dev libpq-dev libsqlite-dev libcdb-dev \
+      libdate-calc-perl clamav libgeography-countries-perl php mariadb-server \
+      php-gd php-ldap php-mbstring php-mysqlnd php-xml libarchive-zip-perl libfilesys-df-perl \
+      libnet-cidr-perl libmime-tools-perl php-json libtest-simple-perl php-cli m4 libpath-class-perl \
+      libtest-fatal-perl libtest-number-delta-perl libdatetime-perl libtest-warnings-perl \
+      libtest-requires-perl libclone-pp-perl libfile-homedir-perl libsort-naturally-perl libjson-maybexs-perl \
+      libtest-leaktrace-perl libthrowable-perl libmaxminddb-dev libdb-dev make \
+      libtest-warn-perl postfix build-essential devscripts 
+      autoconf libexpat-dev flex libevent-dev python3-dev swig 
+
+    # perl-DB_File perl-generators perl-digest-sha1 perl-env perl-ole-storage_lite libnsl2-devel perl-test pcre-devel
+    # perl-data-validate-ip expat-dev
+
 fi
 
-mkdir -p $GITPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-[ $? -ne 0 ] && exit 1
-echo "%_topdir $GITPATH/rpmbuild" > ~/.rpmmacros
-[ $? -ne 0 ] && exit 1
-cd $GITPATH/rpmbuild/SPECS
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba postfix.spec
-[ $? -ne 0 ] && exit 1
-if [ $RELEASE -eq 7 ]; then
-  yum -y remove postfix postfix32u
+if [[ $RELEASE -eq 7 || $RELEASE -eq 8 ]]; then
+  mkdir -p $GITPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+  [ $? -ne 0 ] && exit 1
+  echo "%_topdir $GITPATH/rpmbuild" > ~/.rpmmacros
+  [ $? -ne 0 ] && exit 1
+  cd $GITPATH/rpmbuild/SPECS
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba postfix.spec
+  [ $? -ne 0 ] && exit 1
+  if [ $RELEASE -eq 7 ]; then
+    yum -y remove postfix postfix32u
+    [ $? -ne 0 ] && exit 1
+  fi
+  if [ $RELEASE -eq 8 ]; then
+    yum -y remove postfix
+    [ $? -ne 0 ] && exit 1
+    yum -y remove python3-unbound
+    [ $? -ne 0 ] && exit 1
+  fi
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/postfix_eFa-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba clamav-unofficial-sigs.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/clamav-unofficial-sigs-*.rpm
+  [ $? -ne 0 ] && exit 1
+  if [ $RELEASE -eq 7 ]; then
+    echo "n" | rpmbuild -ba perl-libnet.spec
+    [ $? -ne 0 ] && exit 1
+    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-libnet-*.rpm 
+    [ $? -ne 0 ] && exit 1
+  fi
+  rpmbuild -ba perl-IP-Country.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-*.rpm
+  [ $? -ne 0 ] && exit 1
+  if [ $RELEASE -eq 7 ]; then
+    rpmbuild -ba perl-Text-Balanced.spec
+    [ $? -ne 0 ] && exit 1
+    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Text-Balanced-*.rpm
+    [ $? -ne 0 ] && exit 1
+  fi
+  if [ $RELEASE -eq 8 ]; then
+    rpmbuild -ba perl-Sys-Hostname-Long.spec
+    [ $? -ne 0 ] && exit 1
+    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-Hostname-Long-*.rpm
+    [ $? -ne 0 ] && exit 1
+  fi
+  rpmbuild -ba perl-Mail-SPF-Query.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Mail-SPF-Query-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba unrar-5.8.3.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/unrar-*.rpm
+  [ $? -ne 0 ] && exit 1
+  # BEGIN: New modules for spamassassin 3.4.4 development builds
+  if [ $RELEASE -eq 8 ]; then
+      rpmbuild -ba perl-Math-Int64.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Math-Int64-*.rpm
+      [ $? -ne 0 ] && exit 1
+  fi
+  rpmbuild -ba perl-IP-Country-DB_File.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-DB_File-*.rpm
+  [ $? -ne 0 ] && exit 1
+  # Version on CentOS 8 too old
+  rpmbuild -ba perl-Sub-Quote.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sub-Quote-*.rpm
+  [ $? -ne 0 ] && exit 1
+  if [ $RELEASE -eq 7 ]; then
+      rpmbuild -ba perl-Module-Runtime.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Module-Runtime-*.rpm
+      [ $? -ne 0 ] && exit 1
+  fi
+  # Version on CentOS 8 too old
+  rpmbuild -ba perl-Role-Tiny.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Role-Tiny-*.rpm
+  [ $? -ne 0 ] && exit 1
+  # Version on CentOS 8 too old
+  rpmbuild -ba perl-Moo.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Moo-*.rpm
+  [ $? -ne 0 ] && exit 1
+  # Version on CentOS 8 too old
+  rpmbuild -ba perl-Scalar-List-Utils.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Scalar-List-Utils-*.rpm
+  [ $? -ne 0 ] && exit 1
+  # Version on CentOS 8 too old
+  rpmbuild -ba perl-List-SomeUtils.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-SomeUtils-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-List-SomeUtils-XS.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-List-SomeUtils-XS-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-List-UtilsBy.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-UtilsBy-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-List-AllUtils.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-AllUtils-*.rpm
+  [ $? -ne 0 ] && exit 1
+  if [ $RELEASE -eq 7 ]; then
+      rpmbuild -ba perl-strictures.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-strictures-*.rpm
+      [ $? -ne 0 ] && exit 1
+  fi
+  rpmbuild -ba perl-MooX-StrictConstructor.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MooX-StrictConstructor-*.rpm
+  [ $? -ne 0 ] && exit 1
+  if [ $RELEASE -eq 8 ]; then
+      rpmbuild -ba perl-Data-Dumper-Concise.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-Dumper-Concise-*.rpm
+      [ $? -ne 0 ] && exit 1
+  fi
+  rpmbuild -ba perl-MaxMind-DB-Metadata.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MaxMind-DB-Metadata-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-Test-Bits.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Test-Bits-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-Data-IEEE754.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-IEEE754-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-Data-Printer.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-Printer-*.rpm
+  [ $? -ne 0 ] && exit 1
+  if [ $RELEASE -eq 7 ]; then
+      rpmbuild -ba perl-Data-Validate-IP.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Data-Validate-IP-*.rpm
+      [ $? -ne 0 ] && exit 1
+  fi
+  rpmbuild -ba perl-MaxMind-DB-Reader.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MaxMind-DB-Reader-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-GeoIP2-Country-Reader.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-GeoIP2-Country-Reader-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-Math-Int128.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Math-Int128-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-Net-Works-Network.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-Works-Network-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-MaxMind-DB-Reader-XS.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-MaxMind-DB-Reader-XS-*.rpm
+  [ $? -ne 0 ] && exit 1
+  if [ $RELEASE -eq 8 ]; then
+      rpmbuild -ba perl-Business-ISBN-Data.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Business-ISBN-Data-*.rpm
+      [ $? -ne 0 ] && exit 1
+      rpmbuild -ba perl-Business-ISBN.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Business-ISBN-*.rpm
+      [ $? -ne 0 ] && exit 1
+      rpmbuild -ba perl-Inline.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Inline-*.rpm
+      [ $? -ne 0 ] && exit 1
+      rpmbuild -ba perl-Net-DNS-Resolver-Programmable.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-DNS-Resolver-Programmable-*.rpm
+      [ $? -ne 0 ] && exit 1
+  fi
+  # END: New modules for spamassassin 3.4.4 development builds
+  rpmbuild -ba Spamassassin.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/spamassassin-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-Encoding-FixLatin.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Encoding-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba perl-Sendmail-PMilter.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sendmail-PMilter-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba MailWatch.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/MailWatch-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba sqlgreywebinterface.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/sqlgreywebinterface-*.rpm
+  [ $? -ne 0 ] && exit 1
+  cd $GITPATH/rpmbuild/SOURCES
+  [ $? -ne 0 ] && exit 1
+  rm -f eFa-$VERSION.tar.gz
+  [ $? -ne 0 ] && exit 1
+  tar czvf eFa-$VERSION.tar.gz eFa-$VERSION/
+  [ $? -ne 0 ] && exit 1
+  rm -f eFa-base-4.0.0.tar.gz
+  [ $? -ne 0 ] && exit 1
+  tar czvf eFa-base-4.0.0.tar.gz eFa-base-4.0.0/
+  [ $? -ne 0 ] && exit 1
+  cd $GITPATH/rpmbuild/SPECS
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba mailscanner.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/MailScanner-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba dcc.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/dcc-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba unbound.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/unbound-*.rpm
+  [ $? -ne 0 ] && exit 1
+  rpmbuild -ba eFa4-base.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-base-*.rpm
+  [ $? -ne 0 ] && exit 1
+  # BEGIN: Some additional requirements
+  if [ $RELEASE -eq 8 ]; then
+      rpmbuild -ba perl-Mail-IMAPClient.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Mail-IMAPClient-*.rpm
+      [ $? -ne 0 ] && exit 1
+      rpmbuild -ba perl-Net-DNS.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-DNS-*.rpm
+      [ $? -ne 0 ] && exit 1
+      rpmbuild -ba perl-Sys-SigAction.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-SigAction-*.rpm
+      [ $? -ne 0 ] && exit 1
+      rpmbuild -ba tnef.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/tnef-*.rpm
+      [ $? -ne 0 ] && exit 1
+      rpmbuild -ba sqlgrey.spec
+      [ $? -ne 0 ] && exit 1
+      yum -y install $GITPATH/rpmbuild/RPMS/noarch/sqlgrey-*.rpm
+      [ $? -ne 0 ] && exit 1
+  fi
+  # END: Some additional requirements
+  rpmbuild -ba eFa4.spec
+  [ $? -ne 0 ] && exit 1
+  yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-4*.rpm
   [ $? -ne 0 ] && exit 1
 fi
-if [ $RELEASE -eq 8 ]; then
-  yum -y remove postfix
-  [ $? -ne 0 ] && exit 1
-  yum -y remove python3-unbound
-  [ $? -ne 0 ] && exit 1
+
+if [[ $RELEASE -eq 10 ]]; then
+
+
+
+
 fi
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/postfix_eFa-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba clamav-unofficial-sigs.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/clamav-unofficial-sigs-*.rpm
-[ $? -ne 0 ] && exit 1
-if [ $RELEASE -eq 7 ]; then
-  echo "n" | rpmbuild -ba perl-libnet.spec
-  [ $? -ne 0 ] && exit 1
-  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-libnet-*.rpm 
-  [ $? -ne 0 ] && exit 1
-fi
-rpmbuild -ba perl-IP-Country.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-*.rpm
-[ $? -ne 0 ] && exit 1
-if [ $RELEASE -eq 7 ]; then
-  rpmbuild -ba perl-Text-Balanced.spec
-  [ $? -ne 0 ] && exit 1
-  yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Text-Balanced-*.rpm
-  [ $? -ne 0 ] && exit 1
-fi
-if [ $RELEASE -eq 8 ]; then
-  rpmbuild -ba perl-Sys-Hostname-Long.spec
-  [ $? -ne 0 ] && exit 1
-  yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-Hostname-Long-*.rpm
-  [ $? -ne 0 ] && exit 1
-fi
-rpmbuild -ba perl-Mail-SPF-Query.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Mail-SPF-Query-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba unrar-5.8.3.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/unrar-*.rpm
-[ $? -ne 0 ] && exit 1
-# BEGIN: New modules for spamassassin 3.4.4 development builds
-if [ $RELEASE -eq 8 ]; then
-    rpmbuild -ba perl-Math-Int64.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Math-Int64-*.rpm
-    [ $? -ne 0 ] && exit 1
-fi
-rpmbuild -ba perl-IP-Country-DB_File.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-IP-Country-DB_File-*.rpm
-[ $? -ne 0 ] && exit 1
-# Version on CentOS 8 too old
-rpmbuild -ba perl-Sub-Quote.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sub-Quote-*.rpm
-[ $? -ne 0 ] && exit 1
-if [ $RELEASE -eq 7 ]; then
-    rpmbuild -ba perl-Module-Runtime.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Module-Runtime-*.rpm
-    [ $? -ne 0 ] && exit 1
-fi
-# Version on CentOS 8 too old
-rpmbuild -ba perl-Role-Tiny.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Role-Tiny-*.rpm
-[ $? -ne 0 ] && exit 1
-# Version on CentOS 8 too old
-rpmbuild -ba perl-Moo.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Moo-*.rpm
-[ $? -ne 0 ] && exit 1
-# Version on CentOS 8 too old
-rpmbuild -ba perl-Scalar-List-Utils.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Scalar-List-Utils-*.rpm
-[ $? -ne 0 ] && exit 1
-# Version on CentOS 8 too old
-rpmbuild -ba perl-List-SomeUtils.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-SomeUtils-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-List-SomeUtils-XS.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-List-SomeUtils-XS-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-List-UtilsBy.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-UtilsBy-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-List-AllUtils.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-List-AllUtils-*.rpm
-[ $? -ne 0 ] && exit 1
-if [ $RELEASE -eq 7 ]; then
-    rpmbuild -ba perl-strictures.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-strictures-*.rpm
-    [ $? -ne 0 ] && exit 1
-fi
-rpmbuild -ba perl-MooX-StrictConstructor.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MooX-StrictConstructor-*.rpm
-[ $? -ne 0 ] && exit 1
-if [ $RELEASE -eq 8 ]; then
-    rpmbuild -ba perl-Data-Dumper-Concise.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-Dumper-Concise-*.rpm
-    [ $? -ne 0 ] && exit 1
-fi
-rpmbuild -ba perl-MaxMind-DB-Metadata.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MaxMind-DB-Metadata-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Test-Bits.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Test-Bits-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Data-IEEE754.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-IEEE754-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Data-Printer.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Data-Printer-*.rpm
-[ $? -ne 0 ] && exit 1
-if [ $RELEASE -eq 7 ]; then
-    rpmbuild -ba perl-Data-Validate-IP.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Data-Validate-IP-*.rpm
-    [ $? -ne 0 ] && exit 1
-fi
-rpmbuild -ba perl-MaxMind-DB-Reader.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-MaxMind-DB-Reader-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-GeoIP2-Country-Reader.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-GeoIP2-Country-Reader-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Math-Int128.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-Math-Int128-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Net-Works-Network.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-Works-Network-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-MaxMind-DB-Reader-XS.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/perl-MaxMind-DB-Reader-XS-*.rpm
-[ $? -ne 0 ] && exit 1
-if [ $RELEASE -eq 8 ]; then
-    rpmbuild -ba perl-Business-ISBN-Data.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Business-ISBN-Data-*.rpm
-    [ $? -ne 0 ] && exit 1
-    rpmbuild -ba perl-Business-ISBN.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Business-ISBN-*.rpm
-    [ $? -ne 0 ] && exit 1
-    rpmbuild -ba perl-Inline.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Inline-*.rpm
-    [ $? -ne 0 ] && exit 1
-    rpmbuild -ba perl-Net-DNS-Resolver-Programmable.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-DNS-Resolver-Programmable-*.rpm
-    [ $? -ne 0 ] && exit 1
-fi
-# END: New modules for spamassassin 3.4.4 development builds
-rpmbuild -ba Spamassassin.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/spamassassin-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Encoding-FixLatin.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Encoding-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba perl-Sendmail-PMilter.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sendmail-PMilter-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba MailWatch.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/MailWatch-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba sqlgreywebinterface.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/sqlgreywebinterface-*.rpm
-[ $? -ne 0 ] && exit 1
-cd $GITPATH/rpmbuild/SOURCES
-[ $? -ne 0 ] && exit 1
-rm -f eFa-$VERSION.tar.gz
-[ $? -ne 0 ] && exit 1
-tar czvf eFa-$VERSION.tar.gz eFa-$VERSION/
-[ $? -ne 0 ] && exit 1
-rm -f eFa-base-4.0.0.tar.gz
-[ $? -ne 0 ] && exit 1
-tar czvf eFa-base-4.0.0.tar.gz eFa-base-4.0.0/
-[ $? -ne 0 ] && exit 1
-cd $GITPATH/rpmbuild/SPECS
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba mailscanner.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/MailScanner-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba dcc.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/dcc-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba unbound.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/unbound-*.rpm
-[ $? -ne 0 ] && exit 1
-rpmbuild -ba eFa4-base.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-base-*.rpm
-[ $? -ne 0 ] && exit 1
-# BEGIN: Some additional requirements
-if [ $RELEASE -eq 8 ]; then
-    rpmbuild -ba perl-Mail-IMAPClient.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Mail-IMAPClient-*.rpm
-    [ $? -ne 0 ] && exit 1
-    rpmbuild -ba perl-Net-DNS.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Net-DNS-*.rpm
-    [ $? -ne 0 ] && exit 1
-    rpmbuild -ba perl-Sys-SigAction.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Sys-SigAction-*.rpm
-    [ $? -ne 0 ] && exit 1
-    rpmbuild -ba tnef.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/tnef-*.rpm
-    [ $? -ne 0 ] && exit 1
-    rpmbuild -ba sqlgrey.spec
-    [ $? -ne 0 ] && exit 1
-    yum -y install $GITPATH/rpmbuild/RPMS/noarch/sqlgrey-*.rpm
-    [ $? -ne 0 ] && exit 1
-fi
-# END: Some additional requirements
-rpmbuild -ba eFa4.spec
-[ $? -ne 0 ] && exit 1
-yum -y install $GITPATH/rpmbuild/RPMS/noarch/eFa-4*.rpm
-[ $? -ne 0 ] && exit 1

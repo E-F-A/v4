@@ -1,0 +1,3 @@
+/etc/clamav-unofficial-sigs/master.conf
+/etc/clamav-unofficial-sigs/os.debian.conf
+/etc/clamav-unofficial-sigs/user.conf
