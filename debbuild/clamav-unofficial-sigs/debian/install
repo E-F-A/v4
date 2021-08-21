@@ -1,4 +1,4 @@
-clamav-unofficial-sigs.sh usr/bin
+clamav-unofficial-sigs.sh usr/sbin
 config/master.conf etc/clamav-unofficial-sigs
 config/os/os.debian.conf etc/clamav-unofficial-sigs/
 config/user.conf etc/clamav-unofficial-sigs/

@@ -18,10 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################
 
-VERSION="4.0.3"
+VERSION="4.0.4"
 
 # Git path
-GITPATH="/root/v4"
+GITPATH="/home/test/v4"
 
 # check if user is root
 if [ `whoami` == root ]; then
@@ -40,11 +40,11 @@ if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
 elif [[ $OSVERSION =~ .*'release 8.'.* ]]; then
   echo "- Good you are running CentOS 8"
   RELEASE=8
-elif [[ $DEBVERSION =~ ^10 ]]; then
-  echo "- Good you are running Debian 10"
-  RELEASE=10
+elif [[ $DEBVERSION =~ ^11 ]]; then
+  echo "- Good you are running Debian 11"
+  RELEASE=11
 else
-  echo "- ERROR: You are not running CentOS 7,8 or Debian 10"
+  echo "- ERROR: You are not running CentOS 7,8 or Debian 11"
   echo "- ERROR: Unsupported system, stopping now"
   exit 1
 fi
@@ -55,7 +55,7 @@ if [[ -f /etc/selinux/config && -n $(grep -i ^SELINUX=disabled$ /etc/selinux/con
   exit 1
 fi
 
-if [[ ! -d /root/v4 ]]; then
+if [[ ! -d /root/v4 && ! -d $GITPATH ]]; then
   echo "- ERROR: git path is incorrect"
   echo "- ERROR: Please clone to /root/v4 or update GITPATH and try again."
   exit 1
@@ -115,12 +115,12 @@ elif [[ $RELEASE -eq 8 ]]; then
     libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet perl-strictures perl-Data-Validate-IP \
     autoconf automake rsync expat-devel flex libevent-devel python3-devel swig rsyslog
     [ $? -ne 0 ] && exit 1
-elif [[ $RELEASE -eq 10 ]]; then
-    apt -y install gcc libnet-dns-perl libnetaddr-ip-perl libssl-dev libtest-pod-perl \
+elif [[ $RELEASE -eq 11 ]]; then
+    sudo apt -y install gcc libnet-dns-perl libnetaddr-ip-perl libssl-dev libtest-pod-perl \
       libhtml-parser-perl libperl-dev libwww-perl libmail-spf-perl libencode-detect-perl \
-      libio-socket-inet6-perl libmail-dkim-perl libparse-recdescent-perl libtest-manifest-perl libyaml-perl libextutils-cbuilder-perl \ 
+      libio-socket-inet6-perl libmail-dkim-perl libparse-recdescent-perl libtest-manifest-perl libyaml-perl libextutils-cbuilder-perl \
       libmodule-build-perl libio-string-perl libgeo-ip-perl libnet-cidr-lite-perl libnet-patricia-perl \
-      libicu-dev libldap2-dev libmariadb-dev libpq-dev libsqlite-dev libcdb-dev \
+      libicu-dev libldap2-dev libmariadb-dev libpq-dev libcdb-dev \
       libdate-calc-perl clamav libgeography-countries-perl php mariadb-server \
       php-gd php-ldap php-mbstring php-mysqlnd php-xml libarchive-zip-perl libfilesys-df-perl \
       libnet-cidr-perl libmime-tools-perl php-json libtest-simple-perl php-cli m4 libpath-class-perl \
@@ -131,7 +131,7 @@ elif [[ $RELEASE -eq 10 ]]; then
       autoconf libexpat-dev flex libevent-dev python3-dev swig 
 
     # perl-DB_File perl-generators perl-digest-sha1 perl-env perl-ole-storage_lite libnsl2-devel perl-test pcre-devel
-    # perl-data-validate-ip expat-dev
+    # perl-data-validate-ip expat-dev libsqlite-dev
 
 fi
 
@@ -399,9 +399,9 @@ if [[ $RELEASE -eq 7 || $RELEASE -eq 8 ]]; then
   [ $? -ne 0 ] && exit 1
 fi
 
-if [[ $RELEASE -eq 10 ]]; then
+if [[ $RELEASE -eq 11 ]]; then
 
-
-
+# do nothing
+echo todo
 
 fi

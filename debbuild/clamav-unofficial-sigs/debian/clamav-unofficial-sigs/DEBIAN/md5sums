@@ -1,5 +1,0 @@
-2fb9744f3dd31c0d151b6e1ec053913c  lib/systemd/system/clamav-unofficial-sigs.service
-691f786e139ce762c2ee752fc36717d9  lib/systemd/system/clamav-unofficial-sigs.timer
-156727cf224b74a00e5a3e594a7b458e  usr/bin/clamav-unofficial-sigs.sh
-9bea80ef7db4e7ea8cc07a278c913334  usr/share/doc/clamav-unofficial-sigs/changelog.Debian.gz
-1aa804dd630840da1a0f9c3f092df690  usr/share/doc/clamav-unofficial-sigs/copyright

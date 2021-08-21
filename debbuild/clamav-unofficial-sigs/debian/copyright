@@ -5,7 +5,7 @@ Source: https://github.com/extremeshok/clamav-unofficial-sigs
 Files: *
 Copyright: 2021 Adrian Jon Kriel <admin@extremeshok.com>
  2007-2013 Bill Landry <unofficialsigs@gmail.com>
-License: BSD
+License: BSD-3-clause
 
 Files: debian/*
 Copyright: 2021 shawniverson <shawniverson@efa-project.org>
@@ -28,7 +28,7 @@ License: GPL-2.0+
  On Debian systems, the complete text of the GNU General
  Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
 
-License: BSD
+License: BSD-3-clause
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
  .
