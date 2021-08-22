@@ -20,6 +20,7 @@ set -e
 
 case "$1" in
     configure)
+	if [ -f /etc/clamav-unofficial-sigs/os.debian.conf ]; then mv /etc/clamav-unofficial-sigs/os.debian.conf /etc/clamav-unofficial-sigs/os.conf; fi
 	sed -i '/^ExecStart=/ c\ExecStart=/usr/sbin/clamav-unofficial-sigs.sh' /lib/systemd/system/clamav-unofficial-sigs.service
 	sed -i '/^#clamd_socket=/ c\clamd_socket="/run/clamav/clamd.ctl"' /etc/clamav-unofficial-sigs/os.conf
     ;;

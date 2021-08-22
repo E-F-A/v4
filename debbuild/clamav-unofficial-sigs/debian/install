@@ -1,6 +1,6 @@
 clamav-unofficial-sigs.sh usr/sbin
 config/master.conf etc/clamav-unofficial-sigs
-config/os/os.debian.conf etc/clamav-unofficial-sigs/
+config/os/os.debian.conf etc/clamav-unofficial-sigs
 config/user.conf etc/clamav-unofficial-sigs/
 systemd/clamav-unofficial-sigs.service lib/systemd/system
 systemd/clamav-unofficial-sigs.timer lib/systemd/system/
