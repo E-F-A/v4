@@ -1,0 +1,34 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/ 
+Upstream-Contact: Meng Weng Wong <mengwong+spf@pobox.com>
+Source: https://metacpan.org/pod/Mail::SPF::Query
+Upstream-Name: Mail-SPF-Query
+
+Files: *
+Copyright: 2004-2006 Meng Weng Wong <mengwong+spf@pobox.com>
+License: GPL-2+ or Artistic
+
+Files: debian/*
+Copyright: 2004-2005 Chip Salzenberg <chip@pobox.com>
+           2005-2006 Julian Mehnle <julian@mehnle.net>
+           2021 Shawn Iverson <shawniverson@efa-project.org>
+License: GPL-2+ or Artistic
+
+License: GPL-2+
+ This is free software; you can redistribute it and/or modify it under the same
+ terms as Perl itself, that is under the terms of either the GNU General Public
+ License (version 2 or later) or the Artistic License.
+ .
+ On Debian GNU/Linux systems, the complete text of these licenses can be found
+ in these files:
+  /usr/share/common-licenses/GPL-2
+  /usr/share/common-licenses/Artistic
+
+License: Artistic
+ This is free software; you can redistribute it and/or modify it under the same
+ terms as Perl itself, that is under the terms of either the GNU General Public
+ License (version 2 or later) or the Artistic License.
+ .
+ On Debian GNU/Linux systems, the complete text of these licenses can be found
+ in these files:
+  /usr/share/common-licenses/GPL-2
+  /usr/share/common-licenses/Artistic

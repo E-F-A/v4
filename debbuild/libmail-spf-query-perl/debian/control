@@ -1,0 +1,21 @@
+Source: libmail-spf-query-perl
+Section: perl
+Priority: optional
+Build-Depends-Indep: perl (>= 5.8.0-7), netbase, libsys-hostname-long-perl, libnet-dns-perl (>= 0.46), libnet-cidr-lite-perl (>= 0.15), liburi-perl
+Build-Depends: debhelper (>= 11)
+Maintainer: Shawn Iverson <shawniverson@efa-project.org>
+Standards-Version: 4.5.1
+
+Package: libmail-spf-query-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, libsys-hostname-long-perl, libnet-dns-perl (>= 0.46), libnet-cidr-lite-perl (>= 0.15), liburi-perl
+Description: query SPF (Sender Policy Framework) to validate mail senders
+ The Sender Policy Framework (SPF) protocol relies on sender domains to publish
+ a DNS whitelist of their designated outbound mailers.  This module, given an
+ envelope sender, determines whether a given client IP address is a legitimate
+ mail source.
+ .
+ This package also includes spfquery, a command line interface to the module,
+ and spfd, a query proxy for some mail server configurations.
+ .
+ For more information on SPF, see <http://www.openspf.org>.

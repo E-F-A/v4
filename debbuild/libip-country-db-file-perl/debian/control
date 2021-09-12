@@ -1,0 +1,37 @@
+Source: libip-country-db-file-perl
+Section: perl
+Priority: optional
+Maintainer: Shawn Iverson <shawniverson@efa-project.org>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.5.1
+Homepage: https://metacpan.org/pod/IP::Country::DB_File
+Build-Depends-Indep: perl,
+                     libmath-int64-perl (>= 0.54) 
+Rules-Requires-Root: no
+
+Package: libip-country-db-file-perl
+Architecture: all
+Depends: ${perl:Depends},
+         ${misc:Depends},
+         libmath-int64-perl (>= 0.54)
+Description: Pv4 and IPv6 to country translation using DB_File 
+ IP::Country::DB_File is a light-weight module for fast IP address to country
+ translation based on DB_File. The country code database is stored in a
+ Berkeley DB file. You have to build the database using build_ipcc.pl or
+ IP::Country::DB_File::Builder before you can lookup country codes.
+ .
+ This module tries to be API compatible with the other IP::Country modules. The
+ installation of IP::Country is not required.
+ .
+ There are many other modules for locating IP addresses. Neil Bowers posted an
+ excellent review. Some features that make this module unique:
+ .
+ IPv6 support.
+ .
+ Pure Perl. Math::Int64 is needed to build a database with IPv6 addresses but
+ the lookup code only uses Perl core modules.
+ .
+ Reasonably fast and accurate.
+ .
+ Builds the database directly from the statistics files of the regional internet
+ registries. No third-party tie-in.
