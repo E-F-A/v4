@@ -1,0 +1,10 @@
+awl.php /var/www/html/sgwi/awl.php
+index.php /var/www/html/sgwi/index.php
+main.css /var/www/html/sgwi/main.css
+opt_in_out.php /var/www/html/sgwi/opt_in_out.php
+includes/awl.inc.php /var/www/html/sgwi/includes/awl.inc.php
+includes/connect.inc.php /var/www/html/sgwi/includes/connect.inc.php
+includes/functions.inc.php /var/www/html/sgwi/includes/functions.inc.php
+includes/config.inc.php /var/www/html/sgwi/includes/config.inc.php
+includes/copyright.inc.php /var/www/html/sgwi/includes/copyright.inc.php
+includes/opt_in_out.inc.php /var/www/html/sgwi/includes/opt_in_out.inc.php
