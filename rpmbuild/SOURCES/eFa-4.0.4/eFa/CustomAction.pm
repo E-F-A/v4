@@ -154,7 +154,7 @@ sub randomtoken {
   my ($timestamp) = localtime();
   $sha1->add($message->{id}, $timestamp, $message->{size}, $message->{headers});
   $token = $sha1->hexdigest;
-  return $token;
+  return substr($token, 0, 20);
 }
 # +---------------------------------------------------+
 
