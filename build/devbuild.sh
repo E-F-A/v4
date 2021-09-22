@@ -42,7 +42,7 @@ elif [[ $OSVERSION =~ .*'release 8.'.* ]]; then
   RELEASE=8
 elif [[ $DEBVERSION =~ ^11 ]]; then
   echo "- Good you are running Debian 11"
-  RELEASE=11
+  DEBRELEASE=11
 else
   echo "- ERROR: You are not running CentOS 7,8 or Debian 11"
   echo "- ERROR: Unsupported system, stopping now"
@@ -82,6 +82,12 @@ if [[ $RELEASE -eq 7 || $RELEASE -eq 8 ]]; then
   [ $? -ne 0 ] && exit 1
 fi
 
+if [[ $DEBRELEASE -eq 11 ]]; then
+  sudo sed -i "s/^\(deb.*\main\)$/\1 contrib non-free/" /etc/apt/sources.list
+  sudo apt update
+fi
+
+
 [ $RELEASE -eq 7 ] && yum -y remove mariadb-libs && [ $? -ne 0 ] && exit 1
 
 if [[ $RELEASE -eq 7 ]]; then
@@ -115,22 +121,29 @@ elif [[ $RELEASE -eq 8 ]]; then
     libnsl2-devel perl-Test perl-Params-Validate perl perl-Test-Warn perl-libnet perl-strictures perl-Data-Validate-IP \
     autoconf automake rsync expat-devel flex libevent-devel python3-devel swig rsyslog
     [ $? -ne 0 ] && exit 1
-elif [[ $RELEASE -eq 11 ]]; then
+elif [[ $DEBRELEASE -eq 11 ]]; then
     sudo apt -y install gcc libnet-dns-perl libnetaddr-ip-perl libssl-dev libtest-pod-perl \
       libhtml-parser-perl libperl-dev libwww-perl libmail-spf-perl libencode-detect-perl \
-      libio-socket-inet6-perl libmail-dkim-perl libparse-recdescent-perl libtest-manifest-perl libyaml-perl libextutils-cbuilder-perl \
-      libmodule-build-perl libio-string-perl libgeo-ip-perl libnet-cidr-lite-perl libnet-patricia-perl \
-      libicu-dev libldap2-dev libmariadb-dev libpq-dev libcdb-dev \
+      libio-socket-inet6-perl libmail-dkim-perl libparse-recdescent-perl libtest-manifest-perl libyaml-perl \
+      libextutils-cbuilder-perl libmodule-build-perl libio-string-perl libgeo-ip-perl libnet-cidr-lite-perl \
+      libnet-patricia-perl libicu-dev libldap2-dev libmariadb-dev libpq-dev libcdb-dev \
       libdate-calc-perl clamav libgeography-countries-perl php mariadb-server \
       php-gd php-ldap php-mbstring php-mysqlnd php-xml libarchive-zip-perl libfilesys-df-perl \
       libnet-cidr-perl libmime-tools-perl php-json libtest-simple-perl php-cli m4 libpath-class-perl \
       libtest-fatal-perl libtest-number-delta-perl libdatetime-perl libtest-warnings-perl \
       libtest-requires-perl libclone-pp-perl libfile-homedir-perl libsort-naturally-perl libjson-maybexs-perl \
-      libtest-leaktrace-perl libthrowable-perl libmaxminddb-dev libdb-dev make \
-      libtest-warn-perl postfix build-essential devscripts 
-      autoconf libexpat-dev flex libevent-dev python3-dev swig 
+      libtest-leaktrace-perl libthrowable-perl libmaxminddb-dev libdb-dev make libmath-int64-perl \
+      libtest-warn-perl postfix build-essential devscripts libsocket-perl libsub-quote-perl libmodule-runtime-perl \ 
+      autoconf libexpat-dev flex libevent-dev python3-dev swig unrar librole-tiny-perl libmoo-perl \
+      libscalar-list-utils-perl liblist-someutils-perl liblist-someutils-xs-perl liblist-utilsby-perl \
+      liblist-allutils-perl libstrictures-perl libmoox-strictconstructor-perl libdumper-concise-perl \
+      libmaxmind-db-common-perl libtest-bits-perl libdata-ieee754-perl libdata-printer-perl libdata-validate-ip-perl \
+      libmaxmind-db-reader-perl libmaxmind-db-reader-xs-perl libgeoip2-perl libmath-int128-perl libnet-works-perl \
+      libbusiness-isbn-data-perl libbusiness-isbn-perl libinline-perl libnet-dns-resolver-programmable-perl \
+      spamassassin libencoding-fixlatin-perl libsendmail-pmilter-perl 
 
-    # perl-DB_File perl-generators perl-digest-sha1 perl-env perl-ole-storage_lite libnsl2-devel perl-test pcre-devel
+
+    # perl-generators perl-digest-sha1 perl-ole-storage_lite libnsl2-devel pcre-devel
     # perl-data-validate-ip expat-dev libsqlite-dev
 
 fi
@@ -399,7 +412,7 @@ if [[ $RELEASE -eq 7 || $RELEASE -eq 8 ]]; then
   [ $? -ne 0 ] && exit 1
 fi
 
-if [[ $RELEASE -eq 11 ]]; then
+if [[ $DEBRELEASE -eq 11 ]]; then
 
 # do nothing
 echo todo

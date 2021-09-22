@@ -1,0 +1,7 @@
+usr/share/MailScanner/perl/custom
+usr/bin/mailwatch
+usr/bin/mailwatch/tools
+usr/bin/mailwatch/tools/Cron_jobs
+usr/bin/mailwatch/tools/LDAP
+usr/bin/mailwatch/tools/MailScanner_rule_editor
+var/www/html/mailscanner

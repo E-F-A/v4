@@ -1,0 +1,63 @@
+#!/usr/bin/make -f
+
+PACKAGE = $(shell dh_listpackages)
+
+ifndef PERL
+    PERL = /usr/bin/perl
+endif
+
+TMP = $(CURDIR)/debian/$(PACKAGE)
+
+BUILD = ./Build
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	$(PERL) Makefile.PL INSTALLDIRS=vendor
+	$(MAKE)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	-$(MAKE) distclean
+	dh_clean build-stamp install-stamp
+
+install: install-stamp
+install-stamp: build-stamp
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	
+	$(MAKE) install DESTDIR=$(TMP)/
+	
+	# Put spfd in /usr/sbin:
+	mkdir -p $(TMP)/usr/sbin
+	mv $(TMP)/usr/bin/spfd $(TMP)/usr/sbin
+	
+	touch install-stamp
+
+# Build architecture-independent files here:
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs README
+	dh_installchangelogs CHANGES
+	dh_installexamples examples/*
+	#dh_installman
+	dh_install
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_perl /usr/bin /usr/sbin
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture-dependent files here:
+binary-arch:
+	# Nothing to do.
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean binary-indep binary-arch binary install

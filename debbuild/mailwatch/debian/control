@@ -1,0 +1,16 @@
+Source: mailwatch
+Section: misc
+Priority: optional
+Maintainer: Shawn Iverson <shawniverson@efa-project.org>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.5.1
+Homepage: https://github.com/mailwatch/MailWatch/releases/tag/v1.2.17
+Rules-Requires-Root: no
+
+Package: mailwatch
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Graphical Frontend for MailScanner
+ MailWatch comes with a simple and intuitive Web Interface. Written in PHP and
+ powered by MySQL, browsing incoming and outgoing email is just a click away;
+ color-coded display of recently processed mail make it even easier. 

@@ -1,0 +1,17 @@
+MailScanner_perl_scripts/MailWatch.pm usr/share/MailScanner/perl/custom
+MailScanner_perl_scripts/SQLBlackWhiteList.pm usr/share/MailScanner/perl/custom
+MailScanner_perl_scripts/SQLSpamSettings.pm usr/share/MailScanner/perl/custom
+MailScanner_perl_scripts/MailWatchConf.pm usr/share/MailScanner/perl/custom
+tools/Cron_jobs/mailwatch_db_clean.php usr/bin/mailwatch/tools/Cron_jobs
+tools/Cron_jobs/mailwatch_geoip_update.php usr/bin/mailwatch/tools/Cron_jobs
+tools/Cron_jobs/mailwatch_quarantine_maint.php usr/bin/mailwatch/tools/Cron_jobs
+tools/Cron_jobs/mailwatch_quarantine_report.php usr/bin/mailwatch/tools/Cron_jobs
+tools/Cron_jobs/mailwatch_update_sarules.php usr/bin/mailwatch/tools/Cron_jobs
+tools/LDAP/ldaptest.php usr/bin/mailwatch/tools/LDAP
+tools/LDAP/mailwatch_ldap_sync.sh usr/bin/mailwatch/tools/LDAP
+tools/MailScanner_rule_editor/msre_reload.sh usr/bin/mailwatch/tools/MailScanner_rule_editor
+tools/Postfix_relay/mailwatch_mailscanner_relay.php usr/bin/mailwatch/tools/Postfix_relay
+tools/Postfix_relay/mailwatch_milter_relay.php usr/bin/mailwatch/tools/Postfix_relay
+tools/Postfix_relay/mailwatch_postfix_relay.php usr/bin/mailwatch/tools/Postfix_relay
+upgrade.php usr/bin/mailwatch/tools
+mailscanner/* var/www/html/mailscanner
