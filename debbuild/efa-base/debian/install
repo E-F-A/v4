@@ -1,0 +1,6 @@
+*sh usr/src/eFa
+mariadb/* usr/src/eFa/mariadb
+*inc usr/src/eFa
+eFa/* usr/sbin
+eFaInit/* var/www/eFaInit
+eFaInit/.env var/www/eFaInit

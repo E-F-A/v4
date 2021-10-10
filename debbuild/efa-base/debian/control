@@ -1,0 +1,19 @@
+Source: efa-base
+Section: misc
+Priority: optional
+Maintainer: Shawn Iverson <shawniverson@efa-project.org>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.5.1
+Homepage: https://efa-project.org
+Rules-Requires-Root: no
+
+Package: efa-base
+Architecture: all
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         php-cli (>= 7.4),
+         wget (>=1.21),
+         php-json (>= 7.4),
+         php-xml (>= 7.4)
+Description: eFa Base Files package
+ Installs base files needed for eFa

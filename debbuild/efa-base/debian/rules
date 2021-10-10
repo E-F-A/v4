@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+export DH_VERBOSE = 1
+%:
+	dh $@
+
+execute_after_dh_install:
+	$(shell ./debian/wrapper)
+	cd debian/efa-base/var/www/eFaInit && ../../../usr/bin/composer install
+	find debian/efa-base/var/www/eFaInit -name ".gitignore" -exec rm -rf {} \;
+	find debian/efa-base/var/www/eFaInit -name ".gitattributes" -exec rm -rf {} \;
