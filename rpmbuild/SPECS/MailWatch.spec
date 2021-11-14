@@ -26,13 +26,14 @@
 #-----------------------------------------------------------------------------#
 Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
-Version:       1.2.17
+Version:       1.2.18
 Epoch:         1
 Release:       1.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
-Source:        https://github.com/mailwatch/MailWatch/archive/v%{version}.tar.gz
+#Source:        https://github.com/mailwatch/MailWatch/archive/v%{version}.tar.gz
+Source:        https://github.com/shawniverson/MailWatch/archive/refs/heads/111421cherrypick.tar.gz
 Source2:       favicon.ico
 Source3:       eFa4logo-79px.png
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
@@ -49,7 +50,8 @@ to log all message data (excluding body text) to a MySQL database which is then
 queried by MailWatch for reporting and statistics.
 
 %prep
-%setup -q -n %{name}-%{version}
+#%setup -q -n %{name}-%{version}
+%setup -q -n %{name}-111421cherrypick
 
 %build
 # Nothing to do
@@ -310,6 +312,9 @@ chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Sun Nov 14 2021 Shawn Iverson <shawniverson@efa-project.org> - 1.2.18-1
+- Update to v1.2.18 with cherry picked pending fixes
+
 * Tue Jan 05 2021 Tobias Perschon <tobias@perschon.at> - 1.2.17-1
 - Update to v1.2.17
 
