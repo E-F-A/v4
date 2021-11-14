@@ -2,7 +2,7 @@
 %undefine _disable_source_fetch
 
 Name:        MailScanner
-Version:     5.4.1
+Version:     5.4.2
 Release:     %{releasenum}.eFa%{?dist}
 Summary:     Email Gateway Virus Scanner with Malware, Phishing, and Spam Detection
 Group:       System Environment/Daemons
@@ -1224,6 +1224,9 @@ exit 0
 %config(noreplace) /usr/share/MailScanner/reports/ca/stored.virus.message.txt
 
 %changelog
+* Sun Nov 14 2021 Shawn Iverson <shawniverson@efa-project.org> - 5.4.2-1
+- Update for eFa
+
 * Wed Jan 27 2021 Shawn Iverson <shawniverson@efa-project.org> - 5.4.1-1
 - Update for eFa
 
