@@ -68,8 +68,8 @@ OSVERSION=`cat /etc/centos-release`
 if [[ $OSVERSION =~ .*'release 7.'.* ]]; then
   logthis "Good you are running CentOS 7"
   RELEASE=7
-elif [[ $OSVERSION =~ .*'release 8.'.* ]]; then
-  logthis "Good you are running CentOS 8"
+elif [[ $OSVERSION =~ .*'release 8'.* ]]; then
+  logthis "Good you are running CentOS 8 or similar flavor"
   RELEASE=8
 else
   logthis "ERROR: You are not running CentOS 7 or 8"
