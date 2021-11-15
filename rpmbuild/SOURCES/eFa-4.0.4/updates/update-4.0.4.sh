@@ -96,6 +96,12 @@ if [[ -z $(grep MAXMIND_LICENSE_KEY /var/www/html/mailscanner/conf.php) ]]; then
   sed -i "/^define('SESSION_TIMEOUT'/ a\\\n// MaxMind License key\n// A free license key from MaxMind is required to download GeoLite2 data\n// https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/\n// define('MAXMIND_LICENSE_KEY', 'mylicensekey');" /var/www/html/mailscanner/conf.php
 fi
 
+# Add DB_PORT to conf.php
+if [[ -z $(grep DB_PORT /var/www/html/mailscanner/conf.php) ]]; then
+  sed -i "/^define('DB_NAME'/ a\define('DB_PORT', '3306');" /var/www/html/mailscanner/conf.php
+  sed -i "/^define('DB_DSN'/ c\define('DB_DSN', DB_TYPE . '://' . DB_USER . ':' . DB_PASS . '@' . DB_HOST . ':' . DB_PORT . '/' . DB_NAME);" /var/www/html/mailscanner/conf.php
+fi
+
 # Ensure MailWatchConf.pm is updated
 if [[ -z $(grep MAILWATCHSQLPWD /usr/share/MailScanner/perl/custom/MailWatchConf.pm) ]]; then
   sed -i "/^my (\$db_pass) =/ c\my (\$fh);\nmy (\$pw_config) = '/etc/eFa/MailWatch-Config';\nopen(\$fh, \"<\", \$pw_config);\nif(\!\$fh) {\n  MailScanner::Log::WarnLog(\"Unable to open %s to retrieve password\", \$pw_config);\n  return;\n}\nmy (\$db_pass) = grep(/^MAILWATCHSQLPWD/,<\$fh>);\n\$db_pass =~ s/MAILWATCHSQLPWD://;\n\$db_pass =~ s/\\\n//;\nclose(\$fh);" /usr/share/MailScanner/perl/custom/MailWatchConf.pm
