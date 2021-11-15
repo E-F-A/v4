@@ -199,7 +199,7 @@ Requires:  postfix_eFa >= 3.5.9-1
     # sqlgrey                                    # epel    # Greylisting
 %{?el8:Requires:  sqlgrey >= 1:1.8.0-8}
     # sqlgrey                                    # eFa     # Greylisting
-Requires:  spamassassin >= 3.4.6-1
+Requires:  spamassassin_eFa >= 3.4.6-1
     # spamassassin                               # eFa     # MailScanner
 Requires:  MailScanner >= 5.4.2-1
     # MailScanner                                # eFa     # MailScanner
