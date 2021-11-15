@@ -361,7 +361,7 @@ sed -i '/^yararulesproject_enabled=/ c\yararulesproject_enabled="no"' /etc/clama
 /usr/bin/mysql opendmarc < /usr/src/eFa/mariadb/schema_update_1.4.1.mysql 
 
 # Bump to 10.2 on CentOS 7
-if [[ $centosver -eq 7]]; then
+if [[ $centosver -eq 7 ]]; then
   sed -i "/^\[mariadb\-10\.1\]$/ c\[mariadb-10.2\]" /etc/my.cnf.d/mariadb-server.cnf
 fi
 
