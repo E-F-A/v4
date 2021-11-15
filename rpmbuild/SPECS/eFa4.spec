@@ -201,7 +201,7 @@ Requires:  postfix_eFa >= 3.5.9-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin_eFa >= 3.4.6-1
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.4.2-1
+Requires:  MailScanner >= 5.4.2-2
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 7.2.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -543,6 +543,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Nov 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-21
+- mailscanner update to 5.4.2-2
+
 * Sun Nov 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-20
 - mailwatch and mailscanner update
 
