@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   21.eFa%{?dist}
+Release:   22.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -215,7 +215,7 @@ Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.18-1
+Requires:  MailWatch >= 1:1.2.18-2
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 2.3.167-2
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -543,6 +543,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Mon Nov 15 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-22
+- MailWatch update to 1.2.18-2 unfold message-id
+
 * Sun Nov 14 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-21
 - mailscanner update to 5.4.2-2
 
