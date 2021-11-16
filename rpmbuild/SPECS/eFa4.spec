@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   22.eFa%{?dist}
+Release:   23.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -543,6 +543,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Tue Nov 16 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-23
+- Reapply MailWatch update to 1.2.18-3 unfold message-id
+
 * Mon Nov 15 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-22
 - MailWatch update to 1.2.18-2 unfold message-id
 

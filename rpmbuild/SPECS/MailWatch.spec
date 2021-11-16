@@ -28,7 +28,7 @@ Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
 Version:       1.2.18
 Epoch:         1
-Release:       2.eFa%{?dist}
+Release:       3.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -312,6 +312,9 @@ chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Tue Nov 16 2021 Shawn Iverson <shawniverson@efa-project.org> - 1.2.18-3
+- Reapply Unfold message-id field for MailWatch Logger
+
 * Sun Nov 14 2021 Shawn Iverson <shawniverson@efa-project.org> - 1.2.18-2
 - Unfold message-id field for MailWatch Logger
 
