@@ -18,6 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # +--------------------------------------------------------------------+
+
+# Exit if backup disabled
+[[ -f /etc/eFa/eFa-Backup.disabled ]] && exit 0
+
 [[ -f /var/log/eFa/eFa-Backup.log ]] || touch /var/log/eFa/eFa-Backup.log
 /usr/sbin/eFa-Backup-cron -backup >> /var/log/eFa/eFa-Backup.log 2>&1
 /usr/sbin/eFa-Backup-cron -purge >> /var/log/eFa/eFa-Backup.log 2>&1
