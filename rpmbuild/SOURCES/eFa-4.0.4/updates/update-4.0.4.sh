@@ -398,6 +398,10 @@ cmd='systemctl stop mailscanner'
 execcmd
 cmd='systemctl stop mariadb'
 execcmd
+cmd='systemctl stop postfix_relay'
+execcmd
+cmd='systemctl stop milter_relay'
+execcmd
 cmd='systemctl start mariadb'
 execcmd
 cmd='systemctl start mailscanner'
