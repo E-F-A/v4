@@ -59,6 +59,7 @@ shopt -s extglob
 . /var/eFa/lib/eFa-Configure/func_webmin
 . /var/eFa/lib/eFa-Configure/func_maxmind
 . /var/eFa/lib/eFa-Configure/func_fail2ban
+. /var/eFa/lib/eFa-Configure/func_backup
 # +---------------------------------------------------+
 
 # +---------------------------------------------------+
@@ -80,16 +81,16 @@ show_menu() {
       echo -e ""
       echo -e "Please choose an option:"
       echo -e " "
-      echo -e "0) Logout from ssh                    9)  MariaDB Recovery"
-      echo -e "1) Shell                              10) Apache Settings"
-      echo -e "2) Reboot system                      11) Virus Settings"
-      echo -e "3) Halt system                        12) System Restore"
-      echo -e "4) IP Settings                        13) Update Now"
-      echo -e "5) Tunables                           14) Maintenance Mode"
-      echo -e "6) MailWatch Settings                 15) Let's Encrypt"
-      echo -e "7) Mail Settings                      16) DKIM and DMARC"
-      echo -e "8) Spam Settings                      17) Webmin"
-      echo -e "                                      18) Fail2Ban"
+      echo -e "0) Logout from ssh                    10) Apache Settings"
+      echo -e "1) Shell                              11) Virus Settings"
+      echo -e "2) Reboot system                      12) System Restore"
+      echo -e "3) Halt system                        13) Update Now"
+      echo -e "4) IP Settings                        14) Maintenance Mode"
+      echo -e "5) Tunables                           15) Let's Encrypt"
+      echo -e "6) MailWatch Settings                 16) DKIM and DMARC"
+      echo -e "7) Mail Settings                      17) Webmin"
+      echo -e "8) Spam Settings                      18) Fail2Ban"
+      echo -e "9) MariaDB Recovery                   19) Auto-Backup settings"
       echo -e -n "$green[eFa]$clean : "
       local choice
       read choice
@@ -113,6 +114,7 @@ show_menu() {
                    16) func_dkim-dmarc ;;
                    17) func_webmin ;;
                    18) func_fail2ban ;;
+                   19) func_backup-settings ;;
                     *) echo -e "Error \"$choice\" is not an option..." && sleep 2
       esac
     done

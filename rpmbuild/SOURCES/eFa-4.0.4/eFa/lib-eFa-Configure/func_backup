@@ -1,0 +1,69 @@
+# +---------------------------------------------------+
+# Function to toggle eFa daily backups
+# +---------------------------------------------------+
+func_backup-settings() {
+  TOUCHFILE=/etc/eFa/eFa-Backup.disabled
+  func_echo-header
+  echo -e "$green[eFa]$clean - Automatic daily backups"
+  echo -e ""
+  echo -e "$green[eFa]$clean This option will toggle automatic backups"
+  echo -e ""
+  [[ -f $TOUCHFILE ]] && backupStatus="0" || backupStatus="1"
+
+  if [[ "$backupStatus" -eq "1" ]]; then
+    echo -en "$green[eFa]$clean : Disable eFa automatic daily backups? (y/N/c):"
+    read BACKUP
+
+    FLAG=1
+    while [ $FLAG -eq 1 ]
+    do
+      if [[ $BACKUP =~ ^[yY]$ ]]; then
+        touch $TOUCHFILE
+        echo -e ""
+        echo -e "$green[eFa]$clean Automatic daily backups is $green DISABLED $clean"
+        echo -e ""
+        FLAG=0
+      elif [[ -z "$BACKUP" || $BACKUP =~ ^[nN]$ ]]; then
+        echo -e ""
+        echo -e "$green[eFa]$clean No action taken"
+        FLAG=0
+      elif [[ $BACKUP =~ ^[cC]$ ]]; then
+        echo -e "$green[eFa]$clean No action taken, exiting."
+        FLAG=0
+      else
+        echo -e "$red[ERROR]$clean Invalid input"
+        echo -en "$green[eFa]$clean : Disable eFa automatic daily backups? (y/N/c):"
+        read BACKUP
+      fi
+    done
+  else
+    echo -en "$green[eFa]$clean : Enable eFa automatic daily backups? (y/N/c):"
+    read BACKUP
+
+    FLAG=1
+    while [ $FLAG -eq 1 ]
+    do
+      if [[ -z "$BACKUP" || $BACKUP =~ ^[yY]$ ]]; then
+        [[ -f $TOUCHFILE ]] && rm -f $TOUCHFILE
+        echo -e ""
+        echo -e "$green[eFa]$clean Automatic daily backups is $green ENABLED $clean"
+        echo -e ""
+        FLAG=0
+      elif [[ $BACKUP =~ ^[nN]$ ]]; then
+        echo -e ""
+        echo -e "$green[eFa]$clean No action taken"
+        FLAG=0
+      elif [[ $BACKUP =~ ^[cC]$ ]]; then
+        echo -e "$green[eFa]$clean No action taken, exiting."
+        FLAG=0
+      else
+        echo -e "$red[ERROR]$clean Invalid input"
+        echo -en "$green[eFa]$clean : Enable eFa automatic daily backups? (y/N/c):"
+        read BACKUP
+      fi
+    done
+  fi
+  pause
+
+}
+# +---------------------------------------------------+
