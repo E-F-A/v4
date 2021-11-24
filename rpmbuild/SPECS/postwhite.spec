@@ -17,25 +17,27 @@
 # along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
+%undefine _disable_source_fetch
+
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
 # yum -y install 
 #-----------------------------------------------------------------------------#
-Summary:       Postwhite Automatic Postscreen Whitelist Service
+Summary:       Postwhite Automatic Postscreen Whitelist & Blacklist Generator
 Name:          postwhite
 Version:       3.4
 Release:       1.eFa%{?dist}
-License:       GNU GPL v2
+License:       MIT License
 Group:         Applications/Utilities
 URL:           https://github.com/stevejenkins/postwhite
-Source:        https://github.com/stevejenkins/postwhite/archive/refs/tags/%{version}.tar.gz
+Source:        https://github.com/stevejenkins/postwhite/archive/refs/tags/v%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 
 
 %description
-A SQLGrey webinterface
+Postwhite - Automatic Postcreen Whitelist & Blacklist Generator
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -47,15 +49,12 @@ A SQLGrey webinterface
 %{__rm} -rf %{buildroot}
 
 # Copy files to proper locations
-mkdir -p %{buildroot}%{_localstatedir}/www/html/sgwi
-cp -ra * %{buildroot}%{_localstatedir}/www/html/sgwi
-
-# Add efa password retrieval
-sed -i '/^$db_user/ c\$db_user        = "sqlgrey";' %{buildroot}%{_localstatedir}/www/html/sgwi/includes/config.inc.php
-sed -i "/^\$db_pass/ c\$efa_array = preg_grep('/^SQLGREYSQLPWD/', file('/etc/eFa/SQLGrey-Config'));\nforeach(\$efa_array as \$num => \$line) {\n  if (\$line) {\n    \$db_pass = chop(preg_replace('/^SQLGREYSQLPWD:(.*)/','\$1',\$line));\n  }\n}" %{buildroot}%{_localstatedir}/www/html/sgwi/includes/config.inc.php
-
-# Remove doc info
-rm %{buildroot}%{_localstatedir}/www/html/sgwi/{README.md,license.txt,readme.txt}
+mkdir -p %{buildroot}%{_sysconfdir}
+mkdir -p %{buildroot}%{_bindir}
+cp -a postwhite.conf %{buildroot}%{_sysconfdir}
+cp -a postwhite %{buildroot}%{_bindir}
+cp -a scrape_yahoo %{buildroot}%{_bindir}
+cp -a query_mailer_ovh %{buildroot}%{_bindir}
 
 %pre
 # Nothing to do
@@ -68,25 +67,10 @@ rm %{buildroot}%{_localstatedir}/www/html/sgwi/{README.md,license.txt,readme.txt
 
 %files
 %defattr(-, root, root)
-%doc README.md license.txt readme.txt
-%{_localstatedir}/www/html/sgwi/awl.php
-%{_localstatedir}/www/html/sgwi/connect.php
-%{_localstatedir}/www/html/sgwi/index.php
-%{_localstatedir}/www/html/sgwi/main.css
-%{_localstatedir}/www/html/sgwi/opt_in_out.php
-%{_localstatedir}/www/html/sgwi/includes/awl.inc.php
-%{_localstatedir}/www/html/sgwi/includes/connect.inc.php
-%{_localstatedir}/www/html/sgwi/includes/functions.inc.php
-%{_localstatedir}/www/html/sgwi/includes/config.inc.php
-%{_localstatedir}/www/html/sgwi/includes/copyright.inc.php
-%{_localstatedir}/www/html/sgwi/includes/opt_in_out.inc.php
+%doc README.md LICENSE.md examples/*
+%attr(0755, root, root) %{_bindir}/*
+%config(noreplace) %{_sysconfdir}/postwhite.conf
 
 %changelog
-* Mon Feb 15 2021 Shawn Iverson <shawniverson@efa-project.org> - 1.1.9-5
-- Add eFa password retrieval for database access
-
-* Sun Dec 27 2020 Shawn Iverson <shawniverson@efa-project.org> - 1.1.9-3
-- Relax php requirements in preparation for upgrade
-
-* Sat Sep 22 2018 Shawn Iverson <shawniverson@efa-project.org> - 1.1.9-2
-- Include as legacy interface for eFa v4
+* Tue Nov 23 2021 Shawn Iverson <shawniverson@efa-project.org> - 3.4-1
+- Initial build for eFa
