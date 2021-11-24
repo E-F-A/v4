@@ -56,7 +56,7 @@ cp -a {postwhite,scrape_yahoo,query_mailer_ovh} %{buildroot}%{_bindir}
 cp -a yahoo_static_hosts.txt %{buildroot}%{_datarootdir}/postwhite
 
 sed -i "/^spftoolspath=/ c\spftoolspath=/usr/bin" %{buildroot}%{_sysconfdir}/postwhite.conf
-sed -i "/^yahoo_static_hosts=/usr/share/postwhite" %{buildroot}%{_sysconfdir}/postwhite.conf
+sed -i "/^yahoo_static_hosts=/ c\yahoo_static_hosts=/usr/share/postwhite" %{buildroot}%{_sysconfdir}/postwhite.conf
 
 cat > %{buildroot}%{_sysconfdir}/cron.d/postwhite << 'EOF'
 @daily /usr/bin/postwhite >/dev/null 2>&1 #Update Postscreen Whitelists
