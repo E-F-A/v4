@@ -65,7 +65,7 @@ cp -a include/* %{buildroot}%{_bindir}/include
 %files
 %defattr(-, root, root)
 %doc README.md LICENSE AUTHORS
-%{_bindir}/*
+%attr(0755, root, root) %{_bindir}/*
 
 %changelog
 * Tue Nov 23 2021 Shawn Iverson <shawniverson@efa-project.org> - 2.1-1
