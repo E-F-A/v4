@@ -31,7 +31,7 @@ Release:       1.eFa%{?dist}
 License:       Apache License 2.0
 Group:         Applications/Utilities
 URL:           https://github.com/spf-tools/spf-tools/
-Source:        https://github.com/spf-tools/spf-tools/archive/refs/tags/%{version}.tar.gz
+Source:        https://github.com/spf-tools/spf-tools/archive/refs/tags/v%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 
