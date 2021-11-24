@@ -52,7 +52,6 @@ Simple tools for keeping the SPF TXT records tidy in order to fight 10 maximum D
 mkdir -p %{buildroot}%{_bindir}/include
 cp -a *sh %{buildroot}%{_bindir}
 cp -a include/* %{buildroot}%{_bindir}/include
-mkdir -p 
 
 # Remove doc info
 rm %{buildroot}%{_localstatedir}/www/html/sgwi/{README.md,license.txt,readme.txt}
