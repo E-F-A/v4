@@ -85,6 +85,7 @@ echo ""
 %attr(0755, root, root) %{_bindir}/*
 %config(noreplace) %{_sysconfdir}/postwhite.conf
 %{_datarootdir}/postwhite/yahoo_static_hosts.txt
+%{_sysconfdir}/cron.d/postwhite
 
 %changelog
 * Wed Nov 24 2021 Shawn Iverson <shawniverson@efa-project.org> - 3.4-2
