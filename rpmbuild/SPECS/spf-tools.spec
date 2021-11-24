@@ -27,14 +27,17 @@
 Summary:       spf-tools - simple tools for keeping the SPF TXT records tidy
 Name:          spf-tools
 Version:       2.1
-Release:       1.eFa%{?dist}
+Release:       2.eFa%{?dist}
 License:       Apache License 2.0
 Group:         Applications/Utilities
 URL:           https://github.com/spf-tools/spf-tools/
 Source:        https://github.com/spf-tools/spf-tools/archive/refs/tags/v%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
-
+Requires:      gawk
+Requires:      sed
+Requires:      grep
+Requires:      bind-utils
 
 %description
 Simple tools for keeping the SPF TXT records tidy in order to fight 10 maximum DNS look-ups.
@@ -68,5 +71,8 @@ cp -a include/* %{buildroot}%{_bindir}/include
 %attr(0755, root, root) %{_bindir}/*
 
 %changelog
+* Wed Nov 24 2021 Shawn Iverson <shawniverson@efa-project.org> - 2.1-2
+- Add requirements
+
 * Tue Nov 23 2021 Shawn Iverson <shawniverson@efa-project.org> - 2.1-1
 - Initial Build for eFa

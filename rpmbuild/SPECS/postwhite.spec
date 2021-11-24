@@ -27,13 +27,14 @@
 Summary:       Postwhite Automatic Postscreen Whitelist & Blacklist Generator
 Name:          postwhite
 Version:       3.4
-Release:       2.eFa%{?dist}
+Release:       3.eFa%{?dist}
 License:       MIT License
 Group:         Applications/Utilities
 URL:           https://github.com/stevejenkins/postwhite
 Source:        https://github.com/stevejenkins/postwhite/archive/refs/tags/v%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
+Requires:      spf-tools
 
 %description
 Postwhite - Automatic Postcreen Whitelist & Blacklist Generator
@@ -56,7 +57,7 @@ cp -a {postwhite,scrape_yahoo,query_mailer_ovh} %{buildroot}%{_bindir}
 cp -a yahoo_static_hosts.txt %{buildroot}%{_datarootdir}/postwhite
 
 sed -i "/^spftoolspath=/ c\spftoolspath=/usr/bin" %{buildroot}%{_sysconfdir}/postwhite.conf
-sed -i "/^yahoo_static_hosts=/ c\yahoo_static_hosts=/usr/share/postwhite" %{buildroot}%{_sysconfdir}/postwhite.conf
+sed -i "/^yahoo_static_hosts=/ c\yahoo_static_hosts=/usr/share/postwhite/yahoo_static_hosts.txt" %{buildroot}%{_sysconfdir}/postwhite.conf
 
 cat > %{buildroot}%{_sysconfdir}/cron.d/postwhite << 'EOF'
 @daily /usr/bin/postwhite >/dev/null 2>&1 #Update Postscreen Whitelists
@@ -88,6 +89,9 @@ echo ""
 %{_sysconfdir}/cron.d/postwhite
 
 %changelog
+* Wed Nov 24 2021 Shawn Iverson <shawniverson@efa-project.org> - 3.4-3
+- Adjust yahoo_static_hosts.txt in postwhite.conf, add requirements
+
 * Wed Nov 24 2021 Shawn Iverson <shawniverson@efa-project.org> - 3.4-2
 - Adjust paths in postwhite.conf, add yahoo_static_hosts.txt, add cron
 
