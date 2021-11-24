@@ -27,14 +27,13 @@
 Summary:       Postwhite Automatic Postscreen Whitelist & Blacklist Generator
 Name:          postwhite
 Version:       3.4
-Release:       1.eFa%{?dist}
+Release:       2.eFa%{?dist}
 License:       MIT License
 Group:         Applications/Utilities
 URL:           https://github.com/stevejenkins/postwhite
 Source:        https://github.com/stevejenkins/postwhite/archive/refs/tags/v%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
-
 
 %description
 Postwhite - Automatic Postcreen Whitelist & Blacklist Generator
@@ -49,18 +48,33 @@ Postwhite - Automatic Postcreen Whitelist & Blacklist Generator
 %{__rm} -rf %{buildroot}
 
 # Copy files to proper locations
-mkdir -p %{buildroot}%{_sysconfdir}
+mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 mkdir -p %{buildroot}%{_bindir}
+mkdir -p %{buildroot}%{_datarootdir}/postwhite
 cp -a postwhite.conf %{buildroot}%{_sysconfdir}
-cp -a postwhite %{buildroot}%{_bindir}
-cp -a scrape_yahoo %{buildroot}%{_bindir}
-cp -a query_mailer_ovh %{buildroot}%{_bindir}
+cp -a {postwhite,scrape_yahoo,query_mailer_ovh} %{buildroot}%{_bindir}
+cp -a yahoo_static_hosts.txt %{buildroot}%{_datarootdir}/postwhite
+
+sed -i "/^spftoolspath=/ c\spftoolspath=/usr/bin" %{buildroot}%{_sysconfdir}/postwhite.conf
+sed -i "/^yahoo_static_hosts=/usr/share/postwhite" %{buildroot}%{_sysconfdir}/postwhite.conf
+
+cat > %{buildroot}%{_sysconfdir}/cron.d/postwhite << 'EOF'
+@daily /usr/bin/postwhite >/dev/null 2>&1 #Update Postscreen Whitelists
+@weekly /usr/bin/scrape_yahoo >/dev/null 2>&1 #Update Yahoo! IPs for Postscreen Whitelists
+EOF
 
 %pre
 # Nothing to do
 
 %post
-# Nothing to do
+echo ""
+echo "To enable postwhite, add the following to your /etc/postfix/main.cf:
+echo ""
+echo "postscreen_access_list = permit_mynetworks,"
+echo "..."
+echo "        cidr:/etc/postfix/postscreen_spf_whitelist.cidr,"
+echo "..."
+echo ""
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -70,7 +84,11 @@ cp -a query_mailer_ovh %{buildroot}%{_bindir}
 %doc README.md LICENSE.md examples/*
 %attr(0755, root, root) %{_bindir}/*
 %config(noreplace) %{_sysconfdir}/postwhite.conf
+%{_datarootdir}/postwhite/yahoo_static_hosts.txt
 
 %changelog
+* Wed Nov 24 2021 Shawn Iverson <shawniverson@efa-project.org> - 3.4-2
+- Adjust paths in postwhite.conf, add yahoo_static_hosts.txt, add cron
+
 * Tue Nov 23 2021 Shawn Iverson <shawniverson@efa-project.org> - 3.4-1
 - Initial build for eFa
