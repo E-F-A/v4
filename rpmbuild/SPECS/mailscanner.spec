@@ -1,4 +1,4 @@
-%define releasenum 2
+%define releasenum 3
 %undefine _disable_source_fetch
 
 Name:        MailScanner
@@ -1224,6 +1224,9 @@ exit 0
 %config(noreplace) /usr/share/MailScanner/reports/ca/stored.virus.message.txt
 
 %changelog
+* Thu Nov 25 2021 Shawn Iverson <shawniverson@efa-project.org> - 5.4.2-3
+- Update for eFa
+
 * Sun Nov 14 2021 Shawn Iverson <shawniverson@efa-project.org> - 5.4.2-1
 - Update for eFa
 
