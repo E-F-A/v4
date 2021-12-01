@@ -97,6 +97,7 @@ BuildRequires: perl(Data::Dump) >= 1.22
 BuildRequires: perl(Encode::Detect) >= 1.01
 BuildRequires: perl(Crypt::OpenSSL::Random) >= 0.04
 BuildRequires: perl(Crypt::OpenSSL::RSA) >= 0.28
+BuildRequires: gcc >= 8.5.0-4
 Requires: perl(Net::DNS) >= 0.72
 Requires: perl(Time::HiRes) >= 1.9725
 Requires: perl(DB_File) >= 1.830
