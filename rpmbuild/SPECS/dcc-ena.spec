@@ -25,7 +25,7 @@
 #-----------------------------------------------------------------------------#
 # yum -y install sendmail-devel
 #-----------------------------------------------------------------------------#
-Name:      dcc
+Name:      dcc-ena
 Summary:   DCC Distributed Checksum Clearinghouse
 Version:   2.3.167
 Release:   2.eFa%{?dist}
