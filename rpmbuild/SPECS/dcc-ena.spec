@@ -48,7 +48,7 @@ messages from clients and answers queries about the total counts for checksums
 of mail messages.
 
 %prep
-%setup -q dcc-%{version}
+%setup -q -n dcc-%{version}
 
 %build
 ./configure --disable-dccm --with-installroot=$RPM_BUILD_ROOT --mandir=/usr/share/man --bindir=/usr/bin
