@@ -178,7 +178,6 @@ chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %config(noreplace) %{_localstatedir}/www/html/mailscanner/conf.php
 %attr(0775, root, root) %{_localstatedir}/www/html/mailscanner/images
 %attr(0775, root, root) %{_localstatedir}/www/html/mailscanner/temp
-%{_localstatedir}/www/html/favicon.ico
 %{_localstatedir}/www/html/mailscanner/.htaccess
 %{_localstatedir}/www/html/mailscanner/auto-release.php
 %{_localstatedir}/www/html/mailscanner/bayes_info.php
@@ -189,7 +188,6 @@ chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/detail.php
 %{_localstatedir}/www/html/mailscanner/docs.php
 %{_localstatedir}/www/html/mailscanner/do_message_ops.php
-#%{_localstatedir}/www/html/mailscanner/favicon.ico
 %{_localstatedir}/www/html/mailscanner/filter.inc.php
 %{_localstatedir}/www/html/mailscanner/f-prot.awk
 %{_localstatedir}/www/html/mailscanner/f-prot_status.php
