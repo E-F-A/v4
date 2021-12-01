@@ -189,7 +189,7 @@ chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/detail.php
 %{_localstatedir}/www/html/mailscanner/docs.php
 %{_localstatedir}/www/html/mailscanner/do_message_ops.php
-%{_localstatedir}/www/html/mailscanner/favicon.ico
+#%{_localstatedir}/www/html/mailscanner/favicon.ico
 %{_localstatedir}/www/html/mailscanner/filter.inc.php
 %{_localstatedir}/www/html/mailscanner/f-prot.awk
 %{_localstatedir}/www/html/mailscanner/f-prot_status.php
