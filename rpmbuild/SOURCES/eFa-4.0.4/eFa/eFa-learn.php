@@ -58,6 +58,7 @@ if (file_exists('conf.php')) {
                         if(!ipv4_in_range($remote_ip, $line)) {
                             header("Location: login.php?error=pagetimeout");
                             die();
+                        }
                     } elseif (preg_match('/:/', $line)) { # assume ipv6 if it contains a colon
                         if (!ipv6_in_range($remote_ip,$line)) {
                             header("Location: login.php?error=pagetimeout");
@@ -354,4 +355,3 @@ function ipv6_in_range($ip, $range_ip)
 
     return $in_range;
 }
-?>
