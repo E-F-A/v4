@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2021 https://efa-project.org
+# Copyright (C) 2013~2022 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   26.eFa%{?dist}
+Release:   27.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -201,7 +201,7 @@ Requires:  postfix_eFa >= 3.5.9-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin_eFa >= 3.4.6-1
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.4.2-3
+Requires:  MailScanner >= 5.4.4-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 7.2.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -543,6 +543,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Fri Feb 25 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-27
+- MailScanner update
+ 
 * Thu Nov 25 2021 eFa Project <shawniverson@efa-project.org> - 4.0.4-26
 - MailScanner update to resolve pipe failures on HTML Disarm
 
