@@ -16,6 +16,8 @@ function func_spam-settings() {
       echo -e "5) Mailwatch hide high spam/mcp"
       echo -e "6) MalwarePatrol Key Code"
       echo -e "7) DCC Servers"
+      echo -e "8) Trusted Networks"
+      echo -e "9) Inline Signature Rules"
       echo -e ""
       echo -e "e) Return to main menu"
       echo -e ""
@@ -30,6 +32,8 @@ function func_spam-settings() {
                 5) func_ask-highspammailwatch;;
                 6) func_ask-malwarepatrol;;
                 7) func_ask-dccservers;;
+                8) func_ask-trustednetworks;;
+                9) func_ask-sigrules;;
                 e) menu=1 && return ;;
                 *) echo -e "Error \"$choice\" is not an option..." && pause
       esac

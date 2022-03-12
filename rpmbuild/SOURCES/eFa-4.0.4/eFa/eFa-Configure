@@ -62,6 +62,7 @@ shopt -s extglob
 . /var/eFa/lib/eFa-Configure/func_backup
 . /var/eFa/lib/eFa-Configure/func_asksigrules
 . /var/eFa/lib/eFa-Configure/func_trustednetworks
+
 # +---------------------------------------------------+
 
 # +---------------------------------------------------+

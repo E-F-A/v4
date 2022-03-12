@@ -159,7 +159,7 @@ function func_ask-trustednets() {
                   done
                 echo -e "Thank you.."
                 echo -e "$IPNET/$NETMASK " >> /etc/sysconfig/eFa_trusted_networks
-                echo -e "Trused network added to this system"
+                echo -e "Trusted network added to this system"
                 pause
                 ;;
                 e)  

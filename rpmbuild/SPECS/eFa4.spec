@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   27.eFa%{?dist}
+Release:   28.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -543,6 +543,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Mar 12 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-28
+- Inline signature release and learn
+
 * Fri Feb 25 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-27
 - MailScanner update
  
