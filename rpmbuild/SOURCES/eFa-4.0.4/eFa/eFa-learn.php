@@ -52,7 +52,7 @@ if (file_exists('conf.php')) {
         if (file_exists('/etc/sysconfig/eFa_trusted_networks')) {
             $file = fopen('/etc/sysconfig/eFa_trusted_networks', 'r');
             if ($file) {
-                while (($line = fgets($fp, 80)) !== false) {
+                while (($line = fgets($file, 80)) !== false) {
                     $line = rtrim($line);
                     if (preg_match('/[^:]/', $line)) { # assume ipv4 if it does not contain a colon
                         if(!ipv4_in_range($remote_ip, $line)) {

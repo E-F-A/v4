@@ -11,8 +11,7 @@ function func_ask-trustednets() {
       echo -e ""
       echo -e "$green[eFa]$clean Trusted networks are networks from which you want to accept"
       echo -e "$green[eFa]$clean spam submissions via the \"Click here to report this message as spam\""
-      echo -e "$green[eFa]$clean link. All other networks will receive a message indicating that"
-      echo -e "$green[eFa]$clean submission is being attempted from an untrusted network."
+      echo -e "$green[eFa]$clean link. All other networks will be redirected to the login page"
       echo -e ""
 
       local RULES
@@ -45,6 +44,7 @@ function func_ask-trustednets() {
                 if [[ $choice > "0" && $choice < $((rLen+1)) ]]; then
                   ENTIP=${RULES[$((choice*2-2))]}
                   echo -e "Entry Selected: $ENTIP" 
+                  ENTIP=$(echo $ENTIP | sed -e 's|/|\\/|')
                   local flag=0
                   local ISIP4=0
                   local ISIP6=0
