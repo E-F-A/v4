@@ -57,7 +57,7 @@ function func_ask-spam() {
       do 
         if [[ "$TMPSPAMNOTIFY" == "Y" || "$TMPSPAMNOTIFY" == "y" ]]; then 
           # Set spam notification behavior
-          SPAMNOTIFY="notify"
+          SPAMNOTIFY="custom(spam)"
           echo -e "$green[eFa]$clean Spam Notifications $green ENABLED $clean"
           spamcheck=0
         elif [[ "$TMPSPAMNOTIFY" == "" || "$TMPSPAMNOTIFY" == "N" || "$TMPSPAMNOTIFY" == "n" ]]; then 

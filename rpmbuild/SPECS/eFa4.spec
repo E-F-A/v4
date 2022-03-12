@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   28.eFa%{?dist}
+Release:   29.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -538,11 +538,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens_update.sql
 %attr(0644, root, root) %{_localstatedir}/eFa/lib/token/CustomAction.pm
 %attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-release.php
+%attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-learn.php
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Tokens.cron
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Mar 12 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-29
+- Inline signature release and learn fixes
+
 * Sat Mar 12 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-28
 - Inline signature release and learn
 

@@ -16,7 +16,9 @@ function func_ask-trustednets() {
       echo -e ""
 
       local RULES
-      RULES=( `cat /etc/sysconfig/eFa_trusted_networks` )
+      if [[ -f /etc/sysconfig/eFa_trusted_networks ]]; then
+        RULES=( `cat /etc/sysconfig/eFa_trusted_networks` )
+      fi
   
       echo -e "Below is the list of current trusted networks:"
       echo -e ""
@@ -86,7 +88,7 @@ function func_ask-trustednets() {
                         local NETCHECK=1
                         while [ $NETCHECK != 0 ]
                         do
-                          if [[ $ISIP4 && ($NETMASK -ge 1 && $NETMASK is -le 32) || $ISIP6 && ($NETMASK -ge 1 && $NETMASK -le 128) ]] ; then
+                          if [[ $ISIP4 && ($NETMASK -ge 1 && $NETMASK -le 32) || $ISIP6 && ($NETMASK -ge 1 && $NETMASK -le 128) ]] ; then
                             NETCHECK=0
                           else
                             echo -e "       $red ERROR: The value $NETMASK seems to be invalid"
