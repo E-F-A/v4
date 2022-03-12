@@ -89,17 +89,15 @@ if (file_exists('conf.php')) {
         }
         if ($result->num_rows === 0) {
             $output[] = __('msgnotfound159');
-            $output[] = __('msgnotfound259') . htmlentities($mid) . ' ' . __('msgnotfound359');
+            $output[] = __('msgnotfound259') . htmlentities($mid);
         } else {
             $row = $result->fetch_assoc();
             if ($row['token'] === $token) {
                 $list = quarantine_list_items($mid);
                 $result = '';
                 if (count($list) > 0) {
-                    $status[] = quarantine_learn($list, 0, 'spam', RPC_ONLY);
+                    $output[] = quarantine_learn($list, array(0), 'spam');
                 } 
-                //success
-                $output[] = __('learnspam03');
                 //cleanup
                 $learnID = $row['id'];
                 $query = "DELETE FROM tokens WHERE id = '$learnID'";
@@ -121,7 +119,7 @@ if (file_exists('conf.php')) {
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>' . __('title59') . '</title>
+    <title>' . __('learnspam03') . '</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="images/favicon.png">
     <link rel="stylesheet" href="style.css" type="text/css">
@@ -131,7 +129,7 @@ if (file_exists('conf.php')) {
 <div class="autorelease">
     <img src=".' . IMAGES_DIR . MW_LOGO . '" alt="' . __('mwlogo99') . '">
     <div class="border-rounded">
-        <h1>' . __('title59') . '</h1>' . "\n";
+        <h1>' . __('learnspam03') . '</h1>' . "\n";
     foreach ($output as $msg) {
         echo '<p>' . $msg . '</p>' . "\n";
     }

@@ -75,7 +75,7 @@ function func_ask-nonspam() {
         # Disable this in favor of custom(nonspam) action to sign messages instead
         sed -i "/^Sign Clean Messages =/ c\Sign Clean Messages = No" /etc/MailScanner/MailScanner.conf
         sed -i "/^Inline HTML Signature =/ c\Inline HTML Signature = %rules-dir%/inline.sig.html.rules" /etc/MailScanner/MailScanner.conf
-        sed -i "/^Inline Text Signature =/ c\Inline Text Signature = %rules-dir%/inline.sig.txt.rules" /etc/MailScanner/MailScanner.conf
+        sed -i "/^Inline Text Signature =/ c\Inline Text Signature = %rules-dir%/inline.sig.text.rules" /etc/MailScanner/MailScanner.conf
         touch /etc/MailScanner/rules/inline.sig.html.rules
         touch /etc/MailScanner/rules/inline.sig.txt.rules
         systemctl restart mailscanner
