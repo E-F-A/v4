@@ -398,6 +398,7 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/eFa-release.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
+mv eFa/eFa-learn.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/CustomAction.pm $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/efatokens.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/efatokens_update.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
