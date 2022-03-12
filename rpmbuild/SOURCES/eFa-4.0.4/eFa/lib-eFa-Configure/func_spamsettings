@@ -32,7 +32,7 @@ function func_spam-settings() {
                 5) func_ask-highspammailwatch;;
                 6) func_ask-malwarepatrol;;
                 7) func_ask-dccservers;;
-                8) func_ask-trustednetworks;;
+                8) func_ask-trustednets;;
                 9) func_ask-sigrules;;
                 e) menu=1 && return ;;
                 *) echo -e "Error \"$choice\" is not an option..." && pause
