@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   32.eFa%{?dist}
+Release:   33.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -362,7 +362,7 @@ Requires: fail2ban >= 0.11.1-9
     #                                            # base    # eFa
 Requires: tar >= 1.26-35
     #                                            # base    # eFa
-%{?el7:Requires: NetworkManager >= 1.18.8-2}
+Requires: NetworkManager >= 1.18.8-2
     #                                            # base    # eFa
 
 %description
@@ -545,6 +545,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Mar 19 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-33
+- Minor fixes for eFa-Configure, eFa-Post-Init build requirements, and db schema
+
 * Sat Mar 12 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-32
 - More Fixes trusted networks dialog 
 

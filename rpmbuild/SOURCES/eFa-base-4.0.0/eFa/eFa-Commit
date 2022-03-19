@@ -1185,6 +1185,7 @@ EOF
 
   # Schedule post init
   echo '* * * * * root /usr/sbin/eFa-Post-Init >/dev/null 2>&1' > /etc/cron.d/efapostinit
+  chmod 0644 /etc/cron.d/efapostinit
 
   # Clear logs
   if [[ "$virtplatform" != "lxc" ]]; then
