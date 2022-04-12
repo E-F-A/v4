@@ -46,28 +46,29 @@ if (file_exists('conf.php')) {
             header('Location: login.php?error=pagetimeout');
             die();
         }
-
+    
         # Validate trusted networks, if present
         $remote_ip = $_SERVER['REMOTE_ADDR'];
+
         if (file_exists('/etc/sysconfig/eFa_trusted_networks')) {
+            $is_trusted_network = 0 ;
             $file = fopen('/etc/sysconfig/eFa_trusted_networks', 'r');
             if ($file) {
                 while (($line = fgets($file, 80)) !== false) {
                     $line = rtrim($line);
-                    if (preg_match('/[^:]/', $line)) { # assume ipv4 if it does not contain a colon
-                        if(!ipv4_in_range($remote_ip, $line)) {
-                            header("Location: login.php?error=pagetimeout");
-                            die();
+                    if (!preg_match('/:/', $line)) { # assume ipv4 if it does not contain a colon
+                        if(ipv4_in_range($remote_ip, $line)) {
+                            $is_trusted_network = 1;
                         }
                     } elseif (preg_match('/:/', $line)) { # assume ipv6 if it contains a colon
-                        if (!ipv6_in_range($remote_ip,$line)) {
-                            header("Location: login.php?error=pagetimeout");
-                            die();
+                        if (ipv6_in_range($remote_ip,$line)) {
+                            $is_trusted_network = 1;
                         }
-                    } else {
-                        header("Location: login.php?error=pagetimeout");
-                        die();
                     }
+                }
+                if ($is_trusted_network === 0) {
+                  header("Location: login.php?error=pagetimeout");
+                  die();
                 }
                 fclose($file);
             }
@@ -97,7 +98,7 @@ if (file_exists('conf.php')) {
                 $result = '';
                 if (count($list) > 0) {
                     $output[] = quarantine_learn($list, array(0), 'spam');
-                } 
+                }
                 //cleanup
                 $learnID = $row['id'];
                 $query = "DELETE FROM tokens WHERE id = '$learnID'";
@@ -133,6 +134,7 @@ if (file_exists('conf.php')) {
     foreach ($output as $msg) {
         echo '<p>' . $msg . '</p>' . "\n";
     }
+    echo '<p>' . 'Remote-IP: ' . $_SERVER['REMOTE_ADDR'] . '</p>' . "\n";
     echo '
     </div>
 </div>
@@ -172,7 +174,7 @@ if (file_exists('conf.php')) {
 /*
 * Modified by James Greene <james@cloudflare.com> to include IPV6 support
 * (original version only supported IPV4).
-* 21 May 2012 
+* 21 May 2012
 */
 
 
@@ -212,14 +214,14 @@ function ipv4_in_range($ip, $range) {
             $range = sprintf("%u.%u.%u.%u", empty($a)?'0':$a, empty($b)?'0':$b,empty($c)?'0':$c,empty($d)?'0':$d);
             $range_dec = ip2long($range);
             $ip_dec = ip2long($ip);
-            
+
             # Strategy 1 - Create the netmask with 'netmask' 1s and then fill it to 32 with 0s
             #$netmask_dec = bindec(str_pad('', $netmask, '1') . str_pad('', 32-$netmask, '0'));
-            
+
             # Strategy 2 - Use math to create it
             $wildcard_dec = pow(2, (32-$netmask)) - 1;
             $netmask_dec = ~ $wildcard_dec;
-            
+
             return (($ip_dec & $netmask_dec) == ($range_dec & $netmask_dec));
         }
     } else {
@@ -230,7 +232,7 @@ function ipv4_in_range($ip, $range) {
             $upper = str_replace('*', '255', $range);
             $range = "$lower-$upper";
         }
-        
+
         if (strpos($range, '-')!==false) { // A-B format
             list($lower, $upper) = explode('-', $range, 2);
             $lower_dec = (float)sprintf("%u",ip2long($lower));
@@ -239,22 +241,23 @@ function ipv4_in_range($ip, $range) {
             return ( ($ip_dec>=$lower_dec) && ($ip_dec<=$upper_dec) );
         }
         return false;
-    } 
+    }
 }
 
 function ip2long6($ip) {
-    if (substr_count($ip, '::')) { 
-        $ip = str_replace('::', str_repeat(':0000', 8 - substr_count($ip, ':')) . ':', $ip); 
-    } 
-        
+    if (substr_count($ip, '::')) {
+        $ip = str_replace('::', str_repeat(':0000', 8 - substr_count($ip, ':')) . ':', $ip);
+    }
+
     $ip = explode(':', $ip);
-    $r_ip = ''; 
+    $r_ip = '';
+
     foreach ($ip as $v) {
-        $r_ip .= str_pad(base_convert($v, 16, 2), 16, 0, STR_PAD_LEFT); 
-    } 
-        
-    return base_convert($r_ip, 2, 10); 
-} 
+        $r_ip .= str_pad(base_convert($v, 16, 2), 16, 0, STR_PAD_LEFT);
+    }
+
+    return gmp_convert($r_ip, 2, 10);
+}
 
 // Get the ipv6 full format and return it as a decimal value.
 function get_ipv6_full($ip)
@@ -279,7 +282,7 @@ function get_ipv6_full($ip)
     $size = count($main_ip_pieces);
     if (trim($last_ip_piece) != "") {
         $last_piece = str_pad($last_ip_piece, 4, "0", STR_PAD_LEFT);
-    
+
         // Build the full form of the IPV6 address considering the last IP block set
         for ($i = $size; $i < 7; $i++) {
             $main_ip_pieces[$i] = "0000";
@@ -290,9 +293,9 @@ function get_ipv6_full($ip)
         // Build the full form of the IPV6 address
         for ($i = $size; $i < 8; $i++) {
             $main_ip_pieces[$i] = "0000";
-        }        
+        }
     }
-    
+
     // Rebuild the final long form IPV6 address
     $final_ip = implode(":", $main_ip_pieces);
 
@@ -330,7 +333,7 @@ function ipv6_in_range($ip, $range_ip)
     $size = count($main_ip_pieces);
     if (trim($last_ip_piece) != "") {
         $last_piece = str_pad($last_ip_piece, 4, "0", STR_PAD_LEFT);
-    
+
         // Build the full form of the IPV6 address considering the last IP block set
         for ($i = $size; $i < 7; $i++) {
             $first[$i] = "0000";
@@ -343,13 +346,33 @@ function ipv6_in_range($ip, $range_ip)
         for ($i = $size; $i < 8; $i++) {
             $first[$i] = "0000";
             $last[$i] = "ffff";
-        }        
+        }
+    }
+
+    // Pad out the shorthand entries.
+    $ip = expandIPv6($ip);
+    $ip_pieces = explode(":", $ip);
+    foreach($ip_pieces as $key=>$val) {
+        $ip_pieces[$key] = str_pad($ip_pieces[$key], 4, "0", STR_PAD_LEFT);
     }
 
     // Rebuild the final long form IPV6 address
     $first = ip2long6(implode(":", $first));
     $last = ip2long6(implode(":", $last));
+    $ip = ip2long6(implode(":", $ip_pieces));
     $in_range = ($ip >= $first && $ip <= $last);
 
     return $in_range;
+}
+
+// base converter using gmp
+function gmp_convert($num, $base_a, $base_b)
+{
+        return gmp_strval ( gmp_init($num, $base_a), $base_b );
+}
+
+// expand IPv6
+function expandIPv6($ip) {
+    $hex = bin2hex(inet_pton($ip));
+    return implode(':', str_split($hex, 4));
 }

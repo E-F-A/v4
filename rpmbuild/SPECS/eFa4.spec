@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   33.eFa%{?dist}
+Release:   34.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -364,6 +364,10 @@ Requires: tar >= 1.26-35
     #                                            # base    # eFa
 Requires: NetworkManager >= 1.18.8-2
     #                                            # base    # eFa
+%{?el8:Requires: php-gmp >=  7.2.24-1}
+    #                                            # appstream # eFa
+%{?el7:Requires: php74-gmp >= 7.4.28-1}
+    #                                            # IUS     # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -545,6 +549,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Tue Apr 12 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-34
+- Fix from @freyuh for eFa-learn.php IPv6 and resulting php-gmp requirement
+
 * Sat Mar 19 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-33
 - Minor fixes for eFa-Configure, eFa-Post-Init build requirements, and db schema
 
