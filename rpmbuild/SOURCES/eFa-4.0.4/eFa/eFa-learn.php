@@ -148,7 +148,7 @@ if (file_exists('conf.php')) {
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>' . __('learnspam03') . '</title>
+    <title>' . __('spam103') . __('learn03') . '</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="images/favicon.png">
     <link rel="stylesheet" href="style.css" type="text/css">
@@ -158,7 +158,7 @@ if (file_exists('conf.php')) {
 <div class="autorelease">
     <img src=".' . IMAGES_DIR . MW_LOGO . '" alt="' . __('mwlogo99') . '">
     <div class="border-rounded">
-        <h1>' . __('learnspam03') . '</h1>' . "\n";
+        <h1>' . __('spam103') . " " .  __('learn03') . '</h1>' . "\n";
     foreach ($output as $msg) {
         echo '<p>' . $msg . '</p>' . "\n";
     }
