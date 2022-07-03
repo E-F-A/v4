@@ -17,6 +17,8 @@
 # along with this SPEC. If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 
+%undefine _disable_source_fetch
+
 #-----------------------------------------------------------------------------#
 # Required packages for building this RPM
 #-----------------------------------------------------------------------------#
@@ -24,7 +26,7 @@
 #-----------------------------------------------------------------------------#
 Summary:    Utility for extracting RAR archives
 Name:       unrar
-Version:    5.8.3
+Version:    6.1.7
 Release:    1.eFa%{?dist}
 
 License:    Proprietary
@@ -62,6 +64,9 @@ install -pm 644 readme.txt %{buildroot}%{_defaultdocdir}/%{name}-%{version}/read
 %{_defaultdocdir}/%{name}-%{version}/*
 
 %changelog
+* Sun Jul 03 2022 Shawn Iversion <shawniverson@efa-project.org> - 6.1.7-1
+- Updated build for eFa https://efa-project.org CVE-2022-30333
+
 * Tue Oct 29 2019 darky83 <darky83@efa-project.org> - 5.8.3-1
 - Updated build for eFa4 https://efa-project.org (CentOS 7)
 

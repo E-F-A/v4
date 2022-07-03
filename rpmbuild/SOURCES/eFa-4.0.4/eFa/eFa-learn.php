@@ -29,12 +29,17 @@
  */
 
 require_once __DIR__ . '/functions.php';
+
 if (file_exists('conf.php')) {
     $output = array();
-    if (isset($_GET['mid']) && (isset($_GET['r']) || isset($_GET['amp;r']))) {
+    if (isset($_GET['mid']) && isset($_GET['subm']) && (isset($_GET['r']) || isset($_GET['amp;r']))) {
         dbconn();
         $mid = deepSanitizeInput($_GET['mid'], 'url');
         if ($mid === false || !validateInput($mid, 'msgid')) {
+            die();
+        }
+        $subm = deepSanitizeInput($_GET['subm'], 'url');
+        if ($subm === false) {
             die();
         }
         if (isset($_GET['amp;r'])) {
@@ -46,7 +51,7 @@ if (file_exists('conf.php')) {
             header('Location: login.php?error=pagetimeout');
             die();
         }
-    
+
         # Validate trusted networks, if present
         $remote_ip = $_SERVER['REMOTE_ADDR'];
 
@@ -111,6 +116,29 @@ if (file_exists('conf.php')) {
             }
             $efadb->close();
         }
+    } elseif (isset($_GET['mid']) && (isset($_GET['r']) || isset($_GET['amp;r']))) {
+        $mid = deepSanitizeInput($_GET['mid'], 'url');
+        if ($mid === false || !validateInput($mid, 'msgid')) {
+            die();
+        }
+        if (isset($_GET['amp;r'])) {
+            $token = deepSanitizeInput($_GET['amp;r'], 'url');
+        } else {
+            $token = deepSanitizeInput($_GET['r'], 'url');
+        }
+        if (!validateInput($token, 'releasetoken')) {
+            header('Location: login.php?error=pagetimeout');
+            die();
+        }
+	$subm = true;
+	$url = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+        $output[] = 'Submit Message: ' . $mid . '.';
+	$output[] = '<form method="get" action="' . $url . '">';
+	$output[] = '<input type="hidden" name="mid" value="' . $mid . '" />';
+        $output[] = '<input type="hidden" name="r" value="' . $token . '" />';
+        $output[] = '<input type="hidden" name="subm" value="' . $subm . '" />';
+	$output[] = '<p><input type="submit" value="Submit"></p>';
+	$output[] = '</form>';
     } else {
         $output[] = __('notallowed59');
     }
@@ -134,7 +162,6 @@ if (file_exists('conf.php')) {
     foreach ($output as $msg) {
         echo '<p>' . $msg . '</p>' . "\n";
     }
-    echo '<p>' . 'Remote-IP: ' . $_SERVER['REMOTE_ADDR'] . '</p>' . "\n";
     echo '
     </div>
 </div>

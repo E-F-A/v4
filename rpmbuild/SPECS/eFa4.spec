@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   34.eFa%{?dist}
+Release:   35.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -191,7 +191,7 @@ Requires:  perl-YAML >= 0.84-5
     # perl-YAML                                  # base    # MailScanner
 Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
-Requires:  unrar >= 5.8.3-1
+Requires:  unrar >= 6.1.7-1
     # unrar                                      # eFa     # MailScanner
 Requires:  postfix_eFa >= 3.5.9-1
     # postfix_eFa                                # eFa     # MTA
@@ -201,7 +201,7 @@ Requires:  postfix_eFa >= 3.5.9-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin_eFa >= 3.4.6-1
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.4.4-1
+Requires:  MailScanner >= 5.4.5-1
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 7.2.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -368,6 +368,8 @@ Requires: NetworkManager >= 1.18.8-2
     #                                            # appstream # eFa
 %{?el7:Requires: php74-gmp >= 7.4.28-1}
     #                                            # IUS     # eFa
+%{?el8:Requires: ipcalc => 0.2.4-4}
+    #                                            # base    # eFa
 
 %description
 eFa stands for Email Filter Appliance. eFa is born out of a need for a
@@ -549,6 +551,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Tue Jul 03 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-35
+- Require ipcalc for CentOS 8 variants, update unrar and MailScanner
+
 * Tue Apr 12 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-34
 - Fix from @freyuh for eFa-learn.php IPv6 and resulting php-gmp requirement
 

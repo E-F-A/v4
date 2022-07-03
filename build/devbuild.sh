@@ -199,7 +199,7 @@ if [[ $RELEASE -eq 7 || $RELEASE -eq 8 ]]; then
   [ $? -ne 0 ] && exit 1
   yum -y install $GITPATH/rpmbuild/RPMS/noarch/perl-Mail-SPF-Query-*.rpm
   [ $? -ne 0 ] && exit 1
-  rpmbuild -ba unrar-5.8.3.spec
+  rpmbuild -ba unrar.spec
   [ $? -ne 0 ] && exit 1
   yum -y install $GITPATH/rpmbuild/RPMS/`uname -m`/unrar-*.rpm
   [ $? -ne 0 ] && exit 1

@@ -2,7 +2,7 @@
 %undefine _disable_source_fetch
 
 Name:        MailScanner
-Version:     5.4.4
+Version:     5.4.5
 Release:     %{releasenum}.eFa%{?dist}
 Summary:     Email Gateway Virus Scanner with Malware, Phishing, and Spam Detection
 Group:       System Environment/Daemons

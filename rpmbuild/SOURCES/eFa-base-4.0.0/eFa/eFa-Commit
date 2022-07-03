@@ -661,8 +661,23 @@ if [[ $configip -eq 1 ]]; then
     cp -f /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
     [ $? -ne 0 ] && exit 1
   else
-    cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak
-    [ $? -ne 0 ] && exit 1
+    if [[ -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE ]]; then
+      cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak
+      [ $? -ne 0 ] && exit 1
+    else
+      # no interface config, possibly nm-controlled
+      UUID=$(nmcli -t c show --active | grep $INTERFACE | awk -F':' '{print $2}')
+      if [[ -n $UUID ]]; then
+        # Found an nm-controlled interface, write back config as $INTERFACE and backup
+        nmcli c modify $UUID con-name $INTERFACE
+        [ $? -ne 0 ] && exit 1
+        cp -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE /etc/sysconfig/network-scripts.bak/ifcfg-$INTERFACE.bak
+        [ $? -ne 0 ] && exit 1
+      else
+        # No interface config found
+        exit 1
+      fi
+    fi
   fi
 
   if [[ -n $IPV4ADDRESS ]]; then
