@@ -33,6 +33,8 @@ License:    Proprietary
 Group:      Applications/Archiving
 URL:        http://www.rarlab.com/download.htm
 Source0:    http://www.rarlab.com/rar/unrarsrc-%{version}.tar.gz
+BuildRequires: gcc-c++
+BuildRequires: gcc
 
 %global debug_package %{nil}
 
