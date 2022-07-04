@@ -1,8 +1,8 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.3 post initial configuration script
+# eFa 4.0.4 post initial configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2021 https://efa-project.org
+# Copyright (C) 2013~2022 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -54,6 +54,9 @@ sed -i "/^    echo ' running on ' . efa_version/ c\    echo ' running on ' . efa
 # Retrieve gateways for ipv4 and ipv6
 IPV4GATEWAY=$(/usr/sbin/ip -4 route list default | awk {'print $3'})
 IPV6GATEWAY=$(/usr/sbin/ip -6 route list default | awk {'print $3'})
+
+# Ensure unbound is running
+systemctl start unbound
 
 # Do we have Internet access?
 
