@@ -30,7 +30,7 @@ source /usr/src/eFa/eFa-settings.inc
 echo "Configuring pyzor..."
 
 # Fix deprecation warning message
-sed -i '/^#!\/usr\/bin\/python/ c\#!\/usr\/bin\/python -Wignore::DeprecationWarning' /usr/bin/pyzor
+sed -i '/^#!\/usr\/bin\/python/ c\#!\/usr\/bin\/python3 -Wignore::DeprecationWarning' /usr/bin/pyzor
 
 mkdir /var/spool/postfix/.pyzor
 ln -s /var/spool/postfix/.pyzor /var/www/.pyzor
