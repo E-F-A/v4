@@ -372,6 +372,9 @@ if [[ $centosver -eq 7 ]]; then
   sed -i "/^\[mariadb\-10\.2\]$/ c\[mariadb-10.4\]" /etc/my.cnf.d/mariadb-server.cnf
 fi
 
+# Force pyzor to use python3x
+sed -i '/^#!\/usr\/bin\/python/ c\#!\/usr\/bin\/python3 -Wignore::DeprecationWarning' /usr/bin/pyzor
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
