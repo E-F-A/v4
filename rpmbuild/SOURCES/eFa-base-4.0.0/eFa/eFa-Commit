@@ -1,8 +1,8 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.3 initial configuration commit script
+# eFa 4.0.4 initial configuration commit script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2021 https://efa-project.org
+# Copyright (C) 2013~2022 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -438,9 +438,9 @@ if [[ $startmariadb -eq 1 ]]; then
     echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
   fi
 
-  /usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='';"
+  /usr/bin/mysql -u root -p"$password" -e "DROP USER '';"
 
-  /usr/bin/mysql -u root -p"$password" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost');"
+  /usr/bin/mysql -u root -p"$password" -e "DROP USER 'root';"
 
   # Create the databases
   /usr/bin/mysql -u root -p"$password" -e "CREATE DATABASE sa_bayes"
@@ -499,7 +499,7 @@ EOF
 
   # Performance tweaks
   if [[ $centosver -eq 7 ]]; then
-    sed -i "/^\[mariadb-10.1\]$/ a\bind-address = 127.0.0.1\n\
+    sed -i "/^\[mariadb-10.4\]$/ a\bind-address = 127.0.0.1\n\
 innodb-defragment = 1 \n\
 innodb_buffer_pool_instances = 1 \n\
 innodb_buffer_pool_size = 1G \n\
@@ -841,7 +841,7 @@ if [[ $configsa -eq 1 ]]; then
 
   randompw
   SAUSERSQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$SAUSERSQLPWD') WHERE User='sa_user';"
+  /usr/bin/mysql -u root -p"$initpassword" -e "ALTER USER 'sa_user'@'localhost' IDENTIFIED BY '$SAUSERSQLPWD';"
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
@@ -908,7 +908,7 @@ if [[ $configmailwatch -eq 1 ]]; then
 
   randompw
   MAILWATCHSQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$MAILWATCHSQLPWD') WHERE User='mailwatch';"
+  /usr/bin/mysql -u root -p"$initpassword" -e "ALTER USER 'mailwatch'@'localhost' IDENTIFIED BY '$MAILWATCHSQLPWD';"
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
@@ -929,7 +929,7 @@ if [[ $configmailwatch -eq 1 ]]; then
   # Initialize token user
   randompw
   EFASQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$EFASQLPWD') WHERE User='efa';"
+  /usr/bin/mysql -u root -p"$initpassword" -e "ALTER USER 'efa'@'localhost' IDENTIFIED BY '$EFASQLPWD';"
   echo "EFASQLPWD:$EFASQLPWD" >> /etc/eFa/eFa-Config
 fi
 
@@ -945,7 +945,7 @@ fi
 if [[ $configsqlgrey -eq 1 ]]; then
   randompw
   SQLGREYSQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$SQLGREYSQLPWD') WHERE User='sqlgrey';"
+  /usr/bin/mysql -u root -p"$initpassword" -e "ALTER USER 'sqlgrey'@'localhost' IDENTIFIED BY '$SQLGREYSQLPWD';"
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
@@ -962,7 +962,7 @@ fi
 if [[ $configdmarc -eq 1 ]]; then
   randompw
   DMARCSQLPWD=$PASSWD
-  /usr/bin/mysql -u root -p"$initpassword" -e "UPDATE mysql.user SET Password=PASSWORD('$DMARCSQLPWD') WHERE User='opendmarc';"
+  /usr/bin/mysql -u root -p"$initpassword" -e "ALTER USER 'opendmarc'@'localhost' IDENTIFIED BY '$DMARCSQLPWD';"
   [ $? -ne 0 ] && exit 1
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
