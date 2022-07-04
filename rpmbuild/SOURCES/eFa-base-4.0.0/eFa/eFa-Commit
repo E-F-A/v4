@@ -435,12 +435,12 @@ if [[ $startmariadb -eq 1 ]]; then
   /usr/bin/mysqladmin -u root -p"$password" -h localhost.localdomain password "$password"
   
   if [[ centosver -eq 7 ]]; then
-    echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test'
+    echo y | /usr/bin/mysqladmin -u root -p"$password" drop 'test' >/dev/null 2>&1
   fi
 
-  /usr/bin/mysql -u root -p"$password" -e "DROP USER '';"
+  /usr/bin/mysql -u root -p"$password" -e "DROP USER '';" >/dev/null 2>&1
 
-  /usr/bin/mysql -u root -p"$password" -e "DROP USER 'root';"
+  /usr/bin/mysql -u root -p"$password" -e "DROP USER 'root';" >/dev/null 2>&1
 
   # Create the databases
   /usr/bin/mysql -u root -p"$password" -e "CREATE DATABASE sa_bayes"
