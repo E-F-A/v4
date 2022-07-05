@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   36.eFa%{?dist}
+Release:   37.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -45,18 +45,26 @@ Requires:  clamd >= 0.101.0-1
     # clamd			                             # epel    # MailScanner
 %{?el7:Requires:  mariadb104-server >= 3:10.4.17-1}
     # mariadb104-server                          # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb102-server >= 3:10.2.30-1}
+    # mariadb102-server                          # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u-server >= 1:10.1.35-1}
     # mariadb101u-server                         # IUS     # postfix, mailwatch
 %{?el7:Requires:  mariadb104 >= 3:10.4.17-1}
     # mariadb104                                 # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb102 >= 3:10.2.30-1}
+    # mariadb102                                 # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u >= 1:10.1.35-1}
     # mariadb101u                                # IUS     # postfix, mailwatch
 %{?el7:Requires:  mariadb104-common >= 3:10.4.17-1}
     # mariadb104-common                          # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb102-common >= 3:10.2.30-1}
+    # mariadb102-common                          # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u-common >= 1:10.1.35-1}
     # mariadb101u-common                         # IUS     # postfix, mailwatch
 %{?el7:Requires:  mariadb104-libs >= 3:10.4.17-1}
     # mariadb104-libs                            # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb102-libs >= 3:10.2.30-1}
+    # mariadb102-libs                            # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u-libs >= 1:10.1.35-1}
     # mariadb101u-libs                           # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u-errmsg >= 1:10.1.35-1}
@@ -551,6 +559,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Tue Jul 05 2022 eFa Project <shawniverson@efa-project.org> - 4.4.4-37
+- Obsoletes for CentOS 7 mariadb102 rpms
+
 * Mon Jul 04 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-36
 - Bump mariadb version for IUS/CentOS7
 
