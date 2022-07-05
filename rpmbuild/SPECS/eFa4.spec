@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   37.eFa%{?dist}
+Release:   38.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -67,6 +67,10 @@ Requires:  clamd >= 0.101.0-1
     # mariadb102-libs                            # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u-libs >= 1:10.1.35-1}
     # mariadb101u-libs                           # IUS     # postfix, mailwatch
+%{?el7:Requires:  mariadb104-errmsg >= 3:10.4.17-1}
+    # mariadb104-errmsg                          # IUS     # postfix, mailwatch
+%{?el7:Obsoletes:  mariadb102-errmsg >= 3:10.2.30-1}
+    # mariadb101u-errmsg                         # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u-errmsg >= 1:10.1.35-1}
     # mariadb101u-errmsg                         # IUS     # postfix, mailwatch
 %{?el7:Obsoletes:  mariadb101u-config >= 1:10.1.35-1}
@@ -559,7 +563,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
-* Tue Jul 05 2022 eFa Project <shawniverson@efa-project.org> - 4.4.4-37
+* Tue Jul 05 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-38
+- Obsoletes and requires for mariadb104-errmsg
+
+* Tue Jul 05 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-37
 - Obsoletes for CentOS 7 mariadb102 rpms
 
 * Mon Jul 04 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-36
