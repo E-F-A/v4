@@ -1,8 +1,8 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.3 build script version 20200912
+# eFa 4.0.4 build script version 20200912
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2021 https://efa-project.org
+# Copyright (C) 2013~2022 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -148,11 +148,15 @@ case "$action" in
        if [[ ! -f /etc/yum.repos.d/eFa4-testing.repo ]]; then
             if [[ $RELEASE -eq 7 ]]; then
                 logthis "Adding eFa CentOS 7 Testing Repo"
-                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                mkdir -p /usr/src/efa
+                curl -sSL $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project > /usr/src/eFa/RPM-GPG-KEY-eFa-Project
+                rpm --import /usr/src/eFa/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/eFa4-testing.repo -o /etc/yum.repos.d/eFa4-testing.repo
             else
                 logthis "Adding eFa CentOS 8 Testing Repo"
-                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                mkdir -p /usr/src/eFa
+                curl -sSL $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project > /usr/src/eFa/RPM-GPG-KEY-eFa-Project
+                rpm --import /usr/src/eFa/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8-testing.repo -o /etc/yum.repos.d/eFa4-testing.repo
             fi
        fi
@@ -162,11 +166,15 @@ case "$action" in
        if [[ ! -f /etc/yum.repos.d/eFa4-dev.repo ]]; then
             if [[ $RELEASE -eq 7 ]]; then
                 logthis "Adding eFa CentOS 7 Dev Repo"
-                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                mkdir -p /usr/src/efa
+                curl -sSL $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project > /usr/src/eFa/RPM-GPG-KEY-eFa-Project
+                rpm --import /usr/src/eFa/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/eFa4-dev.repo -o /etc/yum.repos.d/eFa4-dev.repo
             else
                 logthis "Adding eFa CentOS 8 Dev Repo"
-                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                mkdir -p /usr/src/efa
+                curl -sSL $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project > /usr/src/eFa/RPM-GPG-KEY-eFa-Project
+                rpm --import /usr/src/eFa/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8-dev.repo -o /etc/yum.repos.d/eFa4-dev.repo
             fi
        fi
@@ -175,11 +183,15 @@ case "$action" in
     *)  if [ ! -f /etc/yum.repos.d/eFa4.repo ]; then
             if [[ $RELEASE -eq 7 ]]; then
                 logthis "Adding eFa Repo"
-                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                mkdir -p /usr/src/efa
+                curl -sSL $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project > /usr/src/eFa/RPM-GPG-KEY-eFa-Project
+                rpm --import /usr/src/eFa/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/eFa4.repo -o /etc/yum.repos.d/eFa4.repo
             else
                 logthis "Adding eFa Repo"
-                rpm --import $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project
+                mkdir -p /usr/src/efa
+                curl -sSL $mirror/rpm/eFa4/RPM-GPG-KEY-eFa-Project > /usr/src/eFa/RPM-GPG-KEY-eFa-Project
+                rpm --import /usr/src/eFa/RPM-GPG-KEY-eFa-Project
                 curl -L $mirror/rpm/eFa4/CentOS8/eFa4-centos8.repo -o /etc/yum.repos.d/eFa4.repo
             fi
         fi
