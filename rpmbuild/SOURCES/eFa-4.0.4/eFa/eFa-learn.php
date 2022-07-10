@@ -55,7 +55,7 @@ if (file_exists('conf.php')) {
         # Validate trusted networks, if present
         $remote_ip = $_SERVER['REMOTE_ADDR'];
 
-        if (file_exists('/etc/sysconfig/eFa_trusted_networks')) {
+        if (file_exists('/etc/sysconfig/eFa_trusted_networks') && filesize("/etc/sysconfig/eFa_trusted_networks") > 0) {
             $is_trusted_network = 0 ;
             $file = fopen('/etc/sysconfig/eFa_trusted_networks', 'r');
             if ($file) {

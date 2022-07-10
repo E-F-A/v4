@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   38.eFa%{?dist}
+Release:   39.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -563,6 +563,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Jul 10 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-39
+- Fixes for trusted networks handling
+
 * Tue Jul 05 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-38
 - Obsoletes and requires for mariadb104-errmsg
 
