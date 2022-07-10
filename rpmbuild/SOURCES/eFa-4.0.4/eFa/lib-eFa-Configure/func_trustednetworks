@@ -23,13 +23,13 @@ function func_ask-trustednets() {
       echo -e ""
       rLen=${#RULES[@]}
       padding="                        "
-      for (( y=0; y<$rLen; y+=2 ));
+      for (( y=0; y<$rLen; y+=1 ));
         do
           # Fix layout spacing up to 999 rows..
           if (( $((y+1)) < 10 )); then echo -n "  "
           elif (( $((y+1)) < 100 )); then echo -n " "
           fi
-          echo -e "$((y/2+1))) ${RULES[$y]} ${padding:${#RULES[$y]}}"
+          echo -e "$((y+1))) ${RULES[$y]} ${padding:${#RULES[$y]}}"
         done
       echo -e ""
       echo -e "n) Add new trusted network"
@@ -42,7 +42,7 @@ function func_ask-trustednets() {
       case $choice in
              +([0-9]))
                 if [[ $choice > "0" && $choice < $((rLen+1)) ]]; then
-                  ENTIP=${RULES[$((choice*2-2))]}
+                  ENTIP=${RULES[$((choice-1))]}
                   echo -e "Entry Selected: $ENTIP" 
                   ENTIP=$(echo $ENTIP | sed -e 's|/|\\/|')
                   local flag=0
