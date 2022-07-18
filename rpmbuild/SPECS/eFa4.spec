@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   39.eFa%{?dist}
+Release:   40.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -432,6 +432,7 @@ mv eFa/eFa-Weekly-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Daily-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+mv eFa/eFa-Monitor  $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/eFa-Monitor
 mv eFa/eFa-Tokens.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-logrotate $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
@@ -543,6 +544,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_localstatedir}/eFa/lib/eFa-Configure
 %attr(0755, root, root) %{_sbindir}/eFa-Configure
 %attr(0755, root, root) %{_sbindir}/eFa-Monitor-cron
+%config(noreplace) %{_sysconfdir}/sysconfig/eFa-Monitor
 %attr(0755, root, root) %{_sbindir}/eFa-Backup-cron
 %attr(0755, root, root) %{_sbindir}/mysqltuner.pl
 %attr(0755, root, root) %{_sbindir}/eFa-Weekly-DMARC
