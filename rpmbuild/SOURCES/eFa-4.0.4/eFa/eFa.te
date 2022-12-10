@@ -388,7 +388,7 @@ allow mscan_t initrc_t:unix_stream_socket connectto;
 allow mscan_t efasql_etc_t:file { read open ioctl getattr };
 allow mscan_t mailwatchsql_etc_t:file { read open ioctl getattr };
 allow mscan_t spamd_compiled_t:dir { search };
-allow mscan_t spamd_compiled_t:file { open read getattr ioctl execute };
+allow mscan_t spamd_compiled_t:file { open read getattr ioctl execute map };
 allow mscan_t sysfs_t:dir { read };
 allow mscan_t rpm_exec_t:file { getattr };
 allow mscan_t ldconfig_exec_t:file { getattr execute };
