@@ -565,6 +565,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Mar 04 2023 eFa Project <shawniverson@efa-project.org> - 4.0.4-40
+- Add IUS Archive repo for centos7 hosts
+
 * Sun Jul 10 2022 eFa Project <shawniverson@efa-project.org> - 4.0.4-39
 - Fixes for trusted networks handling
 
