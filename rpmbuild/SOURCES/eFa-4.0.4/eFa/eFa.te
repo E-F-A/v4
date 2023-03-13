@@ -294,7 +294,7 @@ dontaudit httpd_sys_script_t dhcpc_t:dir { getattr search };
 dontaudit httpd_sys_script_t dhcpc_t:file { read open };
 dontaudit httpd_sys_script_t fail2ban_t:dir { getattr search };
 dontaudit httpd_sys_script_t fail2ban_t:file { read open };
-dontaudit httpd_sys_script_t 
+
 # allow spamassassin and mailscanner lint
 allow httpd_sys_script_t etc_mail_t:dir search;
 allow httpd_sys_script_t spamd_var_lib_t:dir { getattr search read open };
