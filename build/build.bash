@@ -1,8 +1,8 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.4 build script version 20200912
+# eFa 4.0.4 build script version 20230304
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2022 https://efa-project.org
+# Copyright (C) 2013~2023 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -227,6 +227,18 @@ if [[ $RELEASE -eq 7 ]]; then
         if [ $? -eq 0 ]; then
             logthis "IUS repo installed"
             rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7
+
+            # Add IUS Archive repo
+            cat > /etc/yum.repos.d/ius-archive.repo << 'EOF'
+[ius-archive]
+name = IUS for Enterprise Linux 7 - Archive - $basearch
+baseurl = https://repo.ius.io/archive/7/$basearch/
+enabled = 1
+repo_gpgcheck = 0
+gpgcheck = 1
+gpgkey = https://repo.ius.io/RPM-GPG-KEY-IUS-7
+EOF
+
         else
             logthis "ERROR: IUS installation failed"
             logthis "^^^^^^^^^^ SCRIPT ABORTED ^^^^^^^^^^"

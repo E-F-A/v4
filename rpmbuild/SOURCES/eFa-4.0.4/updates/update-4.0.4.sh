@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.4-x cumulative updates script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2021 https://efa-project.org
+# Copyright (C) 2013~2023 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -374,6 +374,19 @@ fi
 
 # Force pyzor to use python3x
 sed -i '/^#!\/usr\/bin\/python/ c\#!\/usr\/bin\/python3 -Wignore::DeprecationWarning' /usr/bin/pyzor
+
+# Add IUS Archive repo
+if [[ $centosver -eq 7 && ! -f /etc/yum.repos.d/ius-archive.repo ]]; then
+    cat > /etc/yum.repos.d/ius-archive.repo << 'EOF'
+[ius-archive]
+name = IUS for Enterprise Linux 7 - Archive - $basearch
+baseurl = https://repo.ius.io/archive/7/$basearch/
+enabled = 1
+repo_gpgcheck = 0
+gpgcheck = 1
+gpgkey = https://repo.ius.io/RPM-GPG-KEY-IUS-7
+EOF
+fi
 
 # Enable maintenance mode if not enabled
 MAINT=0
