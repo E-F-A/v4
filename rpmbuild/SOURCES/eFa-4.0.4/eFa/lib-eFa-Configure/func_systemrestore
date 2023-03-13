@@ -197,16 +197,21 @@ function func_system-restore() {
                           /bin/cp -f /var/eFa/backup/backup/etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf
                           /bin/cp -rf /var/eFa/backup/backup/etc/postfix/* /etc/postfix
                           /bin/cp -rf /var/eFa/backup/backup/etc/opendkim/* /etc/opendkim
+                          /bin/cp -f /var/eFa/backup/backup/etc/opendmarc.conf /etc
+                          /bin/cp -rf /var/eFa/backup/backup/etc/opendmarc/* /etc/opendmarc
 
                           # Fix ownership
                           chown -R postfix:postfix /etc/postfix
                           chown -R opendkim:opendkim /etc/opendkim
+                          chown -R opendmarc:opendmarc /etc/opendmarc
 
                           # Postmaps
                           postmap /etc/postfix/helo_access
                           postmap /etc/postfix/recipient_access
+                          postmap /etc/postfix/recipient_canonical
                           postmap /etc/postfix/sasl_passwd
                           postmap /etc/postfix/sender_access
+                          postmap /etc/postfix/sender_canonical
                           postmap /etc/postfix/transport
                           postmap /etc/postfix/virtual
 
@@ -274,9 +279,9 @@ function func_system-restore() {
                       if [[ $HOSTNAME != $OLDHOSTNAME || $DOMAINNAME != $OLDDOMAINNAME ]]; then
                         mysql -u root --password=$MYSQLROOTPWD mailscanner -e "\
                         LOCK TABLES maillog WRITE; \
-                        ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
+                        ALTER TABLE maillog MODIFY COLUMN \`last_update\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
                         UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
-                        ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; \
+                        ALTER TABLE maillog MODIFY COLUMN \`last_update\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; \
                         LOCK TABLES mtalog WRITE; \
                         UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
                         UNLOCK TABLES;" 
