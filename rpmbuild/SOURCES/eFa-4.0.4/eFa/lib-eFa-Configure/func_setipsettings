@@ -139,9 +139,9 @@ func_setipsettings(){
 
     mysql -u mailwatch --password=$MAILWATCHPWD mailscanner -e "\
     LOCK TABLES maillog WRITE; \
-    ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
+    ALTER TABLE maillog MODIFY COLUMN \`last_update\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
     UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
-    ALTER TABLE maillog MODIFY COLUMN \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; \
+    ALTER TABLE maillog MODIFY COLUMN \`last_update\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP; \
     LOCK TABLES mtalog WRITE; \
     UPDATE mtalog SET host='$HOSTNAME' WHERE host='$OLDHOSTNAME'; \
     UNLOCK TABLES;"
