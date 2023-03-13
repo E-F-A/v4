@@ -108,7 +108,7 @@ require {
     type dhcpc_t;
     type admin_home_t;
     type fail2ban_t;
-    class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename };
+    class file { getattr open read ioctl execute create lock append write unlink setattr execute_no_trans rename map };
     class dir { getattr read open search write add_name setattr create remove_name ioctl rmdir };
     class sock_file { getattr write };
     class unix_stream_socket connectto;
