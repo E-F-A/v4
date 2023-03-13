@@ -432,6 +432,7 @@ mv eFa/eFa-Weekly-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mv eFa/eFa-Daily-DMARC $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig
 mv eFa/eFa-Monitor  $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/eFa-Monitor
 mv eFa/eFa-Tokens.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 mv eFa/eFa-Backup.cron $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
