@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.5
-Release:   4.eFa%{?dist}
+Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -418,6 +418,7 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/eFa-release.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/eFa-learn.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/CustomAction.pm $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
+mv eFa/MailWatchConf.pm $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/efatokens.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/efatokens_update.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/eFavmtools.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
@@ -566,6 +567,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens.sql
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens_update.sql
 %attr(0644, root, root) %{_localstatedir}/eFa/lib/token/CustomAction.pm
+%attr(0644, root, root) %{_localstatedir}/eFa/lib/token/MailWatchConf.pm
 %attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-release.php
 %attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-learn.php
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
@@ -573,6 +575,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Thu Jul 13 2023 eFa Project <bilias@edu.physics.uoc.gr> - 4.0.5-1
+- Allow use of remote MySQL database
+- Overwrite MailWatchConf.pm during update
+
 * Sat Mar 04 2023 eFa Project <shawniverson@efa-project.org> - 4.0.4-40
 - Add IUS Archive repo for centos7 hosts
 

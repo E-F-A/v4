@@ -65,4 +65,19 @@ fi
 mv /usr/share/MailScanner/perl/custom/CustomAction.pm /var/eFa/backup/CustomAction.pm
 cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
 
+# Refresh MailWatchConf.pm
+if [[ -f /var/eFa/backup/MailWatchConf.pm.old ]]; then
+  rm -f /var/eFa/backup/MailWatchConf.pm.old
+fi
+if [[ -f /var/eFa/backup/MailWatchConf.pm ]]; then
+  mv /var/eFa/backup/MailWatchConf.pm /var/eFa/backup/MailWatchConf.pm.old
+fi
+mv /usr/share/MailScanner/perl/custom/MailWatchConf.pm /var/eFa/backup/MailWatchConf.pm
+cp /var/eFa/lib/token/MailWatchConf.pm /usr/share/MailScanner/perl/custom/MailWatchConf.pm
+
+# Update DB_HOST in conf.php to read from /etc/eFa/MailWatch-Config
+if [[ -z $(grep -w MAILWATCHSQLHOST /var/www/html/mailscanner/conf.php) ]]; then
+   sed -i "/^define('DB_HOST'/ c\$efa_config = preg_grep('\/^MAILWATCHSQLHOST\/', file('\/etc\/eFa/MailWatch-Config'));\nforeach(\$efa_config as \$num => \$line) {\n  if (\$line) {\n    \$db_host_tmp = chop(preg_replace('\/^MAILWATCHSQLHOST:(.*)\/','\$1', \$line));\n  }\n}\ndefine('DB_HOST', \$db_host_tmp);" /var/www/html/mailscanner/conf.php
+fi
+
 exit $retval
