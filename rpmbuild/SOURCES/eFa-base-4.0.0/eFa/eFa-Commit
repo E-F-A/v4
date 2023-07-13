@@ -91,8 +91,11 @@ magenta='\E[00;35'
 cyan='\E[00;36m'
 clean='\e[00m'
 
-if [[ -f /etc/eFa/MySQL-Config && -n $(grep MYSQLROOTPWD /etc/eFa/MySQL-Config) ]]; then
-  initpassword=$(grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/^.*://')
+if [[ -f /etc/eFa/MySQL-Config && -n $(grep -w ^MYSQLROOTPWD /etc/eFa/MySQL-Config) ]]; then
+  initpassword=$(grep -w ^MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/^.*://')
+  if [[ -n $(grep ^MYSQLHOST /etc/eFa/MySQL-Config) ]]; then
+    mysqlhost=$(grep -w ^MYSQLHOST /etc/eFa/MySQL-Config | sed 's/^.*://')
+  fi
 else
   initpassword="eFaPr0j3ct"
 fi
@@ -850,6 +853,7 @@ if [[ $configsa -eq 1 ]]; then
   sed -i "/user_awl_sql_password/ c\    user_awl_sql_password           $SAUSERSQLPWD" /etc/MailScanner/spamassassin.conf
   [ $? -ne 0 ] && exit 1
   echo "SAUSERSQLPWD:$SAUSERSQLPWD" > /etc/eFa/SA-Config
+  echo "SAUSERSQLHOST:localhost" >> /etc/eFa/SA-Config
   [ $? -ne 0 ] && exit 1
   SAUSERSQLPWD=
 fi
@@ -913,6 +917,7 @@ if [[ $configmailwatch -eq 1 ]]; then
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
   echo "MAILWATCHSQLPWD:$MAILWATCHSQLPWD" > /etc/eFa/MailWatch-Config
+  echo "MAILWATCHSQLHOST:localhost" >> /etc/eFa/MailWatch-Config
   MAILWATCHSQLPWD=
 
   # Upgrade database now
@@ -926,11 +931,18 @@ if [[ $configmailwatch -eq 1 ]]; then
   cp /var/eFa/lib/token/CustomAction.pm /usr/share/MailScanner/perl/custom/CustomAction.pm
   [ $? -ne 0 ] && exit 1
 
+  # Copy MailWatchConf.pm into position
+  rm -f /usr/share/MailScanner/perl/custom/MailWatchConf.pm
+  [ $? -ne 0 ] && exit 1
+  cp /var/eFa/lib/token/MailWatchConf.pm /usr/share/MailScanner/perl/custom/MailWatchConf.pm
+  [ $? -ne 0 ] && exit 1
+
   # Initialize token user
   randompw
   EFASQLPWD=$PASSWD
   /usr/bin/mysql -u root -p"$initpassword" -e "ALTER USER 'efa'@'localhost' IDENTIFIED BY '$EFASQLPWD';"
   echo "EFASQLPWD:$EFASQLPWD" >> /etc/eFa/eFa-Config
+  echo "EFASQLHOST:localhost" >> /etc/eFa/eFa-Config
 fi
 
 if [[ $configsasl -eq 1 ]]; then
@@ -952,6 +964,7 @@ if [[ $configsqlgrey -eq 1 ]]; then
   sed -i "/^db_pass =/ c\db_pass = $SQLGREYSQLPWD" /etc/sqlgrey/sqlgrey.conf
   [ $? -ne 0 ] && exit 1
   echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" > /etc/eFa/SQLGrey-Config
+  echo "SQLGREYSQLHOST:localhost" >> /etc/eFa/SQLGrey-Config
   [ $? -ne 0 ] && exit 1
   SQLGREYSQLPWD=
   # Start sqlgrey to initialize db tables
@@ -967,6 +980,7 @@ if [[ $configdmarc -eq 1 ]]; then
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
   echo "DMARCSQLPWD:$DMARCSQLPWD" > /etc/eFa/openDMARC-Config
+  echo "DMARCSQLHOST:localhost" >> /etc/eFa/openDMARC-Config
   [ $? -ne 0 ] && exit 1
   DMARCSQLPWD=
 
@@ -1047,6 +1061,8 @@ if [[ $configmysql -eq 1 ]]; then
   /usr/bin/mysqladmin -u root -p$initpassword password "$MYSQLROOTPWD"
   [ $? -ne 0 ] && exit 1
   echo "MYSQLROOTPWD:$MYSQLROOTPWD" > /etc/eFa/MySQL-Config
+  [ $? -ne 0 ] && exit 1
+  echo "MYSQLHOST:localhost" >> /etc/eFa/MySQL-Config
   [ $? -ne 0 ] && exit 1
   echo "[client]" > /root/.my.cnf
   [ $? -ne 0 ] && exit 1
