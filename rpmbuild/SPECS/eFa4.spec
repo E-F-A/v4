@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2022 https://efa-project.org
+# Copyright (C) 2013~2023 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 
 Name:      eFa
 Summary:   eFa Maintenance rpm
-Version:   4.0.4
-Release:   40.eFa%{?dist}
+Version:   4.0.5
+Release:   4.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -525,6 +525,13 @@ if [[ "$1" == "2" || "$flag" == "1" ]]; then
     if [[ %{version} == "4.0.4" || "$flag" == "1" ]]; then
      {
        /bin/sh %{_usrsrc}/eFa/updates/update-4.0.4.sh
+       [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
+     } 2>&1 | tee -a /var/log/eFa/update.log
+   fi
+
+    if [[ %{version} == "4.0.5" || "$flag" == "1" ]]; then
+     {
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.5.sh
        [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
      } 2>&1 | tee -a /var/log/eFa/update.log
    fi

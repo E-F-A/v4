@@ -20,7 +20,7 @@
 set -e
 
 # Database and History File Info
-DBHOST='localhost'
+DBHOST="`grep ^DMARCSQLHOST /etc/eFa/openDMARC-Config | sed 's/^.*://'`"
 DBUSER='opendmarc'
 DBPASS="`grep ^DMARCSQLPWD /etc/eFa/openDMARC-Config | sed 's/^.*://'`"
 DBNAME='opendmarc'
