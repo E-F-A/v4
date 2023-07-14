@@ -152,7 +152,7 @@ func_setipsettings(){
     sed -i "/^ServerName\s/ c\ServerName $HOSTNAME.$DOMAINNAME:443" /etc/httpd/conf.d/ssl.conf
 
     # Issue #155 Change domainname in opendmarc reports
-    DBHOST='localhost'
+    DBHOST="`grep ^DMARCSQLHOST /etc/eFa/openDMARC-Config | sed 's/^.*://'`"
     DBUSER='opendmarc'
     DBPASS="`grep ^DMARCSQLPWD /etc/eFa/openDMARC-Config | sed 's/^.*://'`"
     DBNAME='opendmarc'
