@@ -575,7 +575,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
-* Thu Jul 13 2023 eFa Project <bilias@edu.physics.uoc.gr> - 4.0.5-1
+* Thu Jul 13 2023 Giannis Kapetanakis <bilias@edu.physics.uoc.gr> - 4.0.5-1
 - Allow use of remote MySQL database
 - Overwrite MailWatchConf.pm during update
 

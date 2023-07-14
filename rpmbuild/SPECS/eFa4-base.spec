@@ -117,7 +117,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sbindir}/eFa-Post-Init
 
 %changelog
-* Fri Jul 14 2023 Kapetanakis Giannis <bilias@edu.physics.uoc.gr> - 4.0.0-2
+* Fri Jul 14 2023 Giannis Kapetanakis <bilias@edu.physics.uoc.gr> - 4.0.0-2
 - Add support for remote MySQL server
 
 * Sat Jan 19 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
