@@ -962,6 +962,7 @@ if [[ $configsqlgrey -eq 1 ]]; then
   /usr/bin/mysql -u root -p"$initpassword" -e "FLUSH PRIVILEGES;"
   [ $? -ne 0 ] && exit 1
   sed -i "/^db_pass =/ c\db_pass = $SQLGREYSQLPWD" /etc/sqlgrey/sqlgrey.conf
+  sed -i "/^db_host =/ c\db_host = $SQLGREYSQLHOST" /etc/sqlgrey/sqlgrey.conf
   [ $? -ne 0 ] && exit 1
   echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" > /etc/eFa/SQLGrey-Config
   echo "SQLGREYSQLHOST:localhost" >> /etc/eFa/SQLGrey-Config
