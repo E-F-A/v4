@@ -30,7 +30,6 @@ my($user) = $ENV{'USER'};
 setlogsock('unix');
 
 my($db_name) = 'efa';
-my($db_host) = 'localhost';
 my($db_user) = 'efa';
 # Issue #66 Grab Passwords from eFa-Config
 my($fh);
@@ -45,6 +44,10 @@ if (!$fh) {
 my($db_pass) = grep(/^EFASQLPWD/,<$fh>);
 $db_pass =~ s/EFASQLPWD://;
 $db_pass =~ s/\n//;
+seek $fh, 0, 0;
+my($db_host) = grep(/^EFASQLHOST/,<$fh>);
+$db_host =~ s/EFASQLHOST://;
+$db_host =~ s/\n//;
 close($fh);
 
 my($sql,$sth,$dbh);

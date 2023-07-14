@@ -79,13 +79,20 @@ if (file_exists('conf.php')) {
             }
         }
 
-        $efa_config = preg_grep('/^EFASQLPWD/', file('/etc/eFa/eFa-Config'));
+        $efa_config = preg_grep('/^EFASQL/', file('/etc/eFa/eFa-Config'));
+        $efa_pattern = array(
+            0 => '/^EFASQLPWD:(.*)/',
+            1 => '/^EFASQLHOST:(.*)/',
+        );
+        $tmp = array();
         foreach($efa_config as $num => $line) {
             if ($line) {
-                $db_pass_tmp = chop(preg_replace('/^EFASQLPWD:(.*)/','$1', $line));
+                $tmp[] = chop(preg_replace($efa_pattern, '$1', $line));
             }
         }
-        $efadb = new mysqli('localhost', 'efa', $db_pass_tmp, 'efa');
+        $db_pass_tmp = $tmp[0];
+        $db_host_tmp = $tmp[1];
+        $efadb = new mysqli($db_host_tmp, 'efa', $db_pass_tmp, 'efa');
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         $sql = "SELECT id,token FROM tokens WHERE mid = '$mid'";
         $result = $efadb->query($sql);

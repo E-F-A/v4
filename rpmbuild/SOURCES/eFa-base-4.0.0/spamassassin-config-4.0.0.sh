@@ -136,7 +136,8 @@ sed -i "/^# loadplugin Mail::SpamAssassin::Plugin::AntiVirus/ c\loadplugin Mail:
 cat > /etc/cron.daily/trim-txrep << 'EOF'
 #!/bin/sh
 password=$(grep ^SAUSERSQLPWD /etc/eFa/SA-Config | awk -F':' '{print $2}')
-/usr/bin/mysql -usa_user -p$password -Dsa_bayes -e"DELETE FROM txrep WHERE last_hit <= (now() - INTERVAL 120 day);"
+host=$(grep -w ^SAUSERSQLHOST /etc/eFa/SA-Config | awk -F':' '{print $2}')
+/usr/bin/mysql -usa_user -h $host -p$password -Dsa_bayes -e"DELETE FROM txrep WHERE last_hit <= (now() - INTERVAL 120 day);"
 exit 0
 EOF
 

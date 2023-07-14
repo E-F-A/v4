@@ -1,6 +1,6 @@
 #
 # CustomAction.pm
-# Version 20210130
+# Version 20230713
 # +--------------------------------------------------------------------+
 # Copyright (C) 2012~2022 http://www.efa-project.org
 #
@@ -86,7 +86,6 @@ sub EFACreateToken {
   my ($message) = @_;
   my($dbh, $sth, $sql);
   my($db_name) = 'efa';
-  my($db_host) = 'localhost';
   my($db_user) = 'efa';
   my($fh);
   my($pw_config) = '/etc/eFa/eFa-Config';
@@ -98,6 +97,10 @@ sub EFACreateToken {
   my($db_pass) = grep(/^EFASQLPWD/,<$fh>);
   $db_pass =~ s/EFASQLPWD://;
   $db_pass =~ s/\n//;
+  seek $fh, 0, 0;
+  my($db_host) = grep(/^EFASQLHOST/,<$fh>);
+  $db_host =~ s/EFASQLHOST://;
+  $db_host =~ s/\n//;
   close($fh);
   # Connect to the database
   $dbh = DBI->connect("DBI:mysql:database=$db_name;host=$db_host",

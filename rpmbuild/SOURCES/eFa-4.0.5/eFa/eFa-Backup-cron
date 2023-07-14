@@ -24,6 +24,7 @@ action="$1"
 # Variables
 #----------------------------------------------------------------#
 BACKUPDIR="/var/eFa/backup"
+MYSQLHOST="`grep MYSQLHOST /etc/eFa/MySQL-Config | sed 's/.*://'`"
 MYSQLROOTPWD="`grep MYSQLROOTPWD /etc/eFa/MySQL-Config | sed 's/.*://'`"
 TMPDIR="/var/eFa/backup/tmp"
 DAYSTOKEEP=5
@@ -64,7 +65,7 @@ function start_backup()
 
   # Perform SQL Dump
   mkdir -p $WORKINGDIR/sql
-  mysqldump --user=root --password=$MYSQLROOTPWD --all-databases --events > $WORKINGDIR/sql/backup.sql
+  mysqldump --user=root --host=$MYSQLHOST --password=$MYSQLROOTPWD --all-databases --events --result-file=$WORKINGDIR/sql/backup.sql
 
   # Backup Postfix Settings
   mkdir -p $WORKINGDIR/etc/postfix/ssl

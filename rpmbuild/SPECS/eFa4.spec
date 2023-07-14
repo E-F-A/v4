@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2022 https://efa-project.org
+# Copyright (C) 2013~2023 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 
 Name:      eFa
 Summary:   eFa Maintenance rpm
-Version:   4.0.4
-Release:   40.eFa%{?dist}
+Version:   4.0.5
+Release:   1.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -418,6 +418,7 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/eFa-release.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/eFa-learn.php $RPM_BUILD_ROOT%{_localstatedir}/www/html/mailscanner/
 mv eFa/CustomAction.pm $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
+mv eFa/MailWatchConf.pm $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/efatokens.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/efatokens_update.sql $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/token
 mv eFa/eFavmtools.te $RPM_BUILD_ROOT%{_localstatedir}/eFa/lib/selinux
@@ -529,6 +530,13 @@ if [[ "$1" == "2" || "$flag" == "1" ]]; then
      } 2>&1 | tee -a /var/log/eFa/update.log
    fi
 
+    if [[ %{version} == "4.0.5" || "$flag" == "1" ]]; then
+     {
+       /bin/sh %{_usrsrc}/eFa/updates/update-4.0.5.sh
+       [[ $? -ne 0 ]] && echo "Error while updating eFa, Please visit https://efa-project.org to report the commands executed above." && exit 0
+     } 2>&1 | tee -a /var/log/eFa/update.log
+   fi
+
     # cleanup if sucessful
     rm -rf /usr/src/eFa
     echo "eFa-%{version}" > %{_sysconfdir}/eFa-Version
@@ -559,6 +567,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens.sql
 %attr(0755, root, root) %{_localstatedir}/eFa/lib/token/efatokens_update.sql
 %attr(0644, root, root) %{_localstatedir}/eFa/lib/token/CustomAction.pm
+%attr(0644, root, root) %{_localstatedir}/eFa/lib/token/MailWatchConf.pm
 %attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-release.php
 %attr(0644, root, root) %{_localstatedir}/www/html/mailscanner/eFa-learn.php
 %attr(0755, root, root) %{_sysconfdir}/cron.daily/eFa-Backup.cron
@@ -566,6 +575,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Thu Jul 13 2023 Giannis Kapetanakis <bilias@edu.physics.uoc.gr> - 4.0.5-1
+- Allow use of remote MySQL database
+- Overwrite MailWatchConf.pm during update
+
 * Sat Mar 04 2023 eFa Project <shawniverson@efa-project.org> - 4.0.4-40
 - Add IUS Archive repo for centos7 hosts
 

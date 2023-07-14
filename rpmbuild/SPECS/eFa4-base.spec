@@ -20,7 +20,7 @@
 Name:      eFa-base
 Summary:   eFa-base files rpm
 Version:   4.0.0
-Release:   1.eFa%{?dist}
+Release:   2.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -117,5 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) %{_sbindir}/eFa-Post-Init
 
 %changelog
+* Fri Jul 14 2023 Giannis Kapetanakis <bilias@edu.physics.uoc.gr> - 4.0.0-2
+- Add support for remote MySQL server
+
 * Sat Jan 19 2019 eFa Project <shawniverson@efa-project.org> - 4.0.0-1
 - Intitial Build <https://efa-project.org>

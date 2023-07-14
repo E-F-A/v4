@@ -26,7 +26,7 @@ Summary:       SQLGrey Web Interface Legacy
 Name:          sqlgreywebinterface
 Version:       1.1.9
 Epoch:         1
-Release:       5.eFa%{?dist}
+Release:       6.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/flok99/sgwi
@@ -57,6 +57,7 @@ cp -ra * %{buildroot}%{_localstatedir}/www/html/sgwi
 # Add efa password retrieval
 sed -i '/^$db_user/ c\$db_user        = "sqlgrey";' %{buildroot}%{_localstatedir}/www/html/sgwi/includes/config.inc.php
 sed -i "/^\$db_pass/ c\$efa_array = preg_grep('/^SQLGREYSQLPWD/', file('/etc/eFa/SQLGrey-Config'));\nforeach(\$efa_array as \$num => \$line) {\n  if (\$line) {\n    \$db_pass = chop(preg_replace('/^SQLGREYSQLPWD:(.*)/','\$1',\$line));\n  }\n}" %{buildroot}%{_localstatedir}/www/html/sgwi/includes/config.inc.php
+sed -i "/^\$db_hostname/ c\$efa_array = preg_grep('/^SQLGREYSQLHOST/', file('/etc/eFa/SQLGrey-Config'));\nforeach(\$efa_array as \$num => \$line) {\n  if (\$line) {\n    \$db_hostname = chop(preg_replace('/^SQLGREYSQLHOST:(.*)/','\$1',\$line));\n  }\n}" %{buildroot}%{_localstatedir}/www/html/sgwi/includes/config.inc.php
 
 # Remove doc info
 rm %{buildroot}%{_localstatedir}/www/html/sgwi/{README.md,license.txt,readme.txt}
@@ -86,6 +87,9 @@ rm %{buildroot}%{_localstatedir}/www/html/sgwi/{README.md,license.txt,readme.txt
 %{_localstatedir}/www/html/sgwi/includes/opt_in_out.inc.php
 
 %changelog
+* Fri Jul 14 2022 Giannis Kapetanakis <bilias@edu.physics.uoc.gr> - 1.1.9-6
+- Allow interface to connect to remote MySQL server
+
 * Mon Feb 15 2021 Shawn Iverson <shawniverson@efa-project.org> - 1.1.9-5
 - Add eFa password retrieval for database access
 
