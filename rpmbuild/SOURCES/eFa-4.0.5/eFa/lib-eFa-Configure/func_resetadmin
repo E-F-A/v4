@@ -9,7 +9,10 @@ func_resetadmin() {
   echo -e "$green[eFa]$clean if it exists and give you the option to reset the password."
   echo -e ""
 
-  ADMINUSER=$(/usr/bin/mysql -s -N -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "select username from users where type = 'A' limit 1")
+  MAILWATCHPW=`grep MAILWATCHSQLPWD /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
+  MAILWATCHHOST=`grep MAILWATCHSQLHOST /etc/eFa/MailWatch-Config | awk -F':' '{print $2}'`
+
+  ADMINUSER=$(/usr/bin/mysql -s -N -u mailwatch -h $MAILWATCHHOST -p"$MAILWATCHPW" mailscanner -e "select username from users where type = 'A' limit 1")
 
   # What if there isn't an admin account?
   if [[ -z $ADMINUSER ]]; then
@@ -24,10 +27,10 @@ func_resetadmin() {
 
         if [[ $ADMINUSER =~ ^[A-Za-z0-9]+$ ]]; then
           #  Check for an existing user
-          CHECKDUPE=$(/usr/bin/mysql -s -N -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "select username from users where username = '$ADMINUSER'")
+          CHECKDUPE=$(/usr/bin/mysql -s -N -u mailwatch -h $MAILWATCHHOST -p"$MAILWATCHPW" mailscanner -e "select username from users where username = '$ADMINUSER'")
           if [[ -z $CHECKDUPE ]]; then
             # Create account
-            /usr/bin/mysql -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "INSERT into users (username,fullname,type) VALUES('$ADMINUSER','$ADMINUSER','A')"
+            /usr/bin/mysql -u mailwatch -h $MAILWATCHHOST -p"$MAILWATCHPW" mailscanner -e "INSERT into users (username,fullname,type) VALUES('$ADMINUSER','$ADMINUSER','A')"
             if [[ $? -ne 0 ]]; then
               echo -e "$red[ERROR]$cleanError creating new user, exiting..."
               pause
@@ -42,7 +45,7 @@ func_resetadmin() {
             read YESNO
             if [[ $YESNO =~ ^[Yy]$ || -z $YESNO ]]; then
              # Promote user
-             /usr/bin/mysql -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "UPDATE users SET type = 'A' WHERE username='$ADMINUSER'"
+             /usr/bin/mysql -u mailwatch -h $MAILWATCHHOST -p"$MAILWATCHPW" mailscanner -e "UPDATE users SET type = 'A' WHERE username='$ADMINUSER'"
             if [[ $? -ne 0 ]]; then
               echo -e "$red[ERROR]$cleanError promoting new user, exiting..."
               pause
@@ -95,7 +98,7 @@ func_resetadmin() {
 
     NEWPASS1=$(echo $NEWPASS1 | sed -e "s/'/''/g")
 
-    /usr/bin/mysql -u mailwatch -p`cat /etc/eFa/MailWatch-Config | grep MAILWATCHSQLPWD | sed 's/.*://'` mailscanner -e "UPDATE users SET password = md5('$NEWPASS1') WHERE username='$ADMINUSER'"
+    /usr/bin/mysql -u mailwatch -h $MAILWATCHHOST -p"$MAILWATCHPW" mailscanner -e "UPDATE users SET password = md5('$NEWPASS1') WHERE username='$ADMINUSER'"
 
     if [[ $? -ne 0 ]]; then
       echo -e "$red[ERROR]$cleanError resetting mailwatch password!"

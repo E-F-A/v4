@@ -133,11 +133,12 @@ func_setipsettings(){
 
     # Issue 195 -- Update MySQL database hostname fields
     MAILWATCHPWD=$(grep "^MAILWATCHSQLPWD" /etc/eFa/MailWatch-Config | sed 's/^.*://')
+    MAILWATCHHOST=$(grep "^MAILWATCHSQLHOST" /etc/eFa/MailWatch-Config | sed 's/^.*://')
 
     systemctl stop msmilter
     systemctl stop mailscanner
 
-    mysql -u mailwatch --password=$MAILWATCHPWD mailscanner -e "\
+    mysql -u mailwatch -h $MAILWATCHHOST --password=$MAILWATCHPWD mailscanner -e "\
     LOCK TABLES maillog WRITE; \
     ALTER TABLE maillog MODIFY COLUMN \`last_update\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP; \
     UPDATE maillog SET hostname='$HOSTNAME.$DOMAINNAME' WHERE hostname='$OLDHOSTNAME.$OLDDOMAINNAME'; \
