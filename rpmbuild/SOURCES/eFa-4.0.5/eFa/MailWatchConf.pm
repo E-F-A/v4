@@ -1,6 +1,7 @@
 #
 # MailWatch for MailScanner
-#
+# MailWatchConf.pm
+# Version 20230714
 
 package MailScanner::CustomConfig;
 
