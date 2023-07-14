@@ -854,6 +854,7 @@ if [[ $configsa -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   echo "SAUSERSQLPWD:$SAUSERSQLPWD" > /etc/eFa/SA-Config
   echo "SAUSERSQLHOST:localhost" >> /etc/eFa/SA-Config
+  echo "# if you change localhost, also update /etc/mail/spamassassin/mailscanner.cf by hand" >> /etc/eFa/SA-Config
   [ $? -ne 0 ] && exit 1
   SAUSERSQLPWD=
 fi
@@ -966,6 +967,7 @@ if [[ $configsqlgrey -eq 1 ]]; then
   [ $? -ne 0 ] && exit 1
   echo "SQLGREYSQLPWD:$SQLGREYSQLPWD" > /etc/eFa/SQLGrey-Config
   echo "SQLGREYSQLHOST:localhost" >> /etc/eFa/SQLGrey-Config
+  echo "# if you update host, also update /etc/sqlgrey/sqlgrey.conf by hand" >> /etc/eFa/SQLGrey-Config
   [ $? -ne 0 ] && exit 1
   SQLGREYSQLPWD=
   # Start sqlgrey to initialize db tables

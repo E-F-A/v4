@@ -45,10 +45,12 @@ fi
 
 if [[ -z $(grep ^SQLGREYSQLHOST /etc/eFa/SQLGrey-Config) ]]; then
   echo "SQLGREYSQLHOST:localhost" >> /etc/eFa/SQLGrey-Config
+  echo "# if you change localhost, also update /etc/sqlgrey/sqlgrey.conf by hand" >> /etc/eFa/SQLGrey-Config
 fi
 
 if [[ -z $(grep ^SAUSERSQLHOST /etc/eFa/SA-Config) ]]; then
   echo "SAUSERSQLHOST:localhost" >> /etc/eFa/SA-Config
+  echo "# if you change localhost, also update /etc/mail/spamassassin/mailscanner.cf by hand" >> /etc/eFa/SA-Config
 fi
 
 if [[ -z $(grep ^DMARCSQLHOST /etc/eFa/openDMARC-Config) ]]; then
