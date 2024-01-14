@@ -67,7 +67,7 @@
 
 Name: postfix_eFa
 Summary: Postfix Mail Transport Agent
-Version: 3.5.9
+Version: 3.5.23
 Release: 1.eFa%{?dist}
 Epoch: 2
 Group: System Environment/Daemons

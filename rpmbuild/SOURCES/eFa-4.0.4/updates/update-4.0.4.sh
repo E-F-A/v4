@@ -388,6 +388,19 @@ gpgkey = https://repo.ius.io/RPM-GPG-KEY-IUS-7
 EOF
 fi
 
+if [[ -z $(grep smtpd_forbid_bare_newline /etc/postfix/main.cf) ]; then
+    # Protect against SMTP smuggling
+    postconf -e "smtpd_forbid_unauth_pipelining = yes"
+    postconf -e "smtpd_discard_ehlo_keywords = chunking, silent-discard"
+    postconf -e "smtpd_forbid_bare_newline = yes"
+    postconf -e "smtpd_forbid_bare_newline_exclusions = \$mynetworks"
+fi
+
+if [[ -z $(grep smtp_tls_security_level /etc/postfix/main.cf) ]]; then
+    # Try to use TLS outbound
+    postconf -e "smtp_tls_security_level = may"
+fi
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then
