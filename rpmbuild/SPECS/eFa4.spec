@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   40.eFa%{?dist}
+Release:   41.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -205,7 +205,7 @@ Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 6.1.7-1
     # unrar                                      # eFa     # MailScanner
-Requires:  postfix_eFa >= 3.5.9-1
+Requires:  postfix_eFa >= 3.5.23-1
     # postfix_eFa                                # eFa     # MTA
 %{?el7:Requires:  sqlgrey >= 1.8.0-8}
     # sqlgrey                                    # epel    # Greylisting
