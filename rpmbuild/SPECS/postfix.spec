@@ -637,6 +637,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Jan 14 2024 Shawn Iverson <shawniverson@efa-project.org> - 2:3.5.23-1
+- Update package for eFa v4 to address smtp smuggling vulnerability
+
 * Sun Jan 31 2021 Shawn Iverson <shawniverson@efa-project.org> - 2:3.5.9-1
 - Update package for eFa v4
 
