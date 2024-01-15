@@ -26,9 +26,9 @@
 #-----------------------------------------------------------------------------#
 Summary:       MailWatch Web Front-End for MailScanner
 Name:          MailWatch
-Version:       1.2.18
+Version:       1.2.21
 Epoch:         1
-Release:       5.eFa%{?dist}
+Release:       1.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
@@ -312,6 +312,9 @@ chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/viewpart.php
 
 %changelog
+* Mon Jan 15 2024 Shawn Iverson <shawniverson@efa-project.org> - 1.2.21-1
+- Update to support 40 char maxmind keys and latest fixes
+
 * Sun Nov 21 2021 Shawn Iverson <shawniverson@efa-project.org> - 1.2.18-5
 - More relay fixes
 

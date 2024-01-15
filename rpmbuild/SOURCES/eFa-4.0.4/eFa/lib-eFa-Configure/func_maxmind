@@ -20,7 +20,7 @@ func_maxmind(){
   FLAG=1
   while [ $FLAG != "0" ]
     do
-      if [[ $LICENSE =~ ^([0-9A-Za-z]{12}|[0-9A-Za-z]{16})$ ]]; then
+      if [[ $LICENSE =~ ^([0-9A-Za-z]{12}|[0-9A-Za-z]{16}|[0-9A-Za-z]{40}))$ ]]; then
           sed -i "/^\/\/ define('MAXMIND_LICENSE_KEY'/ c\define('MAXMIND_LICENSE_KEY','');" /var/www/html/mailscanner/conf.php
           sed -i "/^define('MAXMIND_LICENSE_KEY'/ c\define('MAXMIND_LICENSE_KEY', '$LICENSE');" /var/www/html/mailscanner/conf.php
           echo -e "$green[eFa]$clean Maxmind License Key installed"
