@@ -104,7 +104,7 @@ fi
 
 # Add HIDE_APPLY_QUARANTINE to conf.php
 if [[ -z $(grep HIDE_APPLY_QUARANTINE /var/www/html/mailscanner/conf.php ) ]]; then
-  sed -i "/^define('HIDE_UNKNOWN'/ a\\\n// Apply hide options above also to quarantine page\nefine('HIDE_APPLY_QUARANTINE', false);" /var/www/html/mailscanner/conf.php
+  sed -i "/^define('HIDE_UNKNOWN'/ a\\\n// Apply hide options above also to quarantine page\ndefine('HIDE_APPLY_QUARANTINE', false);" /var/www/html/mailscanner/conf.php
 fi
 
 # Ensure MailWatchConf.pm is updated
