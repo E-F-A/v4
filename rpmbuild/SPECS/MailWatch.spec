@@ -244,6 +244,7 @@ chgrp apache %{_localstatedir}/www/html/mailscanner/temp
 %{_localstatedir}/www/html/mailscanner/f-prot_status.php
 %{_localstatedir}/www/html/mailscanner/f-secure.awk
 %{_localstatedir}/www/html/mailscanner/f-secure_status.php
+%{_localstatedir}/www/html/mailscanner/f-secure12_status.php
 %{_localstatedir}/www/html/mailscanner/functions.php
 %{_localstatedir}/www/html/mailscanner/geoip_update.php
 %{_localstatedir}/www/html/mailscanner/graphgenerator.inc.php
