@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2021 https://efa-project.org
+# Copyright (C) 2013~2024 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ Provides: postfix = %{epoch}:%{version}-%{release}
 Conflicts: postfix < %{epoch}:%{version}-%{release}
 Conflicts: postfix-pflogsumm postfix-perl-scripts
 
-Source0: http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-%{version}.tar.gz
+Source0: https://mirror.download.it/postfix-release/official/postfix-3.5.23.tar.gz
 Source1: postfix-etc-init.d-postfix
 Source2: postfix.service
 Source3: README-Postfix-SASL-RedHat.txt
