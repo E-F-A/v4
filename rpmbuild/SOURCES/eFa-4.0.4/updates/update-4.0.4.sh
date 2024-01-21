@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.4-x cumulative updates script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2023 https://efa-project.org
+# Copyright (C) 2013~2024 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -393,7 +393,12 @@ gpgkey = https://repo.ius.io/RPM-GPG-KEY-IUS-7
 EOF
 fi
 
-if [[ -z $(grep smtpd_forbid_bare_newline /etc/postfix/main.cf) ]; then
+# Openssl too old on CentOS 7 to support latest postfix build
+if [[ $centosver -eq 7 && -z $(grep smtpd_forbid_unauth_pipelining /etc/postfix/main.cf) ]]; then
+    # Protect against SMTP smuggling
+    postconf -e "smtpd_forbid_unauth_pipelining = yes"
+    postconf -e "smtpd_discard_ehlo_keywords = chunking, silent-discard"
+elif [[ $centosver -eq 8 && -z $(grep smtpd_forbid_bare_newline /etc/postfix/main.cf) ]]; then
     # Protect against SMTP smuggling
     postconf -e "smtpd_forbid_unauth_pipelining = yes"
     postconf -e "smtpd_discard_ehlo_keywords = chunking, silent-discard"

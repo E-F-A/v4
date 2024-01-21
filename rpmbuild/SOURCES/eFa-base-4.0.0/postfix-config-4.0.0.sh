@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------#
 # eFa 4.0.0 initial postfix-configuration script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2018 https://efa-project.org
+# Copyright (C) 2013~2024 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -75,8 +75,10 @@ postconf -e "smtpd_sender_restrictions = permit_sasl_authenticated, check_sender
 postconf -e "smtpd_data_restrictions =  reject_unauth_pipelining"
 postconf -e "smtpd_forbid_unauth_pipelining = yes"
 postconf -e "smtpd_discard_ehlo_keywords = chunking, silent-discard"
-postconf -e "smtpd_forbid_bare_newline = yes"
-postconf -e "smtpd_forbid_bare_newline_exclusions = \$mynetworks"
+if [[ $centosver -eq 8 ]]; then
+  postconf -e "smtpd_forbid_bare_newline = yes"
+  postconf -e "smtpd_forbid_bare_newline_exclusions = \$mynetworks"
+fi
 postconf -e "smtpd_client_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_rbl_client zen.spamhaus.org"
 postconf -e "smtpd_relay_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination"
 postconf -e "smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_recipient_access hash:/etc/postfix/recipient_access, check_policy_service inet:127.0.0.1:2501, reject_unverified_recipient"
