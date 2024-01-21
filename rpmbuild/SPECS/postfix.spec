@@ -92,7 +92,7 @@ Provides: postfix = %{epoch}:%{version}-%{release}
 Conflicts: postfix < %{epoch}:%{version}-%{release}
 Conflicts: postfix-pflogsumm postfix-perl-scripts
 
-Source0: https://mirror.download.it/postfix-release/official/postfix-3.5.23.tar.gz
+Source0: http://mirror.reverse.net/pub/postfix-release/official/postfix-%{version}.tar.gz
 Source1: postfix-etc-init.d-postfix
 Source2: postfix.service
 Source3: README-Postfix-SASL-RedHat.txt
