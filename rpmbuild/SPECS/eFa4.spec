@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2022 https://efa-project.org
+# Copyright (C) 2013~2024 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -205,7 +205,9 @@ Requires:  libtool-ltdl >= 2.4.2-22
     # libtool-ltdl                               # base    # MailScanner
 Requires:  unrar >= 6.1.7-1
     # unrar                                      # eFa     # MailScanner
-Requires:  postfix_eFa >= 3.5.23-1
+%{?el7:Requires:  postfix_eFa >= 3.5.9-1}
+    # postfix_eFa                                # eFa     # MTA
+%{?el8:Requires:  postfix_eFa >= 3.5.23-1}
     # postfix_eFa                                # eFa     # MTA
 %{?el7:Requires:  sqlgrey >= 1.8.0-8}
     # sqlgrey                                    # epel    # Greylisting
@@ -213,7 +215,7 @@ Requires:  postfix_eFa >= 3.5.23-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin_eFa >= 3.4.6-1
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.4.5-1
+Requires:  MailScanner >= 5.5.1-4
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 7.2.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
