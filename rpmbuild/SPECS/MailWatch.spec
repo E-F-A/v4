@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # eFa SPEC file definition
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2021 https://efa-project.org
+# Copyright (C) 2013~2024 https://efa-project.org
 #
 # This SPEC is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,8 +32,8 @@ Release:       1.eFa%{?dist}
 License:       GNU GPL v2
 Group:         Applications/Utilities
 URL:           https://github.com/mailwatch/MailWatch
-#Source:        https://github.com/mailwatch/MailWatch/archive/v%{version}.tar.gz
-Source:        https://github.com/shawniverson/MailWatch/archive/refs/heads/112121cherrypick2.tar.gz
+Source:        https://github.com/mailwatch/MailWatch/archive/v%{version}.tar.gz
+#Source:        https://github.com/shawniverson/MailWatch/archive/refs/heads/112121cherrypick2.tar.gz
 Source2:       favicon.ico
 Source3:       eFa4logo-79px.png
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
@@ -50,8 +50,8 @@ to log all message data (excluding body text) to a MySQL database which is then
 queried by MailWatch for reporting and statistics.
 
 %prep
-#%setup -q -n %{name}-%{version}
-%setup -q -n %{name}-112121cherrypick2
+%setup -q -n %{name}-%{version}
+#%setup -q -n %{name}-112121cherrypick2
 
 %build
 # Nothing to do
