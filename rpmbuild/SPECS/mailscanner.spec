@@ -1,4 +1,4 @@
-%define releasenum 4
+%define releasenum 5
 %undefine _disable_source_fetch
 
 Name:        MailScanner

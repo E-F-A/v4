@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   41.eFa%{?dist}
+Release:   42.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -215,7 +215,7 @@ Requires:  unrar >= 6.1.7-1
     # sqlgrey                                    # eFa     # Greylisting
 Requires:  spamassassin_eFa >= 3.4.6-1
     # spamassassin                               # eFa     # MailScanner
-Requires:  MailScanner >= 5.5.1-4
+Requires:  MailScanner >= 5.5.1-5
     # MailScanner                                # eFa     # MailScanner
 Requires:  clamav-unofficial-sigs >= 7.2.2-1
     # clamav-unofficial-sigs                     # eFa     # clamav
@@ -229,7 +229,7 @@ Requires:  perl-libnet >= 3.11-1
     # perl-libnet                                # eFa     # Spamassassin
 Requires:  perl-Encoding-FixLatin >= 1.04-1
     # perl-Encoding-FixLatin                     # eFa     # MailWatch
-Requires:  MailWatch >= 1:1.2.21-1
+Requires:  MailWatch >= 1:1.2.23-1
     # MailWatch                                  # eFa     # MailWatch Frontend
 Requires:  dcc >= 2.3.167-2
     # dcc                                        # eFa     # Spamassassin, MailScanner
@@ -483,6 +483,7 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/razor-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/dcc-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/opendkim-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
@@ -568,6 +569,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sat Apr 06 2024 eFa Project <shawniverson@efa-project.org> - 4.0.4-42
+- Fix opendkim during install, update MailScanner and MailWatch
+
 * Sat Mar 04 2023 eFa Project <shawniverson@efa-project.org> - 4.0.4-40
 - Add IUS Archive repo for centos7 hosts
 
