@@ -109,6 +109,8 @@ function start_backup()
   cp -a /etc/sudo.conf $WORKINGDIR/etc
   mkdir -p $WORKINGDIR/etc/sudoers.d
   cp -a /etc/sudoers.d/* $WORKINGDIR/etc/sudoers.d
+  mkdir -p $WORKINGDIR/etc/sysconfig
+  cp -a /etc/sysconfig/eFa-Daily-DMARC $WORKINGDIR/etc/sysconfig
 
   # Backup MailScanner settings
   mkdir -p $WORKINGDIR/etc/MailScanner
