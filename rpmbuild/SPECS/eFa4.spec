@@ -26,7 +26,7 @@
 Name:      eFa
 Summary:   eFa Maintenance rpm
 Version:   4.0.4
-Release:   42.eFa%{?dist}
+Release:   43.eFa%{?dist}
 Epoch:     1
 Group:     Applications/System
 URL:       https://efa-project.org
@@ -484,6 +484,7 @@ if [ "$1" = "1" ]; then
         /bin/sh %{_usrsrc}/eFa/dcc-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/unbound-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/opendkim-config-4.0.0.sh
+        /bin/sh %{_usrsrc}/eFa/opendmarc-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/yum-cron-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/service-config-4.0.0.sh
         /bin/sh %{_usrsrc}/eFa/eFa-config-4.0.0.sh
@@ -569,6 +570,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) %{_sysconfdir}/logrotate.d/eFa-logrotate
 
 %changelog
+* Sun Apr 21 2024 eFa Project <shawniverson@efa-project.org> - 4.0.4-43
+- Fix opendmarc schema during update, opendmarc fixes and enhancements
+
 * Sat Apr 06 2024 eFa Project <shawniverson@efa-project.org> - 4.0.4-42
 - Fix opendkim during install, update MailScanner and MailWatch
 
