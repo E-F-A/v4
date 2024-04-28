@@ -199,6 +199,7 @@ function func_system-restore() {
                           /bin/cp -rf /var/eFa/backup/backup/etc/opendkim/* /etc/opendkim
                           /bin/cp -f /var/eFa/backup/backup/etc/opendmarc.conf /etc
                           /bin/cp -rf /var/eFa/backup/backup/etc/opendmarc/* /etc/opendmarc
+                          /bin/cp -f /var/eFa/backup/backup/etc/sysconfig/eFa-Daily-DMARC /etc/sysconfig
 
                           # Fix ownership
                           chown -R postfix:postfix /etc/postfix

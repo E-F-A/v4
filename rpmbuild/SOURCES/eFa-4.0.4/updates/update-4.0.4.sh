@@ -411,6 +411,10 @@ if [[ -z $(grep smtp_tls_security_level /etc/postfix/main.cf) ]]; then
     postconf -e "smtp_tls_security_level = may"
 fi
 
+if [[ ! -e /etc/sysconfig/eFa-Daily-DMARC ]]; then
+  echo 'SENDREPORTS="yes"' > /etc/sysconfig/eFa-Daily-DMARC
+fi
+
 # Enable maintenance mode if not enabled
 MAINT=0
 if [[ -f /etc/cron.d/eFa-Monitor.cron ]]; then

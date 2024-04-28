@@ -13,7 +13,6 @@ function func_dkim-dmarc() {
 
   echo -e ""
   echo -e "$green[eFa]$clean Welcome to the DKIM and DMARC wizard!"
-  echo -e "$green[eFa]$clean This option is enabled by default for new builds"
   echo -e "$green[eFa]$clean The following questions will be used to"
   echo -e "$green[eFa]$clean enable/disable/modify a DKIM and DMARC deployment."
   echo -e ""

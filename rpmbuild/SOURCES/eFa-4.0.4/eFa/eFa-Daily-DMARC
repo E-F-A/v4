@@ -1,8 +1,8 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------#
-# eFa 4.0.1 eFa-Daily-DMARC script
+# eFa-Daily-DMARC script
 #-----------------------------------------------------------------------------#
-# Copyright (C) 2013~2021 https://efa-project.org
+# Copyright (C) 2013~2024 https://efa-project.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ HISTFILE='opendmarc'
 DMARCRepDomain="`grep DOMAINNAME /etc/eFa/eFa-Config | sed 's/^.*://'`"
 DMARCRepEmail="no-reply@$DMARCRepDomain"
 
+. /etc/sysconfig/eFa-Daily-DMARC
+
 # Make sure history file exists
 touch ${HISTDIR}/${HISTFILE}.dat
 
@@ -37,7 +39,9 @@ mv ${HISTDIR}/${HISTFILE}.dat /tmp/${HISTFILE}.$$
 
 # Import temp history file data and send reports
 /usr/sbin/opendmarc-import -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} < /tmp/${HISTFILE}.$$ >/dev/null 2>&1
-/usr/sbin/opendmarc-reports -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} -interval=86400 -report-email $DMARCRepEmail -report-org $DMARCRepDomain -smtp-server=127.0.0.1 >/dev/null 2>&1
+if [[ $SENDREPORTS =~ ^[Yy][Ee][Ss]$ ]]; then
+  /usr/sbin/opendmarc-reports -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} -interval=86400 -report-email $DMARCRepEmail -report-org $DMARCRepDomain -smtp-server=127.0.0.1 >/dev/null 2>&1
+fi
 /usr/sbin/opendmarc-expire -dbhost=${DBHOST} -dbuser=${DBUSER} -dbpasswd=${DBPASS} -dbname=${DBNAME} >/dev/null 2>&1
 
 # Delete temp history file
