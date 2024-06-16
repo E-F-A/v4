@@ -10,7 +10,7 @@ Summary:        SPF Policy Server for Postfix (Python implementation)
 License:        ASL 2.0
 URL:            https://launchpad.net/%{srcname}
 Source0:        https://launchpad.net/%{srcname}/2.9/%{version}/+download/%{srcname}-%{version}.tar.gz
-Source1:        %{name}-tmpfiles.conf
+Source1:        pypolicyd-spf-tmpfiles.conf
 Patch0:         pypolicyd-spf-2.9.3-service.patch
 
 BuildArch:      noarch
@@ -61,7 +61,7 @@ Milter for pypolicyd-spf.
 %{__rm} -rf %{buildroot}%{_sysconfdir}/init.d
 # Temporary files for milter
 %{__mkdir_p} %{buildroot}%{_tmpfilesdir}
-%{__install} -m 0644 %{SOURCE1} %{buildroot}%{_tmpfilesdir}/%{name}.conf
+%{__install} -m 0644 %{SOURCE1} %{buildroot}%{_tmpfilesdir}/pypolicyd-spf.conf
 
 
 %pre
@@ -75,7 +75,7 @@ Milter for pypolicyd-spf.
 %dir %{_sysconfdir}/python-policyd-spf
 %config(noreplace) %{_sysconfdir}/python-policyd-spf/policyd-spf.conf
 %{_libexecdir}/postfix/policyd-spf
-%{_tmpfilesdir}/%{name}.conf
+%{_tmpfilesdir}/pypolicyd-spf.conf
 %{_mandir}/man1/*
 %{_mandir}/man5/*
 %dir %{python3_sitelib}/spf_engine

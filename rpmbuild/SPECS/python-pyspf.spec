@@ -25,7 +25,7 @@ This SPF client is intended to be installed on the border MTA, checking
 if incoming SMTP clients are permitted to forward mail.  The SPF check
 should be done during the MAIL FROM:<...> command.
 
-%package -n python3-%{srcname}
+%package -n python3-%{srcname}_eFa
 Summary:        %{summary}
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-devel
@@ -37,7 +37,7 @@ BuildRequires:  python3-devel
 Requires:       python3-py3dns
 %{?python_provide:%python_provide python3-%{srcname}}
 
-%description -n python3-%{srcname}
+%description -n python3-%{srcname}_eFa
 SPF does email sender validation.  For more information about SPF,
 please see http://spf.pobox.com.
 
@@ -66,7 +66,7 @@ rm -f %{buildroot}%{_bindir}/*.py{o,c}
 # Remove shebang from python libraries
 sed -i -e '/^#!\//, 1d' %{buildroot}%{python3_sitelib}/*.py
 
-%files -n python3-%{srcname}
+%files -n python3-%{srcname}_eFa
 %doc CHANGELOG PKG-INFO README.md
 %{python3_sitelib}/__pycache__
 %{_bindir}/type99
